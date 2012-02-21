@@ -1,10 +1,9 @@
 package scalate;
 
-import java.util.logging.Logger;
-
 import org.fusesource.scalate.TemplateEngine;
 
-import com.atomicleopard.webFramework.WebFrameworkServlet;
+import com.atomicleopard.webFramework.logger.Logger;
+import com.atomicleopard.webFramework.view.TemplateViewResolver;
 
 /**
  * This is a magic class invoked by by the scalate TemplateEngine on startup.
@@ -12,7 +11,6 @@ import com.atomicleopard.webFramework.WebFrameworkServlet;
  * must be applied <strong>at compile time</strong> as well as runtime.
  */
 public class Boot {
-	public static final Logger logger = Logger.getLogger(Boot.class.getName());
 	private TemplateEngine engine;
 
 	public Boot(TemplateEngine engine) {
@@ -20,7 +18,7 @@ public class Boot {
 	}
 
 	public void run() {
-		logger.info("Bootstrapping template engine");
-		WebFrameworkServlet.applyTemplateEngineConfiguration(engine);
+		Logger.info("Bootstrapping template engine");
+		TemplateViewResolver.applyTemplateEngineConfiguration(engine);
 	}
 }

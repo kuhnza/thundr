@@ -1,9 +1,14 @@
 package com.atomicleopard.webFramework.routes;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Collection;
+
+import jodd.util.ReflectUtil;
 
 import com.atomicleopard.expressive.Cast;
+import com.atomicleopard.webFramework.logger.Logger;
 
 public class ActionParameter {
 	public String name;
@@ -16,7 +21,12 @@ public class ActionParameter {
 	}
 
 	public boolean isA(Class<?> is) {
-		return is.isAssignableFrom(type.getClass());
+		Class<?> clazz = ReflectUtil.toClass(type);
+		if(clazz == null){
+			Logger.warn("Clazz is null, type is %s", type);
+		}
+		
+		return clazz == null ? false : is.isAssignableFrom(clazz);
 	}
 
 	public Type getGenericType(int i) {
@@ -25,5 +35,10 @@ public class ActionParameter {
 			return pType.getActualTypeArguments()[i];
 		}
 		return null;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s %s", type, name);
 	}
 }

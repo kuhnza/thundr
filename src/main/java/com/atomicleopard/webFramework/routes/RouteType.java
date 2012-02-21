@@ -1,14 +1,13 @@
 package com.atomicleopard.webFramework.routes;
 
-import java.util.List;
+import static com.atomicleopard.expressive.Expressive.list;
 
-import scala.actors.threadpool.Arrays;
+import java.util.List;
 
 public enum RouteType {
 	GET, POST, PUT, DELETE, HEAD;
 
-	@SuppressWarnings("unchecked")
-	private static final List<RouteType> all = Arrays.asList(RouteType.values());
+	private static final List<RouteType> all = list(GET, POST, PUT, DELETE);
 
 	public static List<RouteType> all() {
 		return all;
