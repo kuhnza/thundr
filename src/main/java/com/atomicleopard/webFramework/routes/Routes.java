@@ -1,9 +1,10 @@
 package com.atomicleopard.webFramework.routes;
 
-import static com.atomicleopard.expressive.Expressive.mapKeys;
+import static com.atomicleopard.expressive.Expressive.*;
 
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,12 +12,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
-
 import jodd.util.ClassLoaderUtil;
 import jodd.util.KeyValue;
 import jodd.util.ReflectUtil;
 import jodd.util.Wildcard;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.atomicleopard.webFramework.configuration.JsonProperties;
 import com.atomicleopard.webFramework.exception.BaseException;
@@ -30,6 +31,8 @@ public class Routes {
 	private Map<RouteType, Map<String, Action>> routes = mapKeys(RouteType.GET, RouteType.POST, RouteType.PUT, RouteType.DELETE).to(getRoutes, postRoutes, putRoutes, deleteRoutes);
 
 	private Map<Class<? extends Action>, ActionResolver<?>> actionResolvers = new LinkedHashMap<Class<? extends Action>, ActionResolver<?>>();
+
+	private boolean debug = true;
 
 	public Routes() {
 		actionResolvers.put(StaticResourceAction.class, new StaticResourceActionResolver());
@@ -60,7 +63,34 @@ public class Routes {
 			ActionResolver<T> actionResolver = (ActionResolver<T>) actionResolvers.get(action.getClass());
 			return actionResolver.resolve(action, req, resp);
 		}
-		throw new RouteException("No route matching the request %s %s", routeType, route);
+		String debugString = debug ? listRoutes() : "";
+		throw new RouteException("No route matching the request %s %s%s", routeType, route, debugString);
+	}
+
+	private static final String routeDisplayFormat = "%s\t%s ->\t%s\n";
+
+	@SuppressWarnings("unchecked")
+	private String listRoutes() {
+		List<String> allRoutes = flatten(getRoutes.keySet(), postRoutes.keySet(), putRoutes.keySet(), deleteRoutes.keySet());
+		allRoutes = list(new HashSet<String>(allRoutes));
+		
+		Collections.sort(allRoutes);
+		StringBuilder sb = new StringBuilder();
+		for (String route : allRoutes) {
+			if (getRoutes.containsKey(route)) {
+				sb.append(String.format(routeDisplayFormat, "GET", route, getRoutes.get(route)));
+			}
+			if (postRoutes.containsKey(route)) {
+				sb.append(String.format(routeDisplayFormat, "POST", route, postRoutes.get(route)));
+			}
+			if (putRoutes.containsKey(route)) {
+				sb.append(String.format(routeDisplayFormat, "PUT", route, putRoutes.get(route)));
+			}
+			if (deleteRoutes.containsKey(route)) {
+				sb.append(String.format(routeDisplayFormat, "DELETE", route, deleteRoutes.get(route)));
+			}
+		}
+		return sb.toString();
 	}
 
 	public Action findMethod(String actionName) {

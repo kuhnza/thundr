@@ -39,12 +39,13 @@ public class ActionMethod implements Action {
 		try {
 			return method.invoke(controller, args.toArray());
 		} catch (Exception e) {
-			throw new BaseException(e, "Failed to invoke controller method %s.%s: %s", class1.toString(), method.getName(), e.getMessage());
+			Throwable original = e.getCause();
+			throw new BaseException(original, "Failed to invoke controller method %s.%s: %s", class1.toString(), method.getName(), original.getMessage());
 		}
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("ActionMethod %s", method.toString());
+		return method.toString();
 	}
 }

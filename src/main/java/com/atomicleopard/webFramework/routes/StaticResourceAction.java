@@ -8,4 +8,9 @@ public class StaticResourceAction implements Action {
 	public Object invoke(HttpServletRequest req, HttpServletResponse resp) {
 		return null;
 	}
+	
+	@Override
+	public String toString() {
+		return "TODO - Static resource";
+	}
 }
