@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.atomicleopard.webFramework.bind.ActionParameterBinder;
 import com.atomicleopard.webFramework.exception.BaseException;
+import com.atomicleopard.webFramework.logger.Logger;
 
 public class ActionMethodResolver implements ActionResolver<ActionMethod> {
 
@@ -20,10 +21,12 @@ public class ActionMethodResolver implements ActionResolver<ActionMethod> {
 		this.binder = new ActionParameterBinder();
 	}
 
-	public Object resolve(ActionMethod action, HttpServletRequest req, HttpServletResponse resp) {
+	public Object resolve(ActionMethod action, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
 		Object controller = getOrCreateController(action);
-		List<?> arguments = binder.bind(action, req, resp);
-		return action.invoke(controller, arguments);
+		List<?> arguments = binder.bind(action, req, resp, pathVars);
+		Object result = action.invoke(controller, arguments);
+		Logger.info("%s -> %s resolved", req.getRequestURI(), action);
+		return result;
 	}
 
 	private Object getOrCreateController(ActionMethod actionMethod) {

@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import jodd.util.MimeTypes;
 
-public class TemplateViewResult implements ViewResult {
+public class TemplateViewResult {
 	private String view;
 	private String contentType;
 	private Map<String, Object> model;

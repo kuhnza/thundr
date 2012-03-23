@@ -5,11 +5,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import jodd.paramo.MethodParameter;
 import jodd.paramo.Paramo;
+import jodd.util.ClassLoaderUtil;
+import jodd.util.ReflectUtil;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.atomicleopard.webFramework.exception.BaseException;
 
@@ -18,10 +19,11 @@ public class ActionMethod implements Action {
 	public Method method;
 	public List<ActionParameter> parameters = new ArrayList<ActionParameter>();
 
-	public ActionMethod(Class<?> class1, Method method) {
-		super();
-		this.class1 = class1;
-		this.method = method;
+	public ActionMethod(String actionName) throws ClassNotFoundException {
+		String methodName = StringUtils.substringAfterLast(actionName, ".");
+		String className = StringUtils.substringBeforeLast(actionName, ".");
+		this.class1 = ClassLoaderUtil.loadClass(className);
+		this.method = ReflectUtil.findMethod(class1, methodName);
 		Type[] genericParameters = method.getGenericParameterTypes();
 		MethodParameter[] parameterNames = Paramo.resolveParameters(method);
 		for (int i = 0; i < genericParameters.length; i++) {
@@ -29,21 +31,16 @@ public class ActionMethod implements Action {
 			this.parameters.add(new ActionParameter(name, genericParameters[i]));
 		}
 	}
-	
-	public Object invoke(HttpServletRequest req, HttpServletResponse resp) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public Object invoke(Object controller, List<?> args) {
 		try {
 			return method.invoke(controller, args.toArray());
 		} catch (Exception e) {
-			Throwable original = e.getCause();
+			Throwable original = e.getCause() == null ? e : e.getCause();
 			throw new BaseException(original, "Failed to invoke controller method %s.%s: %s", class1.toString(), method.getName(), original.getMessage());
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return method.toString();

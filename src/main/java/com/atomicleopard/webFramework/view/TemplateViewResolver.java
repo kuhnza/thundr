@@ -46,12 +46,6 @@ public class TemplateViewResolver implements ViewResolver<TemplateViewResult> {
 				for (Map.Entry<String, Object> attr : viewResult.getModel().entrySet()) {
 					context.setAttribute(attr.getKey(), new Some<Object>(attr.getValue()));
 				}
-//				scala.collection.immutable.Map<String, Object> attributes = new HashMap<String, Object>();
-//				GenTraversableOnce traversable = JavaConversions.asScalaMap(viewResult.getModel());
-//				attributes.$plus$plus(traversable);
-				//String content = templateEngine.layout(view, attributes, null);
-				//resp.getOutputStream().write(content.getBytes("UTF-8"));
-				
 				templateEngine.layout(view, context);
 				resp.setContentType(viewResult.getContentType());
 				resp.setStatus(viewResult.getResponseCode());

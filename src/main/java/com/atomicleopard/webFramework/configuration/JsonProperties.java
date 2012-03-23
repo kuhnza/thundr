@@ -8,6 +8,7 @@ import com.atomicleopard.expressive.Cast;
 import com.atomicleopard.webFramework.json.JsonToMapDeserializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 
 public class JsonProperties {
 
@@ -18,7 +19,11 @@ public class JsonProperties {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Object.class, new JsonToMapDeserializer());
 		Gson gson = gsonBuilder.create();
-		properties = gson.fromJson(source, Map.class);
+		try {
+			properties = gson.fromJson(source, Map.class);
+		} catch (JsonSyntaxException e) {
+			throw new ConfigurationException(e, "Failed to read json properties: %s", e.getMessage());
+		}
 	}
 
 	public List<String> getKeys() {

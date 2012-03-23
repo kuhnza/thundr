@@ -1,7 +1,6 @@
 package com.atomicleopard.webFramework.view;
 
-
-public class JsonViewResult implements ViewResult {
+public class JsonViewResult {
 	private Object output;
 
 	public JsonViewResult(Object output) {

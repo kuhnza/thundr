@@ -8,24 +8,22 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import com.atomicleopard.webFramework.view.ViewResolver;
-import com.atomicleopard.webFramework.view.ViewResult;
 
 public class ViewResolverRegistry {
-	private Map<Class<?>, ViewResolver<ViewResult>> resolvers = new HashMap<Class<?>, ViewResolver<ViewResult>>();
+	private Map<Class<?>, ViewResolver<?>> resolvers = new HashMap<Class<?>, ViewResolver<?>>();
 	private List<Class<?>> resolversOrder = new ArrayList<Class<?>>();
-	private Map<Class<?>, ViewResolver<ViewResult>> resolversCache = new WeakHashMap<Class<?>, ViewResolver<ViewResult>>();
+	private Map<Class<?>, ViewResolver<?>> resolversCache = new WeakHashMap<Class<?>, ViewResolver<?>>();
 
 	public ViewResolverRegistry() {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends ViewResult> void addResolver(Class<T> viewResult, ViewResolver<T> resolver) {
-		resolvers.put(viewResult, (ViewResolver<ViewResult>) resolver);
+	public <T> void addResolver(Class<T> viewResult, ViewResolver<T> resolver) {
+		resolvers.put(viewResult, (ViewResolver<T>) resolver);
 		resolversOrder.add(viewResult);
 	}
 
-	public void removeResolver(Class<? extends ViewResult> viewResult) {
+	public void removeResolver(Class<?> viewResult) {
 		resolvers.remove(viewResult);
 		resolversOrder.removeAll(Collections.singletonList(viewResult));
 		clearResolversCache();
@@ -37,21 +35,21 @@ public class ViewResolverRegistry {
 		}
 	}
 
-	public ViewResolver<ViewResult> findViewResolver(ViewResult viewResult) {
-		ViewResolver<ViewResult> viewResolver = findViewResolverInCache(viewResult);
+	public <T> ViewResolver<T> findViewResolver(T viewResult) {
+		ViewResolver<T> viewResolver = findViewResolverInCache(viewResult);
 		if (viewResolver == null) {
 			viewResolver = createAndCacheResolver(viewResult);
 		}
 		return viewResolver;
 	}
 
-	protected ViewResolver<ViewResult> createAndCacheResolver(ViewResult viewResult) {
+	protected <T> ViewResolver<T> createAndCacheResolver(T viewResult) {
 		synchronized (resolversCache) {
 			for (int i = resolversOrder.size() - 1; i >= 0; i--) {
 				Class<?> resolverClass = resolversOrder.get(i);
-				Class<? extends ViewResult> viewResultClass = viewResult.getClass();
+				Class<? extends Object> viewResultClass = viewResult.getClass();
 				if (resolverClass.isAssignableFrom(viewResultClass)) {
-					ViewResolver<ViewResult> viewResolver = resolvers.get(resolverClass);
+					ViewResolver<T> viewResolver = (ViewResolver<T>) resolvers.get(resolverClass);
 					resolversCache.put(viewResultClass, viewResolver);
 					return viewResolver;
 				}
@@ -60,9 +58,9 @@ public class ViewResolverRegistry {
 		}
 	}
 
-	protected ViewResolver<ViewResult> findViewResolverInCache(ViewResult viewResult) {
+	protected <T> ViewResolver<T> findViewResolverInCache(T viewResult) {
 		synchronized (resolversCache) {
-			return (ViewResolver<ViewResult>) resolversCache.get(viewResult);
+			return (ViewResolver<T>) resolversCache.get(viewResult);
 		}
 	}
 }
