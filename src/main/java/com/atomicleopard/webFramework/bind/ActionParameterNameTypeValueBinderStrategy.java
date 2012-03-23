@@ -2,7 +2,6 @@ package com.atomicleopard.webFramework.bind;
 
 import java.util.Map;
 
-import com.atomicleopard.webFramework.routes.ActionParameter;
 
 public class ActionParameterNameTypeValueBinderStrategy<T> implements ActionParameterBinderStrategy {
 	private String name;

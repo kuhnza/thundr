@@ -1,9 +1,6 @@
 package com.atomicleopard.webFramework.bind;
 
-import static com.atomicleopard.expressive.Expressive.list;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,29 +10,42 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.atomicleopard.webFramework.bind2.InstanceParameterBinder;
+import com.atomicleopard.webFramework.bind2.PathMap;
+import com.atomicleopard.webFramework.introspection.ParameterDescription;
 import com.atomicleopard.webFramework.routes.ActionMethod;
-import com.atomicleopard.webFramework.routes.ActionParameter;
 
 public class ActionParameterBinder {
+	public List<Object> bind(ActionMethod actionMethod, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
+		List<ParameterDescription> parameterDescriptions = actionMethod.parameters();
+		PathMap pathMap = createPathMap(req, pathVars);
+		Binders binders = binders(req, resp, pathVars);
+		return binders.createFor(parameterDescriptions, pathMap);
+	}
 
-	@SuppressWarnings("unchecked")
-	public List<?> bind(ActionMethod actionMethod, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
-		ActionParameterBeanBinderStrategy beanBinder = new ActionParameterBeanBinderStrategy(req.getParameterMap());
-		ActionParameterTypeValueBinderStrategy<ServletRequest> requestTypeBinder = new ActionParameterTypeValueBinderStrategy<ServletRequest>(ServletRequest.class, req);
-		ActionParameterTypeValueBinderStrategy<ServletResponse> responseTypeBinder = new ActionParameterTypeValueBinderStrategy<ServletResponse>(ServletResponse.class, resp);
-		ActionParameterTypeValueBinderStrategy<HttpSession> sessionTypeBinder = new ActionParameterTypeValueBinderStrategy<HttpSession>(HttpSession.class, req.getSession(false));
-		// ActionParameterNameTypeValueBinderStrategy<Map> sessionMapTypeBinder = new ActionParameterNameTypeValueBinderStrategy<Map>(Map.class, "sessionAttributes", req.getSession());
-
-		List<ActionParameterBinderStrategy> strategies = list(beanBinder, requestTypeBinder, responseTypeBinder);
-		Map<String, Object> bindings = new LinkedHashMap<String, Object>();
-		for (ActionParameter parameter : actionMethod.parameters) {
-			bindings.put(parameter.name, pathVars.get(parameter.name)); // TODO - Type conversion required!
-		}
-		for (ActionParameter actionParameter : actionMethod.parameters) {
-			for (ActionParameterBinderStrategy actionParameterBinderStrategy : strategies) {
-				actionParameterBinderStrategy.bind(actionParameter, bindings);
+	private PathMap createPathMap(HttpServletRequest req, Map<String, String> pathVars) {
+		Map<String, String[]> requestParameters = new HashMap<String, String[]>(req.getParameterMap());
+		if (pathVars != null) {
+			for (Map.Entry<String, String> entry : pathVars.entrySet()) {
+				requestParameters.put(entry.getKey(), new String[] { entry.getValue() });
 			}
 		}
-		return new ArrayList<Object>(bindings.values());
+		PathMap pathMap = new PathMap(requestParameters);
+		return pathMap;
+	}
+
+	private Binders binders(HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
+		Binders binders = new Binders();
+		InstanceParameterBinder requestBinder = new InstanceParameterBinder(req);
+		InstanceParameterBinder responseBinder = new InstanceParameterBinder(resp);
+		InstanceParameterBinder sessionBinder = new InstanceParameterBinder(req == null ? null : req.getSession());
+
+		binders.addBinder(HttpSession.class, sessionBinder);
+		binders.addBinder(HttpServletRequest.class, requestBinder);
+		binders.addBinder(HttpServletResponse.class, responseBinder);
+		binders.addBinder(ServletRequest.class, requestBinder);
+		binders.addBinder(ServletResponse.class, responseBinder);
+		binders.addDefaultBinders();
+		return binders;
 	}
 }

@@ -12,7 +12,6 @@ import jodd.bean.BeanTool;
 import jodd.bean.BeanUtil;
 import scala.actors.threadpool.Arrays;
 
-import com.atomicleopard.webFramework.routes.ActionParameter;
 
 public class ActionParameterBeanBinderStrategy implements ActionParameterBinderStrategy {
 

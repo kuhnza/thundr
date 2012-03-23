@@ -5,7 +5,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.atomicleopard.webFramework.routes.ActionParameter;
 
 public class ActionParameterTypeValueBinderStrategy<T> implements ActionParameterBinderStrategy {
 

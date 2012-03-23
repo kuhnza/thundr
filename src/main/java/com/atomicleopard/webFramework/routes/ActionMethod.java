@@ -13,11 +13,12 @@ import jodd.util.ReflectUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import com.atomicleopard.webFramework.exception.BaseException;
+import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
 public class ActionMethod implements Action {
-	public Class<?> class1;
-	public Method method;
-	public List<ActionParameter> parameters = new ArrayList<ActionParameter>();
+	private Class<?> class1;
+	private Method method;
+	private List<ParameterDescription> parameters = new ArrayList<ParameterDescription>();
 
 	public ActionMethod(String actionName) throws ClassNotFoundException {
 		String methodName = StringUtils.substringAfterLast(actionName, ".");
@@ -28,8 +29,12 @@ public class ActionMethod implements Action {
 		MethodParameter[] parameterNames = Paramo.resolveParameters(method);
 		for (int i = 0; i < genericParameters.length; i++) {
 			String name = parameterNames[i].getName();
-			this.parameters.add(new ActionParameter(name, genericParameters[i]));
+			this.parameters.add(new ParameterDescription(name, genericParameters[i]));
 		}
+	}
+
+	public List<ParameterDescription> parameters() {
+		return parameters;
 	}
 
 	public Object invoke(Object controller, List<?> args) {
@@ -44,5 +49,9 @@ public class ActionMethod implements Action {
 	@Override
 	public String toString() {
 		return method.toString();
+	}
+
+	public Class<?> type() {
+		return class1;
 	}
 }

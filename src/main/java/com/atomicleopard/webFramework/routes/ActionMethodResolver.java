@@ -15,11 +15,7 @@ public class ActionMethodResolver implements ActionResolver<ActionMethod> {
 
 	private Map<Class<?>, Object> controllerInstances = new HashMap<Class<?>, Object>();
 
-	private ActionParameterBinder binder;
-
-	public ActionMethodResolver() {
-		this.binder = new ActionParameterBinder();
-	}
+	private ActionParameterBinder binder = new ActionParameterBinder();
 
 	public Object resolve(ActionMethod action, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
 		Object controller = getOrCreateController(action);
@@ -30,17 +26,17 @@ public class ActionMethodResolver implements ActionResolver<ActionMethod> {
 	}
 
 	private Object getOrCreateController(ActionMethod actionMethod) {
-		Object controller = controllerInstances.get(actionMethod.class1);
+		Object controller = controllerInstances.get(actionMethod.type());
 		if (controller == null) {
 			synchronized (controllerInstances) {
-				controller = controllerInstances.get(actionMethod.class1);
+				controller = controllerInstances.get(actionMethod.type());
 				if (controller == null) {
 					try {
-						controller = actionMethod.class1.newInstance();
+						controller = actionMethod.type().newInstance();
 					} catch (Exception e) {
-						throw new BaseException(e, "Failed to create controller %s: %s", actionMethod.class1.toString(), e.getMessage());
+						throw new BaseException(e, "Failed to create controller %s: %s", actionMethod.type().toString(), e.getMessage());
 					}
-					controllerInstances.put(actionMethod.class1, controller);
+					controllerInstances.put(actionMethod.type(), controller);
 				}
 			}
 		}
