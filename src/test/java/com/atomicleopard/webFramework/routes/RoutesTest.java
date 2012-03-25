@@ -1,9 +1,8 @@
 package com.atomicleopard.webFramework.routes;
 
-import static com.atomicleopard.webFramework.routes.RouteType.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static com.atomicleopard.webFramework.routes.RouteType.GET;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import java.util.List;
 

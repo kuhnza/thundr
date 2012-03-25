@@ -1,4 +1,5 @@
 package com.atomicleopard.webFramework.bind2;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +35,20 @@ public class TestBindTo {
 	public Object methodStringArray(String[] argument1) {
 		return StringUtils.join(argument1, ":");
 	}
-	
+
 	public Object methodMap(Map<String, List<String>> argument1) {
 		return StringUtils.join(argument1, ":");
+	}
+
+	public <T extends String> Object methodGenericArray(T[] argument1) {
+		return StringUtils.join(argument1, ":");
+	}
+
+	public JavaBean methodJavaBean(JavaBean argument1) {
+		return argument1;
+	}
+	
+	public DeepJavaBean methodDeepJavaBean(DeepJavaBean argument1) {
+		return argument1;
 	}
 }

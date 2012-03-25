@@ -2,10 +2,12 @@ package com.atomicleopard.webFramework.bind2;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -71,5 +73,30 @@ public class PathMap {
 	@Override
 	public String toString() {
 		return delegate.toString();
+	}
+
+	public Map<String, String[]> toStringMap(String pathElement) {
+		Map<String, String[]> stringMap = new HashMap<String, String[]>();
+		for (Entry<List<String>, String[]> entry : delegate.entrySet()) {
+			List<String> key = entry.getKey();
+
+			if (pathElement.equals(key.get(0))) {
+				StringBuilder joinedKey = new StringBuilder();
+				boolean first = true;
+				for (int i = 1; i < key.size(); i++) {
+					String string = key.get(i);
+					if (!first && !string.startsWith("[")) {
+						joinedKey.append(".");
+					}
+					joinedKey.append(string);
+					first = false;
+				}
+				String stringKey = joinedKey.toString();
+				if (stringKey.length() > 0) {
+					stringMap.put(stringKey, entry.getValue());
+				}
+			}
+		}
+		return stringMap;
 	}
 }

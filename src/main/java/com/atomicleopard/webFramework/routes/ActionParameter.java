@@ -1,9 +1,7 @@
 package com.atomicleopard.webFramework.routes;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Collection;
 
 import jodd.util.ReflectUtil;
 

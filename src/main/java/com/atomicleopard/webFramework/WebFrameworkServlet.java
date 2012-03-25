@@ -20,7 +20,6 @@ import com.atomicleopard.webFramework.view.JsonViewResolver;
 import com.atomicleopard.webFramework.view.JsonViewResult;
 import com.atomicleopard.webFramework.view.TemplateViewResolver;
 import com.atomicleopard.webFramework.view.TemplateViewResult;
-import com.atomicleopard.webFramework.view.ViewResolutionException;
 import com.atomicleopard.webFramework.view.ViewResolver;
 import com.atomicleopard.webFramework.view.exception.ExceptionViewResolver;
 import com.atomicleopard.webFramework.view.jsp.JspViewResolver;

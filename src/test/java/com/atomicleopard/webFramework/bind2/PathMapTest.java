@@ -1,8 +1,5 @@
 package com.atomicleopard.webFramework.bind2;
-import static com.atomicleopard.expressive.Expressive.array;
-import static com.atomicleopard.expressive.Expressive.list;
-import static com.atomicleopard.expressive.Expressive.map;
-import static com.atomicleopard.expressive.Expressive.mapKeys;
+import static com.atomicleopard.expressive.Expressive.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 

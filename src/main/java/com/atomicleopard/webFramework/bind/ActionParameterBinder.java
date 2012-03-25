@@ -4,11 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.atomicleopard.webFramework.bind2.InstanceParameterBinder;
 import com.atomicleopard.webFramework.bind2.PathMap;
@@ -23,6 +20,7 @@ public class ActionParameterBinder {
 		return binders.createFor(parameterDescriptions, pathMap);
 	}
 
+	@SuppressWarnings("unchecked")
 	private PathMap createPathMap(HttpServletRequest req, Map<String, String> pathVars) {
 		Map<String, String[]> requestParameters = new HashMap<String, String[]>(req.getParameterMap());
 		if (pathVars != null) {
@@ -40,11 +38,11 @@ public class ActionParameterBinder {
 		InstanceParameterBinder responseBinder = new InstanceParameterBinder(resp);
 		InstanceParameterBinder sessionBinder = new InstanceParameterBinder(req == null ? null : req.getSession());
 
-		binders.addBinder(HttpSession.class, sessionBinder);
-		binders.addBinder(HttpServletRequest.class, requestBinder);
-		binders.addBinder(HttpServletResponse.class, responseBinder);
-		binders.addBinder(ServletRequest.class, requestBinder);
-		binders.addBinder(ServletResponse.class, responseBinder);
+		binders.addBinder(sessionBinder);
+		binders.addBinder(requestBinder);
+		binders.addBinder(responseBinder);
+		binders.addBinder(requestBinder);
+		binders.addBinder(responseBinder);
 		binders.addDefaultBinders();
 		return binders;
 	}

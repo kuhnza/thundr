@@ -10,4 +10,9 @@ public class StringParameterBinder implements ParameterBinder<String> {
 		String[] values = pathMap.get(list(parameterDescription.name()));
 		return values != null && values.length > 0 ? values[0] : null;
 	}
+
+	@Override
+	public boolean willBind(ParameterDescription parameterDescription) {
+		return parameterDescription.isA(String.class);
+	}
 }

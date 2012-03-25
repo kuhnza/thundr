@@ -11,6 +11,11 @@ public class InstanceParameterBinder implements ParameterBinder<Object> {
 	}
 
 	public Object bind(Binders binders, ParameterDescription parameterDescription, PathMap pathMap) {
-		return parameterDescription.isA(instance.getClass()) ? instance : null;
+		return instance;
+	}
+
+	@Override
+	public boolean willBind(ParameterDescription parameterDescription) {
+		return instance == null ? false : parameterDescription.isA(instance.getClass());
 	}
 }

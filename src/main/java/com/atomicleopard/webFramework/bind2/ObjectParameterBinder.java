@@ -1,7 +1,5 @@
 package com.atomicleopard.webFramework.bind2;
 
-import static com.atomicleopard.expressive.Expressive.set;
-
 import java.lang.reflect.Constructor;
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +41,11 @@ public class ObjectParameterBinder implements ParameterBinder<Object> {
 	private Constructor<?> findCtor(Class<?> type) {
 		// TODO - Find the most appropraite ctor
 		return type.getConstructors()[0];
+	}
+
+	@Override
+	public boolean willBind(ParameterDescription parameterDescription) {
+		return false;
 	}
 
 }

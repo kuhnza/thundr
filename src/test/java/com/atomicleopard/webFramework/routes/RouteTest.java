@@ -1,7 +1,6 @@
 package com.atomicleopard.webFramework.routes;
 
-import static com.atomicleopard.webFramework.routes.Route.AcceptableMultiPathCharacters;
-import static com.atomicleopard.webFramework.routes.Route.AcceptablePathCharacters;
+import static com.atomicleopard.webFramework.routes.Route.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 

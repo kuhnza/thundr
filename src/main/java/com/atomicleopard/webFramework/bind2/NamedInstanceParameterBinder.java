@@ -15,6 +15,11 @@ public class NamedInstanceParameterBinder implements ParameterBinder<Object> {
 	}
 
 	public Object bind(Binders binders, ParameterDescription parameterDescription, PathMap pathMap) {
-		return names.contains(parameterDescription.name()) ? delegate.bind(binders, parameterDescription, pathMap) : null;
+		return delegate.bind(binders, parameterDescription, pathMap);
+	}
+	
+	@Override
+	public boolean willBind(ParameterDescription parameterDescription) {
+		return names.contains(parameterDescription.name()) && delegate.willBind(parameterDescription); 
 	}
 }

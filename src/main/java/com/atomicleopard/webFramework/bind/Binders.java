@@ -1,32 +1,45 @@
 package com.atomicleopard.webFramework.bind;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.atomicleopard.webFramework.bind2.ListParameterBinder;
+import com.atomicleopard.expressive.EList;
+import com.atomicleopard.expressive.EListImpl;
+import com.atomicleopard.webFramework.bind2.ArrayParameterBinder;
+import com.atomicleopard.webFramework.bind2.BasicTypesParameterBinder;
+import com.atomicleopard.webFramework.bind2.CollectionParameterBinder;
+import com.atomicleopard.webFramework.bind2.JavaBeanParameterBinder;
+import com.atomicleopard.webFramework.bind2.MapParameterBinder;
 import com.atomicleopard.webFramework.bind2.ObjectParameterBinder;
 import com.atomicleopard.webFramework.bind2.ParameterBinder;
 import com.atomicleopard.webFramework.bind2.PathMap;
 import com.atomicleopard.webFramework.bind2.StringParameterBinder;
+import com.atomicleopard.webFramework.collection.factory.SimpleCollectionFactory;
+import com.atomicleopard.webFramework.collection.factory.SimpleMapFactory;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
-import com.atomicleopard.webFramework.routes.ActionMethod;
 
 public class Binders {
-	private static Map<Class<?>, ParameterBinder<?>> sharedBinders = binderMap();
-	private LinkedHashMap<Class<?>, ParameterBinder<?>> binders = new LinkedHashMap<Class<?>, ParameterBinder<?>>();
+	private static List<ParameterBinder<?>> sharedBinders = binderMap();
+	private List<ParameterBinder<?>> binders = new ArrayList<ParameterBinder<?>>();
 
-	public Binders addBinder(Class<?> forType, ParameterBinder<?> binder) {
-		binders.put(forType, binder);
+	public Binders addBinder(ParameterBinder<?> binder) {
+		binders.add(binder);
 		return this;
 	}
 
 	public Binders addDefaultBinders() {
-		binders.putAll(sharedBinders);
+		binders.addAll(sharedBinders);
 		return this;
 	}
 
@@ -39,33 +52,37 @@ public class Binders {
 	}
 
 	public Object createFor(ParameterDescription parameterDescription, PathMap pathMap) {
-		// do a direct lookup - we might get lucky!
-		Object value = lookupBinder(parameterDescription, pathMap);
-		return value == null ? tryAllBinders(parameterDescription, pathMap) : value;
-	}
-
-	private Object tryAllBinders(ParameterDescription parameterDescription, PathMap pathMap)  {
-		for (Map.Entry<Class<?>, ParameterBinder<?>> binderEntry : binders.entrySet()) {
-			if (parameterDescription.isA(binderEntry.getKey())) {
-				Object value = binderEntry.getValue().bind(this, parameterDescription, pathMap);
-				if (value != null) {
-					return value;
-				}
+		for (ParameterBinder<?> binder : binders) {
+			if (binder.willBind(parameterDescription)) {
+				return binder.bind(this, parameterDescription, pathMap);
 			}
 		}
 		return null;
 	}
 
-	private Object lookupBinder(ParameterDescription parameterDescription, PathMap pathMap)  {
-		ParameterBinder<?> binder = binders.get(parameterDescription.type());
-		return binder != null ? binder.bind(this, parameterDescription, pathMap) : null;
-	}
-
-	private static Map<Class<?>, ParameterBinder<?>> binderMap() {
-		LinkedHashMap<Class<?>, ParameterBinder<?>> map = new LinkedHashMap<Class<?>, ParameterBinder<?>>();
-		map.put(String.class, new StringParameterBinder());
-		map.put(List.class, new ListParameterBinder());
-		map.put(Object.class, new ObjectParameterBinder());
-		return map;
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private static List<ParameterBinder<?>> binderMap() {
+		List<ParameterBinder<?>> list = new ArrayList<ParameterBinder<?>>();
+		list.add(new StringParameterBinder());
+		list.add(new ArrayParameterBinder());
+		list.add(new CollectionParameterBinder<ArrayList<Object>>(new SimpleCollectionFactory(List.class, ArrayList.class)));
+		list.add(new CollectionParameterBinder<LinkedList<Object>>(new SimpleCollectionFactory(List.class, ArrayList.class)));
+		list.add(new CollectionParameterBinder<EList<Object>>(new SimpleCollectionFactory(EList.class, EListImpl.class)));
+		list.add(new CollectionParameterBinder<EListImpl<Object>>(new SimpleCollectionFactory(EList.class, EListImpl.class)));
+		list.add(new CollectionParameterBinder<TreeSet<Object>>(new SimpleCollectionFactory(TreeSet.class, TreeSet.class)));
+		list.add(new CollectionParameterBinder<HashSet<Object>>(new SimpleCollectionFactory(Set.class, HashSet.class)));
+		list.add(new CollectionParameterBinder<SortedSet<Object>>(new SimpleCollectionFactory(SortedSet.class, TreeSet.class)));
+		list.add(new CollectionParameterBinder<Set<Object>>(new SimpleCollectionFactory(Set.class, HashSet.class)));
+		list.add(new CollectionParameterBinder<List<Object>>(new SimpleCollectionFactory(List.class, ArrayList.class)));
+		list.add(new MapParameterBinder<Map<Object, Object>>(new SimpleMapFactory(HashMap.class, HashMap.class)));
+		list.add(new MapParameterBinder<Map<Object, Object>>(new SimpleMapFactory(LinkedHashMap.class, HashMap.class)));
+		list.add(new MapParameterBinder<Map<Object, Object>>(new SimpleMapFactory(TreeMap.class, TreeMap.class)));
+		list.add(new MapParameterBinder<Map<Object, Object>>(new SimpleMapFactory(SortedMap.class, TreeMap.class)));
+		list.add(new MapParameterBinder<Map<Object, Object>>(new SimpleMapFactory(Map.class, HashMap.class)));
+		list.add(new CollectionParameterBinder<Collection<Object>>(new SimpleCollectionFactory(Collection.class, ArrayList.class)));
+		list.add(new JavaBeanParameterBinder());
+		list.add(new BasicTypesParameterBinder());
+		list.add(new ObjectParameterBinder());
+		return list;
 	}
 }

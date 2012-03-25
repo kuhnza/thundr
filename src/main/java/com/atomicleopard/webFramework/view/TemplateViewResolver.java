@@ -8,19 +8,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.fusesource.scalate.RenderContext;
 import org.fusesource.scalate.TemplateEngine;
-import org.fusesource.scalate.TemplateSource;
 import org.fusesource.scalate.servlet.ServletRenderContext;
 import org.fusesource.scalate.servlet.ServletResourceLoader;
 import org.fusesource.scalate.ssp.SspCodeGenerator;
 import org.fusesource.scalate.support.CodeGenerator;
-import org.fusesource.scalate.support.CustomExtensionTemplateSource;
-import org.fusesource.scalate.support.UriTemplateSource;
 
 import scala.Some;
 import scala.Tuple2;
-import scala.collection.GenTraversableOnce;
-import scala.collection.JavaConversions;
-import scala.collection.immutable.HashMap;
 
 import com.atomicleopard.webFramework.scalate.ClasspathResourceLoader;
 
