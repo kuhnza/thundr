@@ -14,13 +14,10 @@ public class ViewResolverRegistry {
 	private List<Class<?>> resolversOrder = new ArrayList<Class<?>>();
 	private Map<Class<?>, ViewResolver<?>> resolversCache = new WeakHashMap<Class<?>, ViewResolver<?>>();
 
-	public ViewResolverRegistry() {
-
-	}
-
 	public <T> void addResolver(Class<T> viewResult, ViewResolver<T> resolver) {
 		resolvers.put(viewResult, (ViewResolver<T>) resolver);
 		resolversOrder.add(viewResult);
+		clearResolversCache();
 	}
 
 	public void removeResolver(Class<?> viewResult) {

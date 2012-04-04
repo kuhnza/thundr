@@ -11,7 +11,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,16 +26,12 @@ public class Routes {
 	private Map<String, Route> putRoutes = new LinkedHashMap<String, Route>();
 	private Map<String, Route> deleteRoutes = new LinkedHashMap<String, Route>();
 	private Map<Route, Action> actionsForRoutes = new HashMap<Route, Action>();
+	@SuppressWarnings("unchecked")
 	private Map<RouteType, Map<String, Route>> routes = mapKeys(RouteType.GET, RouteType.POST, RouteType.PUT, RouteType.DELETE).to(getRoutes, postRoutes, putRoutes, deleteRoutes);
 
 	private Map<Class<? extends Action>, ActionResolver<?>> actionResolvers = new LinkedHashMap<Class<? extends Action>, ActionResolver<?>>();
 
 	private boolean debug = true;
-
-	public Routes(ServletContext servletContext) {
-		actionResolvers.put(StaticResourceAction.class, new StaticResourceActionResolver(servletContext));
-		actionResolvers.put(ActionMethod.class, new ActionMethodResolver());
-	}
 
 	public void addRoutes(Collection<Route> routes) {
 		for (Route route : routes) {
@@ -128,5 +123,9 @@ public class Routes {
 		} catch (Exception e) {
 			throw new RouteException(e, "Failed to parse routes: %s", e.getMessage());
 		}
+	}
+
+	public <A extends Action> void addActionResolver(Class<A> actionType, ActionResolver<A> actionResolver) {
+		actionResolvers.put(actionType, actionResolver);
 	}
 }

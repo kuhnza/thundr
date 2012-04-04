@@ -1,7 +1,6 @@
 package com.atomicleopard.webFramework;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -10,50 +9,57 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.fusesource.scalate.util.IOUtil;
-
+import com.atomicleopard.expressive.Cast;
+import com.atomicleopard.webFramework.exception.BaseException;
+import com.atomicleopard.webFramework.injection.BaseInjectionConfiguration;
+import com.atomicleopard.webFramework.injection.InjectionConfiguration;
+import com.atomicleopard.webFramework.injection.InjectionContextImpl;
+import com.atomicleopard.webFramework.injection.UpdatableInjectionContext;
 import com.atomicleopard.webFramework.logger.Logger;
-import com.atomicleopard.webFramework.routes.Route;
 import com.atomicleopard.webFramework.routes.RouteType;
 import com.atomicleopard.webFramework.routes.Routes;
-import com.atomicleopard.webFramework.view.JsonViewResolver;
-import com.atomicleopard.webFramework.view.JsonViewResult;
-import com.atomicleopard.webFramework.view.TemplateViewResolver;
-import com.atomicleopard.webFramework.view.TemplateViewResult;
 import com.atomicleopard.webFramework.view.ViewResolver;
-import com.atomicleopard.webFramework.view.exception.ExceptionViewResolver;
-import com.atomicleopard.webFramework.view.jsp.JspViewResolver;
-import com.atomicleopard.webFramework.view.jsp.JspViewResult;
 
 public class WebFrameworkServlet extends HttpServlet {
 	private static final long serialVersionUID = -7179293239117252585L;
-	private Routes routes;
-	private ViewResolverRegistry viewResolverRegistry;
-
-	public WebFrameworkServlet() throws ClassNotFoundException {
-	}
+	private static final String DiConfigClassProperty = "diConfigClass";
+	private UpdatableInjectionContext injectionContext;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		ServletContext servletContext = config.getServletContext();
 
-		String routesSource = IOUtil.loadText(this.getClass().getClassLoader().getResourceAsStream("routes.json"), "UTF-8");
-		List<Route> routeMap = Routes.parseJsonRoutes(routesSource);
-		routes = new Routes(servletContext);
-		routes.addRoutes(routeMap);
-
-		viewResolverRegistry = new ViewResolverRegistry();
-		viewResolverRegistry.addResolver(TemplateViewResult.class, new TemplateViewResolver(servletContext));
-		viewResolverRegistry.addResolver(JsonViewResult.class, new JsonViewResolver());
-		viewResolverRegistry.addResolver(JspViewResult.class, new JspViewResolver());
-		viewResolverRegistry.addResolver(Throwable.class, new ExceptionViewResolver());
+		String diConfigClass = servletContext.getInitParameter(DiConfigClassProperty);
+		injectionContext = new InjectionContextImpl();
+		injectionContext.inject(ServletContext.class).as(servletContext);
+		InjectionConfiguration injectionConfiguration = getDiConfigInstance(diConfigClass);
+		injectionConfiguration.configure(injectionContext);
 	}
 
-	protected void delegateToController(RouteType routeType, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private InjectionConfiguration getDiConfigInstance(String diConfigClass) {
+		if (diConfigClass == null) {
+			Logger.info("No %s specified, defaulting to %s", DiConfigClassProperty, BaseInjectionConfiguration.class.getSimpleName());
+			return new BaseInjectionConfiguration();
+		}
+		try {
+			InjectionConfiguration newInstance = Cast.as(Class.forName(diConfigClass).newInstance(), InjectionConfiguration.class);
+			if (newInstance == null) {
+				throw new BaseException("Failed to load the specified %s %s class '%s': target does not implement %s", DiConfigClassProperty, InjectionConfiguration.class.getSimpleName(), diConfigClass, InjectionConfiguration.class.getSimpleName());
+			}
+			Logger.info("Loaded %s %s", DiConfigClassProperty, newInstance.getClass().getSimpleName());
+			return newInstance;
+		} catch (Exception e) {
+			throw new BaseException(e, "Failed to load the specified %s %s class '%s': %s", DiConfigClassProperty, InjectionConfiguration.class.getSimpleName(), diConfigClass, e.getMessage());
+		}
+	}
+
+	protected void applyRoute(RouteType routeType, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ViewResolverRegistry viewResolverRegistry = injectionContext.get(ViewResolverRegistry.class);
 		String requestPath = req.getRequestURI();
 		try {
 			Logger.debug("Invoking path %s", requestPath);
+			Routes routes = injectionContext.get(Routes.class);
 			Object viewResult = routes.invoke(requestPath, routeType, req, resp);
 			if (viewResult != null) {
 				ViewResolver<Object> viewResolver = viewResolverRegistry.findViewResolver(viewResult);
@@ -62,7 +68,7 @@ public class WebFrameworkServlet extends HttpServlet {
 		} catch (Exception e) {
 			if (!resp.isCommitted()) {
 				ViewResolver<Exception> viewResolver = viewResolverRegistry.findViewResolver(e);
-				if(viewResolver != null){
+				if (viewResolver != null) {
 					viewResolver.resolve(req, resp, e);
 				}
 			}
@@ -71,7 +77,7 @@ public class WebFrameworkServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		delegateToController(RouteType.GET, req, resp);
+		applyRoute(RouteType.GET, req, resp);
 	}
 
 	@Override
@@ -83,16 +89,16 @@ public class WebFrameworkServlet extends HttpServlet {
 		} else if ("DELETE".equalsIgnoreCase(method)) {
 			routeType = RouteType.DELETE;
 		}
-		delegateToController(routeType, req, resp);
+		applyRoute(routeType, req, resp);
 	}
 
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		delegateToController(RouteType.DELETE, req, resp);
+		applyRoute(RouteType.DELETE, req, resp);
 	}
 
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		delegateToController(RouteType.PUT, req, resp);
+		applyRoute(RouteType.PUT, req, resp);
 	}
 }
