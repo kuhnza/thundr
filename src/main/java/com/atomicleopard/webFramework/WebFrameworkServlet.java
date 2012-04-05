@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.atomicleopard.expressive.Cast;
+import com.atomicleopard.expressive.Expressive;
 import com.atomicleopard.webFramework.exception.BaseException;
 import com.atomicleopard.webFramework.injection.BaseInjectionConfiguration;
 import com.atomicleopard.webFramework.injection.InjectionConfiguration;
@@ -29,7 +30,6 @@ public class WebFrameworkServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		ServletContext servletContext = config.getServletContext();
-
 		String diConfigClass = servletContext.getInitParameter(DiConfigClassProperty);
 		injectionContext = new InjectionContextImpl();
 		injectionContext.inject(ServletContext.class).as(servletContext);

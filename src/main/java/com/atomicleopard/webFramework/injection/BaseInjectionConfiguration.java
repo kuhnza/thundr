@@ -1,6 +1,5 @@
 package com.atomicleopard.webFramework.injection;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
@@ -57,7 +56,7 @@ public class BaseInjectionConfiguration implements InjectionConfiguration {
 		try {
 			InputStream propertiesStream = this.getClass().getClassLoader().getResourceAsStream(filename);
 			properties.load(propertiesStream);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new BaseException(e, "Failed to load application properties file %s: %s", filename, e.getMessage());
 		}
 		for (Object key : Expressive.iterable(properties.propertyNames())) {

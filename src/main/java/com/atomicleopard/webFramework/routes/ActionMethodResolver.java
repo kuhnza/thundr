@@ -49,11 +49,15 @@ public class ActionMethodResolver implements ActionResolver<ActionMethod> {
 		}
 	}
 
-	private Object createController(ActionMethod actionMethod) {
+	private <T> T createController(ActionMethod actionMethod) {
+		Class<T> type = actionMethod.type();
+		if (!injectionContext.contains(type)) {
+			injectionContext.inject(type).as(type);
+		}
 		try {
-			return injectionContext.get(actionMethod.type());
+			return injectionContext.get(type);
 		} catch (Exception e) {
-			throw new BaseException(e, "Failed to create controller %s: %s", actionMethod.type().toString(), e.getMessage());
+			throw new BaseException(e, "Failed to create controller %s: %s", type.toString(), e.getMessage());
 		}
 	}
 }

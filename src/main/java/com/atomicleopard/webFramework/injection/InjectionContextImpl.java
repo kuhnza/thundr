@@ -1,6 +1,8 @@
 package com.atomicleopard.webFramework.injection;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,35 +64,65 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 	}
 
 	private <T> T instantiate(Class<T> type) {
+		if (type == null) {
+			return null;
+		}
 		List<Constructor<T>> ctors = classIntrospector.listConstructors(type);
 		for (int i = ctors.size() - 1; i >= 0; i--) {
 			Constructor<T> constructor = ctors.get(i);
 			List<ParameterDescription> parameterDescriptions = methodIntrospector.getParameterDescriptions(constructor);
 			if (canSatisfy(parameterDescriptions)) {
 				Object[] args = getAll(parameterDescriptions);
-				return invokeConstructor(constructor, args);
+				T instance = invokeConstructor(constructor, args);
+				return setFields(type, instance);
 			}
 		}
 
-		return null;
+		throw new InjectionException("Could not create a %s - cannot match parameters of any available constructors", type.getName());
+	}
+
+	// TODO - Stack Overflow - A thread local storing types being created could bail
+	// out early in the case of stack overflow
+	private <T> T setFields(Class<T> type, T instance) {
+		List<Field> fields = classIntrospector.listInjectionFields(type);
+		for (Field field : fields) {
+			try {
+				Object beanProperty = get(field.getType());
+				boolean accessible = field.isAccessible();
+				field.setAccessible(true);
+				field.set(instance, beanProperty);
+				field.setAccessible(accessible);
+			} catch (Exception e) {
+				throw new InjectionException(e, "Failed to inject into %s.%s: %s", type.getName(), field.getName(), e.getMessage());
+			}
+		}
+
+		return instance;
 	}
 
 	private Object[] getAll(List<ParameterDescription> parameterDescriptions) {
-		return null;
+		List<Object> args = new ArrayList<Object>(parameterDescriptions.size());
+		for (ParameterDescription parameterDescription : parameterDescriptions) {
+			Object arg = get(parameterDescription.type(), parameterDescription.name());
+			args.add(arg);
+		}
+		return args.toArray();
 	}
 
-	public boolean canSatisfy(Class<?> type) {
+	@Override
+	public <T> boolean contains(Class<T> type) {
 		return instances.containsKey(type) || types.containsKey(type);
 	}
 
-	public <T> boolean canSatisfy(Class<T> type, String name) {
+	@Override
+	public <T> boolean contains(Class<T> type, String name) {
 		NamedType<T> namedType = new NamedType<T>(type, name);
-		return namedInstances.containsKey(namedType) || namedTypes.containsKey(namedType) || canSatisfy(type);
+		return namedInstances.containsKey(namedType) || namedTypes.containsKey(namedType) || contains(type);
 	}
 
 	private boolean canSatisfy(List<ParameterDescription> parameterDescriptions) {
 		for (ParameterDescription parameterDescription : parameterDescriptions) {
-			if (!canSatisfy(parameterDescription.type(), parameterDescription.name())) {
+			if (!contains(parameterDescription.type(), parameterDescription.name())) {
 				return false;
 			}
 		}

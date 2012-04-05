@@ -7,7 +7,6 @@ import java.util.List;
 
 import jodd.paramo.MethodParameter;
 import jodd.paramo.Paramo;
-import jodd.util.ClassLoaderUtil;
 import jodd.util.ReflectUtil;
 
 import org.apache.commons.lang3.StringUtils;
@@ -20,16 +19,32 @@ public class ActionMethod implements Action {
 	private Method method;
 	private List<ParameterDescription> parameters = new ArrayList<ParameterDescription>();
 
-	public ActionMethod(String actionName) throws ClassNotFoundException {
+	public ActionMethod(String actionName) {
 		String methodName = StringUtils.substringAfterLast(actionName, ".");
 		String className = StringUtils.substringBeforeLast(actionName, ".");
-		this.class1 = ClassLoaderUtil.loadClass(className);
-		this.method = ReflectUtil.findMethod(class1, methodName);
+		this.class1 = loadClass(className);
+		this.method = loadMethod(methodName);
 		Type[] genericParameters = method.getGenericParameterTypes();
 		MethodParameter[] parameterNames = Paramo.resolveParameters(method);
 		for (int i = 0; i < genericParameters.length; i++) {
 			String name = parameterNames[i].getName();
 			this.parameters.add(new ParameterDescription(name, genericParameters[i]));
+		}
+	}
+
+	private Method loadMethod(String methodName) {
+		Method method = ReflectUtil.findMethod(class1, methodName);
+		if (method == null) {
+			throw new ActionException("Method %s does not exist", methodName);
+		}
+		return method;
+	}
+
+	private Class<?> loadClass(String className) {
+		try {
+			return Class.forName(className); // TODO - Restricted in GAE - why is this better? ClassLoaderUtil.loadClass(className);
+		} catch (ClassNotFoundException e) {
+			throw new ActionException(e, "Controller %s could not be loaded", className);
 		}
 	}
 
@@ -51,7 +66,8 @@ public class ActionMethod implements Action {
 		return method.toString();
 	}
 
-	public Class<?> type() {
-		return class1;
+	@SuppressWarnings("unchecked")
+	public <T> Class<T> type() {
+		return (Class<T>) class1;
 	}
 }

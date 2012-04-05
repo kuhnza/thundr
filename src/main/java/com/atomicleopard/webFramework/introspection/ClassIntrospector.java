@@ -1,14 +1,21 @@
 package com.atomicleopard.webFramework.introspection;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import jodd.introspector.ClassDescriptor;
+import jodd.util.ReflectUtil;
 import scala.actors.threadpool.Arrays;
 
 public class ClassIntrospector {
+	public static final boolean supportsInjection = classExists("javax.inject.Inject");
 
 	@SuppressWarnings("unchecked")
 	public <T> List<Constructor<T>> listConstructors(Class<T> type) {
@@ -32,4 +39,37 @@ public class ClassIntrospector {
 		return ctors;
 	}
 
+	public <T> List<Method> listSetters(Class<T> type) {
+		Method[] methods = ReflectUtil.getSupportedMethods(type);
+		List<Method> setters = new ArrayList<Method>();
+		for (Method method : methods) {
+			if (ReflectUtil.getBeanPropertySetterName(method) != null) {
+				setters.add(method);
+			}
+		}
+		return setters;
+	}
+
+	public <T> List<Field> listInjectionFields(Class<T> type) {
+		List<Field> injectionFields = new ArrayList<Field>();
+		if (supportsInjection) {
+			Field[] fields = ReflectUtil.getSupportedFields(type);
+			for (Field field : fields) {
+				boolean shouldInject = field.getAnnotation(Inject.class) != null;
+				if (shouldInject) {
+					injectionFields.add(field);
+				}
+			}
+		}
+		return injectionFields;
+	}
+
+	public static boolean classExists(String name) {
+		try {
+			Class.forName(name, false, ClassIntrospector.class.getClassLoader());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.atomicleopard.webFramework.configuration.JsonProperties;
-import com.atomicleopard.webFramework.exception.BaseException;
 import com.atomicleopard.webFramework.logger.Logger;
 
 public class Routes {
@@ -93,7 +92,7 @@ public class Routes {
 			}
 			return new ActionMethod(actionName);
 		} catch (Exception e) {
-			throw new BaseException(e, "Failed to create an action for the route %s: %s", actionName, e.getMessage());
+			throw new ActionException(e, "Failed to create an action for the route %s: %s", actionName, e.getMessage());
 		}
 
 	}
