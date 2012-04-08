@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.atomicleopard.webFramework.bind2.InstanceParameterBinder;
 import com.atomicleopard.webFramework.bind2.PathMap;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
-import com.atomicleopard.webFramework.routes.ActionMethod;
+import com.atomicleopard.webFramework.routes.MethodAction;
 
 public class ActionParameterBinder {
-	public List<Object> bind(ActionMethod actionMethod, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
+	public List<Object> bind(MethodAction actionMethod, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
 		List<ParameterDescription> parameterDescriptions = actionMethod.parameters();
 		PathMap pathMap = createPathMap(req, pathVars);
 		Binders binders = binders(req, resp, pathVars);

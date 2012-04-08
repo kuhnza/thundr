@@ -51,7 +51,7 @@
 			<version>2.5</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- All about JSPs -->
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
@@ -137,6 +137,14 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
+		</dependency>
+
+		<!-- Support for injection -->
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- Logging -->

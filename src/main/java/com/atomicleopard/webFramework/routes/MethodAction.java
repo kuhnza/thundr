@@ -11,17 +11,16 @@ import jodd.util.ReflectUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.atomicleopard.webFramework.exception.BaseException;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
-public class ActionMethod implements Action {
+public class MethodAction implements Action {
 	private Class<?> class1;
 	private Method method;
 	private List<ParameterDescription> parameters = new ArrayList<ParameterDescription>();
 
-	public ActionMethod(String actionName) {
-		String methodName = StringUtils.substringAfterLast(actionName, ".");
-		String className = StringUtils.substringBeforeLast(actionName, ".");
+	public MethodAction(String actionName) {
+		String methodName = methodNameForAction(actionName);
+		String className = classNameForAction(actionName);
 		this.class1 = loadClass(className);
 		this.method = loadMethod(methodName);
 		Type[] genericParameters = method.getGenericParameterTypes();
@@ -57,7 +56,7 @@ public class ActionMethod implements Action {
 			return method.invoke(controller, args.toArray());
 		} catch (Exception e) {
 			Throwable original = e.getCause() == null ? e : e.getCause();
-			throw new BaseException(original, "Failed to invoke controller method %s.%s: %s", class1.toString(), method.getName(), original.getMessage());
+			throw new ActionException(original, "Failed to invoke controller method %s.%s: %s", class1.toString(), method.getName(), original.getMessage());
 		}
 	}
 
@@ -69,5 +68,17 @@ public class ActionMethod implements Action {
 	@SuppressWarnings("unchecked")
 	public <T> Class<T> type() {
 		return (Class<T>) class1;
+	}
+
+	public Method method() {
+		return method;
+	}
+
+	static final String classNameForAction(String actionName) {
+		return StringUtils.substringBeforeLast(actionName, ".");
+	}
+
+	static final String methodNameForAction(String actionName) {
+		return StringUtils.substringAfterLast(actionName, ".");
 	}
 }

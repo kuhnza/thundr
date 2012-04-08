@@ -18,8 +18,6 @@ import com.atomicleopard.webFramework.configuration.JsonProperties;
 import com.atomicleopard.webFramework.logger.Logger;
 
 public class Routes {
-	private static final String Static = "static";
-
 	private Map<String, Route> getRoutes = new LinkedHashMap<String, Route>();
 	private Map<String, Route> postRoutes = new LinkedHashMap<String, Route>();
 	private Map<String, Route> putRoutes = new LinkedHashMap<String, Route>();
@@ -52,7 +50,7 @@ public class Routes {
 				Map<String, String> pathVars = route.getPathVars(routePath);
 				T action = (T) actionsForRoutes.get(route);
 				ActionResolver<T> actionResolver = (ActionResolver<T>) actionResolvers.get(action.getClass());
-				return actionResolver.resolve(action, req, resp, pathVars);
+				return actionResolver.resolve(action, routeType, req, resp, pathVars);
 			}
 		}
 		String debugString = debug ? listRoutes() : "";
@@ -87,33 +85,38 @@ public class Routes {
 
 	public Action createAction(String actionName) {
 		try {
-			if (Static.equalsIgnoreCase(actionName)) {
-				return new StaticResourceAction();
+			for (ActionResolver<?> actionResolver : actionResolvers.values()) {
+				Action action = actionResolver.createActionIfPossible(actionName);
+				if (action != null) {
+					return action;
+				}
 			}
-			return new ActionMethod(actionName);
+			throw new ActionException("Failed to create an action for the route %s: No action resolver can resolve this action", actionName);
 		} catch (Exception e) {
 			throw new ActionException(e, "Failed to create an action for the route %s: %s", actionName, e.getMessage());
 		}
 
 	}
 
+	// TODO - This method should probably be externalised form this class, routes should theoretically be buildable however someone wants
 	public static List<Route> parseJsonRoutes(String source) {
 		try {
 			List<Route> routes = new ArrayList<Route>();
 			JsonProperties properties = new JsonProperties(source);
 			for (String route : properties.getKeys()) {
-				String actionName = null;
 				if (properties.is(route, String.class)) {
 					// simple route
-					actionName = properties.getString(route);
+					String actionName = properties.getString(route);
 					routes.add(new Route(route, actionName, RouteType.GET));
-				} else if (properties.is(route, List.class)) {
+				} else if (properties.is(route, Map.class)) {
 					// complex route
-					List<String> list = properties.getList(route);
-					actionName = list.get(0);
-					for (int i = 1; i < list.size(); i++) {
-						RouteType routeType = RouteType.from(list.get(i));
-						routes.add(new Route(route, actionName, routeType));
+					Map<String, String> map = properties.getMap(route);
+					for (Map.Entry<String, String> routeEntry : map.entrySet()) {
+						RouteType routeType = RouteType.from(routeEntry.getKey());
+						if (routeType == null) {
+							throw new RouteException("Unknown route type %s", routeEntry.getKey());
+						}
+						routes.add(new Route(route, routeEntry.getValue(), routeType));
 					}
 				}
 			}

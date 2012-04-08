@@ -46,6 +46,11 @@ public class JsonProperties {
 	public <T> List<T> getList(String key) {
 		return getAs(key, List.class);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <K, V> Map<K, V> getMap(String key) {
+		return getAs(key, Map.class);
+	}
 
 	private <T> T getAs(String key, Class<T> class1, T defaultValue) {
 		Object storedValue = properties.get(key);

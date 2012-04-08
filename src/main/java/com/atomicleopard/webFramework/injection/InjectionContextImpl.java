@@ -2,6 +2,7 @@ package com.atomicleopard.webFramework.injection;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,11 +75,28 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 			if (canSatisfy(parameterDescriptions)) {
 				Object[] args = getAll(parameterDescriptions);
 				T instance = invokeConstructor(constructor, args);
+				instance = invokeSetters(type, instance);
 				return setFields(type, instance);
 			}
 		}
 
 		throw new InjectionException("Could not create a %s - cannot match parameters of any available constructors", type.getName());
+	}
+
+	private <T> T invokeSetters(Class<T> type, T instance) {
+		List<Method> setters = classIntrospector.listSetters(type);
+		for (Method method : setters) {
+			String name = method.getName().replace("set", "");
+			try {
+				Class<?> argumentType = method.getParameterTypes()[0];
+				if (contains(argumentType, name)) {
+					method.invoke(instance, get(argumentType, name));
+				}
+			} catch (Exception e) {
+				throw new InjectionException(e, "Failed to inject into %s.%s: %s", type.getName(), method.getName(), e.getMessage());
+			}
+		}
+		return instance;
 	}
 
 	// TODO - Stack Overflow - A thread local storing types being created could bail

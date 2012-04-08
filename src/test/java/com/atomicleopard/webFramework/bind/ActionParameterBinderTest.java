@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import com.atomicleopard.webFramework.bind2.DeepJavaBean;
 import com.atomicleopard.webFramework.bind2.JavaBean;
-import com.atomicleopard.webFramework.routes.ActionMethod;
+import com.atomicleopard.webFramework.routes.MethodAction;
 
 public class ActionParameterBinderTest {
 
@@ -36,26 +36,26 @@ public class ActionParameterBinderTest {
 
 	@Test
 	public void shouldInvokeNone() throws Exception {
-		ActionMethod method = method("methodNone");
+		MethodAction method = method("methodNone");
 		assertThat(binder.bind(method, request, null, emptyMap).size(), is(0));
 		assertThat(binder.bind(method, request("argument1", "value1"), null, null).size(), is(0));
 	}
 
-	private ActionMethod method(String method) throws ClassNotFoundException {
-		ActionMethod actionMethod = new ActionMethod(String.format("com.atomicleopard.webFramework.bind2.TestBindTo.%s", method));
+	private MethodAction method(String method) throws ClassNotFoundException {
+		MethodAction actionMethod = new MethodAction(String.format("com.atomicleopard.webFramework.bind2.TestBindTo.%s", method));
 		return actionMethod;
 	}
 
 	@Test
 	public void shouldInvokeSingleString() throws Exception {
-		ActionMethod method = method("methodSingleString");
+		MethodAction method = method("methodSingleString");
 		assertThat(binder.bind(method, request, null, emptyMap), isList(o, nullObject));
 		assertThat(binder.bind(method, request("argument1", "value1"), null, null), isList(o, "value1"));
 	}
 
 	@Test
 	public void shouldInvokeDoubleString() throws Exception {
-		ActionMethod method = method("methodDoubleString");
+		MethodAction method = method("methodDoubleString");
 		assertThat(binder.bind(method, request, null, emptyMap), isList(o, nullObject, nullObject));
 		assertThat(binder.bind(method, request("argument1", "value1", "argument2", "value2"), null, emptyMap), isList(o, "value1", "value2"));
 		assertThat(binder.bind(method, request("argument1", "value1"), null, emptyMap), isList(o, "value1", null));
@@ -64,7 +64,7 @@ public class ActionParameterBinderTest {
 
 	@Test
 	public void shouldInvokeStringList() throws Exception {
-		ActionMethod method = method("methodStringList");
+		MethodAction method = method("methodStringList");
 		assertThat(binder.bind(method, request, null, emptyMap).size(), is(1));
 		assertThat(binder.bind(method, request, null, emptyMap), isList(o, nullObject));
 		assertThat(binder.bind(method, request("argument1[0]", "value1"), null, emptyMap), isList(o, list("value1")));
@@ -77,7 +77,7 @@ public class ActionParameterBinderTest {
 
 	@Test
 	public void shouldInvokeStringMap() throws Exception {
-		ActionMethod method = method("methodMap");
+		MethodAction method = method("methodMap");
 		assertThat(binder.bind(method, request, null, emptyMap).size(), is(1));
 		assertThat(binder.bind(method, request, null, emptyMap), isList(o, nullObject));
 		assertThat(binder.bind(method, request("argument1[0]", "value1"), null, emptyMap), isList(o, map("0", list("value1"))));
@@ -91,7 +91,7 @@ public class ActionParameterBinderTest {
 
 	@Test
 	public void shouldInvokeArray() throws ClassNotFoundException {
-		ActionMethod method = method("methodStringArray");
+		MethodAction method = method("methodStringArray");
 		assertThat(binder.bind(method, request, null, emptyMap).size(), is(1));
 		assertThat(binder.bind(method, request, null, emptyMap), isList(o, nullObject));
 		assertThat((String[])binder.bind(method, request("argument1[0]", "value1"), null, emptyMap).get(0), isArray(String.class, "value1"));
@@ -104,7 +104,7 @@ public class ActionParameterBinderTest {
 
 	@Test
 	public void shouldInvokeGenericArray() throws ClassNotFoundException {
-		ActionMethod method = method("methodGenericArray");
+		MethodAction method = method("methodGenericArray");
 		assertThat(binder.bind(method, request, null, emptyMap).size(), is(1));
 		assertThat(binder.bind(method, request, null, emptyMap), isList(o, nullObject));
 		assertThat((String[])binder.bind(method, request("argument1[0]", "value1"), null, emptyMap).get(0), isArray(String.class, "value1"));
@@ -117,7 +117,7 @@ public class ActionParameterBinderTest {
 	
 	@Test
 	public void shouldInvokeJavaBean() throws ClassNotFoundException {
-		ActionMethod method = method("methodJavaBean");
+		MethodAction method = method("methodJavaBean");
 		assertThat(binder.bind(method, request, null, emptyMap).size(), is(1));
 		assertThat(binder.bind(method, request, null, emptyMap), isList(o, nullObject));
 		assertThat(binder.bind(method, request("argument1.name", "myname"), null, emptyMap), isList(Object.class, new JavaBean("myname", null)));
@@ -132,7 +132,7 @@ public class ActionParameterBinderTest {
 	
 	@Test
 	public void shouldInvokeDeepJavaBean() throws ClassNotFoundException {
-		ActionMethod method = method("methodDeepJavaBean");
+		MethodAction method = method("methodDeepJavaBean");
 		assertThat(binder.bind(method, request, null, emptyMap).size(), is(1));
 		assertThat(binder.bind(method, request, null, emptyMap), isList(o, nullObject));
 		assertThat(binder.bind(method, request("argument1.name", "myname"), null, emptyMap), isList(Object.class, new DeepJavaBean("myname", null)));

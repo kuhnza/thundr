@@ -10,12 +10,12 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
-import com.atomicleopard.webFramework.routes.ActionMethod;
+import com.atomicleopard.webFramework.routes.MethodAction;
 
 public class ParameterDescriptionTest {
 	@Test
 	public void shouldReadComplexGenericTypeCorrectly() throws ClassNotFoundException {
-		List<ParameterDescription> parameterDescriptions = new ActionMethod("com.atomicleopard.webFramework.bind2.TestBindTo.methodMap").parameters();
+		List<ParameterDescription> parameterDescriptions = new MethodAction("com.atomicleopard.webFramework.bind2.TestBindTo.methodMap").parameters();
 		ParameterDescription first = parameterDescriptions.get(0);
 		assertThat(first.isGeneric(), is(true));
 		assertThat(first.isA(Map.class), is(true));
@@ -27,7 +27,7 @@ public class ParameterDescriptionTest {
 
 	@Test
 	public void shouldReadSimpleType() throws ClassNotFoundException {
-		List<ParameterDescription> parameterDescriptions = new ActionMethod("com.atomicleopard.webFramework.bind2.TestBindTo.methodSingleString").parameters();
+		List<ParameterDescription> parameterDescriptions = new MethodAction("com.atomicleopard.webFramework.bind2.TestBindTo.methodSingleString").parameters();
 		ParameterDescription first = parameterDescriptions.get(0);
 		assertThat(first.isGeneric(), is(false));
 		assertThat(first.isA(String.class), is(true));

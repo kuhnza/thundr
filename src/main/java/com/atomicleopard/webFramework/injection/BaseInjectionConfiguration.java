@@ -11,8 +11,12 @@ import org.fusesource.scalate.util.IOUtil;
 import com.atomicleopard.expressive.Expressive;
 import com.atomicleopard.webFramework.ViewResolverRegistry;
 import com.atomicleopard.webFramework.exception.BaseException;
-import com.atomicleopard.webFramework.routes.ActionMethod;
-import com.atomicleopard.webFramework.routes.ActionMethodResolver;
+import com.atomicleopard.webFramework.routes.MethodAction;
+import com.atomicleopard.webFramework.routes.MethodActionResolver;
+import com.atomicleopard.webFramework.routes.RedirectAction;
+import com.atomicleopard.webFramework.routes.RedirectActionResolver;
+import com.atomicleopard.webFramework.routes.RewriteAction;
+import com.atomicleopard.webFramework.routes.RewriteActionResolver;
 import com.atomicleopard.webFramework.routes.Route;
 import com.atomicleopard.webFramework.routes.Routes;
 import com.atomicleopard.webFramework.routes.StaticResourceAction;
@@ -45,9 +49,10 @@ public class BaseInjectionConfiguration implements InjectionConfiguration {
 
 	private void addRouteActionResolvers(Routes routes, UpdatableInjectionContext injectionContext) {
 		ServletContext servletContext = injectionContext.get(ServletContext.class);
+		routes.addActionResolver(RedirectAction.class, new RedirectActionResolver());
+		routes.addActionResolver(RewriteAction.class, new RewriteActionResolver(routes));
 		routes.addActionResolver(StaticResourceAction.class, new StaticResourceActionResolver(servletContext));
-		routes.addActionResolver(ActionMethod.class, new ActionMethodResolver(injectionContext));
-
+		routes.addActionResolver(MethodAction.class, new MethodActionResolver(injectionContext));
 	}
 
 	protected void loadProperties(UpdatableInjectionContext injectionContext) {

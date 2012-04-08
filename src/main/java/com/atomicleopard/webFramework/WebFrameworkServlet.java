@@ -10,11 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.atomicleopard.expressive.Cast;
-import com.atomicleopard.expressive.Expressive;
-import com.atomicleopard.webFramework.exception.BaseException;
 import com.atomicleopard.webFramework.injection.BaseInjectionConfiguration;
 import com.atomicleopard.webFramework.injection.InjectionConfiguration;
 import com.atomicleopard.webFramework.injection.InjectionContextImpl;
+import com.atomicleopard.webFramework.injection.InjectionException;
 import com.atomicleopard.webFramework.injection.UpdatableInjectionContext;
 import com.atomicleopard.webFramework.logger.Logger;
 import com.atomicleopard.webFramework.routes.RouteType;
@@ -45,12 +44,13 @@ public class WebFrameworkServlet extends HttpServlet {
 		try {
 			InjectionConfiguration newInstance = Cast.as(Class.forName(diConfigClass).newInstance(), InjectionConfiguration.class);
 			if (newInstance == null) {
-				throw new BaseException("Failed to load the specified %s %s class '%s': target does not implement %s", DiConfigClassProperty, InjectionConfiguration.class.getSimpleName(), diConfigClass, InjectionConfiguration.class.getSimpleName());
+				throw new InjectionException("Failed to load the specified %s %s class '%s': target does not implement %s", DiConfigClassProperty, InjectionConfiguration.class.getSimpleName(),
+						diConfigClass, InjectionConfiguration.class.getSimpleName());
 			}
-			Logger.info("Loaded %s %s", DiConfigClassProperty, newInstance.getClass().getSimpleName());
+			Logger.info("Loaded %s %s", DiConfigClassProperty, newInstance.getClass().getName());
 			return newInstance;
 		} catch (Exception e) {
-			throw new BaseException(e, "Failed to load the specified %s %s class '%s': %s", DiConfigClassProperty, InjectionConfiguration.class.getSimpleName(), diConfigClass, e.getMessage());
+			throw new InjectionException(e, "Failed to load the specified %s %s class '%s': %s", DiConfigClassProperty, InjectionConfiguration.class.getSimpleName(), diConfigClass, e.getMessage());
 		}
 	}
 

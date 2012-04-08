@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -26,6 +27,9 @@ import com.atomicleopard.webFramework.exception.BaseException;
 import com.atomicleopard.webFramework.logger.Logger;
 
 public class StaticResourceActionResolver implements ActionResolver<StaticResourceAction> {
+	private static final String ActionName = "static";
+	private static final Pattern ActionNamePattern = Pattern.compile("^static:(.+)");
+
 	private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 
 	private final String protectedPath = "/?WEB-INF/.*";
@@ -56,7 +60,15 @@ public class StaticResourceActionResolver implements ActionResolver<StaticResour
 	}
 
 	@Override
-	public Object resolve(StaticResourceAction action, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
+	public StaticResourceAction createActionIfPossible(String actionName) {
+		if (ActionName.equalsIgnoreCase(actionName) || ActionNamePattern.matcher(actionName).matches()) {
+			return new StaticResourceAction();
+		}
+		return null;
+	}
+
+	@Override
+	public Object resolve(StaticResourceAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
 		try {
 			serve(action, req, resp);
 			return null;
@@ -101,7 +113,7 @@ public class StaticResourceActionResolver implements ActionResolver<StaticResour
 			os.close();
 		}
 		response.setStatus(HttpServletResponse.SC_OK);
-		Logger.info("%s -> %s resolved as %s(%d bytes)", resource,action, mimeType, contentLength);
+		Logger.info("%s -> %s resolved as %s(%d bytes)", resource, action, mimeType, contentLength);
 	}
 
 	private long deriveCacheDuration(String resource, String mimeType) {

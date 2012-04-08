@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import com.atomicleopard.expressive.EList;
 
 public class Route {
-	private static final Pattern PathParameterToken = Pattern.compile("\\{(.*?)\\}");
+	protected static final Pattern PathParameterToken = Pattern.compile("\\{(.*?)\\}");
 	static final String AcceptablePathCharacters = "\\w%\\.\\-";
 	static final String AcceptableMultiPathCharacters = AcceptablePathCharacters + "/";
 
