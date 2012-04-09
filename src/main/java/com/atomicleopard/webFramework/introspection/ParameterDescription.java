@@ -25,7 +25,7 @@ public class ParameterDescription {
 			Logger.warn("Clazz is null, type is %s", type);
 		}
 
-		return clazz == null ? false : is.isAssignableFrom(clazz);
+		return clazz == null ? false : clazz.isAssignableFrom(is);
 	}
 
 	public Type getGenericType(int index) {

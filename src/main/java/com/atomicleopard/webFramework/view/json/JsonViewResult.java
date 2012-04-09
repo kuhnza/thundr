@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.view;
+package com.atomicleopard.webFramework.view.json;
 
 public class JsonViewResult {
 	private Object output;

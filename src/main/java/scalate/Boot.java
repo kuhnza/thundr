@@ -3,7 +3,7 @@ package scalate;
 import org.fusesource.scalate.TemplateEngine;
 
 import com.atomicleopard.webFramework.logger.Logger;
-import com.atomicleopard.webFramework.view.TemplateViewResolver;
+import com.atomicleopard.webFramework.view.scalate.TemplateViewResolver;
 
 /**
  * This is a magic class invoked by by the scalate TemplateEngine on startup.

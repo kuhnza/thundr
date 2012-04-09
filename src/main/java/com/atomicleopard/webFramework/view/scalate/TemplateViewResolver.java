@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.view;
+package com.atomicleopard.webFramework.view.scalate;
 
 import java.util.Map;
 
@@ -17,6 +17,8 @@ import scala.Some;
 import scala.Tuple2;
 
 import com.atomicleopard.webFramework.scalate.ClasspathResourceLoader;
+import com.atomicleopard.webFramework.view.ViewResolutionException;
+import com.atomicleopard.webFramework.view.ViewResolver;
 
 public class TemplateViewResolver implements ViewResolver<TemplateViewResult> {
 

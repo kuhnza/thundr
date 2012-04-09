@@ -18,4 +18,9 @@ public class InstanceParameterBinder implements ParameterBinder<Object> {
 	public boolean willBind(ParameterDescription parameterDescription) {
 		return instance == null ? false : parameterDescription.isA(instance.getClass());
 	}
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + " for " + instance.getClass().getSimpleName() + " - " + instance.toString();
+	}
 }

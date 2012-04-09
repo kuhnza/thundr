@@ -1,10 +1,12 @@
-package com.atomicleopard.webFramework.view;
+package com.atomicleopard.webFramework.view.json;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jodd.util.MimeTypes;
 
+import com.atomicleopard.webFramework.view.ViewResolutionException;
+import com.atomicleopard.webFramework.view.ViewResolver;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.view;
+package com.atomicleopard.webFramework.view.scalate;
 
 import java.util.Map;
 
