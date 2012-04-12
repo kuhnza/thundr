@@ -135,12 +135,11 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private Map<Annotation, ActionInterceptor<Annotation>> findInterceptors(Method method) {
+	Map<Annotation, ActionInterceptor<Annotation>> findInterceptors(Method method) {
 		Map<Annotation, ActionInterceptor<Annotation>> interceptors = new LinkedHashMap<Annotation, ActionInterceptor<Annotation>>();
 		for (Annotation annotation : method.getDeclaredAnnotations()) {
 			Class<? extends Annotation> annotationType = annotation.annotationType();
-			ActionInterceptor<Annotation> actionInterceptor = (ActionInterceptor<Annotation>) actionInterceptors.get(annotationType);
+			ActionInterceptor<Annotation> actionInterceptor = interceptor(annotationType);
 			if (actionInterceptor != null) {
 				interceptors.put(annotation, actionInterceptor);
 			}
@@ -152,5 +151,9 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 	@Override
 	public <A extends Annotation> void registerInterceptor(Class<A> annotation, ActionInterceptor<A> interceptor) {
 		actionInterceptors.put(annotation, interceptor);
+	}
+
+	public ActionInterceptor<Annotation> interceptor(Class<? extends Annotation> annotationType) {
+		return (ActionInterceptor<Annotation>) actionInterceptors.get(annotationType);
 	}
 }
