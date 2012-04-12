@@ -1,28 +1,31 @@
-package com.atomicleopard.webFramework.routes;
+package com.atomicleopard.webFramework.routes.method;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import jodd.paramo.MethodParameter;
 import jodd.paramo.Paramo;
-import jodd.util.ReflectUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
+import com.atomicleopard.webFramework.routes.Action;
 
 public class MethodAction implements Action {
 	private Class<?> class1;
 	private Method method;
+	private Map<Annotation, ActionInterceptor<Annotation>> interceptors;
+
 	private List<ParameterDescription> parameters = new ArrayList<ParameterDescription>();
 
-	public MethodAction(String actionName) {
-		String methodName = methodNameForAction(actionName);
-		String className = classNameForAction(actionName);
-		this.class1 = loadClass(className);
-		this.method = loadMethod(methodName);
+	public MethodAction(Class<?> class1, Method method, Map<Annotation, ActionInterceptor<Annotation>> interceptors) {
+		this.class1 = class1;
+		this.method = method;
+		this.interceptors = interceptors;
 		Type[] genericParameters = method.getGenericParameterTypes();
 		MethodParameter[] parameterNames = Paramo.resolveParameters(method);
 		for (int i = 0; i < genericParameters.length; i++) {
@@ -31,33 +34,12 @@ public class MethodAction implements Action {
 		}
 	}
 
-	private Method loadMethod(String methodName) {
-		Method method = ReflectUtil.findMethod(class1, methodName);
-		if (method == null) {
-			throw new ActionException("Method %s does not exist", methodName);
-		}
-		return method;
-	}
-
-	private Class<?> loadClass(String className) {
-		try {
-			return Class.forName(className); // TODO - Restricted in GAE - why is this better? ClassLoaderUtil.loadClass(className);
-		} catch (ClassNotFoundException e) {
-			throw new ActionException(e, "Controller %s could not be loaded", className);
-		}
-	}
-
 	public List<ParameterDescription> parameters() {
 		return parameters;
 	}
 
-	public Object invoke(Object controller, List<?> args) {
-		try {
-			return method.invoke(controller, args.toArray());
-		} catch (Exception e) {
-			Throwable original = e.getCause() == null ? e : e.getCause();
-			throw new ActionException(original, "Failed to invoke controller method %s.%s: %s", class1.toString(), method.getName(), original.getMessage());
-		}
+	public Object invoke(Object controller, List<?> args) throws Exception {
+		return method.invoke(controller, args.toArray());
 	}
 
 	@Override
@@ -72,6 +54,10 @@ public class MethodAction implements Action {
 
 	public Method method() {
 		return method;
+	}
+
+	public Map<Annotation, ActionInterceptor<Annotation>> interceptors() {
+		return interceptors;
 	}
 
 	static final String classNameForAction(String actionName) {

@@ -11,8 +11,6 @@ import org.fusesource.scalate.util.IOUtil;
 import com.atomicleopard.expressive.Expressive;
 import com.atomicleopard.webFramework.ViewResolverRegistry;
 import com.atomicleopard.webFramework.exception.BaseException;
-import com.atomicleopard.webFramework.routes.MethodAction;
-import com.atomicleopard.webFramework.routes.MethodActionResolver;
 import com.atomicleopard.webFramework.routes.RedirectAction;
 import com.atomicleopard.webFramework.routes.RedirectActionResolver;
 import com.atomicleopard.webFramework.routes.RewriteAction;
@@ -21,6 +19,9 @@ import com.atomicleopard.webFramework.routes.Route;
 import com.atomicleopard.webFramework.routes.Routes;
 import com.atomicleopard.webFramework.routes.StaticResourceAction;
 import com.atomicleopard.webFramework.routes.StaticResourceActionResolver;
+import com.atomicleopard.webFramework.routes.method.ActionInterceptorRegistry;
+import com.atomicleopard.webFramework.routes.method.MethodAction;
+import com.atomicleopard.webFramework.routes.method.MethodActionResolver;
 import com.atomicleopard.webFramework.view.exception.ExceptionViewResolver;
 import com.atomicleopard.webFramework.view.json.JsonViewResolver;
 import com.atomicleopard.webFramework.view.json.JsonViewResult;
@@ -50,11 +51,15 @@ public class BaseInjectionConfiguration implements InjectionConfiguration {
 	}
 
 	private void addRouteActionResolvers(Routes routes, UpdatableInjectionContext injectionContext) {
+		MethodActionResolver methodActionResolver = new MethodActionResolver(injectionContext);
+		injectionContext.inject(MethodActionResolver.class).as(methodActionResolver);
 		ServletContext servletContext = injectionContext.get(ServletContext.class);
 		routes.addActionResolver(RedirectAction.class, new RedirectActionResolver());
 		routes.addActionResolver(RewriteAction.class, new RewriteActionResolver(routes));
 		routes.addActionResolver(StaticResourceAction.class, new StaticResourceActionResolver(servletContext));
-		routes.addActionResolver(MethodAction.class, new MethodActionResolver(injectionContext));
+		routes.addActionResolver(MethodAction.class, methodActionResolver);
+
+		addActionInterceptors(methodActionResolver);
 	}
 
 	protected void loadProperties(UpdatableInjectionContext injectionContext) {
@@ -91,4 +96,7 @@ public class BaseInjectionConfiguration implements InjectionConfiguration {
 		viewResolverRegistry.addResolver(Throwable.class, new ExceptionViewResolver());
 	}
 
+	protected void addActionInterceptors(ActionInterceptorRegistry actionInterceptorRegistry) {
+
+	}
 }
