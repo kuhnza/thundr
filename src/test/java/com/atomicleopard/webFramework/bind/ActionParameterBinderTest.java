@@ -31,7 +31,7 @@ public class ActionParameterBinderTest {
 	@Before
 	public void before() {
 		request = mock(HttpServletRequest.class);
-		when(request.getParameterMap()).thenReturn(emptyMap);
+		when(request.getParameterMap()).thenReturn(Collections.<String, String[]>emptyMap());
 	}
 
 	@Test

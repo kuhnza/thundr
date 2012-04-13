@@ -87,7 +87,7 @@ public class BaseInjectionConfiguration implements InjectionConfiguration {
 		viewResolverRegistry.addResolver(RedirectViewResult.class, new RedirectViewResolver());
 		viewResolverRegistry.addResolver(TemplateViewResult.class, new TemplateViewResolver(servletContext));
 		viewResolverRegistry.addResolver(JsonViewResult.class, new JsonViewResolver());
-		viewResolverRegistry.addResolver(JspViewResult.class, new JspViewResolver());
+		viewResolverRegistry.addResolver(JspViewResult.class, new JspViewResolver(servletContext));
 		viewResolverRegistry.addResolver(Throwable.class, new ExceptionViewResolver());
 	}
 

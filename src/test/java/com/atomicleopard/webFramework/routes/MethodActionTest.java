@@ -57,7 +57,7 @@ public class MethodActionTest {
 	@Test
 	public void shouldThrowActionExceptionWhenInvokingControllerMethodFailsBecauseOfWrongArgumentNumber() {
 		thrown.expect(ActionException.class);
-		thrown.expectMessage("Failed to invoke controller method class com.atomicleopard.webFramework.routes.FakeController.methodOne: wrong number of arguments");
+		thrown.expectMessage("Failed in class com.atomicleopard.webFramework.routes.FakeController.methodOne: wrong number of arguments");
 
 		MethodAction methodAction = new MethodAction("com.atomicleopard.webFramework.routes.FakeController.methodOne");
 
