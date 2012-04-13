@@ -3,19 +3,24 @@ package com.atomicleopard.webFramework.bind2;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import jodd.util.ReflectUtil;
 
 import org.junit.Test;
 
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
-import com.atomicleopard.webFramework.routes.MethodAction;
+import com.atomicleopard.webFramework.routes.method.ActionInterceptor;
+import com.atomicleopard.webFramework.routes.method.MethodAction;
 
 public class ParameterDescriptionTest {
 	@Test
 	public void shouldReadComplexGenericTypeCorrectly() throws ClassNotFoundException {
-		List<ParameterDescription> parameterDescriptions = new MethodAction("com.atomicleopard.webFramework.bind2.TestBindTo.methodMap").parameters();
+		List<ParameterDescription> parameterDescriptions = new MethodAction(TestBindTo.class, ReflectUtil.findMethod(TestBindTo.class, "methodMap"), noInterceptors()).parameters();
 		ParameterDescription first = parameterDescriptions.get(0);
 		assertThat(first.isGeneric(), is(true));
 		assertThat(first.isA(Map.class), is(true));
@@ -27,9 +32,14 @@ public class ParameterDescriptionTest {
 
 	@Test
 	public void shouldReadSimpleType() throws ClassNotFoundException {
-		List<ParameterDescription> parameterDescriptions = new MethodAction("com.atomicleopard.webFramework.bind2.TestBindTo.methodSingleString").parameters();
+		List<ParameterDescription> parameterDescriptions = new MethodAction(TestBindTo.class, ReflectUtil.findMethod(TestBindTo.class, "methodSingleString"), noInterceptors()).parameters();
 		ParameterDescription first = parameterDescriptions.get(0);
 		assertThat(first.isGeneric(), is(false));
 		assertThat(first.isA(String.class), is(true));
 	}
+
+	private Map<Annotation, ActionInterceptor<Annotation>> noInterceptors() {
+		return Collections.<Annotation, ActionInterceptor<Annotation>> emptyMap();
+	}
+
 }
