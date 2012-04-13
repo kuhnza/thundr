@@ -1,9 +1,9 @@
 package com.atomicleopard.webFramework.view.redirect;
 
-public class RedirectViewResult {
+public class RedirectView {
 	private String path;
 
-	public RedirectViewResult(String path) {
+	public RedirectView(String path) {
 		this.path = path;
 	}
 

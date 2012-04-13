@@ -46,6 +46,7 @@ public class AwesomeBeanElResolver extends BeanELResolver {
 	}
 
 	static private class SoftConcurrentHashMap extends ConcurrentHashMap<Class<?>, BeanProperties> {
+		private static final long serialVersionUID = 1806111011201009188L;
 		private static final int CACHE_INIT_SIZE = 1024;
 		private ConcurrentHashMap<Class<?>, BPSoftReference> map = new ConcurrentHashMap<Class<?>, BPSoftReference>(CACHE_INIT_SIZE);
 		private ReferenceQueue<BeanProperties> refQ = new ReferenceQueue<BeanProperties>();
@@ -107,6 +108,7 @@ public class AwesomeBeanElResolver extends BeanELResolver {
 			writeMethod = getMethod(baseClass, descriptor.getWriteMethod());
 		}
 
+		@SuppressWarnings("rawtypes")
 		public Class getPropertyType() {
 			return descriptor.getPropertyType();
 		}
@@ -589,6 +591,7 @@ public class AwesomeBeanElResolver extends BeanELResolver {
 		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private BeanProperty getBeanProperty(ELContext context, Object base, Object prop) {
 		String property = prop.toString();
 		Class baseClass = base.getClass();
@@ -602,7 +605,6 @@ public class AwesomeBeanElResolver extends BeanELResolver {
 	}
 
 	private Method findMethod(Object base, String method, Class<?>[] paramTypes, Object[] params) {
-
 		Class<?> beanClass = base.getClass();
 		if (paramTypes != null) {
 			try {
@@ -630,8 +632,8 @@ public class AwesomeBeanElResolver extends BeanELResolver {
 		return expressionFactory;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private Object invokeMethod(Method m, Object base, Object[] params) {
-
 		Class[] parameterTypes = m.getParameterTypes();
 		Object[] parameters = null;
 		if (parameterTypes.length > 0) {

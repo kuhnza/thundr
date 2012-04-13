@@ -1,9 +1,9 @@
 package com.atomicleopard.webFramework.view.json;
 
-public class JsonViewResult {
+public class JsonView {
 	private Object output;
 
-	public JsonViewResult(Object output) {
+	public JsonView(Object output) {
 		super();
 		this.output = output;
 	}

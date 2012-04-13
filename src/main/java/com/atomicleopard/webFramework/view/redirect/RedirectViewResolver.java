@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.atomicleopard.webFramework.view.ViewResolutionException;
 import com.atomicleopard.webFramework.view.ViewResolver;
 
-public class RedirectViewResolver implements ViewResolver<RedirectViewResult> {
+public class RedirectViewResolver implements ViewResolver<RedirectView> {
 
 	@Override
-	public void resolve(HttpServletRequest req, HttpServletResponse resp, RedirectViewResult viewResult) {
+	public void resolve(HttpServletRequest req, HttpServletResponse resp, RedirectView viewResult) {
 		try {
 			resp.sendRedirect(viewResult.getRedirect());
 		} catch (IOException e) {

@@ -32,14 +32,9 @@
 
 	<!-- TODO - Move this to a parent pom matching the GAE app version - then all the basic config can be shared. -->
 	<properties>
-		<gae.version>1.6.1</gae.version>
-		<gae.runtime>1.6.1</gae.runtime>
-		<gae.home>${settings.localRepository}/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk-${gae.version}</gae.home>
-		<rebel.home>${env.REBEL_HOME}</rebel.home>
+		<gae.version>1.6.3</gae.version>
 		<slf4j.version>1.6.4</slf4j.version>
 		<scalate.version>1.5.3</scalate.version>
-		<run.port>8080</run.port>
-		<debug.port>8000</debug.port>
 		<downloadSources>true</downloadSources><!-- This is just for "eclipse:eclipse" goal to always attempt downloading sources -->
 	</properties>
 
@@ -49,7 +44,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- All about JSPs -->
@@ -79,22 +74,12 @@
 			<version>${scalate.version}</version>
 		</dependency>
 
-		<!-- GAE dependency -->
-		<dependency>
-			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-api-labs</artifactId>
-			<version>${gae.version}</version>
-		</dependency>
+		<!-- GAE API dependency -->
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-1.0-sdk</artifactId>
 			<version>${gae.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.kindleit</groupId>
-			<artifactId>gae-runtime</artifactId>
-			<version>${gae.version}</version>
-			<type>pom</type>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- Mail -->

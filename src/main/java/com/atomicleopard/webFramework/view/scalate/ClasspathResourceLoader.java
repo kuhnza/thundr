@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.scalate;
+package com.atomicleopard.webFramework.view.scalate;
 
 import java.io.InputStream;
 import java.net.URI;

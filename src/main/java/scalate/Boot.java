@@ -3,7 +3,7 @@ package scalate;
 import org.fusesource.scalate.TemplateEngine;
 
 import com.atomicleopard.webFramework.logger.Logger;
-import com.atomicleopard.webFramework.view.scalate.TemplateViewResolver;
+import com.atomicleopard.webFramework.view.scalate.ScalateViewResolver;
 
 /**
  * This is a magic class invoked by by the scalate TemplateEngine on startup.
@@ -19,6 +19,6 @@ public class Boot {
 
 	public void run() {
 		Logger.info("Bootstrapping template engine");
-		TemplateViewResolver.applyTemplateEngineConfiguration(engine);
+		ScalateViewResolver.applyTemplateEngineConfiguration(engine);
 	}
 }

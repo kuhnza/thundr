@@ -16,17 +16,16 @@ import org.fusesource.scalate.support.CodeGenerator;
 import scala.Some;
 import scala.Tuple2;
 
-import com.atomicleopard.webFramework.scalate.ClasspathResourceLoader;
 import com.atomicleopard.webFramework.view.ViewResolutionException;
 import com.atomicleopard.webFramework.view.ViewResolver;
 
-public class TemplateViewResolver implements ViewResolver<TemplateViewResult> {
+public class ScalateViewResolver implements ViewResolver<ScalateView> {
 
 	private TemplateEngine templateEngine;
 	private ServletContext servletContext;
 	private ClasspathResourceLoader classpathResourceLoader = new ClasspathResourceLoader();
 
-	public TemplateViewResolver(ServletContext servletContext) {
+	public ScalateViewResolver(ServletContext servletContext) {
 		this.servletContext = servletContext;
 		templateEngine = new TemplateEngine(null, "development");
 		templateEngine.resourceLoader_$eq(new ServletResourceLoader(servletContext, new ClasspathResourceLoader()));
@@ -34,7 +33,7 @@ public class TemplateViewResolver implements ViewResolver<TemplateViewResult> {
 	}
 
 	@Override
-	public void resolve(HttpServletRequest req, HttpServletResponse resp, TemplateViewResult viewResult) {
+	public void resolve(HttpServletRequest req, HttpServletResponse resp, ScalateView viewResult) {
 		String view = viewResult.getView();
 		try {
 			if (templateEngine.canLoad(view)) {

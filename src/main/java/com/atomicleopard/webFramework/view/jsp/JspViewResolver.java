@@ -3,24 +3,15 @@ package com.atomicleopard.webFramework.view.jsp;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.atomicleopard.webFramework.view.ViewResolutionException;
 import com.atomicleopard.webFramework.view.ViewResolver;
 
-public class JspViewResolver implements ViewResolver<JspViewResult> {
-
-	private ServletContext servletContext;
-
-	public JspViewResolver(ServletContext servletContext) {
-		super();
-		this.servletContext = servletContext;
-	}
-
+public class JspViewResolver implements ViewResolver<JspView> {
 	@Override
-	public void resolve(HttpServletRequest req, HttpServletResponse resp, JspViewResult viewResult) {
+	public void resolve(HttpServletRequest req, HttpServletResponse resp, JspView viewResult) {
 		try {
 			Map<String, Object> model = viewResult.getModel();
 			for (Map.Entry<String, Object> modelEntry : model.entrySet()) {

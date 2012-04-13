@@ -23,14 +23,14 @@ import com.atomicleopard.webFramework.routes.method.ActionInterceptorRegistry;
 import com.atomicleopard.webFramework.routes.method.MethodAction;
 import com.atomicleopard.webFramework.routes.method.MethodActionResolver;
 import com.atomicleopard.webFramework.view.exception.ExceptionViewResolver;
+import com.atomicleopard.webFramework.view.json.JsonView;
 import com.atomicleopard.webFramework.view.json.JsonViewResolver;
-import com.atomicleopard.webFramework.view.json.JsonViewResult;
+import com.atomicleopard.webFramework.view.jsp.JspView;
 import com.atomicleopard.webFramework.view.jsp.JspViewResolver;
-import com.atomicleopard.webFramework.view.jsp.JspViewResult;
+import com.atomicleopard.webFramework.view.redirect.RedirectView;
 import com.atomicleopard.webFramework.view.redirect.RedirectViewResolver;
-import com.atomicleopard.webFramework.view.redirect.RedirectViewResult;
-import com.atomicleopard.webFramework.view.scalate.TemplateViewResolver;
-import com.atomicleopard.webFramework.view.scalate.TemplateViewResult;
+import com.atomicleopard.webFramework.view.scalate.ScalateView;
+import com.atomicleopard.webFramework.view.scalate.ScalateViewResolver;
 
 public class BaseInjectionConfiguration implements InjectionConfiguration {
 
@@ -89,10 +89,10 @@ public class BaseInjectionConfiguration implements InjectionConfiguration {
 
 	protected void addViewResolvers(ViewResolverRegistry viewResolverRegistry, UpdatableInjectionContext injectionContext) {
 		ServletContext servletContext = injectionContext.get(ServletContext.class);
-		viewResolverRegistry.addResolver(RedirectViewResult.class, new RedirectViewResolver());
-		viewResolverRegistry.addResolver(TemplateViewResult.class, new TemplateViewResolver(servletContext));
-		viewResolverRegistry.addResolver(JsonViewResult.class, new JsonViewResolver());
-		viewResolverRegistry.addResolver(JspViewResult.class, new JspViewResolver(servletContext));
+		viewResolverRegistry.addResolver(RedirectView.class, new RedirectViewResolver());
+		viewResolverRegistry.addResolver(ScalateView.class, new ScalateViewResolver(servletContext));
+		viewResolverRegistry.addResolver(JsonView.class, new JsonViewResolver());
+		viewResolverRegistry.addResolver(JspView.class, new JspViewResolver());
 		viewResolverRegistry.addResolver(Throwable.class, new ExceptionViewResolver());
 	}
 

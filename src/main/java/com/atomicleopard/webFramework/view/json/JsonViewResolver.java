@@ -10,9 +10,9 @@ import com.atomicleopard.webFramework.view.ViewResolver;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class JsonViewResolver implements ViewResolver<JsonViewResult> {
+public class JsonViewResolver implements ViewResolver<JsonView> {
 	@Override
-	public void resolve(HttpServletRequest req, HttpServletResponse resp, JsonViewResult viewResult) {
+	public void resolve(HttpServletRequest req, HttpServletResponse resp, JsonView viewResult) {
 		Object output = viewResult.getOutput();
 		try {
 			GsonBuilder gsonBuilder = new GsonBuilder();
