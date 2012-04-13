@@ -26,7 +26,8 @@ public class JspViewResolver implements ViewResolver<JspViewResult> {
 			for (Map.Entry<String, Object> modelEntry : model.entrySet()) {
 				req.setAttribute(modelEntry.getKey(), modelEntry.getValue());
 			}
-			RequestDispatcher requestDispatcher = req.getRequestDispatcher(viewResult.getView());
+			String url = resp.encodeRedirectURL(viewResult.getView());
+			RequestDispatcher requestDispatcher = req.getRequestDispatcher(url);
 			requestDispatcher.include(req, resp);
 		} catch (Exception e) {
 			throw new ViewResolutionException(e, "Failed to resolve JSP view %s", viewResult);

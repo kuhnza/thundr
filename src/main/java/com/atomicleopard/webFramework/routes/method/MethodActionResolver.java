@@ -67,7 +67,7 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 		} catch (Exception e) {
 			result = exceptionInterceptors(interceptors, req, resp, e);
 			if (result == null) {
-				throw new ActionException(e, "Failed to invoke controller %s: %s", action, e.getMessage());
+				throw new ActionException(e, "Failed in %s: %s", action, e.getMessage());
 			}
 		}
 		Logger.info("%s -> %s resolved", req.getRequestURI(), action);
@@ -153,6 +153,7 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 		actionInterceptors.put(annotation, interceptor);
 	}
 
+	@SuppressWarnings("unchecked")
 	public ActionInterceptor<Annotation> interceptor(Class<? extends Annotation> annotationType) {
 		return (ActionInterceptor<Annotation>) actionInterceptors.get(annotationType);
 	}

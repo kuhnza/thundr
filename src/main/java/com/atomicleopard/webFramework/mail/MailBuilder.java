@@ -1,7 +1,5 @@
 package com.atomicleopard.webFramework.mail;
 
-import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,12 +7,6 @@ import java.util.Map;
 import javax.mail.Message.RecipientType;
 import javax.servlet.http.HttpServletRequest;
 
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
-import net.sf.cglib.proxy.Mixin;
-
-import com.atomicleopard.expressive.Expressive;
 import com.atomicleopard.webFramework.collection.Triplets;
 import com.atomicleopard.webFramework.view.ViewResolver;
 
@@ -37,39 +29,7 @@ public class MailBuilder {
 	public <T> MailBuilder body(T view) {
 		try {
 			ViewResolver<T> viewResolver = mail.viewResolverRegistry().findViewResolver(view);
-
-			final Map<String, Object> attributes = new HashMap<String, Object>();
-			for (Object attribute : Expressive.iterable(request.getAttributeNames())) {
-				attributes.put((String) attribute, request.getAttribute((String) attribute));
-			}
-
-			//HttpServletRequest req = new MailHttpServletRequest(request);
-			HttpServletRequest req = request;
-			/*
-			This throws NoClassDefFoundException - i have no idea why
-			HttpServletRequest req = (HttpServletRequest) Enhancer.create(request.getClass(), new MethodInterceptor() {
-				@Override
-				public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
-					if ("getAttribute".equals(method.getName())) {
-						return attributes.get(args[0]);
-					}
-					if ("setAttribute".equals(method.getName())) {
-						attributes.put((String) args[0], args[1]);
-						return null;
-					}
-					if ("removeAttribute".equals(method.getName())) {
-						attributes.remove(args[0]);
-						return null;
-					}
-					if ("getAttributeNames".equals(method.getName())) {
-						return Collections.enumeration(attributes.keySet());
-					}
-
-					return proxy.invoke(obj, args);
-				}
-			});
-			*/
-
+			HttpServletRequest req = wrapRequest();
 			MailHttpServletResponse resp = new MailHttpServletResponse();
 			viewResolver.resolve(req, resp, view);
 			content = resp.getResponseContent();
@@ -77,6 +37,41 @@ public class MailBuilder {
 			throw new MailException(e, "Failed to render email body: %s", e.getMessage());
 		}
 		return this;
+	}
+
+	/*
+	 * Using the real request is not ideal because of potential side effects on the request object,
+	 * particularly setting model attributes in as request attributes.
+	 */
+	private HttpServletRequest wrapRequest() {
+		HttpServletRequest req = request;
+		/*
+		 * This throws NoClassDefFoundException - i have no idea why
+		 * Using the real request is not ideal because of potential side effects on the request object
+		 * HttpServletRequest req = (HttpServletRequest) Enhancer.create(request.getClass(), new MethodInterceptor() {
+		 * 
+		 * @Override
+		 * public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+		 * if ("getAttribute".equals(method.getName())) {
+		 * return attributes.get(args[0]);
+		 * }
+		 * if ("setAttribute".equals(method.getName())) {
+		 * attributes.put((String) args[0], args[1]);
+		 * return null;
+		 * }
+		 * if ("removeAttribute".equals(method.getName())) {
+		 * attributes.remove(args[0]);
+		 * return null;
+		 * }
+		 * if ("getAttributeNames".equals(method.getName())) {
+		 * return Collections.enumeration(attributes.keySet());
+		 * }
+		 * 
+		 * return proxy.invoke(obj, args);
+		 * }
+		 * });
+		 */
+		return req;
 	}
 
 	public void send() {

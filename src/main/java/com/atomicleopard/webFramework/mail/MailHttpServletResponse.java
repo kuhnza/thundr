@@ -26,8 +26,9 @@ public class MailHttpServletResponse implements HttpServletResponse {
 	public String getResponseContent() {
 		try {
 			writer.flush();
+			writer.close();
 			os.flush();
-			return new String(baos.toByteArray(), "UTF-8");
+			return baos.toString("UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException("Failed to get email content, this platform does not support UTF-8 encoding!: " + e.getMessage(), e);
 		} catch (IOException e) {
