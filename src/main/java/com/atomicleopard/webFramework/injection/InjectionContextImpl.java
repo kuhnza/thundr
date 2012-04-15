@@ -138,6 +138,11 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 		return namedInstances.containsKey(namedType) || namedTypes.containsKey(namedType) || contains(type);
 	}
 
+	@Override
+	public String toString() {
+		return String.format("Injection context (%s instances, %s classes", instances.size() + namedInstances.size(), types.size() + namedTypes.size());
+	}
+
 	private boolean canSatisfy(List<ParameterDescription> parameterDescriptions) {
 		for (ParameterDescription parameterDescription : parameterDescriptions) {
 			if (!contains(parameterDescription.type(), parameterDescription.name())) {

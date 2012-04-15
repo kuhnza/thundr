@@ -16,15 +16,6 @@ import java.util.TreeSet;
 
 import com.atomicleopard.expressive.EList;
 import com.atomicleopard.expressive.EListImpl;
-import com.atomicleopard.webFramework.bind2.ArrayParameterBinder;
-import com.atomicleopard.webFramework.bind2.BasicTypesParameterBinder;
-import com.atomicleopard.webFramework.bind2.CollectionParameterBinder;
-import com.atomicleopard.webFramework.bind2.JavaBeanParameterBinder;
-import com.atomicleopard.webFramework.bind2.MapParameterBinder;
-import com.atomicleopard.webFramework.bind2.ObjectParameterBinder;
-import com.atomicleopard.webFramework.bind2.ParameterBinder;
-import com.atomicleopard.webFramework.bind2.PathMap;
-import com.atomicleopard.webFramework.bind2.StringParameterBinder;
 import com.atomicleopard.webFramework.collection.factory.SimpleCollectionFactory;
 import com.atomicleopard.webFramework.collection.factory.SimpleMapFactory;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;

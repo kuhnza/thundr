@@ -14,9 +14,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
-import com.atomicleopard.webFramework.ViewResolverRegistry;
 import com.atomicleopard.webFramework.collection.Pair;
 import com.atomicleopard.webFramework.collection.Triplets;
+import com.atomicleopard.webFramework.view.ViewResolverRegistry;
 
 public class Mailer {
 	private ViewResolverRegistry viewResolverRegistry;

@@ -13,9 +13,9 @@ import jodd.util.ReflectUtil;
 
 import org.junit.Test;
 
+import com.atomicleopard.webFramework.action.method.ActionInterceptor;
+import com.atomicleopard.webFramework.action.method.MethodAction;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
-import com.atomicleopard.webFramework.routes.method.ActionInterceptor;
-import com.atomicleopard.webFramework.routes.method.MethodAction;
 
 public class ParameterDescriptionTest {
 	@Test

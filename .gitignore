@@ -1,0 +1,7 @@
+.classpath
+.project
+.settings/
+target/**
+features.txt
+stuff.txt
+peopleGettingTheirArseKicked.txt

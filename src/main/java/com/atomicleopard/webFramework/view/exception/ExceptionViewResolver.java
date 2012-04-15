@@ -26,9 +26,9 @@ public class ExceptionViewResolver implements ViewResolver<Throwable> {
 				writer.println(message);
 			}
 			exceptionOfInterest.printStackTrace(writer);
-			// to output a useful page, you can't send internal server error
+			// TODO  - to output a useful page, you can't send internal server error
 			// this probably should be a 'debug' mode thing, or configurable
-			// TODO - resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			exceptionOfInterest.printStackTrace(System.out);
 		} catch (IOException e) {
 			Logger.error("Failed to render an exception view because '%s' - original exception: %s", e.getMessage(), viewResult.getMessage());

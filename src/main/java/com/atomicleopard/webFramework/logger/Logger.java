@@ -3,7 +3,7 @@ package com.atomicleopard.webFramework.logger;
 import java.util.logging.Level;
 
 public class Logger {
-	public static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Logger.class.getName());
+	public static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger("Web Framework");
 
 	public static final void debug(String format, Object... args) {
 		if (logger.isLoggable(Level.FINE)) {

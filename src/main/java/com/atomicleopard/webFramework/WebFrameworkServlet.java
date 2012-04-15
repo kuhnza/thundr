@@ -9,48 +9,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.atomicleopard.expressive.Cast;
-import com.atomicleopard.webFramework.exception.BaseException;
-import com.atomicleopard.webFramework.injection.BaseInjectionConfiguration;
+import com.atomicleopard.webFramework.injection.DefaultInjectionConfiguration;
 import com.atomicleopard.webFramework.injection.InjectionConfiguration;
 import com.atomicleopard.webFramework.injection.InjectionContextImpl;
 import com.atomicleopard.webFramework.injection.UpdatableInjectionContext;
 import com.atomicleopard.webFramework.logger.Logger;
-import com.atomicleopard.webFramework.routes.RouteType;
-import com.atomicleopard.webFramework.routes.Routes;
+import com.atomicleopard.webFramework.route.RouteType;
+import com.atomicleopard.webFramework.route.Routes;
 import com.atomicleopard.webFramework.view.ViewResolver;
+import com.atomicleopard.webFramework.view.ViewResolverRegistry;
 
 public class WebFrameworkServlet extends HttpServlet {
 	private static final long serialVersionUID = -7179293239117252585L;
-	private static final String DiConfigClassProperty = "diConfigClass";
 	private UpdatableInjectionContext injectionContext;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		ServletContext servletContext = config.getServletContext();
-		String diConfigClass = servletContext.getInitParameter(DiConfigClassProperty);
 		injectionContext = new InjectionContextImpl();
 		injectionContext.inject(ServletContext.class).as(servletContext);
-		InjectionConfiguration injectionConfiguration = getDiConfigInstance(diConfigClass);
+		InjectionConfiguration injectionConfiguration = getInjectionConfigInstance(servletContext);
 		injectionConfiguration.configure(injectionContext);
 	}
 
-	private InjectionConfiguration getDiConfigInstance(String diConfigClass) {
-		if (diConfigClass == null) {
-			Logger.info("No %s specified, defaulting to %s", DiConfigClassProperty, BaseInjectionConfiguration.class.getSimpleName());
-			return new BaseInjectionConfiguration();
-		}
-		try {
-			InjectionConfiguration newInstance = Cast.as(Class.forName(diConfigClass).newInstance(), InjectionConfiguration.class);
-			if (newInstance == null) {
-				throw new BaseException("Failed to load the specified %s %s class '%s': target does not implement %s", DiConfigClassProperty, InjectionConfiguration.class.getSimpleName(), diConfigClass, InjectionConfiguration.class.getSimpleName());
-			}
-			Logger.info("Loaded %s %s", DiConfigClassProperty, newInstance.getClass().getSimpleName());
-			return newInstance;
-		} catch (Exception e) {
-			throw new BaseException(e, "Failed to load the specified %s %s class '%s': %s", DiConfigClassProperty, InjectionConfiguration.class.getSimpleName(), diConfigClass, e.getMessage());
-		}
+	protected InjectionConfiguration getInjectionConfigInstance(ServletContext servletContext) {
+		return new DefaultInjectionConfiguration();
 	}
 
 	protected void applyRoute(RouteType routeType, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

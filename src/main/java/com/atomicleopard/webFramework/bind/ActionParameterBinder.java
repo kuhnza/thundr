@@ -7,10 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.atomicleopard.webFramework.bind2.InstanceParameterBinder;
-import com.atomicleopard.webFramework.bind2.PathMap;
+import com.atomicleopard.webFramework.action.method.MethodAction;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
-import com.atomicleopard.webFramework.routes.method.MethodAction;
 
 public class ActionParameterBinder {
 	public List<Object> bind(MethodAction actionMethod, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {

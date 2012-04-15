@@ -12,15 +12,17 @@ import javax.inject.Inject;
 
 import jodd.introspector.ClassDescriptor;
 import jodd.util.ReflectUtil;
-import scala.actors.threadpool.Arrays;
+
+import com.atomicleopard.expressive.ETransformer;
+import com.atomicleopard.expressive.transform.ETransformers;
 
 public class ClassIntrospector {
 	public static final boolean supportsInjection = classExists("javax.inject.Inject");
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <T> List<Constructor<T>> listConstructors(Class<T> type) {
 		ClassDescriptor classDescriptor = new ClassDescriptor(type, true);
-		List<Constructor<T>> ctors = Arrays.asList(classDescriptor.getAllCtors());
+		List<Constructor<T>> ctors = ETransformers.transformAllUsing(ClassIntrospector.<Constructor, Constructor<T>> castTransformer()).to(classDescriptor.getAllCtors());
 		Collections.sort(ctors, new Comparator<Constructor<T>>() {
 			@Override
 			public int compare(Constructor<T> o1, Constructor<T> o2) {
@@ -71,5 +73,16 @@ public class ClassIntrospector {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <A, B> ETransformer<A, B> castTransformer() {
+		// TODO - This should be migrated to the Expressive library - it looks pretty useful!
+		return new ETransformer<A, B>() {
+			@Override
+			public B to(A from) {
+				return (B) from;
+			}
+		};
 	}
 }

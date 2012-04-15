@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.atomicleopard</groupId>
+	<groupId>com.atomicleopard.webFramework</groupId>
 	<artifactId>webFramework</artifactId>
 	<name>webFramework</name>
 	<packaging>jar</packaging>
@@ -34,7 +34,6 @@
 	<properties>
 		<gae.version>1.6.3</gae.version>
 		<slf4j.version>1.6.4</slf4j.version>
-		<scalate.version>1.5.3</scalate.version>
 		<downloadSources>true</downloadSources><!-- This is just for "eclipse:eclipse" goal to always attempt downloading sources -->
 	</properties>
 
@@ -66,12 +65,11 @@
 			<version>2.2.4</version>
 			<scope>provided</scope>
 		</dependency>
-
-		<!-- Scalate & SSP for templating -->
 		<dependency>
-			<groupId>org.fusesource.scalate</groupId>
-			<artifactId>scalate-core</artifactId>
-			<version>${scalate.version}</version>
+			<groupId>com.atomicleopard.webFramework</groupId>
+			<artifactId>jsp-tags</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<!-- GAE API dependency -->

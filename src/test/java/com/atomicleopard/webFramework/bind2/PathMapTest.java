@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.atomicleopard.webFramework.bind.PathMap;
+
 public class PathMapTest {
 	@Test
 	public void shouldNotSplitWhenSimple() {
