@@ -65,12 +65,6 @@
 			<version>2.2.4</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.atomicleopard.webFramework</groupId>
-			<artifactId>jsp-tags</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
 
 		<!-- GAE API dependency -->
 		<dependency>
