@@ -2,6 +2,7 @@ package com.atomicleopard.webFramework.bind;
 
 import java.util.List;
 
+import com.atomicleopard.webFramework.bind.http.PathMap;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
 public class NamedInstanceParameterBinder implements ParameterBinder<Object> {

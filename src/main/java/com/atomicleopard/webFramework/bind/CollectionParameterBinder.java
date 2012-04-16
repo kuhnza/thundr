@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import jodd.util.ReflectUtil;
 
+import com.atomicleopard.webFramework.bind.http.PathMap;
 import com.atomicleopard.webFramework.collection.factory.CollectionFactory;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.atomicleopard.webFramework.action.method.MethodAction;
+import com.atomicleopard.webFramework.bind.http.PathMap;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
 public class ActionParameterBinder {

@@ -121,7 +121,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 	private Object[] getAll(List<ParameterDescription> parameterDescriptions) {
 		List<Object> args = new ArrayList<Object>(parameterDescriptions.size());
 		for (ParameterDescription parameterDescription : parameterDescriptions) {
-			Object arg = get(parameterDescription.type(), parameterDescription.name());
+			Object arg = get(parameterDescription.classType(), parameterDescription.name());
 			args.add(arg);
 		}
 		return args.toArray();
@@ -145,7 +145,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 
 	private boolean canSatisfy(List<ParameterDescription> parameterDescriptions) {
 		for (ParameterDescription parameterDescription : parameterDescriptions) {
-			if (!contains(parameterDescription.type(), parameterDescription.name())) {
+			if (!contains(parameterDescription.classType(), parameterDescription.name())) {
 				return false;
 			}
 		}

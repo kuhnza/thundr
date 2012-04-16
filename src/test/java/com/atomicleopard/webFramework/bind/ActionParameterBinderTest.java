@@ -19,11 +19,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.atomicleopard.webFramework.action.method.ActionInterceptor;
+import com.atomicleopard.webFramework.action.method.FakeController;
 import com.atomicleopard.webFramework.action.method.MethodAction;
-import com.atomicleopard.webFramework.bind2.DeepJavaBean;
-import com.atomicleopard.webFramework.bind2.JavaBean;
-import com.atomicleopard.webFramework.bind2.TestBindTo;
-import com.atomicleopard.webFramework.route.FakeController;
 
 public class ActionParameterBinderTest {
 

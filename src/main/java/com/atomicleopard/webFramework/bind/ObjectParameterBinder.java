@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.atomicleopard.expressive.Expressive;
+import com.atomicleopard.webFramework.bind.http.PathMap;
 import com.atomicleopard.webFramework.introspection.MethodIntrospector;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
@@ -15,7 +16,7 @@ public class ObjectParameterBinder implements ParameterBinder<Object> {
 
 	public Object bind(Binders binders, ParameterDescription parameterDescription, PathMap pathMap) {
 		if (shouldProcess(parameterDescription)) {
-			Constructor<?> ctor = findCtor(parameterDescription.type());
+			Constructor<?> ctor = findCtor(parameterDescription.classType());
 			List<ParameterDescription> parameterDescriptions = methodIntrospector.getParameterDescriptions(ctor);
 			List<?> parameters = binders.createFor(parameterDescriptions, pathMap.pathMapFor(parameterDescription.name()));
 			try {
@@ -28,7 +29,7 @@ public class ObjectParameterBinder implements ParameterBinder<Object> {
 	}
 
 	private boolean shouldProcess(ParameterDescription parameterDescription) {
-		return !classesToSkip.contains(parameterDescription.type());
+		return !classesToSkip.contains(parameterDescription.classType());
 	}
 
 	private static Set<Class<?>> createClassesToSkip() {

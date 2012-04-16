@@ -7,6 +7,7 @@ import java.util.Set;
 import jodd.bean.BeanTool;
 
 import com.atomicleopard.expressive.Expressive;
+import com.atomicleopard.webFramework.bind.http.PathMap;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
 public class JavaBeanParameterBinder implements ParameterBinder<Object> {
@@ -16,11 +17,11 @@ public class JavaBeanParameterBinder implements ParameterBinder<Object> {
 		Map<String, String[]> stringMap = pathMap.toStringMap(parameterDescription.name());
 		if (!stringMap.isEmpty()) {
 			try {
-				Object bean = parameterDescription.type().newInstance();
+				Object bean = parameterDescription.classType().newInstance();
 				BeanTool.load(bean, stringMap);
 				return bean;
 			} catch (Exception e) {
-				throw new BindException(e, "Failed to bind onto %s: %s", parameterDescription.type(), e.getMessage());
+				throw new BindException(e, "Failed to bind onto %s: %s", parameterDescription.classType(), e.getMessage());
 			}
 		}
 		return null;
@@ -33,7 +34,7 @@ public class JavaBeanParameterBinder implements ParameterBinder<Object> {
 	@Override
 	public boolean willBind(ParameterDescription parameterDescription) {
 		try {
-			Class<?> type = parameterDescription.type();
+			Class<?> type = parameterDescription.classType();
 			return shouldProcess(type) && type.getConstructor(new Class[0]) != null;
 		} catch (Exception e) {
 			return false;

@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.route;
+package com.atomicleopard.webFramework.action.method;
 
 import static com.atomicleopard.expressive.Expressive.list;
 import static org.hamcrest.Matchers.is;
@@ -61,6 +61,6 @@ public class MethodActionTest {
 		List<ParameterDescription> parameters = methodAction.parameters();
 		assertThat(parameters.size(), is(1));
 		assertThat(parameters.get(0).name(), is("argument1"));
-		assertThat(String.class.equals(parameters.get(0).type()), is(true));
+		assertThat(String.class.equals(parameters.get(0).classType()), is(true));
 	}
 }

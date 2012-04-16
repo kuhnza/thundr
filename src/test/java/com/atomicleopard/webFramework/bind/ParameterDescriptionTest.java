@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.bind2;
+package com.atomicleopard.webFramework.bind;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

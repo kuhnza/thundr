@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.atomicleopard.webFramework.http.ContentType;
 import com.atomicleopard.webFramework.injection.InjectorBuilder;
 import com.atomicleopard.webFramework.injection.UpdatableInjectionContext;
 import com.atomicleopard.webFramework.route.RouteType;
@@ -34,6 +35,7 @@ public class MethodActionResolverTest {
 		InjectorBuilder<Class> injectionBuilder = mock(InjectorBuilder.class);
 		when(injectionContext.inject(Mockito.any(Class.class))).thenReturn(injectionBuilder);
 		resolver = new MethodActionResolver(injectionContext);
+		when(req.getContentType()).thenReturn(ContentType.ApplicationFormUrlEncoded.value());
 	}
 
 	@Test

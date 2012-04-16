@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.route;
+package com.atomicleopard.webFramework.action.method;
 
 public class FakeController {
 	public int invocationCount = 0;

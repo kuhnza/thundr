@@ -2,6 +2,7 @@ package com.atomicleopard.webFramework.bind;
 
 import static com.atomicleopard.expressive.Expressive.list;
 
+import com.atomicleopard.webFramework.bind.http.PathMap;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
 public class StringParameterBinder implements ParameterBinder<String> {

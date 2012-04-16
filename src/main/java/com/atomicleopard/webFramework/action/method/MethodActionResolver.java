@@ -2,6 +2,7 @@ package com.atomicleopard.webFramework.action.method;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,9 +17,14 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.atomicleopard.webFramework.action.ActionException;
 import com.atomicleopard.webFramework.action.ActionResolver;
-import com.atomicleopard.webFramework.bind.ActionParameterBinder;
+import com.atomicleopard.webFramework.bind.ActionMethodBinder;
+import com.atomicleopard.webFramework.bind.BindException;
+import com.atomicleopard.webFramework.bind.http.HttpBinder;
+import com.atomicleopard.webFramework.bind.json.GsonBinder;
+import com.atomicleopard.webFramework.bind.path.PathVariableBinder;
 import com.atomicleopard.webFramework.exception.BaseException;
 import com.atomicleopard.webFramework.injection.UpdatableInjectionContext;
+import com.atomicleopard.webFramework.introspection.ParameterDescription;
 import com.atomicleopard.webFramework.logger.Logger;
 import com.atomicleopard.webFramework.route.RouteType;
 
@@ -27,11 +33,15 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 	private boolean enableCaching = true;
 	private Map<Class<?>, Object> controllerInstances = new HashMap<Class<?>, Object>();
 	private Map<Class<? extends Annotation>, ActionInterceptor<? extends Annotation>> actionInterceptors = new HashMap<Class<? extends Annotation>, ActionInterceptor<? extends Annotation>>();
-	private ActionParameterBinder binder = new ActionParameterBinder();
+	private List<ActionMethodBinder> methodBinders;
 	private UpdatableInjectionContext injectionContext;
 
 	public MethodActionResolver(UpdatableInjectionContext injectionContext) {
 		this.injectionContext = injectionContext;
+		PathVariableBinder pathVariableBinder = new PathVariableBinder();
+		methodBinders = new ArrayList<ActionMethodBinder>();
+		methodBinders.add(new GsonBinder(pathVariableBinder));
+		methodBinders.add(new HttpBinder(pathVariableBinder));
 	}
 
 	@Override
@@ -57,7 +67,7 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 	@Override
 	public Object resolve(MethodAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
 		Object controller = getOrCreateController(action);
-		List<?> arguments = binder.bind(action, req, resp, pathVars);
+		List<?> arguments = bindArguments(action, req, resp, pathVars);
 		Map<Annotation, ActionInterceptor<Annotation>> interceptors = action.interceptors();
 		Object result = null;
 		try {
@@ -72,6 +82,16 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 		}
 		Logger.debug("%s -> %s resolved", req.getRequestURI(), action);
 		return result;
+	}
+
+	private List<Object> bindArguments(MethodAction action, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
+		List<ParameterDescription> parameterDescriptions = action.parameters();
+		for(ActionMethodBinder binder : methodBinders){
+			if(binder.canBind(req.getContentType())){
+				return binder.bindAll(parameterDescriptions, req, resp, pathVars);
+			}
+		}
+		throw new BindException("Cannot bind arguments - no binder found for Content-Type=%s", req.getContentType());
 	}
 
 	private Object afterInterceptors(Object result, Map<Annotation, ActionInterceptor<Annotation>> interceptors, HttpServletRequest req, HttpServletResponse resp) {

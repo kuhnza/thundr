@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.bind2;
+package com.atomicleopard.webFramework.bind;
 import java.util.List;
 
 public class DeepPojo {

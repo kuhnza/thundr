@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import jodd.util.ReflectUtil;
 
+import com.atomicleopard.webFramework.bind.http.PathMap;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
 /**
@@ -88,7 +89,7 @@ public class ArrayParameterBinder<T> implements ParameterBinder<T[]> {
 
 	@Override
 	public boolean willBind(ParameterDescription parameterDescription) {
-		return parameterDescription.type().isArray();
+		return parameterDescription.classType().isArray();
 	}
 
 	@SuppressWarnings("unchecked")

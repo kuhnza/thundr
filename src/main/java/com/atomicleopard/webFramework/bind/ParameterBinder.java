@@ -1,5 +1,6 @@
 package com.atomicleopard.webFramework.bind;
 
+import com.atomicleopard.webFramework.bind.http.PathMap;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
 public interface ParameterBinder<T> {

@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.bind2;
+package com.atomicleopard.webFramework.bind;
 public class Pojo {
 	private String name;
 	private String value;

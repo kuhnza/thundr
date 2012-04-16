@@ -20,7 +20,7 @@ public class ParameterDescription {
 	}
 
 	public boolean isA(Class<?> is) {
-		Class<?> clazz = type();
+		Class<?> clazz = classType();
 		if (clazz == null) {
 			Logger.warn("Clazz is null, type is %s", type);
 		}
@@ -62,8 +62,12 @@ public class ParameterDescription {
 		return name;
 	}
 
-	public Class<?> type() {
+	public Class<?> classType() {
 		return ReflectUtil.toClass(type);
+	}
+
+	public Type type() {
+		return type;
 	}
 
 	@Override

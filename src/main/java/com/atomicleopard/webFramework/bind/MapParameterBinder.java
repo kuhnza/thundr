@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.atomicleopard.webFramework.bind.http.PathMap;
 import com.atomicleopard.webFramework.collection.factory.MapFactory;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 

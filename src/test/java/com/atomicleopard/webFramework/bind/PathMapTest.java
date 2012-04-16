@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.bind2;
+package com.atomicleopard.webFramework.bind;
 import static com.atomicleopard.expressive.Expressive.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.atomicleopard.webFramework.bind.PathMap;
+import com.atomicleopard.webFramework.bind.http.PathMap;
 
 public class PathMapTest {
 	@Test

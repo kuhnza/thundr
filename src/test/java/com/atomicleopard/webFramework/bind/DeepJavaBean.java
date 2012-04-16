@@ -1,40 +1,42 @@
-package com.atomicleopard.webFramework.bind2;
+package com.atomicleopard.webFramework.bind;
 
-public class JavaBean {
+import java.util.List;
+
+public class DeepJavaBean {
 	private String name;
-	private String value;
+	private List<JavaBean> beans;
 
-	public JavaBean() {
+	public DeepJavaBean() {
 	}
 
-	public JavaBean(String name, String value) {
+	public DeepJavaBean(String name, List<JavaBean> beans) {
 		super();
 		this.name = name;
-		this.value = value;
+		this.beans = beans;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String getValue() {
-		return value;
-	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public List<JavaBean> getBeans() {
+		return beans;
+	}
+
+	public void setBeans(List<JavaBean> beans) {
+		this.beans = beans;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((beans == null) ? 0 : beans.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
 
@@ -46,23 +48,23 @@ public class JavaBean {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		JavaBean other = (JavaBean) obj;
+		DeepJavaBean other = (DeepJavaBean) obj;
+		if (beans == null) {
+			if (other.beans != null)
+				return false;
+		} else if (!beans.equals(other.beans))
+			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
-			return false;
-		if (value == null) {
-			if (other.value != null)
-				return false;
-		} else if (!value.equals(other.value))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Name: %s Value: %s", name, value);
+		return String.format("Name: %s Beans: %s", name, beans);
 	}
 
 }

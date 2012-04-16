@@ -3,7 +3,7 @@
 <%@ tag body-content="empty" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<c:if test="${not fn:startsWith(src, '/')}">
+<c:if test="${not fn:startsWith(src, '/') and not fn:startsWith(src, 'http')}">
 <c:set var="src" value="/static/javascript/${src}"/>
 </c:if>
 <c:if test="${not suppressVersion}">

@@ -1,5 +1,6 @@
-package com.atomicleopard.webFramework.bind;
+package com.atomicleopard.webFramework.bind.http;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,6 +12,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 /**
+ * Represents post parameters or query parameters in a strucuture hierarchical way so that 
+ * they can be meaningfully parsed to java objects.
+ * 
  * Given a request map, alters the key to represent the path as components.
  * For example object[0].name should be a key of object, [0], name
  * 
@@ -34,6 +38,23 @@ public class PathMap {
 			List<String> path = Collections.unmodifiableList(Arrays.asList(expandedKey.split("\r")));
 			delegate.put(path, entry.getValue());
 		}
+	}
+
+	/**
+	 * Returns a new path which has a specific entity name prepended to the front of all entries
+	 * 
+	 * @param parent
+	 * @return
+	 */
+	public PathMap pushPath(String name) {
+		PathMap pathMap = new PathMap();
+		for (Map.Entry<List<String>, String[]> entry : delegate.entrySet()) {
+			List<String> path = entry.getKey();
+			List<String> newPath = new ArrayList<String>(path);
+			newPath.add(0, name);
+			pathMap.delegate.put(newPath, entry.getValue());
+		}
+		return pathMap;
 	}
 
 	public PathMap pathMapFor(String key) {
@@ -75,6 +96,19 @@ public class PathMap {
 		return delegate.toString();
 	}
 
+	/**
+	 * Creates a string map for all entries using the given map - assumes that the entity we're binding to is named.
+	 * I.e.
+	 * 
+	 * Object {
+	 * public Object a;
+	 * public Object b;
+	 * }
+	 * 
+	 * would look like this:
+	 * object.a -> value A
+	 * object.b -> value B
+	 */
 	public Map<String, String[]> toStringMap(String pathElement) {
 		Map<String, String[]> stringMap = new HashMap<String, String[]>();
 		for (Entry<List<String>, String[]> entry : delegate.entrySet()) {
@@ -95,6 +129,42 @@ public class PathMap {
 				if (stringKey.length() > 0) {
 					stringMap.put(stringKey, entry.getValue());
 				}
+			}
+		}
+		return stringMap;
+	}
+
+	/**
+	 * Creates a string map for all entries using the given map - assumes that the entity we're binding to is not named.
+	 * I.e.
+	 * 
+	 * Object {
+	 * public Object a;
+	 * public Object b;
+	 * }
+	 * 
+	 * would look like this:
+	 * a -> value A
+	 * b -> value B
+	 */
+	public Map<String, String[]> toStringMap() {
+		Map<String, String[]> stringMap = new HashMap<String, String[]>();
+		for (Entry<List<String>, String[]> entry : delegate.entrySet()) {
+			List<String> key = entry.getKey();
+
+			StringBuilder joinedKey = new StringBuilder();
+			boolean first = true;
+			for (int i = 0; i < key.size(); i++) {
+				String string = key.get(i);
+				if (!first && !string.startsWith("[")) {
+					joinedKey.append(".");
+				}
+				joinedKey.append(string);
+				first = false;
+			}
+			String stringKey = joinedKey.toString();
+			if (stringKey.length() > 0) {
+				stringMap.put(stringKey, entry.getValue());
 			}
 		}
 		return stringMap;

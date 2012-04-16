@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.route;
+package com.atomicleopard.webFramework.action.rewrite;
 
 import static com.atomicleopard.expressive.Expressive.map;
 import static org.hamcrest.Matchers.is;
