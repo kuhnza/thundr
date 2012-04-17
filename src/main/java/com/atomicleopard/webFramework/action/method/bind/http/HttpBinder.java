@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.bind.http;
+package com.atomicleopard.webFramework.action.method.bind.http;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,10 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.atomicleopard.webFramework.bind.ActionMethodBinder;
-import com.atomicleopard.webFramework.bind.Binders;
-import com.atomicleopard.webFramework.bind.InstanceParameterBinder;
-import com.atomicleopard.webFramework.bind.path.PathVariableBinder;
+import com.atomicleopard.webFramework.action.method.bind.ActionMethodBinder;
+import com.atomicleopard.webFramework.action.method.bind.path.PathVariableBinder;
 import com.atomicleopard.webFramework.http.ContentType;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
@@ -41,8 +39,8 @@ public class HttpBinder implements ActionMethodBinder {
 	public List<Object> bindAll(List<ParameterDescription> parameterDescriptions, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {
 		List<Object> boundVariables = pathVariableBinder.bindAll(parameterDescriptions, req, resp, pathVariables);
 		if (!parameterDescriptions.isEmpty()) {
-			PathMap pathMap = new PathMap(req.getParameterMap());
-			Binders binders = binders(req, resp);
+			HttpPostDataMap pathMap = new HttpPostDataMap(req.getParameterMap());
+			ParameterBinderSet binders = binders(req, resp);
 			for (int index = 0; index < parameterDescriptions.size(); index++) {
 				if (boundVariables.get(index) == null) {
 					ParameterDescription parameterDescription = parameterDescriptions.get(index);
@@ -54,8 +52,8 @@ public class HttpBinder implements ActionMethodBinder {
 		return boundVariables;
 	}
 
-	private Binders binders(HttpServletRequest req, HttpServletResponse resp) {
-		Binders binders = new Binders();
+	private ParameterBinderSet binders(HttpServletRequest req, HttpServletResponse resp) {
+		ParameterBinderSet binders = new ParameterBinderSet();
 		InstanceParameterBinder requestBinder = new InstanceParameterBinder(req);
 		InstanceParameterBinder responseBinder = new InstanceParameterBinder(resp);
 		InstanceParameterBinder sessionBinder = new InstanceParameterBinder(req == null ? null : req.getSession());

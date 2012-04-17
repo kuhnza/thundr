@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.bind;
+package com.atomicleopard.webFramework.action.method.bind.http;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 import jodd.util.ReflectUtil;
 
-import com.atomicleopard.webFramework.bind.http.PathMap;
 import com.atomicleopard.webFramework.collection.factory.CollectionFactory;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
@@ -32,13 +31,13 @@ public class CollectionParameterBinder<T extends Collection<Object>> implements 
 		this.collectionFactory = collectionFactory;
 	}
 
-	public T bind(Binders binders, ParameterDescription parameterDescription, PathMap pathMap) {
+	public T bind(ParameterBinderSet binders, ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		String[] entryForParameter = pathMap.get(parameterDescription.name());
 		boolean isIndexed = entryForParameter == null || entryForParameter.length == 0;
 		return isIndexed ? createIndexed(binders, parameterDescription, pathMap) : createUnindexed(binders, parameterDescription, pathMap);
 	}
 
-	private T createUnindexed(Binders binders, ParameterDescription parameterDescription, PathMap pathMap) {
+	private T createUnindexed(ParameterBinderSet binders, ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		String[] entries = pathMap.get(parameterDescription.name());
 		// a special case of a single empty string entry we'll equate to null 
 		if(entries == null || entries.length == 1 && (entries[0] == null || "".equals(entries[0]))){
@@ -54,7 +53,7 @@ public class CollectionParameterBinder<T extends Collection<Object>> implements 
 		return listParameter;
 	}
 
-	private T createIndexed(Binders binders, ParameterDescription parameterDescription, PathMap pathMap) {
+	private T createIndexed(ParameterBinderSet binders, ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		pathMap = pathMap.pathMapFor(parameterDescription.name());
 		Set<String> uniqueChildren = pathMap.uniqueChildren();
 		if (uniqueChildren.size() == 0) {

@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.bind;
+package com.atomicleopard.webFramework.action.method.bind;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,31 +8,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.atomicleopard.webFramework.action.method.MethodAction;
-import com.atomicleopard.webFramework.bind.http.PathMap;
+import com.atomicleopard.webFramework.action.method.bind.http.HttpPostDataMap;
+import com.atomicleopard.webFramework.action.method.bind.http.InstanceParameterBinder;
+import com.atomicleopard.webFramework.action.method.bind.http.ParameterBinderSet;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
 public class ActionParameterBinder {
 	public List<Object> bind(MethodAction actionMethod, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
 		List<ParameterDescription> parameterDescriptions = actionMethod.parameters();
-		PathMap pathMap = createPathMap(req, pathVars);
-		Binders binders = binders(req, resp, pathVars);
+		HttpPostDataMap pathMap = createPathMap(req, pathVars);
+		ParameterBinderSet binders = binders(req, resp, pathVars);
 		return binders.createFor(parameterDescriptions, pathMap);
 	}
 
 	@SuppressWarnings("unchecked")
-	private PathMap createPathMap(HttpServletRequest req, Map<String, String> pathVars) {
+	private HttpPostDataMap createPathMap(HttpServletRequest req, Map<String, String> pathVars) {
 		Map<String, String[]> requestParameters = new HashMap<String, String[]>(req.getParameterMap());
 		if (pathVars != null) {
 			for (Map.Entry<String, String> entry : pathVars.entrySet()) {
 				requestParameters.put(entry.getKey(), new String[] { entry.getValue() });
 			}
 		}
-		PathMap pathMap = new PathMap(requestParameters);
+		HttpPostDataMap pathMap = new HttpPostDataMap(requestParameters);
 		return pathMap;
 	}
 
-	private Binders binders(HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
-		Binders binders = new Binders();
+	private ParameterBinderSet binders(HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
+		ParameterBinderSet binders = new ParameterBinderSet();
 		InstanceParameterBinder requestBinder = new InstanceParameterBinder(req);
 		InstanceParameterBinder responseBinder = new InstanceParameterBinder(resp);
 		InstanceParameterBinder sessionBinder = new InstanceParameterBinder(req == null ? null : req.getSession());

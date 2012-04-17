@@ -1,12 +1,11 @@
-package com.atomicleopard.webFramework.bind;
+package com.atomicleopard.webFramework.action.method.bind.http;
 
 import static com.atomicleopard.expressive.Expressive.list;
 
-import com.atomicleopard.webFramework.bind.http.PathMap;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
 public class StringParameterBinder implements ParameterBinder<String> {
-	public String bind(Binders binder, ParameterDescription parameterDescription, PathMap pathMap) {
+	public String bind(ParameterBinderSet binder, ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		String[] values = pathMap.get(list(parameterDescription.name()));
 		return values != null && values.length > 0 ? values[0] : null;
 	}

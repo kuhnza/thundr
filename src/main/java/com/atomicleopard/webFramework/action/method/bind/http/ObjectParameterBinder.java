@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.bind;
+package com.atomicleopard.webFramework.action.method.bind.http;
 
 import java.lang.reflect.Constructor;
 import java.util.HashSet;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.atomicleopard.expressive.Expressive;
-import com.atomicleopard.webFramework.bind.http.PathMap;
+import com.atomicleopard.webFramework.action.method.bind.BindException;
 import com.atomicleopard.webFramework.introspection.MethodIntrospector;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
@@ -14,7 +14,7 @@ public class ObjectParameterBinder implements ParameterBinder<Object> {
 	private static Set<Class<?>> classesToSkip = createClassesToSkip();
 	private MethodIntrospector methodIntrospector = new MethodIntrospector();
 
-	public Object bind(Binders binders, ParameterDescription parameterDescription, PathMap pathMap) {
+	public Object bind(ParameterBinderSet binders, ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		if (shouldProcess(parameterDescription)) {
 			Constructor<?> ctor = findCtor(parameterDescription.classType());
 			List<ParameterDescription> parameterDescriptions = methodIntrospector.getParameterDescriptions(ctor);

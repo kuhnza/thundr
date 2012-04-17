@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.bind;
+package com.atomicleopard.webFramework.action.method.bind.http;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.atomicleopard.webFramework.bind.http.PathMap;
 import com.atomicleopard.webFramework.collection.factory.MapFactory;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
@@ -28,7 +27,7 @@ public class MapParameterBinder<T extends Map<Object, Object>> implements Parame
 		this.mapFactory = mapFactory;
 	}
 
-	public T bind(Binders binders, ParameterDescription parameterDescription, PathMap pathMap) {
+	public T bind(ParameterBinderSet binders, ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		pathMap = pathMap.pathMapFor(parameterDescription.name());
 		Set<String> children = pathMap.uniqueChildren();
 		if (children.isEmpty()) {

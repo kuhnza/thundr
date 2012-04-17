@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.bind.http;
+package com.atomicleopard.webFramework.action.method.bind.http;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,15 +21,15 @@ import java.util.Set;
  * This allows us to pop keys as we walk a path.
  * For the above example, when dealing with object, the path should then be [0], name
  */
-public class PathMap {
+public class HttpPostDataMap {
 
 	private Map<List<String>, String[]> delegate = new LinkedHashMap<List<String>, String[]>();
 
-	private PathMap() {
+	private HttpPostDataMap() {
 
 	}
 
-	public PathMap(Map<String, String[]> input) {
+	public HttpPostDataMap(Map<String, String[]> input) {
 		this();
 		for (Map.Entry<String, String[]> entry : input.entrySet()) {
 			String key = entry.getKey();
@@ -46,8 +46,8 @@ public class PathMap {
 	 * @param parent
 	 * @return
 	 */
-	public PathMap pushPath(String name) {
-		PathMap pathMap = new PathMap();
+	public HttpPostDataMap pushPath(String name) {
+		HttpPostDataMap pathMap = new HttpPostDataMap();
 		for (Map.Entry<List<String>, String[]> entry : delegate.entrySet()) {
 			List<String> path = entry.getKey();
 			List<String> newPath = new ArrayList<String>(path);
@@ -57,8 +57,8 @@ public class PathMap {
 		return pathMap;
 	}
 
-	public PathMap pathMapFor(String key) {
-		PathMap pathMap = new PathMap();
+	public HttpPostDataMap pathMapFor(String key) {
+		HttpPostDataMap pathMap = new HttpPostDataMap();
 		for (Map.Entry<List<String>, String[]> entry : delegate.entrySet()) {
 			List<String> path = entry.getKey();
 			if (path.size() > 1 && path.get(0).equals(key)) {

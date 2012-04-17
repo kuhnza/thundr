@@ -1,6 +1,5 @@
-package com.atomicleopard.webFramework.bind;
+package com.atomicleopard.webFramework.action.method.bind.http;
 
-import com.atomicleopard.webFramework.bind.http.PathMap;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
 public class InstanceParameterBinder implements ParameterBinder<Object> {
@@ -10,7 +9,7 @@ public class InstanceParameterBinder implements ParameterBinder<Object> {
 		this.instance = instance;
 	}
 
-	public Object bind(Binders binders, ParameterDescription parameterDescription, PathMap pathMap) {
+	public Object bind(ParameterBinderSet binders, ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		return instance;
 	}
 

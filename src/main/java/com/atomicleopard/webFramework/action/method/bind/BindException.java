@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.bind;
+package com.atomicleopard.webFramework.action.method.bind;
 
 import com.atomicleopard.webFramework.exception.BaseException;
 

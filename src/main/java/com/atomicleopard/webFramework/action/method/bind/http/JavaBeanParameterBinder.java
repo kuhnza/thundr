@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.bind;
+package com.atomicleopard.webFramework.action.method.bind.http;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -7,13 +7,13 @@ import java.util.Set;
 import jodd.bean.BeanTool;
 
 import com.atomicleopard.expressive.Expressive;
-import com.atomicleopard.webFramework.bind.http.PathMap;
+import com.atomicleopard.webFramework.action.method.bind.BindException;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
 public class JavaBeanParameterBinder implements ParameterBinder<Object> {
 	private static Set<Class<?>> classesToSkip = createClassesToSkip();
 
-	public Object bind(Binders binders, ParameterDescription parameterDescription, PathMap pathMap) {
+	public Object bind(ParameterBinderSet binders, ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		Map<String, String[]> stringMap = pathMap.toStringMap(parameterDescription.name());
 		if (!stringMap.isEmpty()) {
 			try {

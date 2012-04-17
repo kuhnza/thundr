@@ -19,7 +19,7 @@ import com.atomicleopard.expressive.transform.ETransformers;
 public class ClassIntrospector {
 	public static final boolean supportsInjection = classExists("javax.inject.Inject");
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "rawtypes" })
 	public <T> List<Constructor<T>> listConstructors(Class<T> type) {
 		ClassDescriptor classDescriptor = new ClassDescriptor(type, true);
 		List<Constructor<T>> ctors = ETransformers.transformAllUsing(ClassIntrospector.<Constructor, Constructor<T>> castTransformer()).to(classDescriptor.getAllCtors());

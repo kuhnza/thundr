@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.bind;
+package com.atomicleopard.webFramework.action.method.bind.http;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,26 +16,25 @@ import java.util.TreeSet;
 
 import com.atomicleopard.expressive.EList;
 import com.atomicleopard.expressive.EListImpl;
-import com.atomicleopard.webFramework.bind.http.PathMap;
 import com.atomicleopard.webFramework.collection.factory.SimpleCollectionFactory;
 import com.atomicleopard.webFramework.collection.factory.SimpleMapFactory;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 
-public class Binders {
+public class ParameterBinderSet {
 	private static List<ParameterBinder<?>> sharedBinders = binderMap();
 	private List<ParameterBinder<?>> binders = new ArrayList<ParameterBinder<?>>();
 
-	public Binders addBinder(ParameterBinder<?> binder) {
+	public ParameterBinderSet addBinder(ParameterBinder<?> binder) {
 		binders.add(binder);
 		return this;
 	}
 
-	public Binders addDefaultBinders() {
+	public ParameterBinderSet addDefaultBinders() {
 		binders.addAll(sharedBinders);
 		return this;
 	}
 
-	public List<Object> createFor(List<ParameterDescription> parameterDescriptions, PathMap pathMap) {
+	public List<Object> createFor(List<ParameterDescription> parameterDescriptions, HttpPostDataMap pathMap) {
 		List<Object> parameters = new ArrayList<Object>(parameterDescriptions.size());
 		for (ParameterDescription parameterDescription : parameterDescriptions) {
 			parameters.add(createFor(parameterDescription, pathMap));
@@ -43,7 +42,7 @@ public class Binders {
 		return parameters;
 	}
 
-	public Object createFor(ParameterDescription parameterDescription, PathMap pathMap) {
+	public Object createFor(ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		for (ParameterBinder<?> binder : binders) {
 			if (binder.willBind(parameterDescription)) {
 				return binder.bind(this, parameterDescription, pathMap);

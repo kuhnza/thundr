@@ -21,6 +21,7 @@ import org.junit.Test;
 import com.atomicleopard.webFramework.action.method.ActionInterceptor;
 import com.atomicleopard.webFramework.action.method.FakeController;
 import com.atomicleopard.webFramework.action.method.MethodAction;
+import com.atomicleopard.webFramework.action.method.bind.ActionParameterBinder;
 
 public class ActionParameterBinderTest {
 

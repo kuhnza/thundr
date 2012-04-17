@@ -1,4 +1,4 @@
-package com.atomicleopard.webFramework.bind.json;
+package com.atomicleopard.webFramework.action.method.bind.json;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,9 +7,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.atomicleopard.webFramework.bind.ActionMethodBinder;
-import com.atomicleopard.webFramework.bind.BindException;
-import com.atomicleopard.webFramework.bind.path.PathVariableBinder;
+import com.atomicleopard.webFramework.action.method.bind.ActionMethodBinder;
+import com.atomicleopard.webFramework.action.method.bind.BindException;
+import com.atomicleopard.webFramework.action.method.bind.path.PathVariableBinder;
 import com.atomicleopard.webFramework.http.ContentType;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
 import com.google.gson.Gson;

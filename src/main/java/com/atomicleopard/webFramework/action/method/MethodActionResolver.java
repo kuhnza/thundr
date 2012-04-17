@@ -17,11 +17,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.atomicleopard.webFramework.action.ActionException;
 import com.atomicleopard.webFramework.action.ActionResolver;
-import com.atomicleopard.webFramework.bind.ActionMethodBinder;
-import com.atomicleopard.webFramework.bind.BindException;
-import com.atomicleopard.webFramework.bind.http.HttpBinder;
-import com.atomicleopard.webFramework.bind.json.GsonBinder;
-import com.atomicleopard.webFramework.bind.path.PathVariableBinder;
+import com.atomicleopard.webFramework.action.method.bind.ActionMethodBinder;
+import com.atomicleopard.webFramework.action.method.bind.BindException;
+import com.atomicleopard.webFramework.action.method.bind.http.HttpBinder;
+import com.atomicleopard.webFramework.action.method.bind.json.GsonBinder;
+import com.atomicleopard.webFramework.action.method.bind.path.PathVariableBinder;
 import com.atomicleopard.webFramework.exception.BaseException;
 import com.atomicleopard.webFramework.injection.UpdatableInjectionContext;
 import com.atomicleopard.webFramework.introspection.ParameterDescription;
