@@ -58,7 +58,7 @@ public class Routes {
 			}
 		}
 		String debugString = debug ? listRoutes() : "";
-		throw new RouteException("No route matching the request %s %s\n%s", routeType, routePath, debugString);
+		throw new RouteNotFoundException("No route matching the request %s %s\n%s", routeType, routePath, debugString);
 	}
 
 	private static final String routeDisplayFormat = "%s\n";
@@ -118,7 +118,7 @@ public class Routes {
 					for (Map.Entry<String, String> routeEntry : map.entrySet()) {
 						RouteType routeType = RouteType.from(routeEntry.getKey());
 						if (routeType == null) {
-							throw new RouteException("Unknown route type %s", routeEntry.getKey());
+							throw new RouteNotFoundException("Unknown route type %s", routeEntry.getKey());
 						}
 						routes.add(new Route(route, routeEntry.getValue(), routeType));
 					}
@@ -127,7 +127,7 @@ public class Routes {
 
 			return routes;
 		} catch (Exception e) {
-			throw new RouteException(e, "Failed to parse routes: %s", e.getMessage());
+			throw new RouteNotFoundException(e, "Failed to parse routes: %s", e.getMessage());
 		}
 	}
 

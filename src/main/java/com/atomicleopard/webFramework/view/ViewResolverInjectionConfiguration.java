@@ -1,9 +1,11 @@
 package com.atomicleopard.webFramework.view;
 
+import com.atomicleopard.webFramework.http.exception.HttpStatusException;
 import com.atomicleopard.webFramework.injection.InjectionConfiguration;
 import com.atomicleopard.webFramework.injection.UpdatableInjectionContext;
-import com.atomicleopard.webFramework.route.RouteException;
+import com.atomicleopard.webFramework.route.RouteNotFoundException;
 import com.atomicleopard.webFramework.view.exception.ExceptionViewResolver;
+import com.atomicleopard.webFramework.view.exception.HttpStatusExceptionViewResolver;
 import com.atomicleopard.webFramework.view.exception.RouteNotFoundViewResolver;
 import com.atomicleopard.webFramework.view.json.JsonView;
 import com.atomicleopard.webFramework.view.json.JsonViewResolver;
@@ -25,7 +27,8 @@ public class ViewResolverInjectionConfiguration implements InjectionConfiguratio
 
 	protected void addViewResolvers(ViewResolverRegistry viewResolverRegistry, UpdatableInjectionContext injectionContext) {
 		viewResolverRegistry.addResolver(Throwable.class, new ExceptionViewResolver());
-		viewResolverRegistry.addResolver(RouteException.class, new RouteNotFoundViewResolver());
+		viewResolverRegistry.addResolver(HttpStatusException.class, new HttpStatusExceptionViewResolver());
+		viewResolverRegistry.addResolver(RouteNotFoundException.class, new RouteNotFoundViewResolver());
 		viewResolverRegistry.addResolver(RedirectView.class, new RedirectViewResolver());
 		viewResolverRegistry.addResolver(JsonView.class, new JsonViewResolver());
 		viewResolverRegistry.addResolver(JspView.class, new JspViewResolver());
