@@ -12,6 +12,12 @@ public class StringViewTest {
 	}
 
 	@Test
+	public void shouldHaveContentMatchingFormattedArguments() {
+		assertThat(new StringView("Format %s %d", "value", 15).content().toString(), is("Format value 15"));
+
+	}
+
+	@Test
 	public void shouldHaveToStringShowingContents() {
 		assertThat(new StringView("Content\r\r\n\tIs here ").toString(), is("Content\r\r\n\tIs here "));
 	}

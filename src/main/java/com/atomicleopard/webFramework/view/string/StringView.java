@@ -7,6 +7,10 @@ public class StringView {
 		this.content = content;
 	}
 
+	public StringView(String format, Object... args) {
+		this.content = String.format(format, args);
+	}
+
 	public CharSequence content() {
 		return content;
 	}
