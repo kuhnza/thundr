@@ -23,6 +23,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 	private boolean committed = false;
 	private List<Cookie> cookies = new ArrayList<Cookie>();
 	private int status = -1;
+	private boolean usedWriter = false;
 
 	public String content() {
 		return sos.toString();
@@ -48,7 +49,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
 	@Override
 	public ServletOutputStream getOutputStream() throws IOException {
-		sos = createOutputStream();
+		sos = createOutputStream(false);
 		return new ServletOutputStream() {
 			@Override
 			public void write(int arg0) throws IOException {
@@ -59,7 +60,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
 	@Override
 	public PrintWriter getWriter() throws IOException {
-		sos = createOutputStream();
+		sos = createOutputStream(true);
 		return new PrintWriter(sos);
 	}
 
@@ -211,15 +212,19 @@ public class MockHttpServletResponse implements HttpServletResponse {
 		setStatus(sc);
 	}
 
-	private StringOutputStream createOutputStream() {
-		return new StringOutputStream(characterEncoding) {
-			private static final long serialVersionUID = 9091055607063177122L;
-
+	@SuppressWarnings("serial")
+	private StringOutputStream createOutputStream(boolean usingWriter) {
+		if (sos != null && usingWriter != usedWriter) {
+			throw new IllegalStateException("This request attempted to access both the ServletOutputStream and the PrintWriter of the HttpServletRepsonse");
+		}
+		usedWriter = usingWriter;
+		sos = new StringOutputStream(characterEncoding) {
 			@Override
 			public void flush() throws IOException {
 				super.flush();
 				committed = true;
 			}
 		};
+		return sos;
 	}
 }

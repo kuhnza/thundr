@@ -41,6 +41,7 @@ public class ViewResolverRegistry {
 		return viewResolver;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected <T> ViewResolver<T> createAndCacheResolver(T viewResult) {
 		synchronized (resolversCache) {
 			for (int i = resolversOrder.size() - 1; i >= 0; i--) {
@@ -56,6 +57,7 @@ public class ViewResolverRegistry {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	protected <T> ViewResolver<T> findViewResolverInCache(T viewResult) {
 		synchronized (resolversCache) {
 			return (ViewResolver<T>) resolversCache.get(viewResult);
