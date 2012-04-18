@@ -40,5 +40,10 @@ public class NamedType<T> {
 			return false;
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s (%s)", name, type.getName());
+	}
 
 }

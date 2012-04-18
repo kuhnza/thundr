@@ -140,7 +140,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 
 	@Override
 	public String toString() {
-		return String.format("Injection context (%s instances, %s classes", instances.size() + namedInstances.size(), types.size() + namedTypes.size());
+		return String.format("Injection context (%s instances, %s classes)", instances.size() + namedInstances.size(), types.size() + namedTypes.size());
 	}
 
 	private boolean canSatisfy(List<ParameterDescription> parameterDescriptions) {
