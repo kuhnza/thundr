@@ -15,7 +15,7 @@ public class ConfigurationInjectionConfiguration implements InjectionConfigurati
 	public static final String EnvironmentProperty = "environment";
 	public static final String EnvironmentPropertyOverride = "environmentOverride";
 
-	private static final Map<String, Environment> standardEnvironments = Expressive.mapKeys(Value.Production.name(), Value.Development.name(), null).to(Environment.Production, Environment.Development, Environment.Development);
+	private static final Map<Value, Environment> standardEnvironments = Expressive.mapKeys(Value.Production, Value.Development, null).to(Environment.Production, Environment.Development, Environment.Development);
 
 	private PropertiesLoader propertiesLoader = new PropertiesLoader();
 	private String filename;

@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jodd.bean.BeanUtil;
+import jodd.bean.BeanUtilUtil;
+import jodd.util.StringUtil;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.atomicleopard.webFramework.exception.BaseException;
@@ -24,9 +28,18 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 	private MethodIntrospector methodIntrospector = new MethodIntrospector();
 	private ClassIntrospector classIntrospector = new ClassIntrospector();
 
+	@Override
 	public <T> InjectorBuilder<T> inject(Class<T> type) {
 		return new InjectorBuilder<T>(this, type);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T inject(T instance) {
+		Class<T> class1 = (Class<T>) instance.getClass();
+		addInstance(class1, null, instance);
+		return instance;
+	};
 
 	@SuppressWarnings("unchecked")
 	public <T> T get(Class<T> type) {
@@ -86,7 +99,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 	private <T> T invokeSetters(Class<T> type, T instance) {
 		List<Method> setters = classIntrospector.listSetters(type);
 		for (Method method : setters) {
-			String name = method.getName().replace("set", "");
+			String name = getPropertyNameFromSetMethod(method);
 			try {
 				Class<?> argumentType = method.getParameterTypes()[0];
 				if (contains(argumentType, name)) {
@@ -105,7 +118,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 		List<Field> fields = classIntrospector.listInjectionFields(type);
 		for (Field field : fields) {
 			try {
-				Object beanProperty = get(field.getType());
+				Object beanProperty = get(field.getType(), field.getName());
 				boolean accessible = field.isAccessible();
 				field.setAccessible(true);
 				field.set(instance, beanProperty);
@@ -160,7 +173,13 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 		}
 	}
 
+	private String getPropertyNameFromSetMethod(Method method) {
+		String nameWithUpperCaseFirstLetter = method.getName().replace("set", "");
+		return nameWithUpperCaseFirstLetter.substring(0, 1).toLowerCase() + nameWithUpperCaseFirstLetter.substring(1);
+	}
+
 	private <K, V> HashMap<K, V> map() {
 		return new HashMap<K, V>();
 	}
+
 }

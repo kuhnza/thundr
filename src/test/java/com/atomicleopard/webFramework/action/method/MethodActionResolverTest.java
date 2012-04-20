@@ -183,6 +183,7 @@ public class MethodActionResolverTest {
 		throw new RuntimeException("Expected");
 	}
 
+	@SuppressWarnings("unchecked")
 	private class TestActionInterceptor implements ActionInterceptor<TestAnnotation> {
 		private String onBefore = null;
 		private String onAfter = null;

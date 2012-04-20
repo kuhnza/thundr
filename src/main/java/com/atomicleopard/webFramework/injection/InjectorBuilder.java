@@ -19,7 +19,8 @@ public class InjectorBuilder<T> {
 		injector.addType(type, name, as);
 	}
 
-	public void as(T as) {
+	public T as(T as) {
 		injector.addInstance(type, name, as);
+		return as;
 	}
 }
