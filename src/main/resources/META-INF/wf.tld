@@ -21,6 +21,12 @@
 	    <example>Creates HTML to load a style from the project's static styles location. This tag can be used for css or less files.</example>
     </tag-file>
     
+    <!-- Form field tags -->
+    <tag-file>
+	    <name>checkbox</name>
+		<path>/META-INF/tags/controls/checkbox.tag</path>
+    </tag-file>
+    
     <!-- Logic Tags -->
     <tag-file>
 	    <name>if</name>
