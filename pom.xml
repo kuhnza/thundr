@@ -48,16 +48,16 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet.jsp.jstl</groupId>
-			<artifactId>javax.servlet.jsp.jstl-api</artifactId>
-			<version>1.2.1</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>javax.el</groupId>
 			<artifactId>javax.el-api</artifactId>
 			<version>2.2.4</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- GAE API dependency -->
@@ -135,14 +135,8 @@
 		</dependency>
 
 		<!-- ehcache is used for local, non-distributed caches -->
-		<!-- While this is the latest version - the javax.cache interface it implements is different to that of the GCache <version>1.4.0-beta1</version> 
-		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache-jcache</artifactId>
-			<version>1.2</version>
-			<scope>compile</scope>
-		</dependency>
-		-->
+		<!-- While this is the latest version - the javax.cache interface it implements is different to that of the GCache <version>1.4.0-beta1</version> <dependency> <groupId>net.sf.ehcache</groupId> <artifactId>ehcache-jcache</artifactId> 
+			<version>1.2</version> <scope>compile</scope> </dependency> -->
 
 		<!-- Test Dependencies -->
 		<dependency>
