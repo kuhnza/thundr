@@ -16,6 +16,11 @@
 		<path>/META-INF/tags/controls/style.tag</path>
 	    <example>Creates HTML to load a style from the project's static styles location. This tag can be used for css or less files.</example>
     </tag-file>
+    <tag-file>
+	    <name>img</name>
+		<path>/META-INF/tags/controls/img.tag</path>
+	    <example>Creates HTML to insert an image element from the project's static images location.</example>
+    </tag-file>
     
     <!-- Form field tags -->
     <tag-file>
