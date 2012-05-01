@@ -23,6 +23,7 @@ import jodd.util.Wildcard;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.atomicleopard.webFramework.action.ActionException;
 import com.atomicleopard.webFramework.action.ActionResolver;
 import com.atomicleopard.webFramework.exception.BaseException;
 import com.atomicleopard.webFramework.logger.Logger;
@@ -70,7 +71,7 @@ public class StaticResourceActionResolver implements ActionResolver<StaticResour
 	}
 
 	@Override
-	public Object resolve(StaticResourceAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
+	public Object resolve(StaticResourceAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) throws ActionException {
 		try {
 			serve(action, req, resp);
 			return null;

@@ -1,6 +1,7 @@
 package com.atomicleopard.webFramework.action.method;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import jodd.util.ReflectUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.atomicleopard.expressive.Cast;
 import com.atomicleopard.webFramework.action.ActionException;
 import com.atomicleopard.webFramework.action.ActionResolver;
 import com.atomicleopard.webFramework.action.method.bind.ActionMethodBinder;
@@ -65,19 +67,29 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 	}
 
 	@Override
-	public Object resolve(MethodAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
+	public Object resolve(MethodAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) throws ActionException{
 		Object controller = getOrCreateController(action);
 		List<?> arguments = bindArguments(action, req, resp, pathVars);
 		Map<Annotation, ActionInterceptor<Annotation>> interceptors = action.interceptors();
 		Object result = null;
+		Exception exception = null;
 		try {
 			result = beforeInterceptors(interceptors, req, resp);
 			result = result != null ? result : action.invoke(controller, arguments);
 			result = afterInterceptors(result, interceptors, req, resp);
+		} catch (InvocationTargetException e) {
+			// we need to unwrap InvocationTargetExceptions to get at the real exception
+			exception = Cast.as(e.getTargetException(), Exception.class);
+			if (exception == null) {
+				throw new BaseException(e);
+			}
 		} catch (Exception e) {
-			result = exceptionInterceptors(interceptors, req, resp, e);
+			exception = e;
+		}
+		if (exception != null) {
+			result = exceptionInterceptors(interceptors, req, resp, exception);
 			if (result == null) {
-				throw new ActionException(e, "Failed in %s: %s", action, e.getMessage());
+				throw new ActionException(exception, "Failed in %s: %s", action, exception.getMessage());
 			}
 		}
 		Logger.debug("%s -> %s resolved", req.getRequestURI(), action);
@@ -86,8 +98,8 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 
 	private List<Object> bindArguments(MethodAction action, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
 		List<ParameterDescription> parameterDescriptions = action.parameters();
-		for(ActionMethodBinder binder : methodBinders){
-			if(binder.canBind(req.getContentType())){
+		for (ActionMethodBinder binder : methodBinders) {
+			if (binder.canBind(req.getContentType())) {
 				return binder.bindAll(parameterDescriptions, req, resp, pathVars);
 			}
 		}

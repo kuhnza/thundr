@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.atomicleopard.expressive.Cast;
+import com.atomicleopard.webFramework.action.ActionException;
 import com.atomicleopard.webFramework.injection.DefaultInjectionConfiguration;
 import com.atomicleopard.webFramework.injection.InjectionConfiguration;
 import com.atomicleopard.webFramework.injection.InjectionContextImpl;
@@ -49,6 +51,10 @@ public class WebFrameworkServlet extends HttpServlet {
 				viewResolver.resolve(req, resp, viewResult);
 			}
 		} catch (Exception e) {
+			if(Cast.is(e, ActionException.class)){
+				// unwrap ActionException if it is one
+				e = (Exception) Cast.as(e, ActionException.class).getCause();
+			}
 			if (!resp.isCommitted()) {
 				ViewResolver<Exception> viewResolver = viewResolverRegistry.findViewResolver(e);
 				if (viewResolver != null) {

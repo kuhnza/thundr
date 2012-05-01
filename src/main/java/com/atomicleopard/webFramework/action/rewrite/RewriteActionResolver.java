@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.atomicleopard.webFramework.action.ActionException;
 import com.atomicleopard.webFramework.action.ActionResolver;
 import com.atomicleopard.webFramework.route.RouteType;
 import com.atomicleopard.webFramework.route.Routes;
@@ -30,7 +31,7 @@ public class RewriteActionResolver implements ActionResolver<RewriteAction> {
 	}
 
 	@Override
-	public Object resolve(RewriteAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
+	public Object resolve(RewriteAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) throws ActionException {
 		String rewriteTo = action.getRewriteTo(pathVars);
 		return routes.invoke(rewriteTo, routeType, req, resp);
 	}

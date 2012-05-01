@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.atomicleopard.webFramework.route.RouteType;
 
 public interface ActionResolver<T extends Action> {
-	public Object resolve(T action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars);
+	public Object resolve(T action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) throws ActionException;
 
 	public T createActionIfPossible(String actionName);
 }
