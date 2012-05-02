@@ -145,12 +145,6 @@
 			<scope>compile</scope>
 		</dependency>
 		-->
-		<dependency>
-			<groupId>javax.cache</groupId>
-			<artifactId>cache-api</artifactId>
-			<version>0.5</version>
-			<scope>compile</scope>
-		</dependency>
 
 		<!-- Test Dependencies -->
 		<dependency>
