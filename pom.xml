@@ -68,12 +68,6 @@
 			<version>${gae.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-jsr107cache</artifactId>
-			<version>${gae.version}</version>
-			<scope>compile</scope>
-		</dependency>
 
 		<!-- Mail -->
 		<dependency>
@@ -142,8 +136,21 @@
 		</dependency>
 
 		<!-- ehcache is used for local, non-distributed caches -->
-		<!-- While this is the latest version - the javax.cache interface it implements is different to that of the GCache <version>1.4.0-beta1</version> <dependency> <groupId>net.sf.ehcache</groupId> <artifactId>ehcache-jcache</artifactId> 
-			<version>1.2</version> <scope>compile</scope> </dependency> -->
+		<!-- While this is the latest version - the javax.cache interface it implements is different to that of the GCache <version>1.4.0-beta1</version> -->
+		<!-- 
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-jcache</artifactId>
+			<version>1.2</version>
+			<scope>compile</scope>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>javax.cache</groupId>
+			<artifactId>cache-api</artifactId>
+			<version>0.5</version>
+			<scope>compile</scope>
+		</dependency>
 
 		<!-- Test Dependencies -->
 		<dependency>
