@@ -1,7 +1,8 @@
-<%@tag import="java.util.List"%>
-<%@tag import="java.util.ArrayList"%>
-<%@tag import="java.util.UUID"%>
-<%@tag import="java.util.LinkedHashMap"%>
+<%@ tag trimDirectiveWhitespaces="true"%>
+<%@ tag import="java.util.List" %>
+<%@ tag import="java.util.ArrayList" %>
+<%@ tag import="java.util.UUID" %>
+<%@ tag import="java.util.LinkedHashMap" %>
 <%@ attribute name="condition" required="true" %>
 <%@ attribute name="suppressVersion" required="false" type="java.lang.Boolean" description="If set to true, scripts will not append the application version as a request parameter. This is useful to keep resources inline with application deployments" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

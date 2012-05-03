@@ -1,4 +1,4 @@
-<%@ tag body-content="empty"%>
+<%@ tag body-content="empty" trimDirectiveWhitespaces="true"%>
 <%@ attribute name="var" required="false" description="Name of the exported scoped variable to hold the value specified in the action. The type of the scoped variable is whatever type the value expression evaluates to." %>
 <%@ attribute name="value" required="false" description="Expression to be evaluated." %>
 <%@ attribute name="scope" required="false" description="Scope for var." %>

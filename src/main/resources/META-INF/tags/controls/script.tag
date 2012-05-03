@@ -1,4 +1,4 @@
-<%@ tag body-content="empty" dynamic-attributes="dynAttrs" %>
+<%@ tag body-content="empty" dynamic-attributes="dynAttrs" trimDirectiveWhitespaces="true" %>
 <%@ attribute name="src" required="true" description="The source file for the script to reference. If a relative file is given, it is assumed to be from the /static/javascript/ web app location." %>
 <%@ attribute name="suppressVersion" required="false" type="java.lang.Boolean" description="If set to true, scripts will not append the application version as a request parameter. This is useful to keep resources inline with application deployments" %>
 <%@ tag body-content="empty" %>
