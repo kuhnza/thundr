@@ -47,4 +47,10 @@
 		<path>/META-INF/tags/logic/set.tag</path>
     </tag-file>
      -->
+     
+     <!-- Output Tags -->
+     <tag-file>
+	    <name>urlEncode</name>
+		<path>/META-INF/tags/controls/urlEncode.tag</path>
+    </tag-file>
 </taglib>
