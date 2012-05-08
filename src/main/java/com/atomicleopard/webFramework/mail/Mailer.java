@@ -5,14 +5,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.atomicleopard.webFramework.collection.Pair;
 import com.atomicleopard.webFramework.collection.Triplets;
@@ -26,11 +30,12 @@ public class Mailer {
 	}
 
 	public MailBuilder mail(HttpServletRequest request) {
-		return new MailBuilder(this, request);
+		return new MailBuilderImpl(this, request);
 	}
 
-	void send(MailBuilder mailBuilder) {
+	void send(MailBuilderImpl mailBuilder) {
 		Map.Entry<String, String> from = mailBuilder.from();
+		Map.Entry<String, String> replyTo = mailBuilder.replyTo();
 		Triplets<RecipientType, String, String> recipients = mailBuilder.recipients();
 
 		Session emailSession = Session.getDefaultInstance(new Properties());
@@ -38,6 +43,9 @@ public class Mailer {
 		try {
 			Message message = new MimeMessage(emailSession);
 			message.setFrom(emailAddress(from.getKey(), from.getValue()));
+			if (replyTo != null) {
+				message.setReplyTo(new Address[] { emailAddress(replyTo.getKey(), replyTo.getValue()) });
+			}
 			message.setSubject(mailBuilder.subject());
 			String content = mailBuilder.content();
 			message.setContent(content, "text/html");
@@ -62,9 +70,11 @@ public class Mailer {
 
 	private InternetAddress emailAddress(String address, String name) {
 		try {
-			return new InternetAddress(address, name);
+			return StringUtils.isBlank(name) ? new InternetAddress(address) : new InternetAddress(address, name);
 		} catch (UnsupportedEncodingException e) {
-			throw new MailException(e, "Failed to send an email - unable to set a recipient of %s <%s>: %s", address, name, e.getMessage());
+			throw new MailException(e, "Failed to send an email - unable to set a sender or recipient of %s <%s>: %s", address, name, e.getMessage());
+		} catch (AddressException e) {
+			throw new MailException(e, "Failed to send an email - unable to set a sender or recipient of %s <%s>: %s", address, name, e.getMessage());
 		}
 	}
 }

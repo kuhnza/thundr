@@ -26,8 +26,14 @@ public class ViewResolverInjectionConfiguration implements InjectionConfiguratio
 	}
 
 	protected void addViewResolvers(ViewResolverRegistry viewResolverRegistry, UpdatableInjectionContext injectionContext) {
-		viewResolverRegistry.addResolver(Throwable.class, new ExceptionViewResolver());
-		viewResolverRegistry.addResolver(HttpStatusException.class, new HttpStatusExceptionViewResolver());
+		ExceptionViewResolver exceptionViewResolver = new ExceptionViewResolver();
+		HttpStatusExceptionViewResolver statusViewResolver = new HttpStatusExceptionViewResolver();
+		
+		injectionContext.inject(ExceptionViewResolver.class).as(exceptionViewResolver);
+		injectionContext.inject(HttpStatusExceptionViewResolver.class).as(statusViewResolver);
+		
+		viewResolverRegistry.addResolver(Throwable.class, exceptionViewResolver);
+		viewResolverRegistry.addResolver(HttpStatusException.class, statusViewResolver);
 		viewResolverRegistry.addResolver(RouteNotFoundException.class, new RouteNotFoundViewResolver());
 		viewResolverRegistry.addResolver(RedirectView.class, new RedirectViewResolver());
 		viewResolverRegistry.addResolver(JsonView.class, new JsonViewResolver());
