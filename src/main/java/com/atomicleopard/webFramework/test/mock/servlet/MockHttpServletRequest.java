@@ -37,6 +37,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 	private String queryString = "";
 	private HttpSession session;
 	private String content;
+	private MockRequestDispatcher requestDispatcher = new MockRequestDispatcher();
 
 	public MockHttpServletRequest() {
 	}
@@ -237,7 +238,12 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
 	@Override
 	public RequestDispatcher getRequestDispatcher(String path) {
-		return new MockRequestDispatcher(path);
+		requestDispatcher.lastPath(path);
+		return requestDispatcher;
+	}
+
+	public MockRequestDispatcher requestDispatcher() {
+		return requestDispatcher;
 	}
 
 	@Override

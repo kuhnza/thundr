@@ -20,6 +20,7 @@ import jodd.util.MimeTypes;
 public class MockServletContext implements ServletContext {
 	private Map<String, String> initParameters;
 	private Map<String, Object> attributes;
+	private MockRequestDispatcher requestDispatcher = new MockRequestDispatcher();
 
 	public MockServletContext() {
 		this(new HashMap<String, Object>(), new HashMap<String, String>());
@@ -81,12 +82,17 @@ public class MockServletContext implements ServletContext {
 		if (!path.startsWith("/")) {
 			throw new IllegalArgumentException("RequestDispatcher path at ServletContext level must start with '/'");
 		}
-		return new MockRequestDispatcher(path);
+		requestDispatcher.lastPath(path);
+		return requestDispatcher;
 	}
 
 	@Override
 	public RequestDispatcher getNamedDispatcher(String name) {
-		return new MockRequestDispatcher(null);
+		return requestDispatcher;
+	}
+
+	public MockRequestDispatcher requestDispatcher() {
+		return requestDispatcher;
 	}
 
 	@Override

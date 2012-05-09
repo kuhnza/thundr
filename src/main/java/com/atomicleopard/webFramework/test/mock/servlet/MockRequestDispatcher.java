@@ -9,9 +9,23 @@ import javax.servlet.ServletResponse;
 
 public class MockRequestDispatcher implements RequestDispatcher {
 	private String path;
+	private boolean forwarded = false;
+	private boolean included = false;
 
-	public MockRequestDispatcher(String path) {
+	public void lastPath(String path) {
 		this.path = path;
+	}
+
+	public String lastPath() {
+		return path;
+	}
+
+	public boolean forwarded() {
+		return forwarded;
+	}
+
+	public boolean included() {
+		return included;
 	}
 
 	public String getPath() {
@@ -23,6 +37,7 @@ public class MockRequestDispatcher implements RequestDispatcher {
 		if (response.isCommitted()) {
 			throw new IllegalStateException("Reponse already commited");
 		}
+		forwarded = true;
 	}
 
 	@Override
@@ -30,5 +45,6 @@ public class MockRequestDispatcher implements RequestDispatcher {
 		if (response.isCommitted()) {
 			throw new IllegalStateException("Reponse already commited");
 		}
+		included = true;
 	}
 }
