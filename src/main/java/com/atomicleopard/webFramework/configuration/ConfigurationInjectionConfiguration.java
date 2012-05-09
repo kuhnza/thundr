@@ -33,6 +33,7 @@ public class ConfigurationInjectionConfiguration implements InjectionConfigurati
 		Logger.info("Loading application properties from %s", filename);
 		Map<String, String> properties = loadProperties();
 		Environment environment = detectEnvironment(properties);
+		Logger.info("Running as %s environment", environment.getEnvironment());
 		injectionContext.inject(Environment.class).as(environment);
 		injectPropertiesBasedOnEnvironment(injectionContext, properties, environment);
 		Logger.debug("Loaded application properties");
