@@ -19,7 +19,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.threewks.thundr.action.method.ActionInterceptor;
-import com.threewks.thundr.action.method.FakeController;
 import com.threewks.thundr.action.method.MethodAction;
 import com.threewks.thundr.action.method.bind.ActionParameterBinder;
 
@@ -35,7 +34,7 @@ public class ActionParameterBinderTest {
 	@Before
 	public void before() {
 		request = mock(HttpServletRequest.class);
-		when(request.getParameterMap()).thenReturn(Collections.<String, String[]>emptyMap());
+		when(request.getParameterMap()).thenReturn(Collections.<String, String[]> emptyMap());
 	}
 
 	@Test
@@ -85,10 +84,8 @@ public class ActionParameterBinderTest {
 		assertThat(binder.bind(method, request, null, emptyMap).size(), is(1));
 		assertThat(binder.bind(method, request, null, emptyMap), isList(o, nullObject));
 		assertThat(binder.bind(method, request("argument1[0]", "value1"), null, emptyMap), isList(o, map("0", list("value1"))));
-		assertThat(binder.bind(method, request("argument1[first]", "value1", "argument1[second]", "value2", "argument1[third]", "value3"), null, emptyMap),
-				isList(o, map("first", list("value1"), "second", list("value2"), "third", list("value3"))));
-		assertThat(binder.bind(method, request("argument1[first]", "", "argument1[second_second]", "value2", "argument1[THIRD]", "value3", "argument1[fourth]", null), null, emptyMap),
-				isList(o, map("first", null, "second_second", list("value2"), "THIRD", list("value3"), "fourth", null)));
+		assertThat(binder.bind(method, request("argument1[first]", "value1", "argument1[second]", "value2", "argument1[third]", "value3"), null, emptyMap), isList(o, map("first", list("value1"), "second", list("value2"), "third", list("value3"))));
+		assertThat(binder.bind(method, request("argument1[first]", "", "argument1[second_second]", "value2", "argument1[THIRD]", "value3", "argument1[fourth]", null), null, emptyMap), isList(o, map("first", null, "second_second", list("value2"), "THIRD", list("value3"), "fourth", null)));
 		// TODO - Implicit map - what would an unindexed map posted look like?
 		// assertThat(binder.bind(method("methodMap"), request("argument1", new String[] { "value1", "value2" }), null, emptyMap), isList(o, map("value1", "value2")));
 	}
@@ -99,10 +96,8 @@ public class ActionParameterBinderTest {
 		assertThat(binder.bind(method, request, null, emptyMap).size(), is(1));
 		assertThat(binder.bind(method, request, null, emptyMap), isList(o, nullObject));
 		assertThat((String[]) binder.bind(method, request("argument1[0]", "value1"), null, emptyMap).get(0), isArray(String.class, "value1"));
-		assertThat((String[]) binder.bind(method, request("argument1[0]", "value1", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap).get(0),
-				isArray(String.class, "value1", "value2", null, "value3"));
-		assertThat((String[]) binder.bind(method, request("argument1[0]", "", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap).get(0),
-				isArray(String.class, "", "value2", null, "value3"));
+		assertThat((String[]) binder.bind(method, request("argument1[0]", "value1", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap).get(0), isArray(String.class, "value1", "value2", null, "value3"));
+		assertThat((String[]) binder.bind(method, request("argument1[0]", "", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap).get(0), isArray(String.class, "", "value2", null, "value3"));
 		assertThat((String[]) binder.bind(method, request("argument1", new String[] { "value1", "value2" }), null, emptyMap).get(0), isArray(String.class, "value1", "value2"));
 		assertThat(binder.bind(method, request("argument1", null), null, emptyMap), isList(o, nullObject));
 		assertThat(binder.bind(method, request("argument1", ""), null, emptyMap), isList(o, nullObject));
@@ -114,10 +109,8 @@ public class ActionParameterBinderTest {
 		assertThat(binder.bind(method, request, null, emptyMap).size(), is(1));
 		assertThat(binder.bind(method, request, null, emptyMap), isList(o, nullObject));
 		assertThat((String[]) binder.bind(method, request("argument1[0]", "value1"), null, emptyMap).get(0), isArray(String.class, "value1"));
-		assertThat((String[]) binder.bind(method, request("argument1[0]", "value1", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap).get(0),
-				isArray(String.class, "value1", "value2", null, "value3"));
-		assertThat((String[]) binder.bind(method, request("argument1[0]", "", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap).get(0),
-				isArray(String.class, "", "value2", null, "value3"));
+		assertThat((String[]) binder.bind(method, request("argument1[0]", "value1", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap).get(0), isArray(String.class, "value1", "value2", null, "value3"));
+		assertThat((String[]) binder.bind(method, request("argument1[0]", "", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap).get(0), isArray(String.class, "", "value2", null, "value3"));
 		assertThat((String[]) binder.bind(method, request("argument1", new String[] { "value1", "value2" }), null, emptyMap).get(0), isArray(String.class, "value1", "value2"));
 		assertThat(binder.bind(method, request("argument1", null), null, emptyMap), isList(o, nullObject));
 		assertThat(binder.bind(method, request("argument1", ""), null, emptyMap), isList(o, nullObject));
@@ -134,6 +127,7 @@ public class ActionParameterBinderTest {
 		assertThat(binder.bind(method, request("argument1.name", new String[] { "value1", "value2" }), null, emptyMap), isList(Object.class, new JavaBean("value1,value2", null)));
 		assertThat(binder.bind(method, request("argument1.name", null), null, emptyMap), isList(Object.class, new JavaBean(null, null)));
 		assertThat(binder.bind(method, request("argument1.name", ""), null, emptyMap), isList(Object.class, new JavaBean("", null)));
+		assertThat(binder.bind(method, request("argument1.name", "multiline\ncontent"), null, emptyMap), isList(Object.class, new JavaBean("multiline\ncontent", null)));
 		assertThat(binder.bind(method, request("argument1", null), null, emptyMap), isList(o, nullObject));
 		assertThat(binder.bind(method, request("argument1", ""), null, emptyMap), isList(o, nullObject));
 	}
@@ -144,12 +138,9 @@ public class ActionParameterBinderTest {
 		assertThat(binder.bind(method, request, null, emptyMap).size(), is(1));
 		assertThat(binder.bind(method, request, null, emptyMap), isList(o, nullObject));
 		assertThat(binder.bind(method, request("argument1.name", "myname"), null, emptyMap), isList(Object.class, new DeepJavaBean("myname", null)));
-		assertThat(binder.bind(method, request("argument1.name", "myname", "argument1.beans[0].name", "some name"), null, emptyMap),
-				isList(Object.class, new DeepJavaBean("myname", list(new JavaBean("some name", null)))));
-		assertThat(binder.bind(method, request("argument1.name", "myname", "argument1.beans[0].name", "some name", "argument1.beans[1].name", "some other"), null, emptyMap),
-				isList(Object.class, new DeepJavaBean("myname", list(new JavaBean("some name", null), new JavaBean("some other", null)))));
-		assertThat(binder.bind(method, request("argument1.name", "myname", "argument1.beans[1].name", "some name"), null, emptyMap),
-				isList(Object.class, new DeepJavaBean("myname", list(null, new JavaBean("some name", null)))));
+		assertThat(binder.bind(method, request("argument1.name", "myname", "argument1.beans[0].name", "some name"), null, emptyMap), isList(Object.class, new DeepJavaBean("myname", list(new JavaBean("some name", null)))));
+		assertThat(binder.bind(method, request("argument1.name", "myname", "argument1.beans[0].name", "some name", "argument1.beans[1].name", "some other"), null, emptyMap), isList(Object.class, new DeepJavaBean("myname", list(new JavaBean("some name", null), new JavaBean("some other", null)))));
+		assertThat(binder.bind(method, request("argument1.name", "myname", "argument1.beans[1].name", "some name"), null, emptyMap), isList(Object.class, new DeepJavaBean("myname", list(null, new JavaBean("some name", null)))));
 		assertThat(binder.bind(method, request("argument1", null), null, emptyMap), isList(o, nullObject));
 		assertThat(binder.bind(method, request("argument1", ""), null, emptyMap), isList(o, nullObject));
 	}

@@ -45,6 +45,11 @@ public class EncoderTest {
 	}
 
 	@Test
+	public void shouldCrc32() {
+		assertThat(new Encoder("0").crc32().hex().string(), is("f4dbdf21"));
+	}
+
+	@Test
 	public void shouldRespectDifferentEncodings() {
 		assertThat(new Encoder("0", "UTF-16BE").hex().string("UTF-16BE"), is(not("30")));
 		assertThat(new Encoder("0", "UTF-16BE").hex().unhex().string("UTF-16BE"), is("0"));

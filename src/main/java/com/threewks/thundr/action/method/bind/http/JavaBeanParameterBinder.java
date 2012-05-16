@@ -14,7 +14,7 @@ public class JavaBeanParameterBinder implements ParameterBinder<Object> {
 	private static Set<Class<?>> classesToSkip = createClassesToSkip();
 
 	public Object bind(ParameterBinderSet binders, ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
-		Map<String, String[]> stringMap = pathMap.toStringMap(parameterDescription.name());
+		Map<String, Object> stringMap = pathMap.toStringMap(parameterDescription.name());
 		if (!stringMap.isEmpty()) {
 			try {
 				Object bean = parameterDescription.classType().newInstance();

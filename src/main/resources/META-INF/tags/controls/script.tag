@@ -18,5 +18,4 @@
 	</c:choose>
 </c:if>
 
-<c:url var="href" value="${src}" />
-<script src="${href}" type="text/javascript" <c:forEach items="${dynAttrs}" var="dynAttr">${dynAttr.key}="${dynAttr.value}"</c:forEach>></script>
+<script src="${src}" type="text/javascript" <c:forEach items="${dynAttrs}" var="dynAttr">${dynAttr.key}="${dynAttr.value}"</c:forEach>></script>

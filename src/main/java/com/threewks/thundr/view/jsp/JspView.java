@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class JspView {
+import com.threewks.thundr.view.View;
+
+public class JspView implements View {
 	private String view;
 	private Map<String, Object> model;
 

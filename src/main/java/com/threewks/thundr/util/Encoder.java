@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.zip.CRC32;
+import java.util.zip.Checksum;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base32;
@@ -84,6 +86,14 @@ public class Encoder {
 
 	public Encoder sha256() {
 		return digest("SHA-256");
+	}
+
+	public Encoder crc32() {
+		Checksum checksum = new CRC32();
+		checksum.update(data, 0, data.length);
+		long checksumValue = checksum.getValue();
+		data = Long.toHexString(checksumValue).getBytes();
+		return unhex();
 	}
 
 	public Encoder digest(String algorithm) {

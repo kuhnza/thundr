@@ -108,9 +108,11 @@ public class HttpPostDataMap {
 	 * would look like this:
 	 * object.a -> value A
 	 * object.b -> value B
+	 * 
+	 * The returned map is a map of String -> String, or if multiple values exist, String -> String[]
 	 */
-	public Map<String, String[]> toStringMap(String pathElement) {
-		Map<String, String[]> stringMap = new HashMap<String, String[]>();
+	public Map<String, Object> toStringMap(String pathElement) {
+		Map<String, Object> stringMap = new HashMap<String, Object>();
 		for (Entry<List<String>, String[]> entry : delegate.entrySet()) {
 			List<String> key = entry.getKey();
 
@@ -127,7 +129,8 @@ public class HttpPostDataMap {
 				}
 				String stringKey = joinedKey.toString();
 				if (stringKey.length() > 0) {
-					stringMap.put(stringKey, entry.getValue());
+					String[] value = entry.getValue();
+					stringMap.put(stringKey, value == null || value.length > 1 ? value: value[0]);
 				}
 			}
 		}

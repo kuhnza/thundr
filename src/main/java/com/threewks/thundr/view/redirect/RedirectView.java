@@ -1,6 +1,8 @@
 package com.threewks.thundr.view.redirect;
 
-public class RedirectView {
+import com.threewks.thundr.view.View;
+
+public class RedirectView implements View {
 	private String path;
 
 	public RedirectView(String path) {

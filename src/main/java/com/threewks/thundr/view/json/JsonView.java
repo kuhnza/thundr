@@ -1,6 +1,8 @@
 package com.threewks.thundr.view.json;
 
-public class JsonView {
+import com.threewks.thundr.view.View;
+
+public class JsonView implements View {
 	private Object output;
 
 	public JsonView(Object output) {
