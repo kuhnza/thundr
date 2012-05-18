@@ -11,7 +11,8 @@ import com.atomicleopard.expressive.EList;
 
 public class Route {
 	public static final Pattern PathParameterToken = Pattern.compile("\\{(.*?)\\}");
-	static final String AcceptablePathCharacters = "\\w%\\.\\-";
+	// from -> http://www.ietf.org/rfc/rfc1738.txt: "Thus, only alphanumerics, the special characters "$-_.+!*'()," ... may be used unencoded within a URL."
+	static final String AcceptablePathCharacters = "\\w%\\.\\-&,$+*'\\(\\)!";
 	static final String AcceptableMultiPathCharacters = AcceptablePathCharacters + "/";
 
 	private String route;
@@ -63,11 +64,11 @@ public class Route {
 	}
 
 	static String convertPathStringToRegex(String route) {
-		route = PathParameterToken.matcher(route).replaceAll(Matcher.quoteReplacement("([" + AcceptablePathCharacters + "]+)"));
+		String wildCardPlaceholder = "____placeholder____";
+		route = route.replaceAll("\\*\\*", wildCardPlaceholder);
 		route = route.replaceAll("\\*", Matcher.quoteReplacement("[" + AcceptablePathCharacters + "]*?"));
-		// for double asterisk, replace the above replacement
-		String acceptablePathCharsEscaped = "\\[\\\\w%\\\\.\\\\-\\]\\*\\?";
-		route = route.replaceAll(acceptablePathCharsEscaped + acceptablePathCharsEscaped, Matcher.quoteReplacement("[" + AcceptableMultiPathCharacters + "]*?"));
+		route = PathParameterToken.matcher(route).replaceAll(Matcher.quoteReplacement("([" + AcceptablePathCharacters + "]+)"));
+		route = route.replaceAll(wildCardPlaceholder, Matcher.quoteReplacement("[" + AcceptableMultiPathCharacters + "]*?"));
 		return route;
 	}
 

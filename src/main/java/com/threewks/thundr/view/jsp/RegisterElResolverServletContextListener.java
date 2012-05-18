@@ -14,6 +14,7 @@ public class RegisterElResolverServletContextListener implements ServletContextL
 			Class.forName("org.apache.jasper.compiler.JspRuntimeContext");
 		} catch (ClassNotFoundException e) {
 		}
+		
 		ServletContext context = sce.getServletContext();
 		JspApplicationContext jspContext = JspFactory.getDefaultFactory().getJspApplicationContext(context);
 		jspContext.addELResolver(new AwesomeBeanElResolver());

@@ -1,8 +1,12 @@
 package com.threewks.thundr.route;
 
+import static com.atomicleopard.expressive.Expressive.*;
 import static com.threewks.thundr.route.Route.*;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -78,7 +82,34 @@ public class RouteTest {
 		assertThat(new Route("/path/**", null, null).matches("/path/file.ext"), is(true));
 		assertThat(new Route("/path/**", null, null).matches("/path/1/2/3/more/file.ext"), is(true));
 		assertThat(new Route("/path/**", null, null).matches("/path/1/2/3/more/file."), is(true));
-
+	}
+	@Test
+	public void shouldMatchGivenWildcardPathsWithEscapedUrls() {
+		assertThat(new Route("/path/*", null, null).matches("/path/"), is(true));
+		assertThat(new Route("/path/*", null, null).matches("/path/more+val"), is(true));
+		assertThat(new Route("/path/*", null, null).matches("/path/more%20val"), is(true));
+		assertThat(new Route("/path/*", null, null).matches("/path/more_val"), is(true));
+		assertThat(new Route("/path/*", null, null).matches("/path/more!val"), is(true));
+		assertThat(new Route("/path/*", null, null).matches("/path/more$val"), is(true));
+		assertThat(new Route("/path/*", null, null).matches("/path/more,val"), is(true));
+		assertThat(new Route("/path/*", null, null).matches("/path/more'val"), is(true));
+		assertThat(new Route("/path/*", null, null).matches("/path/more.val"), is(true));
+		assertThat(new Route("/path/*", null, null).matches("/path/more(val"), is(true));
+		assertThat(new Route("/path/*", null, null).matches("/path/more)val"), is(true));
+		assertThat(new Route("/path/*", null, null).matches("/path/more*val"), is(true));
+		
+		
+		assertThat(new Route("/path/**", null, null).matches("/path/more+val/a"), is(true));
+		assertThat(new Route("/path/**", null, null).matches("/path/more%20val/a"), is(true));
+		assertThat(new Route("/path/**", null, null).matches("/path/more_val/a"), is(true));
+		assertThat(new Route("/path/**", null, null).matches("/path/more!val/a"), is(true));
+		assertThat(new Route("/path/**", null, null).matches("/path/more$val/a"), is(true));
+		assertThat(new Route("/path/**", null, null).matches("/path/more,val/a"), is(true));
+		assertThat(new Route("/path/**", null, null).matches("/path/more'val/a"), is(true));
+		assertThat(new Route("/path/**", null, null).matches("/path/more.val/a"), is(true));
+		assertThat(new Route("/path/**", null, null).matches("/path/more(val/a"), is(true));
+		assertThat(new Route("/path/**", null, null).matches("/path/more)val/a"), is(true));
+		assertThat(new Route("/path/**", null, null).matches("/path/more*val/a"), is(true));
 	}
 
 	@Test

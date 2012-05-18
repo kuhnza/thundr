@@ -44,9 +44,24 @@
 		<path>/META-INF/tags/logic/else.tag</path>
 	</tag-file>
 	<!-- This bad boy isn't ready for prime time yet <tag-file> <name>set</name> <path>/META-INF/tags/logic/set.tag</path> </tag-file> -->
-	<!-- Output Tags -->
-	<tag-file>
-		<name>urlEncode</name>
-		<path>/META-INF/tags/controls/urlEncode.tag</path>
-	</tag-file>
+	
+	<!-- Functions -->
+	<function>
+		<name>path</name>
+		<function-class>com.threewks.thundr.view.jsp.el.UrlFunctions</function-class>
+		<function-signature>java.lang.String path(java.lang.String)</function-signature>
+	</function>
+	<function>
+		<name>param</name>
+		<function-class>com.threewks.thundr.view.jsp.el.UrlFunctions</function-class>
+		<function-signature>java.lang.String param(java.lang.String)</function-signature>
+	</function>
+	<!-- 
+	Again - not ready for prime time - requires JUEL, which is hard to integrate into GAE/J 
+	<function>
+		<name>list</name>
+		<function-class>com.threewks.thundr.view.jsp.el.CollectionFunctions</function-class>
+		<function-signature>java.util.List list(java.lang.Object[])</function-signature>
+	</function>
+	-->
 </taglib>
