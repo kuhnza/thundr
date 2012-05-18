@@ -52,6 +52,11 @@
 		<function-signature>java.lang.String path(java.lang.String)</function-signature>
 	</function>
 	<function>
+		<name>pathSlug</name>
+		<function-class>com.threewks.thundr.view.jsp.el.UrlFunctions</function-class>
+		<function-signature>java.lang.String pathSlug(java.lang.String)</function-signature>
+	</function>
+	<function>
 		<name>param</name>
 		<function-class>com.threewks.thundr.view.jsp.el.UrlFunctions</function-class>
 		<function-signature>java.lang.String param(java.lang.String)</function-signature>

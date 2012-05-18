@@ -1,19 +1,14 @@
 package com.threewks.thundr.route;
 
-import static com.atomicleopard.expressive.Expressive.*;
 import static com.threewks.thundr.route.Route.*;
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import com.atomicleopard.expressive.Expressive;
-import com.threewks.thundr.route.Route;
 
 public class RouteTest {
 	@Test
@@ -49,9 +44,17 @@ public class RouteTest {
 		assertThat(new Route("/something/{var}/more/{var2}", null, null).matches("/something/123/more/1234"), is(true));
 		assertThat(new Route("/something/{var}/more/{var2}.jpg", null, null).matches("/something/123/more/1234.jpg"), is(true));
 		assertThat(new Route("/something/file.{ext}", null, null).matches("/something/file.gif"), is(true));
+	}
 
-		assertThat(new Route("/something/{var}/more/{var2}.jpg", null, null).matches("/something/123/more/1234.png"), is(false));
+	@Test
+	public void shouldMatchPathsWithEscapedCharacters() {
+		assertThat(new Route("/something/{var}/{var2}", null, null).matches("/something/Here%2C%20be%20/dragons%20"), is(true));
+		assertThat(new Route("/something/{var}/{var2}", null, null).matches("/something/Here-be/dragons"), is(true));
+		assertThat(new Route("/something/{var}/{var2}/", null, null).matches("/something/Here%2C%20be%20/dragons/"), is(true));
+		assertThat(new Route("/something/{var}/{var2}/", null, null).matches("/something/Here-be/dragons/"), is(true));
 
+		assertThat(new Route("/browse/{category}/", null, null).matches("/browse/Beauty%2C%20Health%20%26%20Wellbeing/"), is(true));
+		assertThat(new Route("/browse/{category}/", null, null).matches("/browse/Beauty,%20Health%20%26%20Wellbeing/"), is(true));
 	}
 
 	@Test
@@ -83,6 +86,7 @@ public class RouteTest {
 		assertThat(new Route("/path/**", null, null).matches("/path/1/2/3/more/file.ext"), is(true));
 		assertThat(new Route("/path/**", null, null).matches("/path/1/2/3/more/file."), is(true));
 	}
+
 	@Test
 	public void shouldMatchGivenWildcardPathsWithEscapedUrls() {
 		assertThat(new Route("/path/*", null, null).matches("/path/"), is(true));
@@ -97,8 +101,7 @@ public class RouteTest {
 		assertThat(new Route("/path/*", null, null).matches("/path/more(val"), is(true));
 		assertThat(new Route("/path/*", null, null).matches("/path/more)val"), is(true));
 		assertThat(new Route("/path/*", null, null).matches("/path/more*val"), is(true));
-		
-		
+
 		assertThat(new Route("/path/**", null, null).matches("/path/more+val/a"), is(true));
 		assertThat(new Route("/path/**", null, null).matches("/path/more%20val/a"), is(true));
 		assertThat(new Route("/path/**", null, null).matches("/path/more_val/a"), is(true));

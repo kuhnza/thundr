@@ -8,11 +8,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.atomicleopard.expressive.EList;
+import com.threewks.thundr.http.URLEncoder;
 
 public class Route {
 	public static final Pattern PathParameterToken = Pattern.compile("\\{(.*?)\\}");
 	// from -> http://www.ietf.org/rfc/rfc1738.txt: "Thus, only alphanumerics, the special characters "$-_.+!*'()," ... may be used unencoded within a URL."
-	static final String AcceptablePathCharacters = "\\w%\\.\\-&,$+*'\\(\\)!";
+	static final String AcceptablePathCharacters = "\\w%:@&=+$,!~*'()\\.\\-";
 	static final String AcceptableMultiPathCharacters = AcceptablePathCharacters + "/";
 
 	private String route;
@@ -53,7 +54,8 @@ public class Route {
 		Map<String, String> results = new HashMap<String, String>();
 		for (int i = 1; i <= count; i++) {
 			String name = pathParameters.get(i - 1);
-			results.put(name, matcher.group(i));
+
+			results.put(name, URLEncoder.decodePathComponent(matcher.group(i)));
 		}
 		return results;
 	}
