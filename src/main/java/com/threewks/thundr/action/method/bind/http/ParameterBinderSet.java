@@ -45,7 +45,12 @@ public class ParameterBinderSet {
 	public Object createFor(ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		for (ParameterBinder<?> binder : binders) {
 			if (binder.willBind(parameterDescription)) {
-				return binder.bind(this, parameterDescription, pathMap);
+			    
+			    // return the first non-null object
+			    Object result = binder.bind(this, parameterDescription, pathMap);
+			    if (result != null) {
+			        return result;
+			    }
 			}
 		}
 		return null;

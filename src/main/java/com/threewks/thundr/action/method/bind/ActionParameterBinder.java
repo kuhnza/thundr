@@ -39,11 +39,9 @@ public class ActionParameterBinder {
 		InstanceParameterBinder responseBinder = new InstanceParameterBinder(resp);
 		InstanceParameterBinder sessionBinder = new InstanceParameterBinder(req == null ? null : req.getSession());
 
+		binders.addBinder(requestBinder);
+		binders.addBinder(responseBinder);
 		binders.addBinder(sessionBinder);
-		binders.addBinder(requestBinder);
-		binders.addBinder(responseBinder);
-		binders.addBinder(requestBinder);
-		binders.addBinder(responseBinder);
 		binders.addDefaultBinders();
 		return binders;
 	}

@@ -7,13 +7,17 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.action.method.bind.ActionMethodBinder;
 import com.threewks.thundr.action.method.bind.path.PathVariableBinder;
 import com.threewks.thundr.http.ContentType;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class HttpBinder implements ActionMethodBinder {
-	private PathVariableBinder pathVariableBinder;
+	
+    private static final String REQUEST_DOMAIN = "requestDomain";
+	
+    private PathVariableBinder pathVariableBinder;
 	private List<ContentType> supportedContentTypes = Arrays.asList(ContentType.ApplicationFormUrlEncoded, ContentType.TextHtml, ContentType.TextPlain);
 
 	public HttpBinder(PathVariableBinder pathVariableBinder) {
@@ -57,13 +61,13 @@ public class HttpBinder implements ActionMethodBinder {
 		InstanceParameterBinder requestBinder = new InstanceParameterBinder(req);
 		InstanceParameterBinder responseBinder = new InstanceParameterBinder(resp);
 		InstanceParameterBinder sessionBinder = new InstanceParameterBinder(req == null ? null : req.getSession());
+		NamedInstanceParameterBinder requestDomainBinder = new NamedInstanceParameterBinder(Expressive.list(REQUEST_DOMAIN), req.getServerName());
 
+		binders.addDefaultBinders();
 		binders.addBinder(sessionBinder);
 		binders.addBinder(requestBinder);
 		binders.addBinder(responseBinder);
-		binders.addBinder(requestBinder);
-		binders.addBinder(responseBinder);
-		binders.addDefaultBinders();
+		binders.addBinder(requestDomainBinder);
 		return binders;
 	}
 }
