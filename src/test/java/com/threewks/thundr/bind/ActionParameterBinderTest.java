@@ -1,20 +1,25 @@
 package com.threewks.thundr.bind;
 
-import static com.atomicleopard.expressive.Expressive.*;
-import static com.threewks.thundr.matchers.ExtendedMatchers.*;
+import static com.atomicleopard.expressive.Expressive.list;
+import static com.atomicleopard.expressive.Expressive.map;
+import static com.threewks.thundr.matchers.ExtendedMatchers.isArray;
+import static com.threewks.thundr.matchers.ExtendedMatchers.isList;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import jodd.util.ReflectUtil;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -100,7 +105,9 @@ public class ActionParameterBinderTest {
 		assertThat((String[]) binder.bind(method, request("argument1[0]", "", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap).get(0), isArray(String.class, "", "value2", null, "value3"));
 		assertThat((String[]) binder.bind(method, request("argument1", new String[] { "value1", "value2" }), null, emptyMap).get(0), isArray(String.class, "value1", "value2"));
 		assertThat(binder.bind(method, request("argument1", null), null, emptyMap), isList(o, nullObject));
-		assertThat(binder.bind(method, request("argument1", ""), null, emptyMap), isList(o, nullObject));
+		List<Object> bind = binder.bind(method, request("argument1", ""), null, emptyMap);
+		assertThat(bind.size(), is(1));
+		assertThat((String[]) bind.get(0), is(new String[0]));
 	}
 
 	@Test
@@ -113,7 +120,9 @@ public class ActionParameterBinderTest {
 		assertThat((String[]) binder.bind(method, request("argument1[0]", "", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap).get(0), isArray(String.class, "", "value2", null, "value3"));
 		assertThat((String[]) binder.bind(method, request("argument1", new String[] { "value1", "value2" }), null, emptyMap).get(0), isArray(String.class, "value1", "value2"));
 		assertThat(binder.bind(method, request("argument1", null), null, emptyMap), isList(o, nullObject));
-		assertThat(binder.bind(method, request("argument1", ""), null, emptyMap), isList(o, nullObject));
+		List<Object> bind = binder.bind(method, request("argument1", ""), null, emptyMap);
+		assertThat(bind.size(), is(1));
+        assertThat((String[]) bind.get(0), is(new String[0]));
 	}
 
 	@Test
