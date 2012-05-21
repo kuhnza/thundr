@@ -33,7 +33,7 @@ public class URLEncoder {
 	 * @return
 	 */
 	public static final String encodePathSlugComponent(String value) {
-		return value == null ? value : value.replaceAll("\\W", "-").replaceAll("-+", "-");
+		return value == null ? value : value.replaceAll("'", "").replaceAll("\\W", "-").replaceAll("-+", "-");
 	}
 
 	/**

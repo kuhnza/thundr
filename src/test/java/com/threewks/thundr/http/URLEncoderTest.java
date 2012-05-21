@@ -1,11 +1,8 @@
 package com.threewks.thundr.http;
 
-import static com.atomicleopard.expressive.Expressive.*;
 import static com.threewks.thundr.http.URLEncoder.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
 
 import org.junit.Test;
 
@@ -101,13 +98,14 @@ public class URLEncoderTest {
 		assertThat(encodePathSlugComponent("Path&Content"), is("Path-Content"));
 		assertThat(encodePathSlugComponent("Path & Content"), is("Path-Content"));
 		assertThat(encodePathSlugComponent("Path, and Content"), is("Path-and-Content"));
+		assertThat(encodePathSlugComponent("Path's and Content"), is("Paths-and-Content"));
 	}
-	
+
 	@Test
 	public void shouldDecodePath() {
 		assertThat(decodePathComponent(encodePathComponent("This is - some, stuff & ? more things")), is("This is - some, stuff & ? more things"));
 		assertThat(decodePathComponent(encodePathComponent("This is **)()()@#!898492834dfkajd fkjd><\":}{}- some, stuff & ? more things")), is("This is **)()()@#!898492834dfkajd fkjd><\":}{}- some, stuff & ? more things"));
-		
+
 	}
 
 }
