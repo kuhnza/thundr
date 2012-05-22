@@ -25,6 +25,7 @@ import com.threewks.thundr.action.method.bind.http.HttpBinder;
 import com.threewks.thundr.action.method.bind.json.GsonBinder;
 import com.threewks.thundr.action.method.bind.path.PathVariableBinder;
 import com.threewks.thundr.exception.BaseException;
+import com.threewks.thundr.http.ContentType;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.introspection.ParameterDescription;
 import com.threewks.thundr.logger.Logger;
@@ -67,7 +68,7 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 	}
 
 	@Override
-	public Object resolve(MethodAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) throws ActionException{
+	public Object resolve(MethodAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) throws ActionException {
 		Object controller = getOrCreateController(action);
 		List<?> arguments = bindArguments(action, req, resp, pathVars);
 		Map<Annotation, ActionInterceptor<Annotation>> interceptors = action.interceptors();
@@ -98,8 +99,9 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 
 	private List<Object> bindArguments(MethodAction action, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
 		List<ParameterDescription> parameterDescriptions = action.parameters();
+		String sanitisedContentType = ContentType.cleanContentType(req.getContentType());
 		for (ActionMethodBinder binder : methodBinders) {
-			if (binder.canBind(req.getContentType())) {
+			if (binder.canBind(sanitisedContentType)) {
 				return binder.bindAll(parameterDescriptions, req, resp, pathVars);
 			}
 		}
