@@ -1,5 +1,6 @@
 package com.threewks.thundr.action.method;
 
+import static com.atomicleopard.expressive.Expressive.*;
 import static com.atomicleopard.expressive.Expressive.map;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -165,6 +166,13 @@ public class MethodActionResolverTest {
 		assertThat(resolver.createActionIfPossible(MethodActionResolverTest.class.getName() + ".aintNoSuchMethod"), is(nullValue()));
 	}
 
+	@Test
+	public void shouldCreateActionMethodClassAtCreationTime() {
+		resolver = spy(resolver);
+		resolver.createActionIfPossible(MethodActionResolverTest.class.getName()+".intercept");
+		verify(resolver).createController(Mockito.any(MethodAction.class));
+	}
+	
 	private MethodAction prepareActionMethod(String method, TestActionInterceptor registeredInterceptor) {
 		when(injectionContext.get(MethodActionResolverTest.class)).thenReturn(this);
 		resolver.registerInterceptor(TestAnnotation.class, registeredInterceptor);

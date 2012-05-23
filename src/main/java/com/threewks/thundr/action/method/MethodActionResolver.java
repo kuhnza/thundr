@@ -33,7 +33,6 @@ import com.threewks.thundr.route.RouteType;
 
 public class MethodActionResolver implements ActionResolver<MethodAction>, ActionInterceptorRegistry {
 
-	private boolean enableCaching = true;
 	private Map<Class<?>, Object> controllerInstances = new HashMap<Class<?>, Object>();
 	private Map<Class<? extends Annotation>, ActionInterceptor<? extends Annotation>> actionInterceptors = new HashMap<Class<? extends Annotation>, ActionInterceptor<? extends Annotation>>();
 	private List<ActionMethodBinder> methodBinders;
@@ -61,7 +60,12 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 			if (method == null) {
 				return null;
 			}
-			return new MethodAction(clazz, method, findInterceptors(method));
+			MethodAction methodAction = new MethodAction(clazz, method, findInterceptors(method));
+			// force instantiation of controller - this allows controllers to be injected into eachother
+			// and also flushes out instantiation issues at startup
+			Object controller = createController(methodAction);
+			controllerInstances.put(methodAction.type(), controller);
+			return methodAction;
 		} catch (Exception e) {
 			return null;
 		}
@@ -139,25 +143,21 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 		return null;
 	}
 
-	private Object getOrCreateController(MethodAction actionMethod) {
-		if (enableCaching) {
-			Object controller = controllerInstances.get(actionMethod.type());
-			if (controller == null) {
-				synchronized (controllerInstances) {
-					controller = controllerInstances.get(actionMethod.type());
-					if (controller == null) {
-						controller = createController(actionMethod);
-						controllerInstances.put(actionMethod.type(), controller);
-					}
+	private Object getOrCreateController(MethodAction methodAction) {
+		Object controller = controllerInstances.get(methodAction.type());
+		if (controller == null) {
+			synchronized (controllerInstances) {
+				controller = controllerInstances.get(methodAction.type());
+				if (controller == null) {
+					controller = createController(methodAction);
+					controllerInstances.put(methodAction.type(), controller);
 				}
 			}
-			return controller;
-		} else {
-			return createController(actionMethod);
 		}
+		return controller;
 	}
 
-	private <T> T createController(MethodAction actionMethod) {
+	<T> T createController(MethodAction actionMethod) {
 		Class<T> type = actionMethod.type();
 		if (!injectionContext.contains(type)) {
 			injectionContext.inject(type).as(type);
