@@ -8,7 +8,16 @@ import java.util.regex.Pattern;
  * For a world of fun, check out http://www.iana.org/assignments/media-types/index.html
  */
 public enum ContentType {
-	TextPlain("text/plain"), TextHtml("text/html"), TextCss("text/css"), TextJavascript("text/javascript"), ApplicationFormUrlEncoded("application/x-www-form-urlencoded"), ApplicationOctetStream("application/octet-stream"), ApplicationJson("application/json"), ApplicationXml("application/xml"), ApplicationXmlDtd("application/xml-dtd"), ApplicationSoapXml("application/soap+xml");
+	TextPlain("text/plain"),
+	TextHtml("text/html"), 
+	TextCss("text/css"),
+	TextJavascript("text/javascript"),
+	ApplicationFormUrlEncoded("application/x-www-form-urlencoded"),
+	ApplicationOctetStream("application/octet-stream"),
+	ApplicationJson("application/json"),
+	ApplicationXml("application/xml"),
+	ApplicationXmlDtd("application/xml-dtd"),
+	ApplicationSoapXml("application/soap+xml");
 
 	private String value;
 

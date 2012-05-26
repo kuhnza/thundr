@@ -58,7 +58,7 @@ public class MockServletContext implements ServletContext {
 	@Override
 	public String getMimeType(String file) {
 		int lastIndexOf = file.lastIndexOf(".");
-		String find = lastIndexOf > -1 ? file.substring(lastIndexOf) : "";
+		String find = lastIndexOf > -1 ? file.substring(lastIndexOf + 1) : "";
 		return MimeTypes.lookupMimeType(find);
 	}
 
@@ -69,7 +69,7 @@ public class MockServletContext implements ServletContext {
 
 	@Override
 	public URL getResource(String path) throws MalformedURLException {
-		return new URL(path);
+		return new URL("http", "localhost", path);
 	}
 
 	@Override

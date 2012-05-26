@@ -41,6 +41,8 @@ public class StaticResourceActionResolver implements ActionResolver<StaticResour
 
 	private Map<String, String> defaultMimeTypes = new HashMap<String, String>();
 	{
+		defaultMimeTypes.put(".html", "text/html");
+		defaultMimeTypes.put(".htm", "text/html");
 		defaultMimeTypes.put(".css", "text/css");
 		defaultMimeTypes.put(".gif", "image/gif");
 		defaultMimeTypes.put(".ico", "image/vnd.microsoft.icon");
@@ -48,6 +50,7 @@ public class StaticResourceActionResolver implements ActionResolver<StaticResour
 		defaultMimeTypes.put(".jpg", "image/jpeg");
 		defaultMimeTypes.put(".js", "text/javascript");
 		defaultMimeTypes.put(".png", "image/png");
+		defaultMimeTypes.put(".htc", "text/x-component");
 	}
 
 	private Set<String> compressedMimeTypes = new HashSet<String>();
@@ -123,7 +126,7 @@ public class StaticResourceActionResolver implements ActionResolver<StaticResour
 		return cacheDuration;
 	}
 
-	private String deriveMimeType(String resource) {
+	String deriveMimeType(String resource) {
 		String mimeType = servletContext.getMimeType(resource);
 		if (mimeType == null) {
 			String extension = resource.substring(resource.lastIndexOf('.'));
@@ -132,44 +135,20 @@ public class StaticResourceActionResolver implements ActionResolver<StaticResour
 		return mimeType;
 	}
 
-	private boolean shouldZip(String acceptEncoding, String mimeType) {
+	boolean shouldZip(String acceptEncoding, String mimeType) {
 		return gzipEnabled && StringUtils.indexOf(acceptEncoding, "gzip") > -1 && matchesCompressedMimeTypes(mimeType);
 	}
 
-	private boolean matchesCompressedMimeTypes(String mimeType) {
+	boolean matchesCompressedMimeTypes(String mimeType) {
 		for (String compressedMimeType : compressedMimeTypes) {
-			if (Wildcard.match(compressedMimeType, mimeType)) {
+			if (Wildcard.match(mimeType, compressedMimeType)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private boolean isAllowed(String resourcePath) {
+	boolean isAllowed(String resourcePath) {
 		return !resourcePath.matches(protectedPath);
-		// for (String pattern : allowedResourcePaths) {
-		// if (Wildcard.match(pattern, resourcePath)) {
-		// return true;
-		// }
-		// }
-		// return false;
 	}
-	//
-	// private Set<String> allowedResourcePaths = new HashSet<String>();
-	// {
-	// allowedResourcePaths.add("/**/*.css");
-	// allowedResourcePaths.add("/**/*.gif");
-	// allowedResourcePaths.add("/**/*.ico");
-	// allowedResourcePaths.add("/**/*.jpeg");
-	// allowedResourcePaths.add("/**/*.jpg");
-	// allowedResourcePaths.add("/**/*.js");
-	// allowedResourcePaths.add("/**/*.png");
-	// allowedResourcePaths.add("META-INF/**/*.css");
-	// allowedResourcePaths.add("META-INF/**/*.gif");
-	// allowedResourcePaths.add("META-INF/**/*.ico");
-	// allowedResourcePaths.add("META-INF/**/*.jpeg");
-	// allowedResourcePaths.add("META-INF/**/*.jpg");
-	// allowedResourcePaths.add("META-INF/**/*.js");
-	// allowedResourcePaths.add("META-INF/**/*.png");
-	// };
 }
