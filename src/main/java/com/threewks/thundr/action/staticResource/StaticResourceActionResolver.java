@@ -29,10 +29,12 @@ import com.threewks.thundr.exception.BaseException;
 import com.threewks.thundr.logger.Logger;
 import com.threewks.thundr.route.RouteType;
 
+// TODO - static content is by default served by the front-end - this may or may not be a good idea to override.
+// TODO - Better caching controler:
+// Vary: Accept-Encoding
 public class StaticResourceActionResolver implements ActionResolver<StaticResourceAction> {
 	private static final String ActionName = "static";
 	private static final Pattern ActionNamePattern = Pattern.compile("^static:(.+)");
-
 	private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 
 	private final String protectedPath = "/?WEB-INF/.*";
@@ -103,9 +105,12 @@ public class StaticResourceActionResolver implements ActionResolver<StaticResour
 
 		response.setContentType(mimeType);
 		response.setDateHeader(HttpHeaderExpires, System.currentTimeMillis() + cacheTimeSeconds * 1000L); // HTTP 1.0
-		response.setHeader(HttpHeaderCacheControl, "max-age=" + cacheTimeSeconds); // HTTP 1.1
+		response.setHeader(HttpHeaderCacheControl, String.format("max-age=%d, public", cacheTimeSeconds)); // HTTP 1.1
 		response.setHeader(HttpHeaderContentLength, Long.toString(contentLength));
 		response.setDateHeader(HttpHeaderLastModified, lastModified);
+		if (zip) {
+			response.setHeader(HttpHeaderContentEncoding, "gzip");
+		}
 		OutputStream os = zip ? new GzipResponseStream(response) : response.getOutputStream();
 
 		try {

@@ -96,6 +96,8 @@ public class Routes {
 				}
 			}
 			throw new ActionException("Failed to create an action for the route %s: No action resolver can resolve this action", actionName);
+		} catch(ActionException e){
+			throw e;
 		} catch (Exception e) {
 			throw new ActionException(e, "Failed to create an action for the route %s: %s", actionName, e.getMessage());
 		}

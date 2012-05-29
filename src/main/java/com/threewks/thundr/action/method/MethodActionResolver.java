@@ -66,6 +66,8 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 			Object controller = createController(methodAction);
 			controllerInstances.put(methodAction.type(), controller);
 			return methodAction;
+		} catch (BaseException e) {
+			throw e;
 		} catch (Exception e) {
 			return null;
 		}
