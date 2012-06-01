@@ -118,7 +118,7 @@ public class DatastoreCounterRepository implements CounterRepository {
 			}
 
 			// Choose the shard randomly from the available shards.
-			long shardNum = generator.nextInt((int) numShards);
+			long shardNum = generator.nextInt((int) numShards + 1);
 
 			String counterKind = kindName(counterType);
 			String name = association == null ? Long.toString(shardNum) : String.format("%s_%s", association, shardNum);
