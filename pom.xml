@@ -10,8 +10,7 @@
 		<connection>scm:git:https://github.com/3wks/thundr</connection>
 		<developerConnection>scm:git:https://github.com/3wks/thundr</developerConnection>
 		<url>https://github.com/3wks/thundr</url>
-	  <tag>HEAD</tag>
-  </scm>
+	</scm>
   	
   	<distributionManagement>
 		<repository>
@@ -164,7 +163,15 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>2.2</version>
+			</extension>
+		</extensions>
 		<plugins>
 			<plugin> <!-- Release plugin -->
 				<groupId>org.apache.maven.plugins</groupId>
