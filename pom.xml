@@ -9,7 +9,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/3wks/thundr</connection>
 		<developerConnection>scm:git:https://github.com/3wks/thundr</developerConnection>
-		<url>https://github.com/3wks/thundr	</url>
+		<url>https://github.com/3wks/thundr</url>
 	</scm>
   	
   	<distributionManagement>
