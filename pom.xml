@@ -16,7 +16,7 @@
   	<distributionManagement>
 		<repository>
 			<id>release</id>
-			<url>http://repository-newsclassifieds.forge.cloudbees.com/release/</url>
+			<url>https://repository-newsclassifieds.forge.cloudbees.com/release/</url>
 		</repository>
   	</distributionManagement>
 
