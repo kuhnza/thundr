@@ -175,7 +175,7 @@
 			<extension>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-nop</artifactId>
-				<version>1.6.5</version>
+				<version>1.5.11</version>
 			</extension>
 		</extensions>
 		<plugins>
