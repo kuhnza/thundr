@@ -5,18 +5,17 @@
 	<name>thundr</name>
 	<packaging>jar</packaging>
 	<version>0.9.2-SNAPSHOT</version>
-	
+
 	<scm>
-	    <connection>scm:git:https://github.com/3wks/thundr</connection>
-	    <developerConnection>scm:git:https://github.com/3wks/thundr</developerConnection>
-	    <url>https://github.com/3wks/thundr	</url>
-  	  <tag>thundr-0.9.1</tag>
-  </scm>
+		<connection>scm:git:https://github.com/3wks/thundr</connection>
+		<developerConnection>scm:git:https://github.com/3wks/thundr</developerConnection>
+		<url>https://github.com/3wks/thundr	</url>
+	</scm>
   	
   	<distributionManagement>
 		<repository>
 			<id>newsclassifieds-cloudbees</id>
-			<url>https://repository-newsclassifieds.forge.cloudbees.com/release/</url>
+			<url>dav:https://repository-newsclassifieds.forge.cloudbees.com/release/</url>
 		</repository>
   	</distributionManagement>
 
