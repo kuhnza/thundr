@@ -22,6 +22,7 @@ import com.threewks.thundr.action.ActionResolver;
 import com.threewks.thundr.action.method.bind.ActionMethodBinder;
 import com.threewks.thundr.action.method.bind.BindException;
 import com.threewks.thundr.action.method.bind.http.HttpBinder;
+import com.threewks.thundr.action.method.bind.http.MultipartHttpBinder;
 import com.threewks.thundr.action.method.bind.json.GsonBinder;
 import com.threewks.thundr.action.method.bind.path.PathVariableBinder;
 import com.threewks.thundr.exception.BaseException;
@@ -41,9 +42,11 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 	public MethodActionResolver(UpdatableInjectionContext injectionContext) {
 		this.injectionContext = injectionContext;
 		PathVariableBinder pathVariableBinder = new PathVariableBinder();
+		HttpBinder httpBinder = new HttpBinder(pathVariableBinder);
 		methodBinders = new ArrayList<ActionMethodBinder>();
 		methodBinders.add(new GsonBinder(pathVariableBinder));
-		methodBinders.add(new HttpBinder(pathVariableBinder));
+		methodBinders.add(httpBinder);
+		methodBinders.add(new MultipartHttpBinder(httpBinder));
 	}
 
 	@Override

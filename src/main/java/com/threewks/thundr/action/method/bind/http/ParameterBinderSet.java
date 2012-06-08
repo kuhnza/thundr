@@ -45,7 +45,6 @@ public class ParameterBinderSet {
 	public Object createFor(ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		for (ParameterBinder<?> binder : binders) {
 			if (binder.willBind(parameterDescription)) {
-			    
 			    // return the first non-null object
 			    Object result = binder.bind(this, parameterDescription, pathMap);
 			    if (result != null) {
@@ -55,7 +54,7 @@ public class ParameterBinderSet {
 		}
 		return null;
 	}
-
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static List<ParameterBinder<?>> binderMap() {
 		List<ParameterBinder<?>> list = new ArrayList<ParameterBinder<?>>();

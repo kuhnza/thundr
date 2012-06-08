@@ -27,13 +27,12 @@ import com.threewks.thundr.http.ContentType;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class HttpBinderTest {
-    
     private HttpBinder binder;
     private HttpServletRequest request;
     private HttpServletResponse response;
+    private HttpSession session;
     private Map<String, String> pathVariables;
     private List<ParameterDescription> parameterDescriptions;
-    private HttpSession session;
     
     @Before
     public void before() {

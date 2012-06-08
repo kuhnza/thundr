@@ -17,7 +17,8 @@ public enum ContentType {
 	ApplicationJson("application/json"),
 	ApplicationXml("application/xml"),
 	ApplicationXmlDtd("application/xml-dtd"),
-	ApplicationSoapXml("application/soap+xml");
+	ApplicationSoapXml("application/soap+xml"),
+	MultipartFormData("multipart/form-data");
 
 	private String value;
 

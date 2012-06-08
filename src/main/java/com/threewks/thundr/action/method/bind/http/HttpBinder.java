@@ -41,9 +41,23 @@ public class HttpBinder implements ActionMethodBinder {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> bindAll(List<ParameterDescription> parameterDescriptions, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {
+		Map<String, String[]> parameterMap = req.getParameterMap();
+		return bindAll(parameterDescriptions, req, resp, pathVariables, parameterMap);
+	}
+
+	/**
+	 * Binds all parameters that can be bound using the given path variables and parameter map.
+	 * @param parameterDescriptions
+	 * @param req
+	 * @param resp
+	 * @param pathVariables
+	 * @param parameterMap
+	 * @return
+	 */
+	public List<Object> bindAll(List<ParameterDescription> parameterDescriptions, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables, Map<String, String[]> parameterMap) {
 		List<Object> boundVariables = pathVariableBinder.bindAll(parameterDescriptions, req, resp, pathVariables);
 		if (!parameterDescriptions.isEmpty()) {
-			HttpPostDataMap pathMap = new HttpPostDataMap(req.getParameterMap());
+			HttpPostDataMap pathMap = new HttpPostDataMap(parameterMap);
 			ParameterBinderSet binders = binders(req, resp);
 			for (int index = 0; index < parameterDescriptions.size(); index++) {
 				if (boundVariables.get(index) == null) {

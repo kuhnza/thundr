@@ -22,6 +22,11 @@ public class ContentTypeTest {
 		assertThat(ContentType.cleanContentType("application/x-www-form-urlencoded;"), is("application/x-www-form-urlencoded"));
 		assertThat(ContentType.cleanContentType("application/x-www-form-urlencoded; charset=UTF-8"), is("application/x-www-form-urlencoded"));
 		assertThat(ContentType.cleanContentType("application/x-www-form-urlencoded ; charset=UTF-8"), is("application/x-www-form-urlencoded"));
+		
+		assertThat(ContentType.cleanContentType("multipart/form-data"), is("multipart/form-data"));
+		assertThat(ContentType.cleanContentType("multipart/form-data;"), is("multipart/form-data"));
+		assertThat(ContentType.cleanContentType("multipart/form-data; charset=UTF-8"), is("multipart/form-data"));
+		assertThat(ContentType.cleanContentType("multipart/form-data ; charset=UTF-8"), is("multipart/form-data"));
 
 		for (ContentType contentType : ContentType.values()) {
 			assertThat(ContentType.cleanContentType(contentType.value()), is(contentType.value()));
