@@ -19,6 +19,7 @@ import com.threewks.thundr.action.method.bind.ActionMethodBinder;
 import com.threewks.thundr.action.method.bind.BindException;
 import com.threewks.thundr.http.ContentType;
 import com.threewks.thundr.introspection.ParameterDescription;
+import com.threewks.thundr.logger.Logger;
 import com.threewks.thundr.util.Streams;
 
 public class MultipartHttpBinder implements ActionMethodBinder {
@@ -51,7 +52,6 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 
 		Map<String, String[]> parameterMap = convertListMapToArrayMap(formFields);
 		List<Object> boundVariables = httpBinder.bindAll(parameterDescriptions, req, resp, pathVariables, parameterMap);
-
 		for (int index = 0; index < parameterDescriptions.size(); index++) {
 			if (boundVariables.get(index) == null) {
 				ParameterDescription parameterDescription = parameterDescriptions.get(index);
@@ -76,7 +76,6 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 				InputStream stream = item.openStream();
 
 				String fieldName = item.getFieldName();
-				System.out.println("Field name: " + fieldName);
 				if (item.isFormField()) {
 					List<String> existing = formFields.get(fieldName);
 					if (existing == null) {
