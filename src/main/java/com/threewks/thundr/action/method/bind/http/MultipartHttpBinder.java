@@ -52,7 +52,6 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 		Map<String, String[]> parameterMap = convertListMapToArrayMap(formFields);
 		List<Object> boundVariables = httpBinder.bindAll(parameterDescriptions, req, resp, pathVariables, parameterMap);
 
-		List<BinaryParameterBinder<?>> binders = binders();
 		for (int index = 0; index < parameterDescriptions.size(); index++) {
 			if (boundVariables.get(index) == null) {
 				ParameterDescription parameterDescription = parameterDescriptions.get(index);
@@ -77,6 +76,7 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 				InputStream stream = item.openStream();
 
 				String fieldName = item.getFieldName();
+				System.out.println("Field name: " + fieldName);
 				if (item.isFormField()) {
 					List<String> existing = formFields.get(fieldName);
 					if (existing == null) {
@@ -87,6 +87,7 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 				} else {
 					fileFields.put(fieldName, Streams.readBytes(stream));
 				}
+				stream.close();
 			}
 		} catch (Exception e) {
 			throw new BindException(e, "Failed to bind multipart form data: %s", e.getMessage());
@@ -102,6 +103,6 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 	}
 
 	private static List<BinaryParameterBinder<?>> binders() {
-		return Expressive.<BinaryParameterBinder<?>> list(new ByteArrayBinaryParameterBinder());
+		return Expressive.<BinaryParameterBinder<?>> list(new ByteArrayBinaryParameterBinder(), new InputStreamBinaryParameterBinder());
 	}
 }

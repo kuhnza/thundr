@@ -12,6 +12,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import com.threewks.thundr.exception.BaseException;
+
 import jodd.io.StringOutputStream;
 
 public class MockHttpServletResponse implements HttpServletResponse {
@@ -23,9 +25,20 @@ public class MockHttpServletResponse implements HttpServletResponse {
 	private boolean committed = false;
 	private List<Cookie> cookies = new ArrayList<Cookie>();
 	private int status = -1;
-	private boolean usedWriter = false;
+	private ServletOutputStream servletOutputStream;
+	private PrintWriter writer;
 
 	public String content() {
+		if (writer != null) {
+			writer.flush();
+		}
+		if (servletOutputStream != null) {
+			try {
+				servletOutputStream.flush();
+			} catch (IOException e) {
+				throw new BaseException(e);
+			}
+		}
 		return sos.toString();
 	}
 
@@ -49,19 +62,31 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
 	@Override
 	public ServletOutputStream getOutputStream() throws IOException {
-		sos = createOutputStream(false);
-		return new ServletOutputStream() {
-			@Override
-			public void write(int arg0) throws IOException {
-				sos.write(arg0);
-			}
-		};
+		if (writer != null) {
+			throw new IllegalStateException("This request attempted to get a ServletOutputStream after getting a PrintWriter from the HttpServletRepsonse");
+		}
+		if (servletOutputStream == null) {
+			sos = createOutputStream();
+			servletOutputStream = new ServletOutputStream() {
+				@Override
+				public void write(int arg0) throws IOException {
+					sos.write(arg0);
+				}
+			};
+		}
+		return servletOutputStream;
 	}
 
 	@Override
 	public PrintWriter getWriter() throws IOException {
-		sos = createOutputStream(true);
-		return new PrintWriter(sos);
+		if (servletOutputStream != null) {
+			throw new IllegalStateException("This request attempted to get a PrintWriter after getting a ServletOutputStream from the HttpServletRepsonse");
+		}
+		if (writer == null) {
+			sos = createOutputStream();
+			writer = new PrintWriter(sos, true);
+		}
+		return writer;
 	}
 
 	@Override
@@ -213,16 +238,16 @@ public class MockHttpServletResponse implements HttpServletResponse {
 	}
 
 	@SuppressWarnings("serial")
-	private StringOutputStream createOutputStream(boolean usingWriter) {
-		if (sos != null && usingWriter != usedWriter) {
-			throw new IllegalStateException("This request attempted to access both the ServletOutputStream and the PrintWriter of the HttpServletRepsonse");
-		}
-		usedWriter = usingWriter;
+	private StringOutputStream createOutputStream() {
 		sos = new StringOutputStream(characterEncoding) {
 			@Override
 			public void flush() throws IOException {
-				super.flush();
 				committed = true;
+				super.flush();
+			}
+
+			@Override
+			public void close() {
 			}
 		};
 		return sos;
