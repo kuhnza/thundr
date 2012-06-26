@@ -21,6 +21,8 @@ import com.threewks.thundr.injection.DefaultInjectionConfiguration;
 import com.threewks.thundr.injection.InjectionConfiguration;
 import com.threewks.thundr.injection.InjectionContextImpl;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
+import com.threewks.thundr.profiler.NoProfiler;
+import com.threewks.thundr.profiler.Profiler;
 import com.threewks.thundr.route.RouteType;
 import com.threewks.thundr.route.Routes;
 import com.threewks.thundr.test.TestSupport;
@@ -45,6 +47,7 @@ public class WebFrameworkServletTest {
 
 		when(routes.invoke(anyString(), Mockito.any(RouteType.class), Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class))).thenReturn("View Name");
 		injectionContext.inject(Routes.class).as(routes);
+		injectionContext.inject(Profiler.class).as(new NoProfiler());
 
 		viewResolverRegistry = new ViewResolverRegistry();
 		injectionContext.inject(ViewResolverRegistry.class).as(viewResolverRegistry);

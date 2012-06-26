@@ -19,8 +19,11 @@ import com.threewks.thundr.action.ActionException;
 import com.threewks.thundr.action.ActionResolver;
 import com.threewks.thundr.configuration.JsonProperties;
 import com.threewks.thundr.logger.Logger;
+import com.threewks.thundr.profiler.Profilable;
+import com.threewks.thundr.profiler.Profiler;
 
 public class Routes {
+
 	private Map<String, Route> getRoutes = new LinkedHashMap<String, Route>();
 	private Map<String, Route> postRoutes = new LinkedHashMap<String, Route>();
 	private Map<String, Route> putRoutes = new LinkedHashMap<String, Route>();
@@ -51,14 +54,30 @@ public class Routes {
 		Map<String, Route> routesForRouteType = routes.get(routeType);
 		for (Route route : routesForRouteType.values()) {
 			if (route.matches(routePath)) {
-				Map<String, String> pathVars = route.getPathVars(routePath);
 				T action = (T) actionsForRoutes.get(route);
-				ActionResolver<T> actionResolver = (ActionResolver<T>) actionResolvers.get(action.getClass());
-				return actionResolver.resolve(action, routeType, req, resp, pathVars);
+				return resolveAction(routePath, routeType, req, resp, route, action);
 			}
 		}
 		String debugString = debug ? listRoutes() : "";
 		throw new RouteNotFoundException("No route matching the request %s %s\n%s", routeType, routePath, debugString);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T extends Action> Object resolveAction(final String routePath, final RouteType routeType, final HttpServletRequest req, final HttpServletResponse resp, final Route route, final T action) {
+		Profiler profiler = getProfiler(req);
+		return profiler.profile(Profiler.CategoryAction, action.toString(), new Profilable<Object>() {
+			@Override
+			public Object profile() {
+				Map<String, String> pathVars = route.getPathVars(routePath);
+				ActionResolver<T> actionResolver = (ActionResolver<T>) actionResolvers.get(action.getClass());
+				Object resolve = actionResolver.resolve(action, routeType, req, resp, pathVars);
+				return resolve;
+			}
+		});
+	}
+
+	private Profiler getProfiler(HttpServletRequest req) {
+		return (Profiler) req.getAttribute("com.threewks.thundr.profiler.Profiler");
 	}
 
 	private static final String routeDisplayFormat = "%s\n";
@@ -96,7 +115,7 @@ public class Routes {
 				}
 			}
 			throw new ActionException("Failed to create an action for the route %s: No action resolver can resolve this action", actionName);
-		} catch(ActionException e){
+		} catch (ActionException e) {
 			throw e;
 		} catch (Exception e) {
 			throw new ActionException(e, "Failed to create an action for the route %s: %s", actionName, e.getMessage());
