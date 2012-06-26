@@ -77,7 +77,9 @@ public class Routes {
 	}
 
 	private Profiler getProfiler(HttpServletRequest req) {
-		return (Profiler) req.getAttribute("com.threewks.thundr.profiler.Profiler");
+		Profiler profiler = (Profiler) req.getAttribute("com.threewks.thundr.profiler.Profiler");
+		profiler = profiler == null ? Profiler.None : profiler;
+		return profiler;
 	}
 
 	private static final String routeDisplayFormat = "%s\n";

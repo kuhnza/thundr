@@ -3,6 +3,19 @@ package com.threewks.thundr.profiler;
 import java.util.UUID;
 
 public interface Profiler {
+	/**
+	 * A No-op implementation of the {@link Profiler} interface.
+	 * This allows test-safe and injection safe usage in dependant classes.
+	 * 
+	 * <code>
+	 * @Inject
+	 * public Profiler profiler = Profiler.None;
+	 * </code>
+	 * With this style of definition, the profiler can be injected automatically as well as manually, as well
+	 * as mocked or stubbed for testing.
+	 */
+	public static final Profiler None = new NoProfiler();
+	
 	public static final String CategoryAction = "Action";
 	public static final String CategoryDatabase = "Database";
 	public static final String CategoryDatabaseRead = "DatabaseRead";
