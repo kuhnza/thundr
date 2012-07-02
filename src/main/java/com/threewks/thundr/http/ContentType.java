@@ -18,7 +18,10 @@ public enum ContentType {
 	ApplicationXml("application/xml"),
 	ApplicationXmlDtd("application/xml-dtd"),
 	ApplicationSoapXml("application/soap+xml"),
-	MultipartFormData("multipart/form-data");
+	MultipartFormData("multipart/form-data"),
+	ImageJpeg("image/jpeg"),
+	ImageGif("image/gif"),
+	ImagePng("image/png");
 
 	private String value;
 
