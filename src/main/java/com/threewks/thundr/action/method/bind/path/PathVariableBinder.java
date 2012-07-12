@@ -16,8 +16,10 @@ import com.threewks.thundr.action.method.bind.ActionMethodBinder;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class PathVariableBinder implements ActionMethodBinder {
-	public static final List<Class<?>> PathVariableTypes = Arrays.<Class<?>> asList(String.class, int.class, Integer.class, double.class, Double.class, long.class, Long.class, short.class,
-			Short.class, float.class, Float.class, BigDecimal.class, BigInteger.class);
+
+	public static final List<Class<?>> PathVariableTypes = Arrays.<Class<?>>
+			asList(String.class, int.class, Integer.class, double.class, Double.class, long.class, Long.class, short.class,
+					Short.class, float.class, Float.class, BigDecimal.class, BigInteger.class);
 
 	@Override
 	public boolean canBind(String contentType) {
