@@ -5,7 +5,7 @@
 <%@ attribute name="condition" required="false" description="If this condition is not met, the value will not be set. If not provided, defaults to true" %>
 <%@ attribute name="falseValue" required="false" description="If the condition is not met, this is what the value will be set to. If not supplied, no change is made" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="t" uri="http://3wks.com/thundr/tags" %>
+<%@ taglib prefix="t" uri="http://threewks.com/thundr/tags" %>
 <t:if condition="${empty condition or condition}">
 	<c:set var="${var}" value="${value}" scope="${scope}"/>
 </t:if>
