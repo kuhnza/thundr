@@ -10,7 +10,7 @@ public class HttpSupport {
 	public static final String HttpHeaderCacheControl = "Cache-Control";
 	public static final String HttpHeaderAcceptEncoding = "Accept-Encoding";
 	public static final String HttpHeaderContentEncoding = "Content-Encoding";
-	public static final Object HttpHeaderSetCookie = "Set-Cookie";
+	public static final String HttpHeaderSetCookie = "Set-Cookie";
 
 	public static String convertToValidUrl(String url) {
 		try {

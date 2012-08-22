@@ -2,6 +2,7 @@ package com.threewks.thundr.view.exception;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,15 +22,15 @@ public class ExceptionViewResolver implements ViewResolver<Throwable> {
 		}
 		try {
 			Throwable exceptionOfInterest = viewResult instanceof ViewResolutionException ? viewResult.getCause() : viewResult;
-			PrintWriter writer = resp.getWriter();
+			StringWriter stringWriter = new StringWriter();
+			PrintWriter writer = new PrintWriter(stringWriter);
 			for (String message : messages) {
 				writer.println(message);
 			}
 			exceptionOfInterest.printStackTrace(writer);
-			// TODO  - to output a useful page, you can't send internal server error
-			// this probably should be a 'debug' mode thing, or configurable
-			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			exceptionOfInterest.printStackTrace(System.out);
+			writer.flush();
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, stringWriter.toString());
+			System.err.println(stringWriter.toString());
 		} catch (IOException e) {
 			Logger.error("Failed to render an exception view because '%s' - original exception: %s", e.getMessage(), viewResult.getMessage());
 			viewResult.printStackTrace();

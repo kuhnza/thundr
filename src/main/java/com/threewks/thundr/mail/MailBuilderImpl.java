@@ -51,7 +51,6 @@ public class MailBuilderImpl implements MailBuilder {
 		 * This throws NoClassDefFoundException - i have no idea why
 		 * Using the real request is not ideal because of potential side effects on the request object
 		 * HttpServletRequest req = (HttpServletRequest) Enhancer.create(request.getClass(), new MethodInterceptor() {
-		 * 
 		 * @Override
 		 * public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
 		 * if ("getAttribute".equals(method.getName())) {
@@ -68,7 +67,6 @@ public class MailBuilderImpl implements MailBuilder {
 		 * if ("getAttributeNames".equals(method.getName())) {
 		 * return Collections.enumeration(attributes.keySet());
 		 * }
-		 * 
 		 * return proxy.invoke(obj, args);
 		 * }
 		 * });

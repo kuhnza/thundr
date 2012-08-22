@@ -9,15 +9,13 @@ import java.util.concurrent.TimeoutException;
 public class ProfilableFuture<T> implements Future<T> {
 	public Profiler profiler;
 	public Future<T> delegate;
-	public String category;
-	public String data;
+	private UUID key;
 
 	public ProfilableFuture(String category, String data, Profiler profiler, Future<T> delegate) {
 		super();
 		this.profiler = profiler;
 		this.delegate = delegate;
-		this.category = category;
-		this.data = data;
+		this.key = profiler.start(Profiler.CategoryHttp, data);
 	}
 
 	public boolean cancel(boolean mayInterruptIfRunning) {
@@ -25,7 +23,6 @@ public class ProfilableFuture<T> implements Future<T> {
 	}
 
 	public T get() throws InterruptedException, ExecutionException {
-		UUID key = profiler.start(Profiler.CategoryHttp, data);
 		try {
 			T t = delegate.get();
 			profiler.end(key);
@@ -43,7 +40,6 @@ public class ProfilableFuture<T> implements Future<T> {
 	}
 
 	public T get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-		UUID key = profiler.start(Profiler.CategoryHttp, data);
 		try {
 			T t = delegate.get(timeout, unit);
 			profiler.end(key);

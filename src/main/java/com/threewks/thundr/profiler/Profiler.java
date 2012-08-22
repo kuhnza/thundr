@@ -20,6 +20,7 @@ public interface Profiler {
 	public static final String CategoryDatabase = "Database";
 	public static final String CategoryDatabaseRead = "DatabaseRead";
 	public static final String CategoryDatabaseWrite = "DatabaseWrite";
+	public static final String CategorySearch = "Search";
 	public static final String CategoryHttp = "Http";
 	public static final String CategoryHttpRequest = "HttpRequest";
 	public static final String CategoryHttpResponse = "HttpResponse";
