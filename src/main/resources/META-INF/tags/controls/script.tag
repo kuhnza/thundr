@@ -18,4 +18,8 @@
 	</c:choose>
 </c:if>
 
-<script src="${src}" type="text/javascript" <c:forEach items="${dynAttrs}" var="dynAttr">${dynAttr.key}="${dynAttr.value}"</c:forEach>></script>
+<c:set var="dynamicAttributes">
+	<c:forEach items="${dynAttrs}" var="dynAttr">${dynAttr.key}="${dynAttr.value}" </c:forEach>
+</c:set>
+
+<script src="${src}" type="text/javascript" ${dynamicAttributes}></script>

@@ -11,6 +11,7 @@ public class HttpSupport {
 	public static final String HttpHeaderAcceptEncoding = "Accept-Encoding";
 	public static final String HttpHeaderContentEncoding = "Content-Encoding";
 	public static final String HttpHeaderSetCookie = "Set-Cookie";
+	public static final String HttpHeaderSetCookie2 = "Set-Cookie2";
 
 	public static String convertToValidUrl(String url) {
 		try {
