@@ -66,4 +66,15 @@ public class Pair<A, B> {
 	public String toString() {
 		return String.format("Pair of %s and %s", a, b);
 	}
+
+	/**
+	 * Convenience method, can be statically imported to more succinctly create a {@link Pair}
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static final <A, B> Pair<A, B> pair(A a, B b) {
+		return new Pair<A, B>(a, b);
+	}
 }

@@ -21,7 +21,28 @@ import com.threewks.thundr.collection.factory.SimpleMapFactory;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class ParameterBinderSet {
-	private static List<ParameterBinder<?>> sharedBinders = binderMap();
+	private static List<ParameterBinder<?>> intrinsicBinders = binderMap();
+	private static List<ParameterBinder<?>> registeredBinders = new ArrayList<ParameterBinder<?>>();
+
+	/**
+	 * Allows consumer code to introduce binding for defined/user types
+	 * 
+	 * @param binder
+	 */
+	public static <T> void registerGlobalBinder(ParameterBinder<T> binder) {
+		registeredBinders.add(binder);
+	}
+
+	/**
+	 * Removes the given binder which was previously registered. Requires the given object to be equal to the previously registered
+	 * binder, so either the same instance or you need to implement equality
+	 * 
+	 * @param binder
+	 */
+	public static <T> void unregisterGlobalBinder(ParameterBinder<T> binder) {
+		registeredBinders.remove(binder);
+	}
+
 	private List<ParameterBinder<?>> binders = new ArrayList<ParameterBinder<?>>();
 
 	public ParameterBinderSet addBinder(ParameterBinder<?> binder) {
@@ -30,7 +51,8 @@ public class ParameterBinderSet {
 	}
 
 	public ParameterBinderSet addDefaultBinders() {
-		binders.addAll(sharedBinders);
+		binders.addAll(registeredBinders);
+		binders.addAll(intrinsicBinders);
 		return this;
 	}
 
@@ -45,16 +67,16 @@ public class ParameterBinderSet {
 	public Object createFor(ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		for (ParameterBinder<?> binder : binders) {
 			if (binder.willBind(parameterDescription)) {
-			    // return the first non-null object
-			    Object result = binder.bind(this, parameterDescription, pathMap);
-			    if (result != null) {
-			        return result;
-			    }
+				// return the first non-null object
+				Object result = binder.bind(this, parameterDescription, pathMap);
+				if (result != null) {
+					return result;
+				}
 			}
 		}
 		return null;
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static List<ParameterBinder<?>> binderMap() {
 		List<ParameterBinder<?>> list = new ArrayList<ParameterBinder<?>>();
