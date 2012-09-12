@@ -94,6 +94,11 @@
 		<function-class>com.threewks.thundr.view.jsp.el.StringFunctions</function-class>
 		<function-signature>java.lang.String capitalise(java.lang.Object)</function-signature>
 	</function>
+	<function>
+		<name>replace</name>
+		<function-class>com.threewks.thundr.view.jsp.el.StringFunctions</function-class>
+		<function-signature>java.lang.String replace(java.lang.Object, java.lang.String, java.lang.String)</function-signature>
+	</function>
 	<!-- 
 	Again - not ready for prime time - requires JUEL, which is hard to integrate into GAE/J 
 	<function>

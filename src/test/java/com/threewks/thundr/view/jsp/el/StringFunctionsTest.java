@@ -53,6 +53,20 @@ public class StringFunctionsTest {
 		assertThat(StringFunctions.capitalise(new TestObject()), is("Test Object String"));
 	}
 
+	@Test
+	public void shouldReplaceUsingRegex() {
+		assertThat(StringFunctions.replace(null, null, null), is(""));
+		assertThat(StringFunctions.replace(null, "", ""), is(""));
+		assertThat(StringFunctions.replace(null, "(.*)", "$1"), is(""));
+		assertThat(StringFunctions.replace("input", "in", "out"), is("output"));
+		assertThat(StringFunctions.replace("input", "in", ""), is("put"));
+		assertThat(StringFunctions.replace("input", "in", null), is("put"));
+		assertThat(StringFunctions.replace("input", "", ""), is("input"));
+		assertThat(StringFunctions.replace("input", null, ""), is("input"));
+		assertThat(StringFunctions.replace("i1n2p3ut", "\\D", " "), is(" 1 2 3  "));
+		assertThat(StringFunctions.replace("input", "(pu)", "$1"), is("input"));
+	}
+
 	private static class TestObject {
 		@Override
 		public String toString() {
