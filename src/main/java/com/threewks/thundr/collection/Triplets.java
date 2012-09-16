@@ -57,6 +57,11 @@ public class Triplets<K1, K2, V> {
 		return delegate.hashCode();
 	}
 
+	@Override
+	public String toString() {
+		return delegate.toString();
+	}
+
 	public Set<Pair<K1, K2>> keySet() {
 		return delegate.keySet();
 	}

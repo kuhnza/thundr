@@ -19,7 +19,7 @@ public class StringFunctions {
 	public static String capitalise(Object arg) {
 		return arg == null ? null : WordUtils.capitalizeFully(arg.toString());
 	}
-	
+
 	public static String replace(Object arg, String regex, String replacement) {
 		return arg == null ? "" : arg.toString().replaceAll(regex == null ? "" : regex, replacement == null ? "" : replacement);
 	}
