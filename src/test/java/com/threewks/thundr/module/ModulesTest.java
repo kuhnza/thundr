@@ -27,7 +27,7 @@ public class ModulesTest {
 
 	@Before
 	public void before() {
-		injectionContext.inject(Modules.class).as(modules);
+		injectionContext.inject(modules).as(Modules.class);
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class ModulesTest {
 	private class TestModule1 implements InjectionConfiguration {
 		@Override
 		public void configure(UpdatableInjectionContext injectionContext) {
-			injectionContext.inject(String.class).named("TestModule1").as("Invoked");
+			injectionContext.inject("Invoked").named("TestModule1").as(String.class);
 		}
 	}
 
@@ -74,14 +74,14 @@ public class ModulesTest {
 		@Override
 		public void configure(UpdatableInjectionContext injectionContext) {
 			injectionContext.get(Modules.class).addModule(testModule3);
-			injectionContext.inject(String.class).named("TestModule2").as("Invoked");
+			injectionContext.inject("Invoked").named("TestModule2").as(String.class);
 		}
 	}
 
 	private class TestModule3 implements InjectionConfiguration {
 		@Override
 		public void configure(UpdatableInjectionContext injectionContext) {
-			injectionContext.inject(String.class).named("TestModule3").as("Invoked");
+			injectionContext.inject("Invoked").named("TestModule3").as(String.class);
 		}
 	}
 

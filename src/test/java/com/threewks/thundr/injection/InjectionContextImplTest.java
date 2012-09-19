@@ -19,15 +19,15 @@ public class InjectionContextImplTest {
 
 	@Test
 	public void shouldInjectUsingInstance() {
-		context.inject(String.class).as("String");
+		context.inject("String").as(String.class);
 		assertThat(context.get(String.class, "value1"), is("String"));
 	}
 
 	@Test
 	public void shouldInjectUsingNamedInstance() {
-		context.inject(String.class).named("value1").as("String");
-		context.inject(String.class).named("value2").as("Another String");
-		context.inject(String.class).as("One More String");
+		context.inject("String").named("value1").as(String.class);
+		context.inject("Another String").named("value2").as(String.class);
+		context.inject("One More String").as(String.class);
 		assertThat(context.get(String.class, "value1"), is("String"));
 		assertThat(context.get(String.class, "value2"), is("Another String"));
 		assertThat(context.get(String.class, "value3"), is("One More String"));
@@ -36,8 +36,8 @@ public class InjectionContextImplTest {
 	@Test
 	public void shouldAllowInjectionOfInstanceByType() {
 		Date date = new Date();
-		context.inject(String.class).as("actual string");
-		context.inject(Date.class).as(date);
+		context.inject("actual string").as(String.class);
+		context.inject(date).as(Date.class);
 
 		assertThat(context.get(String.class), is("actual string"));
 		assertThat(context.get(Date.class), sameInstance(date));
@@ -47,10 +47,10 @@ public class InjectionContextImplTest {
 	public void shouldAllowInjectionOfInstanceAsNamedType() {
 		Date firstDate = new Date();
 		Date secondDate = new Date();
-		context.inject(String.class).named("firstString").as("first string");
-		context.inject(Date.class).named("firstDate").as(firstDate);
-		context.inject(String.class).named("secondString").as("second string");
-		context.inject(Date.class).named("secondDate").as(secondDate);
+		context.inject("first string").named("firstString").as(String.class);
+		context.inject(firstDate).named("firstDate").as(Date.class);
+		context.inject("second string").named("secondString").as(String.class);
+		context.inject(secondDate).named("secondDate").as(Date.class);
 
 		assertThat(context.get(String.class, "firstString"), is("first string"));
 		assertThat(context.get(String.class, "secondString"), is("second string"));
@@ -59,19 +59,19 @@ public class InjectionContextImplTest {
 	}
 
 	@Test
-	public void shouldAllowInjectionOfNewInstanceByType() {
+	public void shouldReturnSameInstanceForTypeAfterFirstGet() {
 		context.inject(Date.class).as(Date.class);
 		Date firstDate = context.get(Date.class);
 		Date secondDate = context.get(Date.class);
-		assertThat(firstDate, is(not(sameInstance(secondDate))));
+		assertThat(firstDate, is(sameInstance(secondDate)));
 	}
 
 	@Test
-	public void shouldAllowInjectionOfNamedInstanceByType() {
+	public void shouldReturnSameInstanceForTypeAfterFirstGetNamedInstanceByType() {
 		context.inject(Date.class).named("date").as(Date.class);
 		Date firstDate = context.get(Date.class, "date");
 		Date secondDate = context.get(Date.class, "date");
-		assertThat(firstDate, is(not(sameInstance(secondDate))));
+		assertThat(firstDate, is(sameInstance(secondDate)));
 	}
 
 	@Test
@@ -82,13 +82,13 @@ public class InjectionContextImplTest {
 
 		assertThat(firstDate, is(notNullValue()));
 		assertThat(secondDate, is(notNullValue()));
-		assertThat(firstDate, is(not(sameInstance(secondDate))));
+		assertThat(firstDate, is(sameInstance(secondDate)));
 	}
 
 	@Test
 	public void shouldReturnUnnamedInstanceIfNamedInstanceNotPresent() {
 		Date date = new Date();
-		context.inject(Date.class).as(date);
+		context.inject(date).as(Date.class);
 
 		Date firstDate = context.get(Date.class, "date");
 		Date secondDate = context.get(Date.class, "date");
@@ -113,10 +113,10 @@ public class InjectionContextImplTest {
 	public void shouldReturnTrueWhenContainsAValidInstanceEntry() {
 		assertThat(context.contains(Date.class), is(false));
 		Date date = new Date();
-		context.inject(Date.class).named("date").as(date);
+		context.inject(date).named("date").as(Date.class);
 
 		assertThat(context.contains(Date.class), is(false));
-		context.inject(Date.class).as(date);
+		context.inject(date).as(Date.class);
 
 		assertThat(context.contains(Date.class), is(true));
 	}
@@ -140,11 +140,11 @@ public class InjectionContextImplTest {
 		assertThat(context.contains(Date.class, "date"), is(false));
 		Date date = new Date();
 
-		context.inject(Date.class).named("some other date").as(date);
+		context.inject(date).named("some other date").as(Date.class);
 
 		assertThat(context.contains(Date.class, "date"), is(false));
 
-		context.inject(Date.class).named("date").as(date);
+		context.inject(date).named("date").as(Date.class);
 		assertThat(context.contains(Date.class, "date"), is(true));
 	}
 
@@ -163,9 +163,9 @@ public class InjectionContextImplTest {
 
 	@Test
 	public void shouldInstantiateANewTypeProvidingValuesBasedOnTheMostSpecificConstructorThatCanBeInjected() {
-		context.inject(String.class).named("arg1").as("arg1 value");
-		context.inject(String.class).named("arg2").as("arg2 value");
-		context.inject(String.class).named("injectedArg").as("injected value");
+		context.inject("arg1 value").named("arg1").as(String.class);
+		context.inject("arg2 value").named("arg2").as(String.class);
+		context.inject("injected value").named("injectedArg").as(String.class);
 		context.inject(TestClass.class).as(TestClass.class);
 
 		assertThat(context.contains(TestClass.class), is(true));
@@ -176,38 +176,47 @@ public class InjectionContextImplTest {
 	}
 
 	@Test
-	public void shouldTryEachConstructorFromMostToLeastArguments() {
-		context.inject(String.class).named("injectedArg").as("injected value");
+	public void shouldInvokeZeroArgConstructor() {
+		context.inject("injected value").named("injectedArg").as(String.class);
 		context.inject(TestClass.class).as(TestClass.class);
 		assertThat(context.contains(TestClass.class), is(true));
-		{
-			TestClass testClass = context.get(TestClass.class);
-			assertThat(testClass.getInjectedArg(), is("injected value"));
-			assertThat(testClass.getArg1(), is(nullValue()));
-			assertThat(testClass.getArg2(), is(nullValue()));
-		}
+		TestClass testClass = context.get(TestClass.class);
+		assertThat(testClass.getInjectedArg(), is("injected value"));
+		assertThat(testClass.getArg1(), is(nullValue()));
+		assertThat(testClass.getArg2(), is(nullValue()));
+		assertThat(testClass.getConstructorCalled(), is(0));
+	}
 
-		context.inject(String.class).named("arg1").as("arg1 value");
-		{
-			TestClass testClass = context.get(TestClass.class);
-			assertThat(testClass.getInjectedArg(), is("injected value"));
-			assertThat(testClass.getArg1(), is("arg1 value"));
-			assertThat(testClass.getArg2(), is(nullValue()));
-		}
+	@Test
+	public void shouldInvokeOneArgConstructor() {
+		context.inject("injected value").named("injectedArg").as(String.class);
+		context.inject(TestClass.class).as(TestClass.class);
+		context.inject("arg1 value").named("arg1").as(String.class);
+		TestClass testClass = context.get(TestClass.class);
+		assertThat(testClass.getInjectedArg(), is("injected value"));
+		assertThat(testClass.getArg1(), is("arg1 value"));
+		assertThat(testClass.getArg2(), is(nullValue()));
+		assertThat(testClass.getConstructorCalled(), is(1));
 
-		context.inject(String.class).named("arg2").as("arg2 value");
-		{
-			TestClass testClass = context.get(TestClass.class);
-			assertThat(testClass.getInjectedArg(), is("injected value"));
-			assertThat(testClass.getArg1(), is("arg1 value"));
-			assertThat(testClass.getArg2(), is("arg2 value"));
-		}
+	}
+
+	@Test
+	public void shouldInvokeTwoArgConstructor() {
+		context.inject("injected value").named("injectedArg").as(String.class);
+		context.inject(TestClass.class).as(TestClass.class);
+		context.inject("arg1 value").named("arg1").as(String.class);
+		context.inject("arg2 value").named("arg2").as(String.class);
+		TestClass testClass = context.get(TestClass.class);
+		assertThat(testClass.getInjectedArg(), is("injected value"));
+		assertThat(testClass.getArg1(), is("arg1 value"));
+		assertThat(testClass.getArg2(), is("arg2 value"));
+		assertThat(testClass.getConstructorCalled(), is(2));
 	}
 
 	@Test
 	public void shouldSetFieldsWithSettersAndInjectInjectableFields() {
-		context.inject(String.class).named("settableArg").as("set arg value");
-		context.inject(String.class).named("injectedArg").as("injected value");
+		context.inject("set arg value").named("settableArg").as(String.class);
+		context.inject("injected value").named("injectedArg").as(String.class);
 		context.inject(TestClass.class).as(TestClass.class);
 
 		assertThat(context.contains(TestClass.class), is(true));
@@ -226,11 +235,4 @@ public class InjectionContextImplTest {
 		context.get(TestClass.class);
 	}
 
-	@Test
-	public void shouldInjectInstanceUsingType() {
-		Date date = new Date();
-		Date date2 = context.inject(date);
-		assertThat(date2, sameInstance(date));
-		assertThat(context.get(Date.class), sameInstance(date));
-	}
 }

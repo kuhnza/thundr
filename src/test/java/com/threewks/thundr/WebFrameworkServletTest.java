@@ -46,11 +46,11 @@ public class WebFrameworkServletTest {
 		setInjectionContextIntoServlet(injectionContext);
 
 		when(routes.invoke(anyString(), Mockito.any(RouteType.class), Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class))).thenReturn("View Name");
-		injectionContext.inject(Routes.class).as(routes);
-		injectionContext.inject(Profiler.class).as(new NoProfiler());
+		injectionContext.inject(routes).as(Routes.class);
+		injectionContext.inject(new NoProfiler()).as(Profiler.class);
 
 		viewResolverRegistry = new ViewResolverRegistry();
-		injectionContext.inject(ViewResolverRegistry.class).as(viewResolverRegistry);
+		injectionContext.inject(viewResolverRegistry).as(ViewResolverRegistry.class);
 	}
 
 	@SuppressWarnings("serial")
@@ -180,7 +180,8 @@ public class WebFrameworkServletTest {
 
 	@Test
 	public void shouldCatchExceptionsFromViewResolversButDoNothingWhenResponseAlreadyCommitted() throws ServletException, IOException {
-		when(routes.invoke(anyString(), Mockito.any(RouteType.class), Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class))).thenThrow(new RuntimeException("Expected exception"));
+		when(routes.invoke(anyString(), Mockito.any(RouteType.class), Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class))).thenThrow(
+				new RuntimeException("Expected exception"));
 
 		viewResolverRegistry.addResolver(Exception.class, new ViewResolver<Exception>() {
 			@Override

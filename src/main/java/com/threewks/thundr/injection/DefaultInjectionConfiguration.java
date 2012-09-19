@@ -15,8 +15,8 @@ public class DefaultInjectionConfiguration implements InjectionConfiguration {
 	public void configure(UpdatableInjectionContext injectionContext) {
 		Modules modules = new Modules();
 		Routes routes = new Routes();
-		injectionContext.inject(Modules.class).as(modules);
-		injectionContext.inject(Routes.class).as(routes);
+		injectionContext.inject(modules).as(Modules.class);
+		injectionContext.inject(routes).as(Routes.class);
 
 		modules.addModule(Module.from(new ConfigurationInjectionConfiguration()));
 		modules.addModule(Module.from(new ProfilerInjectionConfiguration()));
@@ -24,7 +24,7 @@ public class DefaultInjectionConfiguration implements InjectionConfiguration {
 		modules.addModule(Module.from(new ViewResolverInjectionConfiguration()));
 		modules.addModule(Module.from(new ModuleInjectionConfiguration()));
 		modules.loadModules(injectionContext);
-		
+
 		modules.addModule(Module.from(new RouteInjectionConfiguration()));
 		modules.loadModules(injectionContext);
 	}

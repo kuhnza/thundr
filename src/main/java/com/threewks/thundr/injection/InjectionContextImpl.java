@@ -6,20 +6,17 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.threewks.thundr.collection.Pair;
+import com.threewks.thundr.collection.Triplets;
 import com.threewks.thundr.exception.BaseException;
 import com.threewks.thundr.introspection.ClassIntrospector;
 import com.threewks.thundr.introspection.MethodIntrospector;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class InjectionContextImpl implements UpdatableInjectionContext {
-	private Map<Class<?>, Class<?>> types = map();
-	private Map<Class<?>, Object> instances = map();
-	private Map<NamedType<?>, Class<?>> namedTypes = map();
-	private Map<NamedType<?>, Object> namedInstances = map();
+	private Triplets<Class<?>, String, Class<?>> types = map();
+	private Triplets<Class<?>, String, Object> instances = map();
 
 	private MethodIntrospector methodIntrospector = new MethodIntrospector();
 	private ClassIntrospector classIntrospector = new ClassIntrospector();
@@ -29,19 +26,32 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 		return new InjectorBuilder<T>(this, type);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T inject(T instance) {
-		Class<T> class1 = (Class<T>) instance.getClass();
-		addInstance(class1, null, instance);
-		return instance;
-	};
+	public <T> InjectorBuilder<T> inject(T instance) {
+		return new InjectorBuilder<T>(this, instance);
+	}
+
+	public <T> T get(Class<T> type) {
+		return get(type, null);
+	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T get(Class<T> type) {
-		T instance = (T) instances.get(type);
+	public <T> T get(Class<T> type, String name) {
+		T instance = (T) instances.get(type, name);
 		if (instance == null) {
-			instance = instantiate((Class<T>) types.get(type));
+			T newInstance = instantiate((Class<T>) types.get(type, name));
+			if (newInstance != null) {
+				synchronized (instances) {
+					if (!instances.containsKey(type, name)) {
+						instances.put(type, name, newInstance);
+					}
+				}
+				instance = (T) instances.get(type, name);
+			} else {
+				if (name != null) {
+					instance = get(type, null);
+				}
+			}
 		}
 		if (instance == null) {
 			throw new NullPointerException(String.format("Could not inject '%s' - no dependency configured for injection", type.getName()));
@@ -49,28 +59,12 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 		return instance;
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T> T get(Class<T> type, String name) {
-		NamedType<T> namedType = new NamedType<T>(type, name);
-		T instance = (T) namedInstances.get(namedType);
-		instance = instance == null ? (T) instantiate(namedTypes.get(namedType)) : instance;
-		return instance == null ? get(type) : instance;
-	}
-
 	protected <T> void addType(Class<T> type, String name, Class<? extends T> as) {
-		if (StringUtils.isNotBlank(name)) {
-			namedTypes.put(new NamedType<T>(type, name), as);
-		} else {
-			types.put(type, as);
-		}
+		types.put(type, name, as);
 	}
 
 	protected <T> void addInstance(Class<T> type, String name, T as) {
-		if (StringUtils.isNotBlank(name)) {
-			namedInstances.put(new NamedType<T>(type, name), as);
-		} else {
-			instances.put(type, as);
-		}
+		instances.put(type, name, as);
 	}
 
 	private <T> T instantiate(Class<T> type) {
@@ -138,18 +132,18 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 
 	@Override
 	public <T> boolean contains(Class<T> type) {
-		return instances.containsKey(type) || types.containsKey(type);
+		return contains(type, null);
 	}
 
 	@Override
 	public <T> boolean contains(Class<T> type, String name) {
-		NamedType<T> namedType = new NamedType<T>(type, name);
-		return namedInstances.containsKey(namedType) || namedTypes.containsKey(namedType) || contains(type);
+		boolean contains = instances.containsKey(type, name) || types.containsKey(type, name);
+		return contains || (name != null && contains(type));
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Injection context (%s instances, %s classes)", instances.size() + namedInstances.size(), types.size() + namedTypes.size());
+		return String.format("Injection context (%s instances, %s classes)", instances.size() + instances.size(), types.size() + types.size());
 	}
 
 	private boolean canSatisfy(List<ParameterDescription> parameterDescriptions) {
@@ -174,8 +168,8 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 		return nameWithUpperCaseFirstLetter.substring(0, 1).toLowerCase() + nameWithUpperCaseFirstLetter.substring(1);
 	}
 
-	private <K, V> HashMap<K, V> map() {
-		return new HashMap<K, V>();
+	private <K1, K2, V> Triplets<K1, K2, V> map() {
+		return new Triplets<K1, K2, V>(new HashMap<Pair<K1, K2>, V>());
 	}
 
 }

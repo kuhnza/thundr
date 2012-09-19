@@ -35,7 +35,7 @@ public class ModuleInjectionConfigurationTest {
 
 	@Before
 	public void before() {
-		injectionContext.inject(Modules.class).as(modules);
+		injectionContext.inject(modules).as(Modules.class);
 		propertyLoader = mock(PropertiesLoader.class);
 		when(propertyLoader.load(anyString())).thenReturn(mapKeys("com.threewks.thundr.module.test").to(""));
 		setField(config, "propertiesLoader", propertyLoader);

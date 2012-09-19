@@ -32,7 +32,7 @@ public class WebFrameworkServlet extends HttpServlet {
 		super.init(config);
 		ServletContext servletContext = config.getServletContext();
 		injectionContext = new InjectionContextImpl();
-		injectionContext.inject(ServletContext.class).as(servletContext);
+		injectionContext.inject(servletContext).as(ServletContext.class);
 		InjectionConfiguration injectionConfiguration = getInjectionConfigInstance(servletContext);
 		injectionConfiguration.configure(injectionContext);
 	}

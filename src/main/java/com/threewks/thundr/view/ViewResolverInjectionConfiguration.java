@@ -21,17 +21,17 @@ public class ViewResolverInjectionConfiguration implements InjectionConfiguratio
 	@Override
 	public void configure(UpdatableInjectionContext injectionContext) {
 		ViewResolverRegistry viewResolverRegistry = new ViewResolverRegistry();
-		injectionContext.inject(ViewResolverRegistry.class).as(viewResolverRegistry);
+		injectionContext.inject(viewResolverRegistry).as(ViewResolverRegistry.class);
 		addViewResolvers(viewResolverRegistry, injectionContext);
 	}
 
 	protected void addViewResolvers(ViewResolverRegistry viewResolverRegistry, UpdatableInjectionContext injectionContext) {
 		ExceptionViewResolver exceptionViewResolver = new ExceptionViewResolver();
 		HttpStatusExceptionViewResolver statusViewResolver = new HttpStatusExceptionViewResolver();
-		
-		injectionContext.inject(ExceptionViewResolver.class).as(exceptionViewResolver);
-		injectionContext.inject(HttpStatusExceptionViewResolver.class).as(statusViewResolver);
-		
+
+		injectionContext.inject(exceptionViewResolver).as(ExceptionViewResolver.class);
+		injectionContext.inject(statusViewResolver).as(HttpStatusExceptionViewResolver.class);
+
 		viewResolverRegistry.addResolver(Throwable.class, exceptionViewResolver);
 		viewResolverRegistry.addResolver(HttpStatusException.class, statusViewResolver);
 		viewResolverRegistry.addResolver(RouteNotFoundException.class, new RouteNotFoundViewResolver());

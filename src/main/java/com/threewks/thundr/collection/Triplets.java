@@ -7,7 +7,15 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 public class Triplets<K1, K2, V> {
-	private Map<Pair<K1, K2>, V> delegate = new HashMap<Pair<K1, K2>, V>();
+	private Map<Pair<K1, K2>, V> delegate;
+
+	public Triplets() {
+		this(new HashMap<Pair<K1, K2>, V>());
+	}
+
+	public Triplets(Map<Pair<K1, K2>, V> delegate) {
+		this.delegate = delegate;
+	}
 
 	public void put(K1 k1, K2 k2, V v) {
 		delegate.put(pair(k1, k2), v);

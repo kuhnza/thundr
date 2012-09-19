@@ -23,9 +23,9 @@ public class ActionInjectionConfiguration implements InjectionConfiguration {
 		ServletContext servletContext = injectionContext.get(ServletContext.class);
 
 		MethodActionResolver methodActionResolver = new MethodActionResolver(injectionContext);
-		injectionContext.inject(MethodActionResolver.class).as(methodActionResolver);
+		injectionContext.inject(methodActionResolver).as(MethodActionResolver.class);
 		// The MethodActionResolver is special because we use it to perform controller interception
-		injectionContext.inject(ActionInterceptorRegistry.class).as(methodActionResolver);
+		injectionContext.inject(methodActionResolver).as(ActionInterceptorRegistry.class);
 
 		routes.addActionResolver(RedirectAction.class, new RedirectActionResolver());
 		routes.addActionResolver(RewriteAction.class, new RewriteActionResolver(routes));
