@@ -11,6 +11,7 @@ public enum ContentType {
 	TextPlain("text/plain"),
 	TextHtml("text/html"), 
 	TextCss("text/css"),
+	TextCsv("text/csv"),
 	TextJavascript("text/javascript"),
 	ApplicationFormUrlEncoded("application/x-www-form-urlencoded"),
 	ApplicationOctetStream("application/octet-stream"),
