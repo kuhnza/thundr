@@ -14,7 +14,8 @@ public class CollectionFunctions {
 	 * 
 	 * @param collectionOrArray a {@link Collection} or array of object
 	 * @param objectCollectionOrArray a single object, and array of objects or a {@link Collection} of objects
-	 * @return true if the first argument contains all of the elements in the second argument. If the second argument is an empty collection, returns true. if the second element is null, returns true if a null is contained in the first argument.
+	 * @return true if the first argument contains all of the elements in the second argument. If the second argument is an empty collection, returns true. if the second element is null, returns true
+	 *         if a null is contained in the first argument.
 	 */
 	@SuppressWarnings("unchecked")
 	public static boolean contains(Object collectionOrArray, Object objectCollectionOrArray) {
@@ -30,7 +31,8 @@ public class CollectionFunctions {
 	/**
 	 * @param collectionOrArray a {@link Collection} or array of object
 	 * @param objectCollectionOrArray a single object, and array of objects or a {@link Collection} of objects
-	 * @return true if the first argument contains any of the elements in the second argument. If the second argument is an empty collection, returns true. if the second element is null, returns true if a null is contained in the first argument.
+	 * @return true if the first argument contains any of the elements in the second argument. If the second argument is an empty collection, returns true. if the second element is null, returns true
+	 *         if a null is contained in the first argument.
 	 */
 	@SuppressWarnings("unchecked")
 	public static boolean containsAny(Object collectionOrArray, Object objectCollectionOrArray) {
@@ -49,7 +51,7 @@ public class CollectionFunctions {
 
 	private static List<Object> toCollection(Object collectionOrArray) {
 		boolean isArray = isArray(collectionOrArray);
-		return isArray ? Arrays.asList((Object[]) collectionOrArray) : new ArrayList<Object>((Collection<?>) collectionOrArray);
+		return isArray ? Arrays.asList((Object[]) collectionOrArray) : collectionOrArray == null ? new ArrayList<Object>() : new ArrayList<Object>((Collection<?>) collectionOrArray);
 	}
 
 	private static boolean isArray(Object object) {

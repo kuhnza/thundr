@@ -1,7 +1,6 @@
 package com.threewks.thundr.view.jsp.el;
 
-import static com.atomicleopard.expressive.Expressive.array;
-import static com.atomicleopard.expressive.Expressive.list;
+import static com.atomicleopard.expressive.Expressive.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -96,12 +95,13 @@ public class CollectionFunctionsTest {
 		assertThat(CollectionFunctions.contains(array("A", "B", "C"), array("A", "A")), is(true));
 		assertThat(CollectionFunctions.contains(array("A", "B", "C", null), array((Object) null, "A")), is(true));
 	}
-	
-	
-	
-	
-	
-	
+
+	@Test
+	public void shouldReturnFalseForContainsWhenArrayIsNull() {
+		assertThat(CollectionFunctions.contains(null, list("A", "B", "C")), is(false));
+		assertThat(CollectionFunctions.contains(null, array((Object) "A", "B", "C")), is(false));
+	}
+
 	@Test
 	public void shouldReturnTrueForContainsAnyWhenCollectionContainsSingleValue() {
 		assertThat(CollectionFunctions.containsAny(list("A", "B", "C"), "A"), is(true));
@@ -193,5 +193,5 @@ public class CollectionFunctionsTest {
 		assertThat(CollectionFunctions.containsAny(array("A", "B", "C"), array("D", "D")), is(false));
 		assertThat(CollectionFunctions.containsAny(array("A", "B", "C", null), array((Object) null, "A")), is(true));
 	}
-	
+
 }
