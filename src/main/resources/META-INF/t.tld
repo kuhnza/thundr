@@ -7,6 +7,25 @@
 	<short-name>thundr</short-name>
 	<uri>http://threewks.com/thundr/tags</uri>
 
+	<!-- Logic Tags -->
+	<tag-file>
+		<name>if</name>
+		<path>/META-INF/tags/logic/if.tag</path>
+	</tag-file>
+	<tag-file>
+		<name>elseif</name>
+		<path>/META-INF/tags/logic/elseif.tag</path>
+	</tag-file>
+	<tag-file>
+		<name>else</name>
+		<path>/META-INF/tags/logic/else.tag</path>
+	</tag-file>
+	<!-- This bad boy isn't ready for prime time yet --> 
+	<tag-file> 
+		<name>set</name> 
+		<path>/META-INF/tags/logic/set.tag</path>
+	</tag-file>
+	
 	<!-- Element tags -->
 	<tag-file>
 		<name>script</name>
@@ -29,22 +48,11 @@
 		<name>checkbox</name>
 		<path>/META-INF/tags/controls/checkbox.tag</path>
 	</tag-file>
+	<tag-file>
+		<name>select</name>
+		<path>/META-INF/tags/controls/select.tag</path>
+	</tag-file>
 
-	<!-- Logic Tags -->
-	<tag-file>
-		<name>if</name>
-		<path>/META-INF/tags/logic/if.tag</path>
-	</tag-file>
-	<tag-file>
-		<name>elseif</name>
-		<path>/META-INF/tags/logic/elseif.tag</path>
-	</tag-file>
-	<tag-file>
-		<name>else</name>
-		<path>/META-INF/tags/logic/else.tag</path>
-	</tag-file>
-	<!-- This bad boy isn't ready for prime time yet <tag-file> <name>set</name> <path>/META-INF/tags/logic/set.tag</path> </tag-file> -->
-	
 	<!-- Widget Tags -->
 	<tag-file>
 		<name>profile</name>
