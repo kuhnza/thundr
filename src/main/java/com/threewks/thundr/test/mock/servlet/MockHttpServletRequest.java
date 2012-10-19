@@ -38,6 +38,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 	private HttpSession session;
 	private String content;
 	private MockRequestDispatcher requestDispatcher = new MockRequestDispatcher();
+	private String serverName;
 
 	public MockHttpServletRequest() {
 	}
@@ -114,6 +115,11 @@ public class MockHttpServletRequest implements HttpServletRequest {
 		return this;
 	}
 
+	public MockHttpServletRequest serverName(String serverName) {
+		this.serverName = serverName;
+		return this;
+	}
+	
 	@Override
 	public Object getAttribute(String name) {
 		return attributes.get(name);
@@ -144,6 +150,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 		return contentType;
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public ServletInputStream getInputStream() throws IOException {
 		final StringInputStream sis = new StringInputStream(content);
@@ -188,7 +195,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
 	@Override
 	public String getServerName() {
-		return null;
+		return serverName;
 	}
 
 	@Override

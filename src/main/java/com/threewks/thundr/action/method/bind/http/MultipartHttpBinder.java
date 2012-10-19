@@ -19,7 +19,6 @@ import com.threewks.thundr.action.method.bind.ActionMethodBinder;
 import com.threewks.thundr.action.method.bind.BindException;
 import com.threewks.thundr.http.ContentType;
 import com.threewks.thundr.introspection.ParameterDescription;
-import com.threewks.thundr.logger.Logger;
 import com.threewks.thundr.util.Streams;
 
 public class MultipartHttpBinder implements ActionMethodBinder {
@@ -34,38 +33,45 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 	}
 
 	@Override
-	public boolean canBind(String contentType) {
-		for (ContentType supported : supportedContentTypes) {
-			if (supported.matches(contentType)) {
-				return true;
-			}
+	public void bindAll(Map<ParameterDescription, Object> bindings, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {
+		if (ContentType.anyMatch(supportedContentTypes, req.getContentType())) {
+			Map<String, List<String>> formFields = new HashMap<String, List<String>>();
+			Map<String, byte[]> fileFields = new HashMap<String, byte[]>();
+			extractParameters(req, formFields, fileFields);
+			Map<String, String[]> parameterMap = convertListMapToArrayMap(formFields);
+			httpBinder.bindAll(bindings, req, resp, pathVariables, parameterMap);
+			bindBinaryParameters(bindings, fileFields);
 		}
-		return false;
 	}
 
-	@Override
-	public List<Object> bindAll(List<ParameterDescription> parameterDescriptions, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {
-		Map<String, List<String>> formFields = new HashMap<String, List<String>>();
-		Map<String, byte[]> fileFields = new HashMap<String, byte[]>();
-
-		extractParameters(req, formFields, fileFields);
-
-		Map<String, String[]> parameterMap = convertListMapToArrayMap(formFields);
-		List<Object> boundVariables = httpBinder.bindAll(parameterDescriptions, req, resp, pathVariables, parameterMap);
-		for (int index = 0; index < parameterDescriptions.size(); index++) {
-			if (boundVariables.get(index) == null) {
-				ParameterDescription parameterDescription = parameterDescriptions.get(index);
-				String name = parameterDescription.name();
-				byte[] data = fileFields.get(name);
-				for (BinaryParameterBinder<?> parameterBinder : binders) {
-					if (parameterBinder.willBind(parameterDescription)) {
-						Object value = parameterBinder.bind(parameterDescription, data);
-						boundVariables.set(index, value);
-					}
-				}
+	private void bindBinaryParameters(Map<ParameterDescription, Object> bindings, Map<String, byte[]> fileFields) {
+		for (ParameterDescription parameterDescription : bindings.keySet()) {
+			if (bindings.get(parameterDescription) == null) {
+				Object value = bindParameter(fileFields, parameterDescription);
+				bindings.put(parameterDescription, value);
 			}
 		}
-		return boundVariables;
+	}
+
+	private Object bindParameter(Map<String, byte[]> fileFields, ParameterDescription parameterDescription) {
+		Object value = null;
+		BinaryParameterBinder<?> binder = findParamterBinder(parameterDescription);
+		if (binder != null) {
+			String name = parameterDescription.name();
+			byte[] data = fileFields.get(name);
+			value = binder.bind(parameterDescription, data);
+		}
+		return value;
+	}
+
+	private BinaryParameterBinder<?> findParamterBinder(ParameterDescription parameterDescription) {
+		BinaryParameterBinder<?> binder = null;
+		for (BinaryParameterBinder<?> parameterBinder : binders) {
+			if (parameterBinder.willBind(parameterDescription)) {
+				binder = parameterBinder;
+			}
+		}
+		return binder;
 	}
 
 	private void extractParameters(HttpServletRequest req, Map<String, List<String>> formFields, Map<String, byte[]> fileFields) {

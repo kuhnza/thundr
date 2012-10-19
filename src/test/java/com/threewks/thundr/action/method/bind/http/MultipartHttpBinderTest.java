@@ -1,6 +1,6 @@
 package com.threewks.thundr.action.method.bind.http;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -8,54 +8,40 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItemHeaders;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.threewks.thundr.action.method.bind.path.PathVariableBinder;
 import com.threewks.thundr.http.ContentType;
 import com.threewks.thundr.introspection.ParameterDescription;
 import com.threewks.thundr.test.TestSupport;
+import com.threewks.thundr.test.mock.servlet.MockHttpServletRequest;
+import com.threewks.thundr.test.mock.servlet.MockHttpServletResponse;
 
 public class MultipartHttpBinderTest {
-
-	private PathVariableBinder pathVariableBinder = new PathVariableBinder();
-	private HttpBinder httpBinder = new HttpBinder(pathVariableBinder);
+	private HttpBinder httpBinder = new HttpBinder();
 	private MultipartHttpBinder binder = new MultipartHttpBinder(httpBinder);
-	private HttpServletRequest request;
-	private HttpServletResponse response;
-	private HttpSession session;
+	private MockHttpServletRequest request = new MockHttpServletRequest().contentType(ContentType.MultipartFormData);
+	private MockHttpServletResponse response = new MockHttpServletResponse();
 	private Map<String, String> pathVariables;
-	private List<ParameterDescription> parameterDescriptions;
+	private Map<ParameterDescription, Object> parameterDescriptions;
 	private ArrayList<FileItemStream> multipartData;
 
 	@Before
 	public void before() throws FileUploadException, IOException {
-		session = mock(HttpSession.class);
-		request = mock(HttpServletRequest.class);
-		response = mock(HttpServletResponse.class);
-
-		parameterDescriptions = new ArrayList<ParameterDescription>();
+		parameterDescriptions = new LinkedHashMap<ParameterDescription, Object>();
 		pathVariables = new HashMap<String, String>();
-
-		when(request.getParameterMap()).thenReturn(Collections.<String, String[]> emptyMap());
 
 		multipartData = new ArrayList<FileItemStream>();
 		ServletFileUpload mockUpload = mock(ServletFileUpload.class);
@@ -82,56 +68,61 @@ public class MultipartHttpBinderTest {
 	}
 
 	@Test
-	public void shouldReturnTrueForMultipartFile() {
-		assertThat(binder.canBind(ContentType.MultipartFormData.value()), is(true));
-		assertThat(binder.canBind(ContentType.MultipartFormData.value().toUpperCase()), is(true));
-	}
+	public void shouldOnlyBindMultipartContent() {
+		request.contentType(ContentType.ApplicationFormUrlEncoded);
+		ParameterDescription field1 = new ParameterDescription("field1", String.class);
+		ParameterDescription field2 = new ParameterDescription("field2", String.class);
+		addFormField("field1", "value1");
+		addFormField("field2", "value2");
+		addFormField("field3", "value3");
+		parameterDescriptions.put(field1, null);
+		parameterDescriptions.put(field2, null);
 
-	@Test
-	public void shouldBindSpecialTypesByDelegatingToHttpBinder() {
-		parameterDescriptions.add(new ParameterDescription("request", HttpServletRequest.class));
-		parameterDescriptions.add(new ParameterDescription("response", HttpServletResponse.class));
-		parameterDescriptions.add(new ParameterDescription("session", HttpSession.class));
-		when(request.getSession()).thenReturn(session);
+		binder.bindAll(parameterDescriptions, request, response, pathVariables);
+		assertThat(parameterDescriptions.get(field1), is(nullValue()));
+		assertThat(parameterDescriptions.get(field2), is(nullValue()));
 
-		List<Object> boundVariables = binder.bindAll(parameterDescriptions, request, response, pathVariables);
-
-		assertThat(boundVariables, Matchers.<Object> hasItem(request));
-		assertThat(boundVariables, Matchers.<Object> hasItem(response));
-		assertThat(boundVariables, Matchers.<Object> hasItem(session));
-		assertThat(boundVariables.size(), is(3));
+		request.contentType(ContentType.MultipartFormData);
+		binder.bindAll(parameterDescriptions, request, response, pathVariables);
+		assertThat(parameterDescriptions.get(field1), is(notNullValue()));
+		assertThat(parameterDescriptions.get(field2), is(notNullValue()));
 	}
 
 	@Test
 	public void shouldBindFormFieldsByDelegatingToHttpBinder() {
+		ParameterDescription field1 = new ParameterDescription("field1", String.class);
+		ParameterDescription field2 = new ParameterDescription("field2", String.class);
 		addFormField("field1", "value1");
 		addFormField("field2", "value2");
 		addFormField("field3", "value3");
-		parameterDescriptions.add(new ParameterDescription("field1", String.class));
-		parameterDescriptions.add(new ParameterDescription("field2", String.class));
+		parameterDescriptions.put(field1, null);
+		parameterDescriptions.put(field2, null);
 
-		List<Object> boundVariables = binder.bindAll(parameterDescriptions, request, response, pathVariables);
+		binder.bindAll(parameterDescriptions, request, response, pathVariables);
 
-		assertThat(boundVariables, Matchers.<Object> hasItem("value1"));
-		assertThat(boundVariables, Matchers.<Object> hasItem("value2"));
-		assertThat(boundVariables.size(), is(2));
+		assertThat(parameterDescriptions.get(field1), is((Object) "value1"));
+		assertThat(parameterDescriptions.get(field2), is((Object) "value2"));
+		assertThat(parameterDescriptions.size(), is(2));
 	}
 
 	@Test
 	public void shouldBindByteArrayFromFileData() {
+		ParameterDescription field1 = new ParameterDescription("field1", String.class);
+		ParameterDescription field2 = new ParameterDescription("field2", String.class);
+		ParameterDescription data = new ParameterDescription("data", byte[].class);
 		addFormField("field1", "value1");
 		addFormField("field2", "value2");
 		addFileField("data", new byte[] { 1, 2, 3 });
-		parameterDescriptions.add(new ParameterDescription("field1", String.class));
-		parameterDescriptions.add(new ParameterDescription("field2", String.class));
-		parameterDescriptions.add(new ParameterDescription("data", byte[].class));
+		parameterDescriptions.put(field1, null);
+		parameterDescriptions.put(field2, null);
+		parameterDescriptions.put(data, null);
 
-		List<Object> boundVariables = binder.bindAll(parameterDescriptions, request, response, pathVariables);
+		binder.bindAll(parameterDescriptions, request, response, pathVariables);
 
-		assertThat(boundVariables, Matchers.<Object> hasItem("value1"));
-		assertThat(boundVariables, Matchers.<Object> hasItem("value2"));
-		assertThat(boundVariables, Matchers.<Object> hasItem(new byte[] { 1, 2, 3 }));
-		assertThat(boundVariables.size(), is(3));
+		assertThat(parameterDescriptions.get(field1), is((Object) "value1"));
+		assertThat(parameterDescriptions.get(field2), is((Object) "value2"));
+		assertThat(parameterDescriptions.get(data), is((Object) new byte[] { 1, 2, 3 }));
+		assertThat(parameterDescriptions.size(), is(3));
 	}
 
 	private void addFormField(final String name, final String value) {

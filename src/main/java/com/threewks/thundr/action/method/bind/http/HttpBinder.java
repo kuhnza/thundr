@@ -1,86 +1,52 @@
 package com.threewks.thundr.action.method.bind.http;
 
-import java.util.Arrays;
-import java.util.List;
+import static com.atomicleopard.expressive.Expressive.list;
+
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.atomicleopard.expressive.EList;
 import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.action.method.bind.ActionMethodBinder;
-import com.threewks.thundr.action.method.bind.path.PathVariableBinder;
 import com.threewks.thundr.http.ContentType;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class HttpBinder implements ActionMethodBinder {
-	
-    private static final String REQUEST_DOMAIN = "requestDomain";
-	
-    private PathVariableBinder pathVariableBinder;
-	private List<ContentType> supportedContentTypes = Arrays.asList(ContentType.ApplicationFormUrlEncoded, ContentType.TextHtml, ContentType.TextPlain);
 
-	public HttpBinder(PathVariableBinder pathVariableBinder) {
-		this.pathVariableBinder = pathVariableBinder;
-	}
+	private static final String REQUEST_DOMAIN = "requestDomain";
 
-	@Override
-	public boolean canBind(String contentType) {
-		// TODO - it seems like this binder should just return true and always be the last attempt
-		if (contentType == null) {
-			return true;
-		}
-		for (ContentType supported : supportedContentTypes) {
-			if (supported.value().equalsIgnoreCase(contentType)) {
-				return true;
-			}
-		}
-		return false;
+	public static EList<ContentType> supportedContentTypes = list(ContentType.ApplicationFormUrlEncoded, ContentType.TextHtml, ContentType.TextPlain, ContentType.Null);
+
+	public HttpBinder() {
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Object> bindAll(List<ParameterDescription> parameterDescriptions, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {
-		Map<String, String[]> parameterMap = req.getParameterMap();
-		return bindAll(parameterDescriptions, req, resp, pathVariables, parameterMap);
+	public void bindAll(Map<ParameterDescription, Object> bindings, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {
+		if (ContentType.anyMatch(supportedContentTypes, req.getContentType())) {
+			Map<String, String[]> parameterMap = req.getParameterMap();
+			bindAll(bindings, req, resp, pathVariables, parameterMap);
+		}
 	}
 
-	/**
-	 * Binds all parameters that can be bound using the given path variables and parameter map.
-	 * @param parameterDescriptions
-	 * @param req
-	 * @param resp
-	 * @param pathVariables
-	 * @param parameterMap
-	 * @return
-	 */
-	public List<Object> bindAll(List<ParameterDescription> parameterDescriptions, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables, Map<String, String[]> parameterMap) {
-		List<Object> boundVariables = pathVariableBinder.bindAll(parameterDescriptions, req, resp, pathVariables);
-		if (!parameterDescriptions.isEmpty()) {
-			HttpPostDataMap pathMap = new HttpPostDataMap(parameterMap);
-			ParameterBinderSet binders = binders(req, resp);
-			for (int index = 0; index < parameterDescriptions.size(); index++) {
-				if (boundVariables.get(index) == null) {
-					ParameterDescription parameterDescription = parameterDescriptions.get(index);
-					Object value = binders.createFor(parameterDescription, pathMap);
-					boundVariables.set(index, value);
-				}
+	public void bindAll(Map<ParameterDescription, Object> bindings, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables, Map<String, String[]> parameterMap) {
+		HttpPostDataMap pathMap = new HttpPostDataMap(parameterMap);
+		ParameterBinderSet binders = binders(req, resp);
+		for (ParameterDescription parameterDescription : bindings.keySet()) {
+			if (bindings.get(parameterDescription) == null) {
+				Object value = binders.createFor(parameterDescription, pathMap);
+				bindings.put(parameterDescription, value);
 			}
 		}
-		return boundVariables;
 	}
 
 	private ParameterBinderSet binders(HttpServletRequest req, HttpServletResponse resp) {
 		ParameterBinderSet binders = new ParameterBinderSet();
-		InstanceParameterBinder requestBinder = new InstanceParameterBinder(req);
-		InstanceParameterBinder responseBinder = new InstanceParameterBinder(resp);
-		InstanceParameterBinder sessionBinder = new InstanceParameterBinder(req == null ? null : req.getSession());
 		NamedInstanceParameterBinder requestDomainBinder = new NamedInstanceParameterBinder(Expressive.list(REQUEST_DOMAIN), req.getServerName());
 
 		binders.addDefaultBinders();
-		binders.addBinder(sessionBinder);
-		binders.addBinder(requestBinder);
-		binders.addBinder(responseBinder);
 		binders.addBinder(requestDomainBinder);
 		return binders;
 	}

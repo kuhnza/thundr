@@ -20,13 +20,13 @@ import com.atomicleopard.expressive.Cast;
 import com.threewks.thundr.action.ActionException;
 import com.threewks.thundr.action.ActionResolver;
 import com.threewks.thundr.action.method.bind.ActionMethodBinder;
-import com.threewks.thundr.action.method.bind.BindException;
+import com.threewks.thundr.action.method.bind.header.RequestHeaderBinder;
 import com.threewks.thundr.action.method.bind.http.HttpBinder;
 import com.threewks.thundr.action.method.bind.http.MultipartHttpBinder;
 import com.threewks.thundr.action.method.bind.json.GsonBinder;
 import com.threewks.thundr.action.method.bind.path.PathVariableBinder;
+import com.threewks.thundr.action.method.bind.request.RequestClassBinder;
 import com.threewks.thundr.exception.BaseException;
-import com.threewks.thundr.http.ContentType;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.introspection.ParameterDescription;
 import com.threewks.thundr.logger.Logger;
@@ -41,12 +41,14 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 
 	public MethodActionResolver(UpdatableInjectionContext injectionContext) {
 		this.injectionContext = injectionContext;
-		PathVariableBinder pathVariableBinder = new PathVariableBinder();
-		HttpBinder httpBinder = new HttpBinder(pathVariableBinder);
+		HttpBinder httpBinder = new HttpBinder();
 		methodBinders = new ArrayList<ActionMethodBinder>();
-		methodBinders.add(new GsonBinder(pathVariableBinder));
+		methodBinders.add(new PathVariableBinder());
+		methodBinders.add(new RequestClassBinder());
+		methodBinders.add(new GsonBinder());
 		methodBinders.add(httpBinder);
 		methodBinders.add(new MultipartHttpBinder(httpBinder));
+		methodBinders.add(new RequestHeaderBinder());
 	}
 
 	@Override
@@ -107,14 +109,16 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 	}
 
 	private List<Object> bindArguments(MethodAction action, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
-		List<ParameterDescription> parameterDescriptions = action.parameters();
-		String sanitisedContentType = ContentType.cleanContentType(req.getContentType());
-		for (ActionMethodBinder binder : methodBinders) {
-			if (binder.canBind(sanitisedContentType)) {
-				return binder.bindAll(parameterDescriptions, req, resp, pathVars);
+		Map<ParameterDescription, Object> boundParameters = new LinkedHashMap<ParameterDescription, Object>();
+		for (ParameterDescription parameterDescription : action.parameters()) {
+			boundParameters.put(parameterDescription, null);
+		}
+		if (!boundParameters.isEmpty()) {
+			for (ActionMethodBinder binder : methodBinders) {
+				binder.bindAll(boundParameters, req, resp, pathVars);
 			}
 		}
-		throw new BindException("Cannot bind arguments - no binder found for Content-Type=%s", req.getContentType());
+		return new ArrayList<Object>(boundParameters.values());
 	}
 
 	private Object afterInterceptors(Object result, Map<Annotation, ActionInterceptor<Annotation>> interceptors, HttpServletRequest req, HttpServletResponse resp) {

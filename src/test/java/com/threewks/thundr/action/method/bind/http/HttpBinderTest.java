@@ -1,128 +1,143 @@
 package com.threewks.thundr.action.method.bind.http;
 
-import static com.atomicleopard.expressive.Expressive.list;
-import static java.util.Collections.emptyList;
-import static org.hamcrest.Matchers.is;
+import static com.atomicleopard.expressive.Expressive.*;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.hamcrest.Matchers;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.threewks.thundr.action.method.bind.path.PathVariableBinder;
 import com.threewks.thundr.http.ContentType;
 import com.threewks.thundr.introspection.ParameterDescription;
+import com.threewks.thundr.test.mock.servlet.MockHttpServletRequest;
+import com.threewks.thundr.test.mock.servlet.MockHttpServletResponse;
 
 public class HttpBinderTest {
-    private HttpBinder binder;
-    private HttpServletRequest request;
-    private HttpServletResponse response;
-    private HttpSession session;
-    private Map<String, String> pathVariables;
-    private List<ParameterDescription> parameterDescriptions;
-    
-    @Before
-    public void before() {
-        binder = new HttpBinder(new PathVariableBinder());
-        
-        parameterDescriptions = new ArrayList<ParameterDescription>();
-        pathVariables = new HashMap<String, String>();
-        
-        session = mock(HttpSession.class);
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
-        
-        when(request.getParameterMap()).thenReturn(Collections.<String, String[]> emptyMap());
-    }
-    
-    @Test
-    public void shouldBindNullContentType() {
-        assertThat(binder.canBind(null), is(true));
-    }
-    
-    @Test
-    public void shouldBindValidContentTypes() {
-        List<ContentType> validContentTypes = list(ContentType.ApplicationFormUrlEncoded, ContentType.TextHtml, ContentType.TextPlain);
-        for (ContentType contentType : ContentType.values()) {
-            assertThat(binder.canBind(contentType.value()), is(validContentTypes.contains(contentType)));
-        }
-    }
-    
-    @Test
-    public void shouldBindToHttpServletRequestParam() {
-        parameterDescriptions.add(new ParameterDescription("request", HttpServletRequest.class));
-        
-        List<Object> boundVariables = binder.bindAll(parameterDescriptions, request, response, pathVariables);
-        assertThat(boundVariables, Matchers.<Object>hasItem(request));
-        assertThat(boundVariables.size(), is(1));
-    }
-    
-    @Test
-    public void shouldBindToHttpServletResponseParam() {
-        parameterDescriptions.add(new ParameterDescription("response", HttpServletResponse.class));
-        
-        List<Object> boundVariables = binder.bindAll(parameterDescriptions, request, response, pathVariables);
-        assertThat(boundVariables, Matchers.<Object>hasItem(response));
-        assertThat(boundVariables.size(), is(1));
-    }
-    
-    @Test
-    public void shouldBindToHttpSessionParam() {
-        parameterDescriptions.add(new ParameterDescription("session", HttpSession.class));
-        when(request.getSession()).thenReturn(session);
-        
-        List<Object> boundVariables = binder.bindAll(parameterDescriptions, request, response, pathVariables);
-        assertThat(boundVariables, Matchers.<Object>hasItem(session));
-        assertThat(boundVariables.size(), is(1));
-    }
-    
-    @Test
-    public void shouldBindToRequestDomainParam() {
-        parameterDescriptions.add(new ParameterDescription("requestDomain", String.class));
-        String serverName = "www.example.com";
-        when(request.getServerName()).thenReturn(serverName);
-        
-        List<Object> boundVariables = binder.bindAll(parameterDescriptions, request, response, pathVariables);
-        assertThat(boundVariables, Matchers.<Object>hasItem(serverName));
-        assertThat(boundVariables.size(), is(1));
-    }
-    
-    @Test
-    public void shouldBindMultipleParams() {
-        parameterDescriptions.add(new ParameterDescription("request", HttpServletRequest.class));
-        parameterDescriptions.add(new ParameterDescription("response", HttpServletResponse.class));
-        parameterDescriptions.add(new ParameterDescription("session", HttpSession.class));
-        when(request.getSession()).thenReturn(session);
-        
-        List<Object> boundVariables = binder.bindAll(parameterDescriptions, request, response, pathVariables);
-        assertThat(boundVariables, Matchers.<Object>hasItem(request));
-        assertThat(boundVariables, Matchers.<Object>hasItem(response));
-        assertThat(boundVariables, Matchers.<Object>hasItem(session));
-        assertThat(boundVariables.size(), is(3));
-    }
-    
-    @Test
-    public void shouldDelegateToPathVariableBinder() {
-        PathVariableBinder pathVariableBinder = mock(PathVariableBinder.class);
-        List<Object> boundVariables = emptyList();
-        when(pathVariableBinder.bindAll(parameterDescriptions, request, response, pathVariables)).thenReturn(boundVariables);
-        
-        binder = new HttpBinder(pathVariableBinder);
-        binder.bindAll(parameterDescriptions, request, response, pathVariables);
-        verify(pathVariableBinder).bindAll(parameterDescriptions, request, response, pathVariables);
-    }
-    
+	private HttpBinder binder;
+	private MockHttpServletRequest request = new MockHttpServletRequest();
+	private HttpServletResponse response = new MockHttpServletResponse();
+	private Map<String, String> pathVariables;
+	private Map<ParameterDescription, Object> parameterDescriptions;
+
+	@Before
+	public void before() {
+		binder = new HttpBinder();
+
+		parameterDescriptions = new LinkedHashMap<ParameterDescription, Object>();
+		pathVariables = new HashMap<String, String>();
+	}
+
+	@Test
+	public void shouldBindNullContentType() {
+		request.contentType(ContentType.Null);
+		request.parameter("param1", "1");
+
+		ParameterDescription param1 = new ParameterDescription("param1", int.class);
+
+		request.contentType((String) null);
+		parameterDescriptions = map(param1, null);
+		binder.bindAll(parameterDescriptions, request, response, pathVariables);
+		assertThat(parameterDescriptions.get(param1), is((Object) 1));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void shouldBindValidContentTypes() {
+		request.contentType(ContentType.Null);
+		request.parameter("param1", "1");
+
+		ParameterDescription param1 = new ParameterDescription("param1", int.class);
+
+		for (ContentType contentType : HttpBinder.supportedContentTypes) {
+			request.contentType(contentType);
+			parameterDescriptions = map(param1, null);
+			binder.bindAll(parameterDescriptions, request, response, pathVariables);
+			assertThat(parameterDescriptions.get(param1), is((Object) 1));
+		}
+		for (ContentType contentType : list(ContentType.values()).removeItems(HttpBinder.supportedContentTypes)) {
+			request.contentType(contentType);
+			parameterDescriptions = map(param1, null);
+			binder.bindAll(parameterDescriptions, request, response, pathVariables);
+			assertThat(parameterDescriptions.get(param1), is(nullValue()));
+		}
+	}
+
+	@Test
+	public void shouldBindToRequestDomainParam() {
+		ParameterDescription requestDomain = new ParameterDescription("requestDomain", String.class);
+		parameterDescriptions.put(requestDomain, null);
+		request.serverName("www.example.com");
+
+		binder.bindAll(parameterDescriptions, request, response, pathVariables);
+		assertThat(parameterDescriptions.get(requestDomain), is((Object) "www.example.com"));
+	}
+
+	@Test
+	public void shouldBindMultipleParams() {
+		request.contentType(ContentType.Null);
+		request.parameter("param1", "1");
+		request.parameter("param2", "2");
+		request.parameter("param3.value1", "3");
+		request.parameter("param3.value2", "three");
+
+		ParameterDescription param1 = new ParameterDescription("param1", int.class);
+		ParameterDescription param2 = new ParameterDescription("param2", String.class);
+		ParameterDescription param3 = new ParameterDescription("param3", TestBean.class);
+		parameterDescriptions.put(param1, null);
+		parameterDescriptions.put(param2, null);
+		parameterDescriptions.put(param3, null);
+
+		binder.bindAll(parameterDescriptions, request, response, pathVariables);
+		assertThat(parameterDescriptions.get(param1), is((Object) 1));
+		assertThat(parameterDescriptions.get(param2), is((Object) "2"));
+		assertThat(parameterDescriptions.get(param3), is((Object) new TestBean("3", "three")));
+	}
+
+	public static class TestBean {
+		private String value1;
+		private String value2;
+
+		public TestBean() {
+
+		}
+
+		public TestBean(String value1, String value2) {
+			this.value1 = value1;
+			this.value2 = value2;
+		}
+
+		public String getValue1() {
+			return value1;
+		}
+
+		public void setValue1(String value1) {
+			this.value1 = value1;
+		}
+
+		public String getValue2() {
+			return value2;
+		}
+
+		public void setValue2(String value2) {
+			this.value2 = value2;
+		}
+
+		@Override
+		public int hashCode() {
+			return HashCodeBuilder.reflectionHashCode(this, false);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return EqualsBuilder.reflectionEquals(this, obj, false);
+		}
+	}
 }

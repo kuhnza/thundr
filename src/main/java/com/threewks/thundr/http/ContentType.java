@@ -3,13 +3,15 @@ package com.threewks.thundr.http;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Some common ContentType definitions for MIME types.
  * For a world of fun, check out http://www.iana.org/assignments/media-types/index.html
  */
 public enum ContentType {
 	TextPlain("text/plain"),
-	TextHtml("text/html"), 
+	TextHtml("text/html"),
 	TextCss("text/css"),
 	TextCsv("text/csv"),
 	TextJavascript("text/javascript"),
@@ -22,7 +24,8 @@ public enum ContentType {
 	MultipartFormData("multipart/form-data"),
 	ImageJpeg("image/jpeg"),
 	ImageGif("image/gif"),
-	ImagePng("image/png");
+	ImagePng("image/png"),
+	Null(null);
 
 	private String value;
 
@@ -41,7 +44,7 @@ public enum ContentType {
 	 * @return
 	 */
 	public boolean matches(String contentType) {
-		return this.value.equalsIgnoreCase(cleanContentType(contentType));
+		return StringUtils.equalsIgnoreCase(this.value, cleanContentType(contentType));
 	}
 
 	private static final Pattern contentTypePattern = Pattern.compile("([\\w+-]+)/([\\w+-]+?)(\\s*;.*)?");
@@ -64,14 +67,24 @@ public enum ContentType {
 		return rawContentType;
 	}
 
-	public static ContentType from(String encoding) {
-		encoding = cleanContentType(encoding);
+	public static ContentType from(String rawContentType) {
+		rawContentType = cleanContentType(rawContentType);
 		for (ContentType contentType : values()) {
-			if (contentType.value.equalsIgnoreCase(encoding)) {
+			if (contentType.matches(rawContentType)) {
 				return contentType;
 			}
 		}
 		return null;
+	}
+
+	public static boolean anyMatch(Iterable<ContentType> types, String contentType) {
+		contentType = cleanContentType(contentType);
+		for (ContentType supported : types) {
+			if (StringUtils.equalsIgnoreCase(supported.value, contentType)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
