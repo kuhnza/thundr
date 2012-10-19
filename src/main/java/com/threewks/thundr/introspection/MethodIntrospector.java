@@ -51,7 +51,7 @@ public class MethodIntrospector {
 		} catch (ParamoException e) {
 			// parameter names are only available when the classes were debug compiled - so if you use a library or JDK class, Paramo cannot help
 			Method method = Cast.as(methodOrCtor, Method.class);
-			Constructor constructor = Cast.as(methodOrCtor, Constructor.class);
+			Constructor<?> constructor = Cast.as(methodOrCtor, Constructor.class);
 			int parameterCount = method == null ? constructor.getParameterTypes().length : method.getParameterTypes().length;
 			String[] names = new String[parameterCount];
 			for (int i = 0; i < names.length; i++) {

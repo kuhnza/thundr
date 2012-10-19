@@ -82,12 +82,13 @@ public class ParameterBinderSet {
 		List<ParameterBinder<?>> list = new ArrayList<ParameterBinder<?>>();
 		list.add(new StringParameterBinder());
 		list.add(new ArrayParameterBinder());
-		list.add(new CollectionParameterBinder<ArrayList<Object>>(new SimpleCollectionFactory(List.class, ArrayList.class)));
-		list.add(new CollectionParameterBinder<LinkedList<Object>>(new SimpleCollectionFactory(List.class, ArrayList.class)));
+		list.add(new CollectionParameterBinder<ArrayList<Object>>(new SimpleCollectionFactory(ArrayList.class, ArrayList.class)));
+		list.add(new CollectionParameterBinder<LinkedList<Object>>(new SimpleCollectionFactory(LinkedList.class, LinkedList.class)));
 		list.add(new CollectionParameterBinder<EList<Object>>(new SimpleCollectionFactory(EList.class, EListImpl.class)));
-		list.add(new CollectionParameterBinder<EListImpl<Object>>(new SimpleCollectionFactory(EList.class, EListImpl.class)));
+		list.add(new CollectionParameterBinder<EListImpl<Object>>(new SimpleCollectionFactory(EListImpl.class, EListImpl.class)));
 		list.add(new CollectionParameterBinder<TreeSet<Object>>(new SimpleCollectionFactory(TreeSet.class, TreeSet.class)));
-		list.add(new CollectionParameterBinder<HashSet<Object>>(new SimpleCollectionFactory(Set.class, HashSet.class)));
+		list.add(new CollectionParameterBinder<HashSet<Object>>(new SimpleCollectionFactory(HashSet.class, HashSet.class)));
+		list.add(new CollectionParameterBinder<TreeSet<Object>>(new SimpleCollectionFactory(TreeSet.class, TreeSet.class)));
 		list.add(new CollectionParameterBinder<SortedSet<Object>>(new SimpleCollectionFactory(SortedSet.class, TreeSet.class)));
 		list.add(new CollectionParameterBinder<Set<Object>>(new SimpleCollectionFactory(Set.class, HashSet.class)));
 		list.add(new CollectionParameterBinder<List<Object>>(new SimpleCollectionFactory(List.class, ArrayList.class)));

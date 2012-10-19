@@ -48,7 +48,7 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 		methodBinders.add(new GsonBinder());
 		methodBinders.add(httpBinder);
 		methodBinders.add(new MultipartHttpBinder(httpBinder));
-		methodBinders.add(new RequestHeaderBinder());
+		methodBinders.add(new RequestHeaderBinder(httpBinder));
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 		return result;
 	}
 
-	private List<Object> bindArguments(MethodAction action, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
+	List<Object> bindArguments(MethodAction action, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {
 		Map<ParameterDescription, Object> boundParameters = new LinkedHashMap<ParameterDescription, Object>();
 		for (ParameterDescription parameterDescription : action.parameters()) {
 			boundParameters.put(parameterDescription, null);

@@ -28,10 +28,10 @@ import com.threewks.thundr.http.ContentType;
 public class MockHttpServletRequest implements HttpServletRequest {
 	private Map<String, Object> attributes = new HashMap<String, Object>();
 	private Map<String, String[]> parameters = new HashMap<String, String[]>();
+	private Map<String, String[]> headers = new HashMap<String, String[]>();
 	private String characterEncoding = "utf-8";
 	private String contentType = null;
 	private String protocol = "http";
-	private Map<String, String> headers = new HashMap<String, String>();
 	private String method = "GET";
 	private String path = "/";
 	private String queryString = "";
@@ -90,13 +90,28 @@ public class MockHttpServletRequest implements HttpServletRequest {
 		return this;
 	}
 
-	public MockHttpServletRequest parameter(String name, String[] value) {
-		parameters.put(name, value);
+	public MockHttpServletRequest parameter(String name, String...values) {
+		parameters.put(name, values);
 		return this;
 	}
 
 	public MockHttpServletRequest parameters(Map<String, String[]> parameters) {
 		this.parameters.putAll(parameters);
+		return this;
+	}
+
+	public MockHttpServletRequest header(String name, String value) {
+		headers.put(name, new String[] { value });
+		return this;
+	}
+
+	public MockHttpServletRequest header(String name, String...values) {
+		headers.put(name, values);
+		return this;
+	}
+
+	public MockHttpServletRequest header(Map<String, String[]> headers) {
+		this.headers.putAll(parameters);
 		return this;
 	}
 
@@ -119,7 +134,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 		this.serverName = serverName;
 		return this;
 	}
-	
+
 	@Override
 	public Object getAttribute(String name) {
 		return attributes.get(name);
@@ -295,7 +310,8 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
 	@Override
 	public String getHeader(String name) {
-		return headers.get(name);
+		String[] values = headers.get(name);
+		return values == null ? null : values[0];
 	}
 
 	@Override

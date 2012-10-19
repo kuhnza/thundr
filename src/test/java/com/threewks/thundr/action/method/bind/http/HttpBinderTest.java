@@ -71,16 +71,6 @@ public class HttpBinderTest {
 	}
 
 	@Test
-	public void shouldBindToRequestDomainParam() {
-		ParameterDescription requestDomain = new ParameterDescription("requestDomain", String.class);
-		parameterDescriptions.put(requestDomain, null);
-		request.serverName("www.example.com");
-
-		binder.bindAll(parameterDescriptions, request, response, pathVariables);
-		assertThat(parameterDescriptions.get(requestDomain), is((Object) "www.example.com"));
-	}
-
-	@Test
 	public void shouldBindMultipleParams() {
 		request.contentType(ContentType.Null);
 		request.parameter("param1", "1");

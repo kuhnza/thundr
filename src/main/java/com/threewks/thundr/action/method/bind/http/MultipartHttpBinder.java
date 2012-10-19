@@ -39,7 +39,7 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 			Map<String, byte[]> fileFields = new HashMap<String, byte[]>();
 			extractParameters(req, formFields, fileFields);
 			Map<String, String[]> parameterMap = convertListMapToArrayMap(formFields);
-			httpBinder.bindAll(bindings, req, resp, pathVariables, parameterMap);
+			httpBinder.bind(bindings, req, resp, parameterMap);
 			bindBinaryParameters(bindings, fileFields);
 		}
 	}
