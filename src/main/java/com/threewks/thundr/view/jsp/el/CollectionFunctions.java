@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.atomicleopard.expressive.Cast;
 
 public class CollectionFunctions {
@@ -47,6 +49,16 @@ public class CollectionFunctions {
 			}
 		}
 		return asCollection.isEmpty();
+	}
+	
+	/**
+	 * Joins the given collection or array using the object toString and the given separator.
+	 * @param collectionOrArray a {@link Collection} or array of object
+	 * @param separator the separator token to use when joining the content of the given collection
+	 */
+	public static String join(Object collectionOrArray, Object separator){
+		List<Object> collection = toCollection(collectionOrArray);
+		return StringUtils.join(collection, separator == null ? "" : separator.toString());
 	}
 
 	private static List<Object> toCollection(Object collectionOrArray) {

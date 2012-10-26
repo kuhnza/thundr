@@ -107,6 +107,11 @@
 		<function-class>com.threewks.thundr.view.jsp.el.StringFunctions</function-class>
 		<function-signature>java.lang.String replace(java.lang.Object, java.lang.String, java.lang.String)</function-signature>
 	</function>
+	<function>
+		<name>join</name>
+		<function-class>com.threewks.thundr.view.jsp.el.CollectionFunctions</function-class>
+		<function-signature>java.lang.String join(java.lang.Object, java.lang.Object)</function-signature>
+	</function>
 	<!-- Collection functions -->
 	<function>
 		<name>contains</name>

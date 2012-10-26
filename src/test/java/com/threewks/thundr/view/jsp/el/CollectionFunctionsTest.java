@@ -193,5 +193,18 @@ public class CollectionFunctionsTest {
 		assertThat(CollectionFunctions.containsAny(array("A", "B", "C"), array("D", "D")), is(false));
 		assertThat(CollectionFunctions.containsAny(array("A", "B", "C", null), array((Object) null, "A")), is(true));
 	}
+	@Test
+	public void shouldReturnJoinedString() {
+		assertThat(CollectionFunctions.join(array(), null), is(""));
+		assertThat(CollectionFunctions.join(collection(), null), is(""));
+		assertThat(CollectionFunctions.join(null, " "), is(""));
+		assertThat(CollectionFunctions.join(null, " "), is(""));
+		assertThat(CollectionFunctions.join(array(), " "), is(""));
+		assertThat(CollectionFunctions.join(collection(), " "), is(""));
+		assertThat(CollectionFunctions.join(array("A", "B", "C"), " "), is("A B C"));
+		assertThat(CollectionFunctions.join(collection("A", "B", "C"), " "), is("A B C"));
+		assertThat(CollectionFunctions.join(array(1, 2, 3), ", "), is("1, 2, 3"));
+		assertThat(CollectionFunctions.join(collection(1, 2, 3), ", "), is("1, 2, 3"));
+	}
 
 }
