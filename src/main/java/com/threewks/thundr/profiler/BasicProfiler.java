@@ -7,10 +7,18 @@ import com.threewks.thundr.logger.Logger;
 
 public class BasicProfiler implements Profiler {
 	private ThreadLocal<ProfileSession> profileSession = new ThreadLocal<ProfileSession>();
-	private BasicProfilerCompletionStrategy completionStrategy;
+	private BasicProfilerCompletionStrategy completionStrategy = new NoCompletionStrategy();
 
-	public BasicProfiler(BasicProfilerCompletionStrategy completionStrategy) {
+	public BasicProfiler() {
+	}
+
+	public void setCompletionStrategy(BasicProfilerCompletionStrategy completionStrategy) {
 		this.completionStrategy = completionStrategy;
+	}
+
+	public BasicProfiler withCompletionStrategy(BasicProfilerCompletionStrategy completionStrategy) {
+		setCompletionStrategy(completionStrategy);
+		return this;
 	}
 
 	@Override
@@ -73,7 +81,8 @@ public class BasicProfiler implements Profiler {
 			StringBuilder sb = new StringBuilder();
 			sb.append(String.format("Profile results for %s (%s - %s, %sms)\n", stack.getData(), new Date(stack.getStart()), new Date(stack.getEnd()), stack.getEnd() - stack.getStart()));
 			for (ProfileEvent event : stack.getEvents()) {
-				sb.append(String.format("Event %s - %s, %s: %s - %s (%sms)\n", event.getStatus(), event.getCategory(), event.getData(), new Date(event.getStart()), new Date(event.getEnd()), event.getEnd() - event.getStart()));
+				sb.append(String.format("Event %s - %s, %s: %s - %s (%sms)\n", event.getStatus(), event.getCategory(), event.getData(), new Date(event.getStart()), new Date(event.getEnd()),
+						event.getEnd() - event.getStart()));
 			}
 			Logger.info(sb.toString());
 		}
