@@ -97,7 +97,7 @@ getJspContext().setAttribute("profileSession", profileSession, PageContext.PAGE_
 			$(document).ready(function(){
 				$(".thundr-profiler .event").mouseenter(thundrProfiler.tooltip.show).mouseleave(thundrProfiler.tooltip.hide);
 				$(".thundr-profiler .close").click(thundrProfiler.close);
-				$(".thundr-profiler table", this).colResizable({postbackSafe : true});
+				$(".thundr-profiler table").colResizable({postbackSafe : true});
 			});
 		}
 	</script>
