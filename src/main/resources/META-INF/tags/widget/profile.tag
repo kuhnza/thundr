@@ -54,6 +54,7 @@ getJspContext().setAttribute("profileSession", profileSession, PageContext.PAGE_
 		.thundr-profiler .event.Http { background-color: rgb(220, 220, 255);}
 		.thundr-profiler .event.HttpRequest { background-color: rgb(200, 200, 255);}
 		.thundr-profiler .event.HttpResponse { background-color: rgb(235, 235, 255);}
+		.thundr-profiler .event.Search { background-color: rgb(200, 200, 220);}
 		.thundr-profiler .event.Service { background-color: rgb(220, 255, 220);}
 		.thundr-profiler .event.ServiceRequest { background-color: rgb(200, 255, 200);}
 		.thundr-profiler .event.ServiceResponse { background-color: rgb(235, 255, 235);}
