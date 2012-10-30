@@ -12,10 +12,14 @@ public class ProfilableFuture<T> implements Future<T> {
 	private UUID key;
 
 	public ProfilableFuture(String category, String data, Profiler profiler, Future<T> delegate) {
+		this(profiler, profiler.start(category, data), delegate);
+	}
+
+	public ProfilableFuture(Profiler profiler, UUID key, Future<T> delegate) {
 		super();
 		this.profiler = profiler;
 		this.delegate = delegate;
-		this.key = profiler.start(category, data);
+		this.key = key;
 	}
 
 	public boolean cancel(boolean mayInterruptIfRunning) {
