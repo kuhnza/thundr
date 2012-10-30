@@ -7,6 +7,6 @@ public class ProfilerInjectionConfiguration implements InjectionConfiguration {
 
 	@Override
 	public void configure(UpdatableInjectionContext injectionContext) {
-		injectionContext.inject(new NoProfiler()).as(Profiler.class);
+		injectionContext.inject(NoProfiler.class).as(Profiler.class);
 	}
 }
