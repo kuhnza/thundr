@@ -14,7 +14,7 @@ getJspContext().setAttribute("profileSession", profileSession, PageContext.PAGE_
 <section id="${id}" class="thundr-profiler ${cssClass}">
 	<style>
 		.thundr-profiler { z-index: 10001; }
-		.thundr-profiler { position: fixed; top: 0; right: 0; width: 800px; min-height: 200px; padding: 0 12px; border: 4px solid #333; background: rgba(255, 255, 255, 0.85); -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; }
+		.thundr-profiler { position: fixed; top: 0; right: 0; width: 800px; min-height: 200px; max-height: 800px; overflow-y: auto; padding: 0 12px; border: 4px solid #333; background: rgba(255, 255, 255, 0.85); -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; }
 		.thundr-profiler h1 { font-size: 18px; }
 		.thundr-profiler table {width: 100%; }
 		.thundr-profiler tr { height: 20px; background-color: transparent; }
