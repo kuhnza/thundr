@@ -10,8 +10,20 @@
 		<connection>scm:git:https://github.com/3wks/thundr</connection>
 		<developerConnection>scm:git:https://github.com/3wks/thundr</developerConnection>
 		<url>https://github.com/3wks/thundr</url>
-	  <tag>HEAD</tag>
-  </scm>
+	    <tag>HEAD</tag>
+	</scm>
+	
+	<repositories>
+		<repository>
+			<id>newsclassifieds-cloudbees-snapshot</id>
+			<url>dav:https://repository-newsclassifieds.forge.cloudbees.com/snapshot</url>
+			<snapshots>
+        		<enabled>true</enabled>
+        		<updatePolicy>always</updatePolicy>
+        		<checksumPolicy>fail</checksumPolicy>
+      		</snapshots>
+		</repository>
+	</repositories>
   	
   	<distributionManagement>
 		<repository>
