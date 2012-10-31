@@ -12,7 +12,7 @@ import com.threewks.thundr.profiler.BasicProfiler.BasicProfilerCompletionStrateg
 
 public class BasicProfilerTest {
 	private BasicProfilerCompletionStrategy completionStrategy = mock(BasicProfilerCompletionStrategy.class);
-	private BasicProfiler basicProfiler = new BasicProfiler(completionStrategy);
+	private BasicProfiler basicProfiler = new BasicProfiler().withCompletionStrategy(completionStrategy);
 
 	@Test
 	public void shouldInvokeCompletionStrategyOnEnd() {

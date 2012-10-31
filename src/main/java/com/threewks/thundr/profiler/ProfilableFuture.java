@@ -15,7 +15,7 @@ public class ProfilableFuture<T> implements Future<T> {
 		super();
 		this.profiler = profiler;
 		this.delegate = delegate;
-		this.key = profiler.start(Profiler.CategoryHttp, data);
+		this.key = profiler.start(category, data);
 	}
 
 	public boolean cancel(boolean mayInterruptIfRunning) {
