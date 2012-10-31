@@ -13,18 +13,6 @@
 	    <tag>HEAD</tag>
 	</scm>
 	
-	<repositories>
-		<repository>
-			<id>newsclassifieds-cloudbees-snapshot</id>
-			<url>dav:http://repository-newsclassifieds.forge.cloudbees.com/snapshot</url>
-			<snapshots>
-        		<enabled>true</enabled>
-        		<updatePolicy>always</updatePolicy>
-        		<checksumPolicy>fail</checksumPolicy>
-      		</snapshots>
-		</repository>
-	</repositories>
-  	
   	<distributionManagement>
 		<repository>
 			<id>newsclassifieds-cloudbees</id>
