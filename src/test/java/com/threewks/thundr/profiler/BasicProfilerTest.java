@@ -1,8 +1,16 @@
 package com.threewks.thundr.profiler;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
@@ -139,5 +147,21 @@ public class BasicProfilerTest {
 		assertThat(event.getCategory(), is("cat"));
 		assertThat(event.getData(), is("event-data"));
 		assertThat(event.getEnd(), is(greaterThan(0L)));
+	}
+
+	@Test
+	public void shouldBeAbleToEndProfileWithoutFailingAfterProfileSessionIsClosed() {
+		basicProfiler.beginProfileSession("data");
+		UUID key = basicProfiler.start("category", "data");
+		basicProfiler.endProfileSession();
+		basicProfiler.end(key);
+	}
+
+	@Test
+	public void shouldBeAbleToEndProfileWithStatusWithoutFailingAfterProfileSessionIsClosed() {
+		basicProfiler.beginProfileSession("data");
+		UUID key = basicProfiler.start("category", "data");
+		basicProfiler.endProfileSession();
+		basicProfiler.end(key, ProfileEventStatus.Timeout);
 	}
 }

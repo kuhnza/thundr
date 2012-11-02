@@ -50,12 +50,15 @@ public class BasicProfiler implements Profiler {
 
 	@Override
 	public void end(UUID eventKey) {
-		profileSession.get().end(eventKey, ProfileEventStatus.Success);
+		end(eventKey, ProfileEventStatus.Success);
 	}
 
 	@Override
 	public void end(UUID eventKey, ProfileEventStatus status) {
-		profileSession.get().end(eventKey, status);
+		ProfileSession current = getCurrent();
+		if (current != null) {
+			current.end(eventKey, status);
+		}
 	}
 
 	@Override
