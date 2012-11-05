@@ -164,4 +164,28 @@ public class BasicProfilerTest {
 		basicProfiler.endProfileSession();
 		basicProfiler.end(key, ProfileEventStatus.Timeout);
 	}
+
+	public void shouldFailSilentlyWhenEndingSessionWhenNoSessionExists() {
+		basicProfiler.endProfileSession();
+		// no exception is good!
+	}
+
+	@Test
+	public void shouldFailSilentlyWhenStartingEventWhenNoSessionExists() {
+		UUID start = basicProfiler.start("category", "data");
+		assertThat(start, is(notNullValue()));
+	}
+
+	@Test
+	public void shouldFailSilentlyWhenEndingEventWhenNoSessionExists() {
+		UUID key = basicProfiler.start("category", "data");
+		basicProfiler.end(key);
+		// no exception is good!
+	}
+
+	@Test
+	public void shouldFailSilentlyWhenEndingEventWhenNoSessionExistsAndNoEventExists() {
+		basicProfiler.end(null);
+		// no exception is good!
+	}
 }

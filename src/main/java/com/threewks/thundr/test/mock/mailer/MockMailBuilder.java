@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.threewks.thundr.collection.Pair;
+import com.atomicleopard.expressive.collection.Pair;
 import com.threewks.thundr.mail.MailBuilder;
 
 public class MockMailBuilder implements MailBuilder {

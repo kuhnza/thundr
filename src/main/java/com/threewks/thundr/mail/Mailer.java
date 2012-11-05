@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.threewks.thundr.collection.Pair;
-import com.threewks.thundr.collection.Triplets;
+import com.atomicleopard.expressive.collection.Pair;
+import com.atomicleopard.expressive.collection.Triplets;
 import com.threewks.thundr.view.ViewResolverRegistry;
 
 public class Mailer {

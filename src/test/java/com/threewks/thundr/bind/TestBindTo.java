@@ -40,6 +40,7 @@ public class TestBindTo {
 		return StringUtils.join(argument1, ":");
 	}
 
+	// This warning cannot be suppressed but extending string is specific to some tests 
 	public <T extends String> Object methodGenericArray(T[] argument1) {
 		return StringUtils.join(argument1, ":");
 	}

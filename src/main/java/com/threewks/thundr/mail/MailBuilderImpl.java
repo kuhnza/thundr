@@ -1,13 +1,17 @@
 package com.threewks.thundr.mail;
 
+import static com.atomicleopard.expressive.Expressive.*;
+
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.mail.Message.RecipientType;
 import javax.servlet.http.HttpServletRequest;
 
-import com.threewks.thundr.collection.Triplets;
+import com.atomicleopard.expressive.collection.Triplets;
 import com.threewks.thundr.view.ViewResolver;
 
 public class MailBuilderImpl implements MailBuilder {
@@ -27,14 +31,23 @@ public class MailBuilderImpl implements MailBuilder {
 
 	@Override
 	public <T> MailBuilderImpl body(T view) {
+		/*
+		 * Wrapping the request is highly sensitive to the app server implementation.
+		 * For example, while the Servlet include interface specifies we can pass in a {@link ServletRequestWrapper},
+		 * Jetty is having none of it. To avoid ramifications across different application servers, we just reuse the
+		 * originating request. To help avoid issues, we restore all attributes after the response is rendered.
+		 */
+		HttpServletRequest req = request;
+		Map<String, Object> attributes = getAttributes(req); // save the current set of request attributes
 		try {
 			ViewResolver<T> viewResolver = mail.viewResolverRegistry().findViewResolver(view);
-			HttpServletRequest req = wrapRequest();
 			MailHttpServletResponse resp = new MailHttpServletResponse();
 			viewResolver.resolve(req, resp, view);
 			content = resp.getResponseContent();
 		} catch (Exception e) {
 			throw new MailException(e, "Failed to render email body: %s", e.getMessage());
+		} finally {
+			setAttributes(req, attributes); // reapply the attributes, removing any new ones
 		}
 		return this;
 	}
@@ -139,37 +152,20 @@ public class MailBuilderImpl implements MailBuilder {
 		return replyTo.isEmpty() ? null : replyTo.entrySet().iterator().next();
 	}
 
-	/*
-	 * Using the real request is not ideal because of potential side effects on the request object,
-	 * particularly setting model attributes in as request attributes.
-	 */
-	private HttpServletRequest wrapRequest() {
-		HttpServletRequest req = request;
-		/*
-		 * This throws NoClassDefFoundException - i have no idea why
-		 * Using the real request is not ideal because of potential side effects on the request object
-		 * HttpServletRequest req = (HttpServletRequest) Enhancer.create(request.getClass(), new MethodInterceptor() {
-		 * 
-		 * @Override
-		 * public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
-		 * if ("getAttribute".equals(method.getName())) {
-		 * return attributes.get(args[0]);
-		 * }
-		 * if ("setAttribute".equals(method.getName())) {
-		 * attributes.put((String) args[0], args[1]);
-		 * return null;
-		 * }
-		 * if ("removeAttribute".equals(method.getName())) {
-		 * attributes.remove(args[0]);
-		 * return null;
-		 * }
-		 * if ("getAttributeNames".equals(method.getName())) {
-		 * return Collections.enumeration(attributes.keySet());
-		 * }
-		 * return proxy.invoke(obj, args);
-		 * }
-		 * });
-		 */
-		return req;
+	@SuppressWarnings("unchecked")
+	private Map<String, Object> getAttributes(HttpServletRequest request) {
+		Map<String, Object> attributes = new HashMap<String, Object>();
+		for (String name : iterable((Enumeration<String>) request.getAttributeNames())) {
+			attributes.put(name, request.getAttribute(name));
+		}
+		return attributes;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void setAttributes(HttpServletRequest request, Map<String, Object> attributes) {
+		List<String> allNames = list(iterable(request.getAttributeNames())).addItems(attributes.keySet());
+		for (String name : allNames) {
+			request.setAttribute(name, attributes.get(name));
+		}
 	}
 }
