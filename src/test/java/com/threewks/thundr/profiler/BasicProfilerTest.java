@@ -140,4 +140,29 @@ public class BasicProfilerTest {
 		assertThat(event.getData(), is("event-data"));
 		assertThat(event.getEnd(), is(greaterThan(0L)));
 	}
+
+	@Test
+	public void shouldFailSilentlyWhenEndingSessionWhenNoSessionExists() {
+		basicProfiler.endProfileSession();
+		// no exception is good!
+	}
+
+	@Test
+	public void shouldFailSilentlyWhenStartingEventWhenNoSessionExists() {
+		UUID start = basicProfiler.start("category", "data");
+		assertThat(start, is(notNullValue()));
+	}
+
+	@Test
+	public void shouldFailSilentlyWhenEndingEventWhenNoSessionExists() {
+		UUID key = basicProfiler.start("category", "data");
+		basicProfiler.end(key);
+		// no exception is good!
+	}
+
+	@Test
+	public void shouldFailSilentlyWhenEndingEventWhenNoSessionExistsAndNoEventExists() {
+		basicProfiler.end(null);
+		// no exception is good!
+	}
 }

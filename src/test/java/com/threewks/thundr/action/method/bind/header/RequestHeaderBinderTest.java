@@ -13,7 +13,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import org.junit.Before;
@@ -141,10 +140,9 @@ public class RequestHeaderBinderTest {
 		assertThat(parameterDescriptions.get(param2), is((Object) set(2, 22)));
 		assertThat(parameterDescriptions.get(param3), is((Object) list("3", "three")));
 	}
-	
-	public List<String> getStringList(){
+
+	public List<String> getStringList() {
 		return null;
 	}
-	
-	
+
 }

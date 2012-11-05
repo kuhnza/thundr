@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.threewks.thundr.collection.Pair;
-import com.threewks.thundr.collection.Triplets;
+import com.atomicleopard.expressive.collection.Pair;
+import com.atomicleopard.expressive.collection.Triplets;
 import com.threewks.thundr.exception.BaseException;
 import com.threewks.thundr.introspection.ClassIntrospector;
 import com.threewks.thundr.introspection.MethodIntrospector;

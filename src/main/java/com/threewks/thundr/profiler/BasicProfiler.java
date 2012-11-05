@@ -31,15 +31,19 @@ public class BasicProfiler implements Profiler {
 	public void endProfileSession() {
 		ProfileSession stack = profileSession.get();
 		profileSession.remove();
-		stack.end();
-		completionStrategy.complete(stack);
+		if (stack != null) {
+			stack.end();
+			completionStrategy.complete(stack);
+		}
 	}
 
 	@Override
 	public UUID start(String category, String data) {
-		ProfileSession stack = profileSession.get();
+		ProfileSession stack = getCurrent();
 		ProfileEvent profileEvent = new ProfileEvent(category, data);
-		stack.start(profileEvent);
+		if (stack != null) {
+			stack.start(profileEvent);
+		}
 		return profileEvent.getKey();
 	}
 
@@ -50,12 +54,15 @@ public class BasicProfiler implements Profiler {
 
 	@Override
 	public void end(UUID eventKey) {
-		profileSession.get().end(eventKey, ProfileEventStatus.Success);
+		this.end(eventKey, ProfileEventStatus.Success);
 	}
 
 	@Override
 	public void end(UUID eventKey, ProfileEventStatus status) {
-		profileSession.get().end(eventKey, status);
+		ProfileSession current = getCurrent();
+		if (current != null) {
+			current.end(eventKey, status);
+		}
 	}
 
 	@Override
