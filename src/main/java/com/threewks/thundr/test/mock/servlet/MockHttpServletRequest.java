@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 
 import jodd.io.StringInputStream;
 
+import com.atomicleopard.expressive.Cast;
 import com.threewks.thundr.http.ContentType;
 
 @SuppressWarnings("rawtypes")
@@ -37,7 +38,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 	private String queryString = "";
 	private HttpSession session;
 	private String content;
-	private MockRequestDispatcher requestDispatcher = new MockRequestDispatcher();
+	private RequestDispatcher requestDispatcher = new MockRequestDispatcher();
 	private String serverName;
 
 	public MockHttpServletRequest() {
@@ -90,7 +91,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 		return this;
 	}
 
-	public MockHttpServletRequest parameter(String name, String...values) {
+	public MockHttpServletRequest parameter(String name, String... values) {
 		parameters.put(name, values);
 		return this;
 	}
@@ -105,7 +106,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 		return this;
 	}
 
-	public MockHttpServletRequest header(String name, String...values) {
+	public MockHttpServletRequest header(String name, String... values) {
 		headers.put(name, values);
 		return this;
 	}
@@ -260,12 +261,18 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
 	@Override
 	public RequestDispatcher getRequestDispatcher(String path) {
-		requestDispatcher.lastPath(path);
+		if (requestDispatcher() != null) {
+			requestDispatcher().lastPath(path);
+		}
 		return requestDispatcher;
 	}
 
+	public void requestDispatcher(RequestDispatcher requestDispatcher) {
+		this.requestDispatcher = requestDispatcher;
+	}
+
 	public MockRequestDispatcher requestDispatcher() {
-		return requestDispatcher;
+		return Cast.as(requestDispatcher, MockRequestDispatcher.class);
 	}
 
 	@Override
