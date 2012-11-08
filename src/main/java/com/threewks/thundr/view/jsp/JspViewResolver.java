@@ -24,12 +24,12 @@ public class JspViewResolver implements ViewResolver<JspView> {
 	@Override
 	public void resolve(HttpServletRequest req, HttpServletResponse resp, JspView viewResult) {
 		try {
-			String url = resp.encodeRedirectURL(viewResult.getView());
 			// different containers handle missing resources differently when you include content, we perform this
 			// check up front to help normalise their behaviour
-			if (req.getSession().getServletContext().getResource(url) == null) {
-				throw new BaseException("resource %s does not exist", url);
+			if (req.getSession().getServletContext().getResource(viewResult.getView()) == null) {
+				throw new BaseException("resource %s does not exist", viewResult.getView());
 			}
+			String url = resp.encodeRedirectURL(viewResult.getView());
 			Map<String, Object> model = viewResult.getModel();
 			for (Map.Entry<String, Object> modelEntry : globalModel.entrySet()) {
 				req.setAttribute(modelEntry.getKey(), modelEntry.getValue());
