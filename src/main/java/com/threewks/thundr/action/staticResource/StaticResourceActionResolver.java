@@ -99,17 +99,17 @@ public class StaticResourceActionResolver implements ActionResolver<StaticResour
 		String mimeType = deriveMimeType(resource);
 		long contentLength = urlConnection.getContentLength();
 		long lastModified = urlConnection.getLastModified();
-		String acceptEncoding = request.getHeader(HttpHeaderAcceptEncoding);
+		String acceptEncoding = request.getHeader(Header.AcceptEncoding);
 		long cacheTimeSeconds = deriveCacheDuration(resource, mimeType);
 		boolean zip = shouldZip(acceptEncoding, mimeType);
 
 		response.setContentType(mimeType);
-		response.setDateHeader(HttpHeaderExpires, System.currentTimeMillis() + cacheTimeSeconds * 1000L); // HTTP 1.0
-		response.setHeader(HttpHeaderCacheControl, String.format("max-age=%d, public", cacheTimeSeconds)); // HTTP 1.1
-		response.setHeader(HttpHeaderContentLength, Long.toString(contentLength));
-		response.setDateHeader(HttpHeaderLastModified, lastModified);
+		response.setDateHeader(Header.Expires, System.currentTimeMillis() + cacheTimeSeconds * 1000L); // HTTP 1.0
+		response.setHeader(Header.CacheControl, String.format("max-age=%d, public", cacheTimeSeconds)); // HTTP 1.1
+		response.setHeader(Header.ContentLength, Long.toString(contentLength));
+		response.setDateHeader(Header.LastModified, lastModified);
 		if (zip) {
-			response.setHeader(HttpHeaderContentEncoding, "gzip");
+			response.setHeader(Header.ContentEncoding, "gzip");
 		}
 		OutputStream os = zip ? new GzipResponseStream(response) : response.getOutputStream();
 
