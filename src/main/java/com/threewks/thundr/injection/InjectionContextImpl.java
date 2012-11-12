@@ -159,7 +159,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 		try {
 			return constructor.newInstance(args);
 		} catch (Exception e) {
-			throw new BaseException(e, "Failed to create a new instance using the constructor %s: %s", constructor.getName(), e.getMessage());
+			throw new BaseException(e, "Failed to create a new instance using the constructor %s: %s", constructor.toString(), e.getMessage());
 		}
 	}
 

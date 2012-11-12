@@ -30,11 +30,15 @@ public class WebFrameworkServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		ServletContext servletContext = config.getServletContext();
-		injectionContext = new InjectionContextImpl();
-		injectionContext.inject(servletContext).as(ServletContext.class);
-		InjectionConfiguration injectionConfiguration = getInjectionConfigInstance(servletContext);
-		injectionConfiguration.configure(injectionContext);
+		try {
+			ServletContext servletContext = config.getServletContext();
+			injectionContext = new InjectionContextImpl();
+			injectionContext.inject(servletContext).as(ServletContext.class);
+			InjectionConfiguration injectionConfiguration = getInjectionConfigInstance(servletContext);
+			injectionConfiguration.configure(injectionContext);
+		} catch (RuntimeException e) {
+			throw new ServletException("Failed to initialse thundr: " + e.getMessage(), e);
+		}
 	}
 
 	protected InjectionConfiguration getInjectionConfigInstance(ServletContext servletContext) {

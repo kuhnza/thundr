@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import com.threewks.thundr.injection.DefaultInjectionConfiguration;
@@ -34,6 +36,9 @@ import com.threewks.thundr.view.ViewResolver;
 import com.threewks.thundr.view.ViewResolverRegistry;
 
 public class WebFrameworkServletTest {
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+
 	private WebFrameworkServlet servlet = new WebFrameworkServlet();
 	private UpdatableInjectionContext injectionContext;
 	private MockHttpServletResponse resp = new MockHttpServletResponse();
@@ -72,11 +77,25 @@ public class WebFrameworkServletTest {
 		verify(injectionConfiguration).configure(injectionContext);
 	}
 
+	@SuppressWarnings("serial")
+	@Test
+	public void shouldWrapExceptionInServletException() throws ServletException {
+		thrown.expect(ServletException.class);
+
+		ServletContext servletContext = new MockServletContext();
+		ServletConfig config = new MockServletConfig(servletContext);
+		WebFrameworkServlet servlet = new WebFrameworkServlet() {
+			protected InjectionConfiguration getInjectionConfigInstance(ServletContext servletContext) {
+				throw new RuntimeException("Expected");
+			};
+		};
+		servlet.init(config);
+	}
+
 	@Test
 	public void shouldUseApplicationDefaultConfiguration() {
 		ServletContext servletContext = new MockServletContext();
 		assertThat(servlet.getInjectionConfigInstance(servletContext), is(DefaultInjectionConfiguration.class));
-
 	}
 
 	@Test
