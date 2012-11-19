@@ -10,7 +10,7 @@ Profiler profiler = (Profiler) getJspContext().getAttribute("com.threewks.thundr
 ProfileSession profileSession = profiler == null ? null : profiler.getCurrent();
 getJspContext().setAttribute("profileSession", profileSession, PageContext.PAGE_SCOPE);
 %>
-<c:if test="${not empty profileSession}">
+<c:if test="${not empty profileSession.events}">
 <section id="${id}" class="thundr-profiler ${cssClass}">
 	<style>
 		.thundr-profiler { z-index: 10001; }
