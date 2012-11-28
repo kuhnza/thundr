@@ -33,14 +33,16 @@ public class CollectionParameterBinder<T extends Collection<Object>> implements 
 
 	public T bind(ParameterBinderSet binders, ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		String[] entryForParameter = pathMap.get(parameterDescription.name());
+		entryForParameter = entryForParameter == null ? pathMap.get(parameterDescription.name() + "[]") : entryForParameter;
 		boolean isIndexed = entryForParameter == null || entryForParameter.length == 0;
 		return isIndexed ? createIndexed(binders, parameterDescription, pathMap) : createUnindexed(binders, parameterDescription, pathMap);
 	}
 
 	private T createUnindexed(ParameterBinderSet binders, ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		String[] entries = pathMap.get(parameterDescription.name());
-		// a special case of a single empty string entry we'll equate to null 
-		if(entries == null || entries.length == 1 && (entries[0] == null || "".equals(entries[0]))){
+		entries = entries == null ? pathMap.get(parameterDescription.name() + "[]") : entries;
+		// a special case of a single empty string entry we'll equate to null
+		if (entries == null || entries.length == 1 && (entries[0] == null || "".equals(entries[0]))) {
 			return null;
 		}
 		T listParameter = collectionFactory.create();
@@ -92,7 +94,7 @@ public class CollectionParameterBinder<T extends Collection<Object>> implements 
 	public boolean willBind(ParameterDescription parameterDescription) {
 		return parameterDescription.isA(collectionFactory.forType());
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.getClass() + " for " + collectionFactory.forType();

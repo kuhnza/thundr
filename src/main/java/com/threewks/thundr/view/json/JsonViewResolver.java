@@ -11,11 +11,20 @@ import com.threewks.thundr.view.ViewResolutionException;
 import com.threewks.thundr.view.ViewResolver;
 
 public class JsonViewResolver implements ViewResolver<JsonView> {
+	private GsonBuilder gsonBuilder;
+
+	public JsonViewResolver() {
+		this(new GsonBuilder());
+	}
+
+	public JsonViewResolver(GsonBuilder gsonBuilder) {
+		this.gsonBuilder = gsonBuilder;
+	}
+
 	@Override
 	public void resolve(HttpServletRequest req, HttpServletResponse resp, JsonView viewResult) {
 		Object output = viewResult.getOutput();
 		try {
-			GsonBuilder gsonBuilder = new GsonBuilder();
 			Gson create = gsonBuilder.create();
 			String json = create.toJson(output);
 			resp.getWriter().write(json);

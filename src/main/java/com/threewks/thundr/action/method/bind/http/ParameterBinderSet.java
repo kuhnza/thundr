@@ -100,6 +100,7 @@ public class ParameterBinderSet {
 		list.add(new CollectionParameterBinder<Collection<Object>>(new SimpleCollectionFactory(Collection.class, ArrayList.class)));
 		list.add(new JavaBeanParameterBinder());
 		list.add(new BasicTypesParameterBinder());
+		list.add(new EnumParameterBinder());
 		list.add(new ObjectParameterBinder());
 		return list;
 	}

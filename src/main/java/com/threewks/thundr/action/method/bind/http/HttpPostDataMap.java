@@ -34,7 +34,7 @@ public class HttpPostDataMap {
 		for (Map.Entry<String, String[]> entry : input.entrySet()) {
 			String key = entry.getKey();
 			String expandedKey = key.replaceAll("\\.", "\r");
-			expandedKey = expandedKey.replaceAll("\\[", "\r[");
+			expandedKey = expandedKey.replaceAll("\\[([^\\]])", "\r[$1");
 			List<String> path = Collections.unmodifiableList(Arrays.asList(expandedKey.split("\r")));
 			delegate.put(path, entry.getValue());
 		}
