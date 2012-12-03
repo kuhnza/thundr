@@ -18,7 +18,7 @@ public class DefaultInjectionConfiguration implements InjectionConfiguration {
 		injectionContext.inject(modules).as(Modules.class);
 		injectionContext.inject(routes).as(Routes.class);
 
-		modules.addModule(Module.from(new ConfigurationInjectionConfiguration()));
+		modules.addModule(Module.from(new ConfigurationInjectionConfiguration())); 
 		modules.addModule(Module.from(new ProfilerInjectionConfiguration()));
 		modules.addModule(Module.from(new ActionInjectionConfiguration()));
 		modules.addModule(Module.from(new ViewResolverInjectionConfiguration()));

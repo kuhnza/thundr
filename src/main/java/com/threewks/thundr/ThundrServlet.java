@@ -23,7 +23,7 @@ import com.threewks.thundr.route.Routes;
 import com.threewks.thundr.view.ViewResolver;
 import com.threewks.thundr.view.ViewResolverRegistry;
 
-public class WebFrameworkServlet extends HttpServlet {
+public class ThundrServlet extends HttpServlet {
 	private static final long serialVersionUID = -7179293239117252585L;
 	private UpdatableInjectionContext injectionContext;
 

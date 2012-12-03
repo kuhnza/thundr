@@ -35,11 +35,11 @@ import com.threewks.thundr.test.mock.servlet.MockServletContext;
 import com.threewks.thundr.view.ViewResolver;
 import com.threewks.thundr.view.ViewResolverRegistry;
 
-public class WebFrameworkServletTest {
+public class ThundrServletTest {
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
-	private WebFrameworkServlet servlet = new WebFrameworkServlet();
+	private ThundrServlet servlet = new ThundrServlet();
 	private UpdatableInjectionContext injectionContext;
 	private MockHttpServletResponse resp = new MockHttpServletResponse();
 	private Routes routes = mock(Routes.class);
@@ -64,7 +64,7 @@ public class WebFrameworkServletTest {
 		ServletContext servletContext = new MockServletContext();
 		ServletConfig config = new MockServletConfig(servletContext);
 		final InjectionConfiguration injectionConfiguration = mock(InjectionConfiguration.class);
-		WebFrameworkServlet servlet = new WebFrameworkServlet() {
+		ThundrServlet servlet = new ThundrServlet() {
 			protected InjectionConfiguration getInjectionConfigInstance(ServletContext servletContext) {
 				return injectionConfiguration;
 			};
@@ -84,7 +84,7 @@ public class WebFrameworkServletTest {
 
 		ServletContext servletContext = new MockServletContext();
 		ServletConfig config = new MockServletConfig(servletContext);
-		WebFrameworkServlet servlet = new WebFrameworkServlet() {
+		ThundrServlet servlet = new ThundrServlet() {
 			protected InjectionConfiguration getInjectionConfigInstance(ServletContext servletContext) {
 				throw new RuntimeException("Expected");
 			};
@@ -218,7 +218,7 @@ public class WebFrameworkServletTest {
 		TestSupport.setField(servlet, "injectionContext", injectionContext);
 	}
 
-	private UpdatableInjectionContext getInjectionContextFromServlet(WebFrameworkServlet servlet) {
+	private UpdatableInjectionContext getInjectionContextFromServlet(ThundrServlet servlet) {
 		return TestSupport.getField(servlet, "injectionContext");
 	}
 }

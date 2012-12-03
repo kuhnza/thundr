@@ -4,17 +4,17 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import com.atomicleopard.expressive.collection.Pair;
 import com.atomicleopard.expressive.collection.Triplets;
+import com.threewks.thundr.configuration.Environment;
 import com.threewks.thundr.exception.BaseException;
 import com.threewks.thundr.introspection.ClassIntrospector;
 import com.threewks.thundr.introspection.MethodIntrospector;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class InjectionContextImpl implements UpdatableInjectionContext {
+	private static final String ENVIRONMENT_SEPARATOR = "%";
 	private Triplets<Class<?>, String, Class<?>> types = map();
 	private Triplets<Class<?>, String, Object> instances = map();
 
@@ -37,7 +37,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 
 	@SuppressWarnings("unchecked")
 	public <T> T get(Class<T> type, String name) {
-		T instance = (T) instances.get(type, name);
+		T instance = getExistingNamedInstance(type, name);
 		if (instance == null) {
 			T newInstance = instantiate((Class<T>) types.get(type, name));
 			if (newInstance != null) {
@@ -137,13 +137,28 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 
 	@Override
 	public <T> boolean contains(Class<T> type, String name) {
-		boolean contains = instances.containsKey(type, name) || types.containsKey(type, name);
+		String envName = environmentSpecificName(name);
+		boolean contains = instances.containsKey(type, envName) || types.containsKey(type, envName) || instances.containsKey(type, name) || types.containsKey(type, name);
 		return contains || (name != null && contains(type));
 	}
 
 	@Override
 	public String toString() {
 		return String.format("Injection context (%s instances, %s classes)", instances.size() + instances.size(), types.size() + types.size());
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T getExistingNamedInstance(Class<T> type, String name) {
+		String environmentSpecificName = environmentSpecificName(name);
+		T instance = (T) instances.get(type, environmentSpecificName);
+		if (instance == null) {
+			instance = (T) instances.get(type, name);
+		}
+		return instance;
+	}
+
+	private String environmentSpecificName(String name) {
+		return name + ENVIRONMENT_SEPARATOR + Environment.get();
 	}
 
 	private boolean canSatisfy(List<ParameterDescription> parameterDescriptions) {
@@ -169,7 +184,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 	}
 
 	private <K1, K2, V> Triplets<K1, K2, V> map() {
-		return new Triplets<K1, K2, V>(new HashMap<Pair<K1, K2>, V>());
+		return new Triplets<K1, K2, V>();
 	}
 
 }

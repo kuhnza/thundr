@@ -6,16 +6,29 @@ import static org.junit.Assert.assertThat;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.threewks.thundr.configuration.Environment;
 import com.threewks.thundr.exception.BaseException;
 
 public class InjectionContextImplTest {
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 	private InjectionContextImpl context = new InjectionContextImpl();
+
+	@Before
+	public void before() {
+		Environment.set("dev");
+	}
+
+	@After
+	public void after() {
+		Environment.set("dev");
+	}
 
 	@Test
 	public void shouldInjectUsingInstance() {
@@ -235,4 +248,29 @@ public class InjectionContextImplTest {
 		context.get(TestClass.class);
 	}
 
+	@Test
+	public void shouldGetEnvironmentSpecificValueWherePossible() {
+		context.inject("defaultvalue").named("key").as(String.class);
+		context.inject("value").named("key%dev").as(String.class);
+		context.inject("prodvalue").named("key%prod").as(String.class);
+		assertThat(context.get(String.class, "key"), is("value"));
+		assertThat(context.get(String.class, "key%dev"), is("value"));
+		Environment.set("prod");
+		assertThat(context.get(String.class, "key"), is("prodvalue"));
+		assertThat(context.get(String.class, "key%dev"), is("value"));
+	}
+
+	@Test
+	public void shouldReturnTrueForContainsWhenEnvironmentSpecificValue() {
+		assertThat(context.contains(String.class, "key"), is(false));
+
+		context.inject("value").named("key%dev").as(String.class);
+		assertThat(context.contains(String.class, "key"), is(true));
+
+		Environment.set("prod");
+		assertThat(context.contains(String.class, "key"), is(false));
+
+		context.inject("defaultvalue").named("key").as(String.class);
+		assertThat(context.contains(String.class, "key"), is(true));
+	}
 }

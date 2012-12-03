@@ -3,7 +3,7 @@ package com.threewks.thundr.logger;
 import java.util.logging.Level;
 
 public class Logger {
-	public static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger("WebFramework");
+	public static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger("thundr");
 
 	/**
 	 * Logs the given arguments formatted using the given string format at debug level.
