@@ -84,9 +84,11 @@ public class StaticResourceActionResolverTest {
 
 	@Test
 	public void shouldDeriveMimeTypeFromServletContext() {
-		// silo is some mime type that jodd knows about - which indicates the mime type was served by the servlet context
-		String mimeType = resolver.deriveMimeType("resource.silo");
-		assertThat(mimeType, is(MimeTypes.MIME_MODEL_MESH));
+		ServletContext mockServletContext = mock(ServletContext.class);
+		resolver = new StaticResourceActionResolver(mockServletContext);
+		when(mockServletContext.getMimeType("resource.file")).thenReturn("text/file");
+		String mimeType = resolver.deriveMimeType("resource.file");
+		assertThat(mimeType, is("text/file"));
 	}
 
 	@Test
