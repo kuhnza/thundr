@@ -20,12 +20,15 @@ import com.atomicleopard.expressive.Cast;
 import com.threewks.thundr.action.ActionException;
 import com.threewks.thundr.action.ActionResolver;
 import com.threewks.thundr.action.method.bind.ActionMethodBinder;
-import com.threewks.thundr.action.method.bind.header.RequestHeaderBinder;
 import com.threewks.thundr.action.method.bind.http.HttpBinder;
 import com.threewks.thundr.action.method.bind.http.MultipartHttpBinder;
 import com.threewks.thundr.action.method.bind.json.GsonBinder;
 import com.threewks.thundr.action.method.bind.path.PathVariableBinder;
+import com.threewks.thundr.action.method.bind.request.CookieBinder;
+import com.threewks.thundr.action.method.bind.request.RequestAttributeBinder;
 import com.threewks.thundr.action.method.bind.request.RequestClassBinder;
+import com.threewks.thundr.action.method.bind.request.RequestHeaderBinder;
+import com.threewks.thundr.action.method.bind.request.SessionAttributeBinder;
 import com.threewks.thundr.exception.BaseException;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.introspection.ParameterDescription;
@@ -48,7 +51,10 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 		methodBinders.add(new GsonBinder());
 		methodBinders.add(httpBinder);
 		methodBinders.add(new MultipartHttpBinder(httpBinder));
+		methodBinders.add(new RequestAttributeBinder(httpBinder));
+		methodBinders.add(new SessionAttributeBinder(httpBinder));
 		methodBinders.add(new RequestHeaderBinder(httpBinder));
+		methodBinders.add(new CookieBinder(httpBinder));
 	}
 
 	@Override
@@ -81,12 +87,12 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 	@Override
 	public Object resolve(MethodAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) throws ActionException {
 		Object controller = getOrCreateController(action);
-		List<?> arguments = bindArguments(action, req, resp, pathVars);
 		Map<Annotation, ActionInterceptor<Annotation>> interceptors = action.interceptors();
 		Object result = null;
 		Exception exception = null;
 		try {
 			result = beforeInterceptors(interceptors, req, resp);
+			List<?> arguments = bindArguments(action, req, resp, pathVars);
 			result = result != null ? result : action.invoke(controller, arguments);
 			result = afterInterceptors(result, interceptors, req, resp);
 		} catch (InvocationTargetException e) {

@@ -19,7 +19,6 @@ import jodd.util.ReflectUtil;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.threewks.thundr.action.method.bind.http.HttpBinder;
 import com.threewks.thundr.bind.DeepJavaBean;
 import com.threewks.thundr.bind.JavaBean;
 import com.threewks.thundr.bind.TestBindTo;
@@ -29,7 +28,6 @@ public class MethodActionResolverBindingTest {
 	private static Object nullObject = null;
 	private static Class<Object> o = Object.class;
 	private Map<String, String> emptyMap = Collections.emptyMap();
-	private HttpBinder binder = new HttpBinder();
 
 	private HttpServletRequest request;
 	private MethodActionResolver resolver = new MethodActionResolver(null);

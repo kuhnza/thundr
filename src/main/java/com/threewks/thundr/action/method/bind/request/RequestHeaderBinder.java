@@ -1,9 +1,9 @@
-package com.threewks.thundr.action.method.bind.header;
+package com.threewks.thundr.action.method.bind.request;
 
-import java.util.ArrayList;
+import static com.atomicleopard.expressive.Expressive.list;
+
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +30,6 @@ public class RequestHeaderBinder implements ActionMethodBinder {
 				if (headerNames != null) {
 					Map<String, String[]> headerValues = new HashMap<String, String[]>();
 					for (String header : Expressive.<String> iterable(headerNames)) {
-
 						headerValues.put(header, headerValues(req.getHeaders(header)));
 					}
 
@@ -41,10 +40,6 @@ public class RequestHeaderBinder implements ActionMethodBinder {
 	}
 
 	private String[] headerValues(Enumeration<String> headers) {
-		List<String> results = new ArrayList<String>();
-		while (headers.hasMoreElements()) {
-			results.add(headers.nextElement());
-		}
-		return results.toArray(new String[0]);
+		return list(Expressive.iterable(headers)).toArray(new String[0]);
 	}
 }
