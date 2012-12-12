@@ -9,6 +9,7 @@ import java.security.Principal;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -40,6 +41,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 	private String content;
 	private RequestDispatcher requestDispatcher = new MockRequestDispatcher();
 	private String serverName;
+	private List<Cookie> cookies = list();
 
 	public MockHttpServletRequest() {
 	}
@@ -305,9 +307,30 @@ public class MockHttpServletRequest implements HttpServletRequest {
 		return null;
 	}
 
+	public void cookie(Cookie cookie) {
+		cookies.add(cookie);
+	}
+
+	public void cookie(String name, String value) {
+		cookies.add(new Cookie(name, value));
+	}
+
+	public String cookie(String name) {
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals(name)) {
+				return cookie.getValue();
+			}
+		}
+		return null;
+	}
+
+	public void clearCookies() {
+		cookies.clear();
+	}
+
 	@Override
 	public Cookie[] getCookies() {
-		return new Cookie[0];
+		return cookies.toArray(new Cookie[0]);
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package com.threewks.thundr.action.staticResource;
 
-import static com.threewks.thundr.http.HttpSupport.*;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,7 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jodd.servlet.filter.GzipResponseStream;
+import jodd.io.StreamUtil;
+import jodd.servlet.filter.GzipResponseWrapper;
 import jodd.util.Wildcard;
 
 import org.apache.commons.lang3.StringUtils;
@@ -26,13 +25,16 @@ import org.apache.commons.lang3.StringUtils;
 import com.threewks.thundr.action.ActionException;
 import com.threewks.thundr.action.ActionResolver;
 import com.threewks.thundr.exception.BaseException;
+import com.threewks.thundr.http.HttpSupport.Header;
 import com.threewks.thundr.logger.Logger;
 import com.threewks.thundr.route.RouteType;
 
 // TODO - static content is by default served by the front-end - this may or may not be a good idea to override.
 // TODO - Better caching controler:
 // Vary: Accept-Encoding
+
 public class StaticResourceActionResolver implements ActionResolver<StaticResourceAction> {
+
 	private static final String ActionName = "static";
 	private static final Pattern ActionNamePattern = Pattern.compile("^static:(.+)");
 	private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
@@ -87,6 +89,7 @@ public class StaticResourceActionResolver implements ActionResolver<StaticResour
 	}
 
 	protected void serve(StaticResourceAction action, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		String resource = request.getRequestURI();
 		URL resourceUrl = servletContext.getResource(resource);
 		boolean allowed = isAllowed(resource);
@@ -95,34 +98,34 @@ public class StaticResourceActionResolver implements ActionResolver<StaticResour
 			Logger.info("%s -> %s not resolved: %s", resource, action, allowed ? "Not found" : "Not Permitted");
 			return;
 		}
+
 		URLConnection urlConnection = resourceUrl.openConnection();
 		String mimeType = deriveMimeType(resource);
 		long contentLength = urlConnection.getContentLength();
 		long lastModified = urlConnection.getLastModified();
 		String acceptEncoding = request.getHeader(Header.AcceptEncoding);
 		long cacheTimeSeconds = deriveCacheDuration(resource, mimeType);
-		boolean zip = shouldZip(acceptEncoding, mimeType);
 
 		response.setContentType(mimeType);
 		response.setDateHeader(Header.Expires, System.currentTimeMillis() + cacheTimeSeconds * 1000L); // HTTP 1.0
 		response.setHeader(Header.CacheControl, String.format("max-age=%d, public", cacheTimeSeconds)); // HTTP 1.1
-		response.setHeader(Header.ContentLength, Long.toString(contentLength));
 		response.setDateHeader(Header.LastModified, lastModified);
-		if (zip) {
-			response.setHeader(Header.ContentEncoding, "gzip");
-		}
-		OutputStream os = zip ? new GzipResponseStream(response) : response.getOutputStream();
 
-		try {
-			InputStream is = urlConnection.getInputStream();
-			byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-			int n = 0;
-			while (-1 != (n = is.read(buffer))) {
-				os.write(buffer, 0, n);
-			}
-		} finally {
+		OutputStream os = null;
+		InputStream is = urlConnection.getInputStream();
+
+		if (shouldZip(acceptEncoding, mimeType)) {
+			GzipResponseWrapper wrapper = new GzipResponseWrapper(response);
+			os = wrapper.getOutputStream();
+			int contentSize = StreamUtil.copy(is, os);
+			wrapper.finishResponse();
+		} else {
+			response.setHeader(Header.ContentLength, Long.toString(contentLength));
+			os = response.getOutputStream();
+			int contentSize = StreamUtil.copy(is, os);
 			os.close();
 		}
+
 		response.setStatus(HttpServletResponse.SC_OK);
 		Logger.debug("%s -> %s resolved as %s(%d bytes)", resource, action, mimeType, contentLength);
 	}

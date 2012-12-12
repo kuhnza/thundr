@@ -1,6 +1,5 @@
 package com.threewks.thundr.action.method;
 
-import static com.atomicleopard.expressive.Expressive.*;
 import static com.atomicleopard.expressive.Expressive.map;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -21,6 +20,7 @@ import com.threewks.thundr.http.ContentType;
 import com.threewks.thundr.injection.InjectorBuilder;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.route.RouteType;
+import com.threewks.thundr.test.mock.servlet.MockHttpServletRequest;
 
 public class MethodActionResolverTest {
 	private MethodActionResolver resolver;
@@ -87,7 +87,7 @@ public class MethodActionResolverTest {
 	}
 
 	@Test
-	public void shouldInvokeInterceptorBeforeActionMethodNotInvokingMethodIfSomethingIsReturned() {
+	public void shouldInvokeInterceptorBeforeActionMethodNotInvokingMethodIsSomethingIsReturned() {
 		TestActionInterceptor registeredInterceptor = new TestActionInterceptor("Expected Before", null, null);
 		MethodAction action = prepareActionMethod("intercept", registeredInterceptor);
 
@@ -96,6 +96,34 @@ public class MethodActionResolverTest {
 		assertThat(registeredInterceptor.beforeInvoked, is(true));
 		assertThat(registeredInterceptor.afterInvoked, is(true));
 		assertThat(registeredInterceptor.exceptionInvoked, is(false));
+	}
+
+	@Test
+	public void shouldBindArgumentsAfterInvokingBeforeInterceptorAllowingBindingsToUseValuesModifiedByInterceptor() {
+		@SuppressWarnings("unchecked")
+		ActionInterceptor<TestAnnotation> registeredInterceptor = new ActionInterceptor<TestAnnotation>() {
+			@Override
+			public String before(TestAnnotation annotation, HttpServletRequest req, HttpServletResponse resp) {
+				req.setAttribute("name", "value");
+				return null;
+			}
+
+			@Override
+			public String after(TestAnnotation annotation, HttpServletRequest req, HttpServletResponse resp) {
+				return null;
+			}
+
+			@Override
+			public String exception(TestAnnotation annotation, Exception e, HttpServletRequest req, HttpServletResponse resp) {
+				return null;
+			}
+
+		};
+		MethodAction action = prepareActionMethod("interceptWithValue", registeredInterceptor);
+
+		req = new MockHttpServletRequest();
+		Object resolvedValue = resolver.resolve(action, RouteType.GET, req, resp, pathVars);
+		assertThat(resolvedValue, is((Object) "value"));
 	}
 
 	@Test
@@ -169,11 +197,11 @@ public class MethodActionResolverTest {
 	@Test
 	public void shouldCreateActionMethodClassAtCreationTime() {
 		resolver = spy(resolver);
-		resolver.createActionIfPossible(MethodActionResolverTest.class.getName()+".intercept");
+		resolver.createActionIfPossible(MethodActionResolverTest.class.getName() + ".intercept");
 		verify(resolver).createController(Mockito.any(MethodAction.class));
 	}
-	
-	private MethodAction prepareActionMethod(String method, TestActionInterceptor registeredInterceptor) {
+
+	private MethodAction prepareActionMethod(String method, ActionInterceptor<TestAnnotation> registeredInterceptor) {
 		when(injectionContext.get(MethodActionResolverTest.class)).thenReturn(this);
 		resolver.registerInterceptor(TestAnnotation.class, registeredInterceptor);
 		MethodAction action = resolver.createActionIfPossible(MethodActionResolverTest.class.getName() + "." + method);
@@ -184,6 +212,11 @@ public class MethodActionResolverTest {
 	@TestAnnotation("Parameter")
 	public void intercept() {
 
+	}
+
+	@TestAnnotation("Parameter")
+	public String interceptWithValue(String name) {
+		return name;
 	}
 
 	@TestAnnotation("Parameter")
