@@ -32,8 +32,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<slf4j.version>1.6.4</slf4j.version>
-		<downloadSources>true</downloadSources><!-- This is just for "eclipse:eclipse" 
-			goal to always attempt downloading sources -->
+		<downloadSources>true</downloadSources><!-- This is just for "eclipse:eclipse" goal to always attempt downloading sources -->
 	</properties>
 
 	<dependencies>
