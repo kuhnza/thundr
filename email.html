@@ -9,18 +9,18 @@ id: views
 <section class="overview">
 	<p>
 		thundr has framework support for sending of emails. 
-		To send an email, you use the fluent api returned from the <code>Mailer.mail(HttpServletRequest req)</code> method. 
+		To send an email, you use the fluent api returned from the <code class="prettyprint">Mailer.mail(HttpServletRequest req)</code> method. 
 	</p>
 	<p>
-		The <code>MailBuilder</code> returned from this method has a variety of email specific properties you can set. In addition, 
-		you specify the body of the email using the standard <code>View</code> framework of thundr. That is, you can provide
+		The <code class="prettyprint">MailBuilder</code> returned from this method has a variety of email specific properties you can set. In addition, 
+		you specify the body of the email using the standard <code class="prettyprint">View</code> framework of thundr. That is, you can provide
 		the body of the email using anything you could render a <a href="/views.html">view</a> with. 
 	</p>
 </section>
 <section id="example">
 <h4>Example</h4>
 	<div>
-<pre>
+<pre class="prettyprint">
 public void sendEmail(HttpServletRequest req, String recipientEmail, String recipientName){
 	Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
 	model.put("message", "Hello world!");
@@ -39,7 +39,7 @@ public void sendEmail(HttpServletRequest req, String recipientEmail, String reci
 <section id="limitations">
 	<h4>Limitations</h4>
 	<p>
-		thundr mail is build on top of the standard <code>javax.mail</code> api. If your target platform cannot send email using this api,
+		thundr mail is build on top of the standard <code class="prettyprint">javax.mail</code> api. If your target platform cannot send email using this api,
 		or if it requires additional configuration you will need to configure this yourself.
 	</p>
 	<p>

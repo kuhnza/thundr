@@ -14,7 +14,7 @@ id: controllers
 	</p>
 	<p>
 		When a http client makes a request, the appropriate method inside a controller is invoked.
-		The method can perform processing and gather data for the response, then return a <code>View</code> object.
+		The method can perform processing and gather data for the response, then return a <code class="prettyprint">View</code> object.
 		The view controls the content and http response codes that are returned to the client.  
 	</p>
 	<p>
@@ -30,7 +30,7 @@ id: controllers
 </p>
 <figure>
 	<figcaption>Controller - Controller.java</figcaption>
-<pre>
+<pre class="prettyprint">
 package com.threewks.web;
 
 import java.util.HashMap;
@@ -50,7 +50,7 @@ public class Controller {
 <section id="views">
 	<h4>Views</h4>
 	<p>
-		In the above example, we see the <code>JspView</code> being returned from our controller.
+		In the above example, we see the <code class="prettyprint">JspView</code> being returned from our controller.
 		This resulted in a Jsp being processed and sent back to the user.<br/>
 		thundr supports different views, which control the content and http response returned to the user.
 	</p>
@@ -80,20 +80,20 @@ public class Controller {
 				form parameters for POST/PUT requests.
 			</p>
 			<p>
-				<code>http://localhost:8080/page?param1=parameter%20value&amp;param2=2</code>
+				<code class="prettyprint">http://localhost:8080/page?param1=parameter%20value&amp;param2=2</code>
 				will bind to
-				<code>public JspView method(String param1, Long param2){ &hellip; }</code>
+				<code class="prettyprint">public JspView method(String param1, Long param2){ &hellip; }</code>
 			</p>
 			<p>
 				likewise,
-<pre>
+<pre class="prettyprint">
 &lt;form action="/page" method="post"&gt;
 	&lt;input type="text" name="param1" value="parameter value"/&gt;
 	&lt;input type="text" name="param2" value="2"/&gt;
 &lt;/form&gt;
 </pre>
 				will bind to <br/>
-				<code>public JspView method(String param1, Long param2){ &hellip; }</code>
+				<code class="prettyprint">public JspView method(String param1, Long param2){ &hellip; }</code>
 			</p>
 			<p>
 				thundr is capable of binding all basic java types, collection classes and javabeans.
@@ -103,21 +103,21 @@ public class Controller {
 		<li>
 			<p>
 				<strong>Path variables</strong> - that is named variables as portion of the route. e.g.<br/>
-				<code>"/{path}/{variables}" : "com.threewks.web.Controller.method"</code> will bind to
-				<code>public JspView method(long path, String variables){ &hellip; }</code>
+				<code class="prettyprint">"/{path}/{variables}" : "com.threewks.web.Controller.method"</code> will bind to
+				<code class="prettyprint">public JspView method(long path, String variables){ &hellip; }</code>
 			</p>
 		</li>
 		<li>
 			<p>
 				<strong>Multipart data</strong> <span class="label label-warning">Verify</span> - we can post files for example like this: <br/>
-<pre>
+<pre class="prettyprint">
 &lt;form action="/page" enctype="multipart/form-data" method="post"&gt;
 	&lt;input type="text" name="filename" value=""/&gt;
 	&lt;input type="file" name="fileData" value=""/&gt;
 &lt;/form&gt;
 </pre>
 				which would bind to <br/>
-				<code>public JspView postFile(String filename, byte[] fileData){ &hellip; }</code>
+				<code class="prettyprint">public JspView postFile(String filename, byte[] fileData){ &hellip; }</code>
 			</p>
 		</li>
 		<li>
@@ -127,14 +127,14 @@ public class Controller {
 			</p>
 			<p>
 				For example, if the request posted json like this:<br/> 
-<pre>
+<pre class="prettyprint">
 {
 	"id": 123,
 	"names": ["first", "last"] 
 }
 </pre>
 and we have a class like this:
-<pre>
+<pre class="prettyprint">
 package com.mycompany;
 public class MyDTO {
 	private int id;
@@ -155,22 +155,22 @@ public class MyDTO {
 }
 </pre>
 				it can automatically bind onto <br/>
-				<code>public JspView method(MyDTO dto){ &hellip; }</code>
+				<code class="prettyprint">public JspView method(MyDTO dto){ &hellip; }</code>
 			</p>
 		</li>
 		<li>
 			<p>
 				<strong>Servlet classes</strong> - thundr will pass in a 
-				<code>HttpServletRequest</code>, 
-				<code>HttpServletResponse</code> and an 
-				<code>HttpSession</code> object.<br/>
-				e.g. <code>public JspView view(HttpServletRequest req, HttpServletResponse resp){ &hellip; }</code>
+				<code class="prettyprint">HttpServletRequest</code>, 
+				<code class="prettyprint">HttpServletResponse</code> and an 
+				<code class="prettyprint">HttpSession</code> object.<br/>
+				e.g. <code class="prettyprint">public JspView view(HttpServletRequest req, HttpServletResponse resp){ &hellip; }</code>
 			</p>
 		</li>
 		<li>
 			<p>
 				<strong>Request headers</strong> - for example we could get the referer using the following: <br/>
-				<code>public JspView method(String Referer){ &hellip; }</code>
+				<code class="prettyprint">public JspView method(String Referer){ &hellip; }</code>
 			</p>
 		</li>
 	</ul>
@@ -205,7 +205,7 @@ public class MyDTO {
 	In the example below, two services are injected using the constructor at creation time, and then invoked on page requests:
 <figure>
 	<figcaption>Controller - Controller.java</figcaption>
-<pre>
+<pre class="prettyprint">
 &hellip;
 public class Controller {
 	private DocumentService documentService;
@@ -239,7 +239,7 @@ public class Controller {
 <p>
 	When a controller is instantiated, the injection context will attempt to use the constructor with the most arguments that it can satisfy.<br/>
 	The injection context will also invoke javabean setters for any objects it can satisfy.<br/>
-	Non-javabean properties can also be set by using the JSR 330 annotation <code>@Inject</code> on the property. Note that the InjectionContext does
+	Non-javabean properties can also be set by using the JSR 330 annotation <code class="prettyprint">@Inject</code> on the property. Note that the InjectionContext does
 	not currently support the full JSR 330 specification, just the basic @Inject annotation.<br/>
 </p>
 <p>
@@ -250,7 +250,7 @@ public class Controller {
 The below example demonstrates the different ways dependencies can be injected into controllers.
 <figure>
 	<figcaption>Controller - Controller.java</figcaption>
-<pre>
+<pre class="prettyprint">
 &hellip;
 public class Controller {
 	private DocumentService documentService;

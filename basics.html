@@ -18,7 +18,7 @@ id: basics
 	</p>
 	<p>
 		In thundr, this control is enacted by the method invoked inside your controller class. <a href="/controllers.html">more</a><br/>
-		The view is represented by a <code>View</code> object, which is the return type of the controller method. <a href="/views.html">more</a><br/> 
+		The view is represented by a <code class="prettyprint">View</code> object, which is the return type of the controller method. <a href="/views.html">more</a><br/> 
 		The model is provided to the view by the controller method, but the requirements of this depend on the type of view.
 	</p>
 </section>
@@ -26,7 +26,7 @@ id: basics
 <h4>Basic Example</h4>
 <figure>
 	<figcaption>Routes file - routes.json <a href="/actions.html#routes">more</a></figcaption>
-<pre>
+<pre class="prettyprint">
 {
 	"/"		: "com.threewks.web.Controller.home"
 }
@@ -34,7 +34,7 @@ id: basics
 </figure>
 <figure>
 	<figcaption>Controller - Controller.java <a href="/controllers.html#overview">more</a></figcaption>
-<pre>
+<pre class="prettyprint">
 package com.threewks.web;
 
 import java.util.HashMap;
@@ -52,7 +52,7 @@ public class Controller {
 </figure>
 <figure>
 <figcaption>Jsp - /WEB-INF/jsp/home.jsp <a href="/views.html#jspView">more</a></figcaption>
-<pre>
+<pre class="prettyprint">
 &lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
 &lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
@@ -66,7 +66,7 @@ public class Controller {
 </pre>
 </figure>
 <p>
-	With these three files, if you were to visit the url <code>http://localhost:8080/</code> you would be served a page
+	With these three files, if you were to visit the url <code class="prettyprint">http://localhost:8080/</code> you would be served a page
 	with the content 'Hello World!'.
 </p>
 <p>
@@ -94,20 +94,18 @@ public class Controller {
 	</ul>
 </section>
 <section id="webXml">
-	<h4><code>web.xml</code></h4>
+	<h4><code class="prettyprint">web.xml</code></h4>
 
 	<p>
 		The minimum web.xml required for a thundr app is to include the thundr servlet.
 	</p>
-<pre>
+<pre class="prettyprint">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;web-app
 	xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5"&gt;
-<%-- TODO - its not clear how much we rely on this atm, i'm pretty sure not really at all
-	<listener> <listener-class>com.threewks.thundr.view.jsp.RegisterElResolverServletContextListener</listener-class> </listener>--%>
 	&lt;servlet&gt;
 		&lt;servlet-name&gt;servlet&lt;/servlet-name&gt;
 		&lt;servlet-class&gt;com.threewks.thundr.WebFrameworkServlet&lt;/servlet-class&gt;
@@ -125,7 +123,7 @@ public class Controller {
 	</p>
 </section>
 <section id="#modulesProperties">
-	<h4><code>modules.properties</code></h4>
+	<h4><code class="prettyprint">modules.properties</code></h4>
 	
 	<p>
 		thundr is extensible, it allows extra features and components to be added to applications. 
@@ -141,7 +139,7 @@ public class Controller {
 	</p>
 <figure>
 <figcaption>for the application defined in com.mycompany.myapp - modules.properties</figcaption>
-<pre>
+<pre class="prettyprint">
 com.mycompany.myapp=
 </pre>
 </figure>
@@ -150,28 +148,28 @@ com.mycompany.myapp=
 	</div>
 </section>
 <section id="injectionConfiguration">
-	<h4><code>InjectionConfiguration</code></h4>
+	<h4><code class="prettyprint">InjectionConfiguration</code></h4>
 	
 	<p>
-		A module is defined as a group of code and an <code>InjectionConfiguration</code> file.
+		A module is defined as a group of code and an <code class="prettyprint">InjectionConfiguration</code> file.
 	</p>
 	<p>
 		You application uses an InjectionConfiguration to make available all the instances and classes you wish to inject into your
 		controllers and each-other
 	</p>
 	<p>
-		Your injection configuration needs to implement <code>com.threewks.thundr.injection.InjectionConfiguration</code>. 
+		Your injection configuration needs to implement <code class="prettyprint">com.threewks.thundr.injection.InjectionConfiguration</code>. 
 		It also has to have a specific name, which is <strong>X</strong>InjectionConfiguration where <strong>X</strong> is the
 		name of the package it resides in.  
 	</p>
 	<p>
-		For example, if your injection configuration is in the package <code>com.mycompany.myapp</code>, your
-		configuration must be the java class <code>com.mycompany.myapp.MyappInjectionConfiguration</code>. In this case,
+		For example, if your injection configuration is in the package <code class="prettyprint">com.mycompany.myapp</code>, your
+		configuration must be the java class <code class="prettyprint">com.mycompany.myapp.MyappInjectionConfiguration</code>. In this case,
 		your <em>module</em> will be com.mycompany.myapp.
 	</p>
 <figure>
 <figcaption>com.mycompany.myapp.MyappInjectionConfiguration</figcaption>
-<pre>
+<pre class="prettyprint">
 package com.mycompany.myapp;
 
 import com.threewks.thundr.injection.BaseInjectionConfiguration;
@@ -194,15 +192,15 @@ public class MyappInjectionConfiguration implements InjectionConfiguration {
 		<div class="alert alert-info">
 			The naming rules for an InjectionConfiguration are case sensitive! My<strong>a</strong>ppInjectionConfiguration is not the same as My<strong>A</strong>ppInjectionConfiguration.
 		</div>
-		Rather than implement <code>InjectionConfiguration</code>, you can also extend <code>BaseInjectionConfiguration</code>
+		Rather than implement <code class="prettyprint">InjectionConfiguration</code>, you can also extend <code class="prettyprint">BaseInjectionConfiguration</code>
 		for convenience.
 	</p>
 </section>
 <section id="applicationProperties">
-	<h4><code>application.properties</code></h4>
+	<h4><code class="prettyprint">application.properties</code></h4>
 	
 	<p>
-		thundr automatically loads properties from the <code>application.properties</code> file and puts them as named strings
+		thundr automatically loads properties from the <code class="prettyprint">application.properties</code> file and puts them as named strings
 		into the InjectionContext. This makes them available both in your InjectionConfiguration and also as constructor arguments
 		to injected dependencies.  
 	</p>
@@ -213,7 +211,7 @@ public class MyappInjectionConfiguration implements InjectionConfiguration {
 	<p>
 		This allows your built war file to be portable through environments without requiring rebuilding.
 	</p>
-<pre>
+<pre class="prettyprint">
 threadCount=20
 threadCount%dev=2
 serverUrl=localhost:8080

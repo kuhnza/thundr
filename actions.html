@@ -17,10 +17,10 @@ id: actions
 		Each route is of a http request type - <em>GET</em>, <em>PUT</em>, <em>POST</em> or <em>DELETE</em>. 
 	</p>
 	<p>
-		By default routes are loaded from the resource file <code>routes.json</code>.
+		By default routes are loaded from the resource file <code class="prettyprint">routes.json</code>.
 		Within this file, routes are defined as a json structure.
 	</p>
-<pre>
+<pre class="prettyprint">
 {
 	"/" 		: "au.com.threewks.thundrweb.Controller.home"
 	"/form/" 	: {
@@ -31,7 +31,7 @@ id: actions
 }
 </pre>
 	<p>
-		Routes can map to different types of actions. The most common action is <code>MethodAction</code>, which will
+		Routes can map to different types of actions. The most common action is <code class="prettyprint">MethodAction</code>, which will
 		result in a method being invoked on a <a href="/controllers.html">controller</a>.
 	</p> 
 	<p>
@@ -42,9 +42,9 @@ id: actions
 	</p>
 </section>
 <section>
-	<h4><code>Actions</code></h4>
+	<h4><code class="prettyprint">Actions</code></h4>
 	<p class="actions">
-		Each route maps to a single <code>Action</code>. Actions determine how your application handles a web request. 
+		Each route maps to a single <code class="prettyprint">Action</code>. Actions determine how your application handles a web request. 
 		In general, an action will usually result in some code being invoked, but other types of actions exist.
 	</p>
 	<p>
@@ -71,7 +71,7 @@ id: actions
 				For example, the route on the left will invoke the method on the right
 			</p>
 			<div class="row-fluid">
-				<pre class="span6">
+				<pre class="span6 prettyprint">
 					
 &hellip;
 
@@ -79,7 +79,7 @@ id: actions
 
 &hellip;	
 					</pre>
-					<pre class="span6">
+					<pre class="span6 prettyprint">
 package com.threewks.thundr;		
 public class Controller {
 	public StringView actionMethod(String variable){
@@ -109,7 +109,7 @@ public class Controller {
 				The routes below result in the favicon and all files under the folder 'static' being server as static resources. 
 			</p>
 			<div class="row-fluid">
-				<pre class="span12">
+				<pre class="span12 prettyprint">
 &hellip;
 
 "/favicon.ico": "static",
@@ -135,7 +135,7 @@ public class Controller {
 				The redirect is a <em>temporary redirect</em>, or 302.
 			</p>
 			<div class="row-fluid">
-				<pre class="span12">
+				<pre class="span12 prettyprint">
 &hellip;
 
 "/old": "redirect:/new",
@@ -163,7 +163,7 @@ public class Controller {
 				a redirect will be served with the url it was requested on.
 			</p>
 			<div class="row-fluid">
-				<pre class="span12">
+				<pre class="span12 prettyprint">
 &hellip;
 
 "/requestedPath"	: "rewrite:/rewritten",
@@ -175,29 +175,29 @@ public class Controller {
 	</div>
 </div>
 <section id="actionResolver">
-	<h4><code>ActionResolver</code> <span class="label label-info">Advanced</span></h4>
+	<h4><code class="prettyprint">ActionResolver</code> <span class="label label-info">Advanced</span></h4>
 	<p>
-		Each type of action is handled by an <code>ActionResolver</code>. 
+		Each type of action is handled by an <code class="prettyprint">ActionResolver</code>. 
 		ActionResolvers process an Action when a route is requested. You can create and configure custom Action and ActionResolvers 
 		to handle routes, although in general this is not necessary. 
 	</p>
 	<div>
 		An action resolver has two responsibilities:
 		<ul>
-			<li>creating an <code>Action</code> for a route if it can process that route, and</li>
+			<li>creating an <code class="prettyprint">Action</code> for a route if it can process that route, and</li>
 			<li>resolving an action it created when a route is requested by an http client</li>
 		</ul> 
 	</div>
 	<p>
 		Action resolution usually involves binding data based on route configuration and request parameters, and serving up
-		response content and http response codes. This is done using the standard Java Servlet interfaces, <code>HttpServletRequest</code> and <code>HttpServletResponse</code>
+		response content and http response codes. This is done using the standard Java Servlet interfaces, <code class="prettyprint">HttpServletRequest</code> and <code class="prettyprint">HttpServletResponse</code>
 	</p>
 	<p>
 		If you wish to register a custom Action and ActionResolver, you can invoke the method
-		<code>
-		<pre>Routes.addActionResolver(Class&lt;A&gt; actionType, ActionResolver&lt;A&gt; actionResolver);</pre>
+		<code class="prettyprint">
+		<pre class="prettyprint">Routes.addActionResolver(Class&lt;A&gt; actionType, ActionResolver&lt;A&gt; actionResolver);</pre>
 		</code>
-		This needs to be done before the routes are loaded. The <code>Routes</code> object is available in the <code>InjectionConfiguration</code> during 
+		This needs to be done before the routes are loaded. The <code class="prettyprint">Routes</code> object is available in the <code class="prettyprint">InjectionConfiguration</code> during 
 		startup.
 	</p>
 </section>

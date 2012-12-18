@@ -9,6 +9,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
 	<meta name="keywords" content="{{page.keywords}}"/>
 	<link rel="stylesheet" href="/styles/lib/bootstrap/bootstrap.css"></link>
+	<link rel="stylesheet" href="/styles/lib/prettify.css"></link>
 	<!--
 	<t:style src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css"/>
 	<t:style src="/styles/lib/bootstrap/bootstrap.css"/>
@@ -20,6 +21,7 @@
 	<script src="/javascript/lib/bootstrap/bootstrap.min.js"></script>
 	<script src="/javascript/lib/bootstrap/bootstrap-dropdown.js"></script>
 	<script src="/javascript/lib/bootstrap/bootstrap-collapse.js"></script>
+	<script src="/javascript/lib/prettify.js"></script>
 	<script>
 	$(document).ready(function () {
 		// If we cross link pages to a collapsed accordian, open the entry of interest.
@@ -30,6 +32,7 @@
 		});
 		$('.dropdown-toggle').dropdown();
 		$(".collapse").collapse();
+		prettyPrint();
 	});
 	</script>
 </head>

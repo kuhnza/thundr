@@ -24,19 +24,19 @@ id: injectionContext
 		testability of controllers and other code resources, and reduces code coupling. 
 	</p>
 	<p>
-		Your injection configuration needs to implement <code>com.threewks.thundr.injection.InjectionConfiguration</code>. 
+		Your injection configuration needs to implement <code class="prettyprint">com.threewks.thundr.injection.InjectionConfiguration</code>. 
 		It also has to have a specific name, which is <strong>X</strong>InjectionConfiguration where <strong>X</strong> is the
 		name of the package it resides in. This requirement means that thundr doesn't need to perform any classpath scanning to
 		locate configuration resources.
 	</p>
 	<p>
-		For example, if your injection configuration is in the package <code>com.mycompany.myapp</code>, your
-		configuration must be the java class <code>com.mycompany.myapp.MyappInjectionConfiguration</code>. In this case,
+		For example, if your injection configuration is in the package <code class="prettyprint">com.mycompany.myapp</code>, your
+		configuration must be the java class <code class="prettyprint">com.mycompany.myapp.MyappInjectionConfiguration</code>. In this case,
 		you <em>module</em> will be com.mycompany.myapp.
 	</p>
 <figure>
 <figcaption>com.mycompany.myapp.MyappInjectionConfiguration</figcaption>
-<pre>
+<pre class="prettyprint">
 package com.mycompany.myapp;
 
 import com.threewks.thundr.injection.BaseInjectionConfiguration;
@@ -57,9 +57,9 @@ public class MyappInjectionConfiguration implements InjectionConfiguration {
 </figure>
 </section>
 <section id="injectionContext">
-	<h4><code>InjectionContext</code></h4>
+	<h4><code class="prettyprint">InjectionContext</code></h4>
 	<p>
-		Dependency injection is managed by the <code>InjectionContext</code>.
+		Dependency injection is managed by the <code class="prettyprint">InjectionContext</code>.
 	</p>
 	<p>
 		The injection context acts like a bucket for instances.
@@ -74,7 +74,7 @@ public class MyappInjectionConfiguration implements InjectionConfiguration {
 	<p>
 		For the injection context to be able to create and provide instances, it needs to know about the types.
 		This is achieved by registering them. Types can only be registered through the interface 
-		<code>UpdatableInjectionContext</code>. This interface is provided to <code>InjectionConfiguration</code>
+		<code class="prettyprint">UpdatableInjectionContext</code>. This interface is provided to <code class="prettyprint">InjectionConfiguration</code>
 		implementations.
 	</p>
 	<p>
@@ -83,7 +83,7 @@ public class MyappInjectionConfiguration implements InjectionConfiguration {
 	</p>
 	<div>
 	For example:
-<pre>
+<pre class="prettyprint">
 &hellip;
 public void configure(UpdatableInjectionContext injectionContext) {
 	injectionContext.inject(MyServiceImpl.class).as(MyServiceInterface.class);
@@ -92,11 +92,11 @@ public void configure(UpdatableInjectionContext injectionContext) {
 }
 &hellip;
 </pre>
-	In the above example, we register the type <code>MyServiceImpl</code> to be returned when a <code>MyServiceInterface</code> is
-	requested, and a specific instance of <code>MyRepositoryImpl</code> to be returned when a <code>MyRepositoryInterface</code> is requested.
+	In the above example, we register the type <code class="prettyprint">MyServiceImpl</code> to be returned when a <code class="prettyprint">MyServiceInterface</code> is
+	requested, and a specific instance of <code class="prettyprint">MyRepositoryImpl</code> to be returned when a <code class="prettyprint">MyRepositoryInterface</code> is requested.
 	<br/>
 	After this, the following is possible:
-<pre>
+<pre class="prettyprint">
 &hellip;
 	MyServiceInterface myService = injectionContext.get(MyServiceInterface.class);
 	MyRepositoryInterface myRepository = injectionContext.get(MyRepositoryInterface.class);
@@ -110,7 +110,7 @@ public void configure(UpdatableInjectionContext injectionContext) {
 	As well as specifying types, you can also specified <em>named types</em>.
 	Named types are types or instances registered as above, but also with specific names.
 	For example:
-<pre>
+<pre class="prettyprint">
 &hellip;
 public void configure(UpdatableInjectionContext injectionContext) {
 	injectionContext.inject(MyServiceImpl.class).named("myService").as(MyServiceInterface.class);
@@ -118,12 +118,12 @@ public void configure(UpdatableInjectionContext injectionContext) {
 }
 &hellip;
 </pre>
-	In the above example, we register two different different <code>MyServiceInterface</code>s, with two different
+	In the above example, we register two different different <code class="prettyprint">MyServiceInterface</code>s, with two different
 	names.
 	<br/>
 	When an instance is requested from the injection context, a different instance is returned depending on 
 	the name specified.
-<pre>
+<pre class="prettyprint">
 &hellip;
 	MyServiceInterface myService1 = injectionContext.get(MyServiceInterface.class, "myService");
 	MyServiceInterface myService2 = injectionContext.get(MyServiceInterface.class, "alternativeService");
@@ -139,7 +139,7 @@ public void configure(UpdatableInjectionContext injectionContext) {
 	</p>
 	<p>
 		To create a new instance, the injection context will invoke the constructor with the most number of arguments
-		it can satisfy. If no constructor can be satisfied, an <code>InjectionException</code> will be thrown.
+		it can satisfy. If no constructor can be satisfied, an <code class="prettyprint">InjectionException</code> will be thrown.
 		<br/>
 		A constructor can only be satisfied if the injection context can find at least a matching type for each argument.
 	</p>
@@ -150,7 +150,7 @@ public void configure(UpdatableInjectionContext injectionContext) {
 	</p>
 	<div>
 		For example:
-<pre>
+<pre class="prettyprint">
 &hellip; 
 public void configure(UpdatableInjectionContext injectionContext) {
 	injectionContext.inject(MyServiceImpl.class).named("myService").as(MyServiceInterface.class);
@@ -167,8 +167,8 @@ public class MyProcess {
 }
 &hellip;
 </pre>	
-		In the above example, we inject two different <code>MyServiceInterface</code>s into our context, and when
-		we get an instance of <code>MyProcess</code>, the constructor is invoked with each parameter being satisfied
+		In the above example, we inject two different <code class="prettyprint">MyServiceInterface</code>s into our context, and when
+		we get an instance of <code class="prettyprint">MyProcess</code>, the constructor is invoked with each parameter being satisfied
 		by the corresponding named type.
 	</div>
 </section>
@@ -182,14 +182,14 @@ public class MyProcess {
 		As with instantiation, named instances and named types take preference over just instances and types.
 	</p>
 	<p>
-		The injection context also supports a subset of JSR 330. This allows you to put the <code>@Inject</code> annotation
+		The injection context also supports a subset of JSR 330. This allows you to put the <code class="prettyprint">@Inject</code> annotation
 		directly on a member variable, rather than using a javabean property.
 		<br/> 
 		Note that the InjectionContext does not currently support the full JSR 330 specification, just the basic @Inject annotation.
 	</p>
 	<p>
 		Where thundr interprets constructor arguments as <em>mandatory</em>, properties specified using setters or 
-		<code>@Inject</code>are considered <em>optional</em>. That is, no <code>InjectionException</code> will be thrown if
+		<code class="prettyprint">@Inject</code>are considered <em>optional</em>. That is, no <code class="prettyprint">InjectionException</code> will be thrown if
 		the injection configuration cannot satisfy the desired parameters.
 	</p>
 	<p>
@@ -198,7 +198,7 @@ public class MyProcess {
 	</p>
 	<div>
 		The following is an example of the three basic ways of injecting required dependencies:
-<pre>
+<pre class="prettyprint">
 &hellip;
 public class Controller {
 	private DocumentService documentService;
