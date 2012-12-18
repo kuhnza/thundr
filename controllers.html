@@ -1,0 +1,271 @@
+---
+layout: default
+title: thundr
+id: controllers
+---
+<div class="page-header">
+  <h1>thundr <small>controllers</small></h1>
+</div>
+<section id="overview">
+</section>
+<section id="controllers">
+	<p>
+		We refer to the classes invoked when using the typical <a href="/actions.html#routes">route</a> as <em>controllers</em>.
+	</p>
+	<p>
+		When a http client makes a request, the appropriate method inside a controller is invoked.
+		The method can perform processing and gather data for the response, then return a <code>View</code> object.
+		The view controls the content and http response codes that are returned to the client.  
+	</p>
+	<p>
+		Controller classes are ordinary classes, they don't require implementing any interfaces or annotations to function. Having one or
+		more routes directing to a method inside a class is enough for thundr to <a href="#injection">create</a> and 
+		invoke your controller class when a request is made.
+	</p>
+</section>
+<section id="basicExample">
+<h4>Basic Example</h4>
+<p>
+	In the very basic example below, the controller renders the home.jsp for its view, to which it provides a simple model with the message 'Hello World!'.
+</p>
+<figure>
+	<figcaption>Controller - Controller.java</figcaption>
+<pre>
+package com.threewks.web;
+
+import java.util.HashMap;
+import java.util.Map;
+import com.threewks.thundr.view.jsp.JspView;
+
+public class Controller {
+	public JspView home() {
+		Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
+		model.put("message", "Hello World!");
+		return new JspView("home.jsp", model);
+	}
+}
+</pre>
+</figure>
+</section>
+<section id="views">
+	<h4>Views</h4>
+	<p>
+		In the above example, we see the <code>JspView</code> being returned from our controller.
+		This resulted in a Jsp being processed and sent back to the user.<br/>
+		thundr supports different views, which control the content and http response returned to the user.
+	</p>
+	<ul>
+		<li>JspView - renders a jsp - <a href="/views.html#jspView">more</a></li>
+		<li>RedirectView - redirects the client to a new url -  <a href="/views.html#redirectView">more</a></li>
+		<li>JsonView - uses the <a href="http://code.google.com/p/google-gson/">Gson library</a> to return json to the client - <a href="/views.html#jsonView">more</a></li>
+		<li>StringView - returns a string to the client - <a href="/views.html#stringView">more</a></li>
+		<li>HttpStatusException - when thrown, this exception results in an error code being sent to the request client - <a href="/views.html#httpStatusException">more</a></li>
+		<li>StringView - returns a string to the client - <a href="/views.html#stringView">more</a></li>
+	</ul>
+</section>
+<section id="dataBinding">
+<h4>Data Binding</h4>
+<p>
+	When a controller method is invoked, data from the request is bound and passed in using the method parameters.
+</p>
+<p>
+	thundr binds data using the names of the variables and automatically converts to the target types.
+</p>
+<div>
+	Data is bound from the following locations:
+	<ul>
+		<li>
+			<p>
+				<strong>Request parameters</strong> - request parameters include request parameters for GET/DELETE request and 
+				form parameters for POST/PUT requests.
+			</p>
+			<p>
+				<code>http://localhost:8080/page?param1=parameter%20value&amp;param2=2</code>
+				will bind to
+				<code>public JspView method(String param1, Long param2){ &hellip; }</code>
+			</p>
+			<p>
+				likewise,
+<pre>
+&lt;form action="/page" method="post"&gt;
+	&lt;input type="text" name="param1" value="parameter value"/&gt;
+	&lt;input type="text" name="param2" value="2"/&gt;
+&lt;/form&gt;
+</pre>
+				will bind to <br/>
+				<code>public JspView method(String param1, Long param2){ &hellip; }</code>
+			</p>
+			<p>
+				thundr is capable of binding all basic java types, collection classes and javabeans.
+				<span class="label label-warning">Link to more about binding</span>
+			</p>
+		</li>
+		<li>
+			<p>
+				<strong>Path variables</strong> - that is named variables as portion of the route. e.g.<br/>
+				<code>"/{path}/{variables}" : "com.threewks.web.Controller.method"</code> will bind to
+				<code>public JspView method(long path, String variables){ &hellip; }</code>
+			</p>
+		</li>
+		<li>
+			<p>
+				<strong>Multipart data</strong> <span class="label label-warning">Verify</span> - we can post files for example like this: <br/>
+<pre>
+&lt;form action="/page" enctype="multipart/form-data" method="post"&gt;
+	&lt;input type="text" name="filename" value=""/&gt;
+	&lt;input type="file" name="fileData" value=""/&gt;
+&lt;/form&gt;
+</pre>
+				which would bind to <br/>
+				<code>public JspView postFile(String filename, byte[] fileData){ &hellip; }</code>
+			</p>
+		</li>
+		<li>
+			<p>
+				<strong>Json</strong> <span class="label label-warning">Verify</span> - using <a href="http://code.google.com/p/google-gson/">Gson</a>, json requests will
+				bind data automatically.
+			</p>
+			<p>
+				For example, if the request posted json like this:<br/> 
+<pre>
+{
+	"id": 123,
+	"names": ["first", "last"] 
+}
+</pre>
+and we have a class like this:
+<pre>
+package com.mycompany;
+public class MyDTO {
+	private int id;
+	private List&lt;String&gt; names;
+	
+	public void setId(int id){
+		this.id = id;
+	}
+	public void setNames(List&lt;String&gt; names){
+		this.names = names;
+	}
+	public List&lt;String&gt; getNames(){
+		return names;
+	}
+	public int getId(){
+		return id;
+	}
+}
+</pre>
+				it can automatically bind onto <br/>
+				<code>public JspView method(MyDTO dto){ &hellip; }</code>
+			</p>
+		</li>
+		<li>
+			<p>
+				<strong>Servlet classes</strong> - thundr will pass in a 
+				<code>HttpServletRequest</code>, 
+				<code>HttpServletResponse</code> and an 
+				<code>HttpSession</code> object.<br/>
+				e.g. <code>public JspView view(HttpServletRequest req, HttpServletResponse resp){ &hellip; }</code>
+			</p>
+		</li>
+		<li>
+			<p>
+				<strong>Request headers</strong> - for example we could get the referer using the following: <br/>
+				<code>public JspView method(String Referer){ &hellip; }</code>
+			</p>
+		</li>
+	</ul>
+</div>
+<p>
+	When data binding is used, you can generally mix any types of bindings, for example using path variables, request parameters and the HttpServletRequest.
+	This gives you the flexibility to generally consume most types of http integration.
+</p>
+<p class="alert alert-info">
+	Remember, if you can't automatically bind the data in your request, you can always just bind the HttpServletRequest and HttpServletResponse.<br/>
+	This is equivalent to writing a servlet, so you'll have to do the heavy lifting yourself, but it means that as long as a servlet could handle the
+	input, your thundr controller can as well.
+</p>
+</section>
+<section id="separationOfConcerns">
+<h4>Separation of concerns</h4>
+<p>
+	The job of a controller is to service a request by performing any behaviour and marshalling response data into the form that is required by the
+	resulting view. 
+</p>
+<p>
+	In order to write maintainable, testable applications you should be sure to make sure your application leverages the concept of <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">'separation of concerns'</a>.
+	<br/>
+	In this case, what we mean by that is that while the controller is designed for invoking behaviour, in general it should not actually
+	contain behavioural logic as much as possible.
+</p>
+<p>
+	To help you achieve this aim, controllers can have other instances passed into them at creation time.<br/>
+	This allows you to inject dependencies, such as business process, service and repository code.
+</p>
+<div>
+	In the example below, two services are injected using the constructor at creation time, and then invoked on page requests:
+<figure>
+	<figcaption>Controller - Controller.java</figcaption>
+<pre>
+&hellip;
+public class Controller {
+	private DocumentService documentService;
+	private CounterRepository counterRepository;
+	
+	public Controller(DocumentService documentService, CounterRepository counterRepository){
+		this.documentService = documentService;
+		this.counterRepository = counterRepository;
+	}
+	public JspView home() {
+		counterRepository.incrementHomeViews();
+
+		List&lt;Document&gt; recentlyViewed = documentService.getRecentlyViewedDocuments()
+		
+		Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
+		model.put("recentlyViewed", recentlyViewed);
+		return new JspView("home.jsp", model);
+	}
+}
+</pre>
+</figure>
+</div>
+</section>
+<section id="injection">
+<h4>Controller Instantiation</h4>
+<p>
+	Controller classes are instantiated by the <a href="/injectionContext.html#injectionContext">InjectionContext</a>. As such each instance can be shared between multiple,
+	concurrent requests, so implementations should be treated as stateless.<br/>
+	Also, there is no guarantee that controllers are singletons and implementations should also take this into account.
+</p>
+<p>
+	When a controller is instantiated, the injection context will attempt to use the constructor with the most arguments that it can satisfy.<br/>
+	The injection context will also invoke javabean setters for any objects it can satisfy.<br/>
+	Non-javabean properties can also be set by using the JSR 330 annotation <code>@Inject</code> on the property. Note that the InjectionContext does
+	not currently support the full JSR 330 specification, just the basic @Inject annotation.<br/>
+</p>
+<p>
+	You can read more <a href="/injectionContext.html">here</a> about the InjectionContext, dependency injection in thundr and how to write controller and
+	service classes the 'right' way. 
+</p>
+<div>
+The below example demonstrates the different ways dependencies can be injected into controllers.
+<figure>
+	<figcaption>Controller - Controller.java</figcaption>
+<pre>
+&hellip;
+public class Controller {
+	private DocumentService documentService;
+	private CounterRepository counterRepository;
+	@Inject
+	private CategoryService categoryService;
+	
+	public Controller(DocumentService documentService){
+		this.documentService = documentService;
+	}
+	public void setCounterRepository(CounterRepository counterRepository){
+		this.counterRepository = counterRepository;
+	}
+&hellip;
+</pre>
+</figure>
+</div>
+</section>

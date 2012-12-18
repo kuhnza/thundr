@@ -1,0 +1,49 @@
+---
+layout: default
+title: thundr
+id: views
+---
+<div class="page-header">
+  <h1>thundr <small>email</small></h1>
+</div>
+<section class="overview">
+	<p>
+		thundr has framework support for sending of emails. 
+		To send an email, you use the fluent api returned from the <code>Mailer.mail(HttpServletRequest req)</code> method. 
+	</p>
+	<p>
+		The <code>MailBuilder</code> returned from this method has a variety of email specific properties you can set. In addition, 
+		you specify the body of the email using the standard <code>View</code> framework of thundr. That is, you can provide
+		the body of the email using anything you could render a <a href="/views.html">view</a> with. 
+	</p>
+</section>
+<section id="example">
+<h4>Example</h4>
+	<div>
+<pre>
+public void sendEmail(HttpServletRequest req, String recipientEmail, String recipientName){
+	Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
+	model.put("message", "Hello world!");
+	
+	MailBuilder mail = mailer.mail(req);
+	mail.to(recipientEmail, recipientName);
+	mail.from("no-reply@mydomain.com", "no-reply");
+	mail.replyTo("no-reply@mydomain.com", "no-reply");
+	mail.subject("Test email");
+	mail.body(new JspView("emails/test.jsp");
+	mail.send();
+}
+</pre>		
+	</div>
+</section>
+<section id="limitations">
+	<h4>Limitations</h4>
+	<p>
+		thundr mail is build on top of the standard <code>javax.mail</code> api. If your target platform cannot send email using this api,
+		or if it requires additional configuration you will need to configure this yourself.
+	</p>
+	<p>
+		Currently thundr mail only supports basic html emails. It does not create multipart mails,
+		and does not support embedded conten, such as cid references and attachments.
+	</p>
+</section>

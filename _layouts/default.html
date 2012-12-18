@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" lang="en-us"/>
+	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
+	<!--[if lt IE 9]> <script src="/javascript/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
+	<title>{{page.title}}</title>
+	<meta name="description" content="{{page.description}}"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
+	<meta name="keywords" content="{{page.keywords}}"/>
+	<link rel="stylesheet" href="/styles/lib/bootstrap/bootstrap.css"></link>
+	<!--
+	<t:style src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css"/>
+	<t:style src="/styles/lib/bootstrap/bootstrap.css"/>
+	-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!--
+	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+	-->
+	<script src="/javascript/lib/bootstrap/bootstrap.min.js"></script>
+	<script src="/javascript/lib/bootstrap/bootstrap-dropdown.js"></script>
+	<script src="/javascript/lib/bootstrap/bootstrap-collapse.js"></script>
+	<script>
+	$(document).ready(function () {
+		// If we cross link pages to a collapsed accordian, open the entry of interest.
+		// We'll also open any collapsed accordian section within the same page
+		location.hash && $(location.hash + '.collapse').collapse('show');
+		$(window).bind('hashchange', function() {
+			location.hash && $(location.hash + '.collapse').collapse('show');
+		});
+		$('.dropdown-toggle').dropdown();
+		$(".collapse").collapse();
+	});
+	</script>
+</head>
+<body>
+	 <header class="container">
+		<nav class="navbar">
+			<div class="navbar-inner">
+				<a class="brand" href="/"><img src="/images/logoFullSmall.png"/></a>
+				<ul class="nav" role="navigation">
+					<li class="dropdown">
+						<a href="/index.html" class="{% if page.id == "home" %} active {% endif %} dropdown-toggle" data-toggle="dropdown">
+							Overview
+						</a>
+					</li>
+					<li class="dropdown">
+						<a href="/basics.html" class="{% if page.id == "basics" %} active {% endif %} dropdown-toggle" data-toggle="dropdown">
+						    Basics <b class="caret"></b>
+					  	</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="/basics.html">Overview</a></li>
+							<li class="divider"></li>
+						   	<li><a href="/basics.html#basicExample">Example</a></li>
+							<li><a href="/basics.html#applicationConfiguration">Configuration</a></li>
+							<li class="divider"></li>
+							<li><a href="/basics.html#webXml">web.xml</a></li>
+							<li><a href="/basics.html#modulesProperties">modules.properties</a></li>
+							<li><a href="/basics.html#injectionConfiguration">InjectionConfiguration</a></li>
+							<li><a href="/basics.html#applicationProperties">application.properties</a></li>
+						</ul>
+ 						</li>
+ 						<li class="dropdown">
+						<a href="/controllers.html" class="{% if page.id == "controllers" %} active {% endif %} dropdown-toggle" data-toggle="dropdown">
+						    Controllers <b class="caret"></b>
+					  	</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="/controllers.html">Overview</a></li>
+							<li class="divider"></li>
+						   	<li><a href="/controllers.html#controllers">Controllers</a></li>
+							<li><a href="/controllers.html#views">Views</a></li>
+							<li><a href="/controllers.html#dataBinding">Data Binding</a></li>
+							<li><a href="/controllers.html#separationOfConcerns">Separation of concerns</a></li>
+							<li><a href="/controllers.html#injection">Injection</a></li>
+						</ul>
+ 						</li>
+					<li class="dropdown">
+						<a href="/views.html" class="{% if page.id == "views" %} active {% endif %} dropdown-toggle" data-toggle="dropdown">
+						    Views <b class="caret"></b>
+					  	</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="/views.html">Overview</a></li>
+							<li class="divider"></li>
+							<li><a href="/views.html#jspView">Jsp View</a></li>
+							<li><a href="/views.html#redirectView">Redirect View</a></li>
+							<li><a href="/views.html#jsonView">Json View</a></li>
+							<li><a href="/views.html#stringView">String View</a></li>
+							<li><a href="/views.html#httpStatusException">HttpStatusException</a></li>
+							<li class="divider"></li>
+							<li><a href="/views.html#viewResolver">ViewResolver&nbsp;&nbsp;<span class="label label-info">Advanced</span></a></li>
+						</ul>
+ 						</li>
+ 						<li class="dropdown">
+						<a href="/actions.html" class="{% if page.id == "actions" %} active {% endif %} dropdown-toggle" data-toggle="dropdown">
+						    Actions <b class="caret"></b>
+					  	</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="/actions.html#routes">Routes</a></li>
+							<li><a href="/actions.html#actions">Actions</a></li>
+							<li class="divider"></li>
+						   	<li><a href="/actions.html#methodAction">MethodAction</a></li>
+							<li><a href="/actions.html#staticResourceAction">StaticResourceActions</a></li>
+							<li><a href="/actions.html#staticResourceAction">RedirectAction</a></li>
+							<li><a href="/actions.html#staticResourceAction">RewriteAction</a></li>
+							<li class="divider"></li>
+							<li><a href="/actions.html#actionResolver">ActionResolver&nbsp;&nbsp;<span class="label label-info">Advanced</span></a></li>
+						</ul>
+ 						</li>
+ 						<li class="dropdown">
+						<a href="/injectionContext.html" class="{% if page.id == "injectionContext" %} active {% endif %} dropdown-toggle" data-toggle="dropdown">
+						    Dependency Injection <b class="caret"></b>
+					  	</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="/injectionContext.html">Overview</a></li>
+							<li class="divider"></li>
+							<li><a href="/injectionContext.html#injectionContext">InjectionContext</a></li>
+							<li><a href="/injectionContext.html#types">Injection by type</a></li>
+							<li><a href="/injectionContext.html#namedTypes">Injection by named type</a></li>
+							<li><a href="/injectionContext.html#instantiation">Instantiation</a></li>
+							<li><a href="/injectionContext.html#properties">Properties</a></li>
+						</ul>
+ 						</li>
+ 						<!-- TODO - Email doc
+ 						<li class="dropdown">
+						<a href="/email" class="{% if page.id == "email" %} active {% endif %} dropdown-toggle" data-toggle="dropdown">
+						    Email <b class="caret"></b>
+					  	</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="/email.html">Overview</a></li>
+							<li class="divider"></li>
+							<li><a href="/email.html#example">Example</a></li>
+							<li><a href="/email.html#limitations">Limitations</a></li>
+						</ul>
+ 						</li>
+ 						-->
+				</ul>
+			</div>
+		</nav>
+	</header>
+	<article id="{{page.id}}" class="container">
+	{{ content }}
+	</article>
+	<footer class="container">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<span class="navbar-text">Brought to you by <a href="www.3wks.com.au">3wks</a></span>
+				<span class="navbar-text pull-right"><a href="mailto:nick@3wks.com.au?Subject=thundr">Get in touch!</a></span>
+			</div>
+		</div>
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-37139757-1']);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+	</footer>
+</body>
+</html>
+		

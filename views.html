@@ -1,0 +1,169 @@
+---
+layout: default
+title: thundr
+id: views
+---
+<div class="page-header">
+  <h1>thundr <small>views</small></h1>
+</div>
+<section class="overview">
+	<h4><code>Views</code></h4>
+</section>
+<section id="views">
+	<h4>Views</h4>
+	<p>
+		<a href="/controllers.html">Controller</a> methods can return a <code>View</code> object, which controls what
+		content is returned to the request client.
+	</p>
+	<p>
+		thundr handles views by passing them to registered a <code>ViewResolver</code>. You can read more about registering custom
+		view and view resolvers <a href="#viewResolver">here</a>.
+	</p>
+	<p>
+		Below are the views that thundr supports out of the box, you can also inspect the ViewResolver hierarchy to see all implementations.
+	</p>
+	<div class="accordion">
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" href="#jspView">
+					<i class="icon icon-chevron-down"></i>
+					JspView
+				</a>
+			</div>
+			<section id="jspView" class="accordion-body collapse">
+	     		<div class="accordion-inner">
+					<p>
+						<code>JspView</code> results in a jsp being processed and served from the Servlet engine. You specify the jsp file location,
+						and optionally provide a data model to back it. Unless the jsp rendering fails, an Html file and a 200 OK will be sent
+						back to the user.  
+					</p>
+					<p>
+						The jsp file is considered to be relative to the path /WEB-INF/jsp/, unless it is given as an absolute path (i.e. starts with a forward slash, /)
+					</p>
+<pre>
+&hellip;
+Map&lt;String, Object&gt; model = &hellip; 
+return new JspView("path/to/my.jsp", model);
+&hellip;
+</pre>
+				</div>
+			</section>
+		</div>
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" href="#redirectView">
+					<i class="icon icon-chevron-down"></i>
+					RedirectView
+				</a>
+			</div>
+			<section id="redirectView" class="accordion-body collapse">
+	      		<div class="accordion-inner">
+					<p>
+						<code>RedirectView</code> results in a temporary redirect (302) being sent back to the client with the specified
+						location. This will send a browser to the new url.
+					</p>
+<pre>
+&hellip;
+return new RedirectView("http://www.google.com.au/search?q=thundr");
+&hellip;
+</pre>
+				</div>
+			</section>
+		</div>
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" href="#jsonView">
+					<i class="icon icon-chevron-down"></i>
+					JsonView
+				</a>
+			</div>
+			<section id="jsonView" class="accordion-body collapse">
+	      		<div class="accordion-inner">
+					<p>
+						<code>JsonView</code> uses the <a href="/http://code.google.com/p/google-gson/.html">Gson library</a> to serialize the given object
+						to json, and return it to the request client. 
+					</p>
+<pre>
+&hellip;
+MyDto dto = &hellip; 
+return new JsonView(dto);
+&hellip;			
+</pre>
+				</div>
+			</section>
+		</div>
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" href="#stringView">
+					<i class="icon icon-chevron-down"></i>
+					StringView
+				</a>
+			</div>
+			<section id="stringView" class="accordion-body collapse">
+	      		<div class="accordion-inner">
+					<p>
+						<code>StringView</code> is a simple view which returns the given string as the response content, 
+						with a response code of 200 OK. 
+					</p>
+<pre>
+&hellip;
+return new StringView("Hello!");
+&hellip;			
+</pre>
+				</div>
+			</section>
+		</div>
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" href="#httpStatusException">
+					<i class="icon icon-chevron-down"></i>
+					HttpStatusException
+				</a>
+			</div>
+			<section id="httpStatusException" class="accordion-body collapse">
+	      		<div class="accordion-inner">
+					<p>
+						<code>HttpStatusException</code> is a RuntimeException which takes a status code as a constructor parameter.
+					</p>
+					<p>
+						When thrown, the specified status code is returned to the client as an http error, along with the specified message.
+					</p>
+<pre>
+&hellip;
+throw new HttpStatusException(HttpServletResponse.SC_BAD_REQUEST, "Bad request at %d", System.currentTimeMillis());
+&hellip;
+</pre>
+					<p>
+						The servlet engine will process the response code as normal, so if your web.xml maps a jsp, then this is the content
+						returned to the client. e.g.
+					</p>
+<pre>
+&hellip;
+&lt;error-page&gt;
+	&lt;error-code&gt;404&lt;/error-code&gt;
+	&lt;location&gt;/WEB-INF/jsp/errors/404.jsp&lt;/location&gt;
+&lt;/error-page&gt;
+&hellip;
+</pre>
+					
+				</div>
+			</section>
+		</div>
+	</div>
+</section>
+<section id="viewResolver">
+<h4><code>ViewResolvers</code><span class="label label-info">Advanced</span></h4>
+<p>
+	The <code>ViewResolverRegistry</code> returns a <code>ViewResolver</code> based on the 
+	class type of the view returned from a controller method.
+	The view resolver is then given the view instance, the servlet request and servlet 
+	response and is expected to generate some output to the servlet response.
+</p>
+<p>
+	The view resolver registry is available in the <code>InjectionContext</code> during startup.
+	An instance of a <code>ViewResolver</code> can be registered at this point against 
+	<strong>any</strong> class type. 
+	That is, while most views do implement the <code>View</code> interface, this is for 
+	convenience and not a requirement.
+</p>
+</section>
