@@ -10,7 +10,7 @@ id: controllers
 </section>
 <section id="controllers">
 	<p>
-		We refer to the classes invoked when using the typical <a href="/actions.html#routes">route</a> as <em>controllers</em>.
+		We refer to the classes invoked when using the typical <a href="/thundr/actions.html#routes">route</a> as <em>controllers</em>.
 	</p>
 	<p>
 		When a http client makes a request, the appropriate method inside a controller is invoked.
@@ -55,12 +55,12 @@ public class Controller {
 		thundr supports different views, which control the content and http response returned to the user.
 	</p>
 	<ul>
-		<li>JspView - renders a jsp - <a href="/views.html#jspView">more</a></li>
-		<li>RedirectView - redirects the client to a new url -  <a href="/views.html#redirectView">more</a></li>
-		<li>JsonView - uses the <a href="http://code.google.com/p/google-gson/">Gson library</a> to return json to the client - <a href="/views.html#jsonView">more</a></li>
-		<li>StringView - returns a string to the client - <a href="/views.html#stringView">more</a></li>
-		<li>HttpStatusException - when thrown, this exception results in an error code being sent to the request client - <a href="/views.html#httpStatusException">more</a></li>
-		<li>StringView - returns a string to the client - <a href="/views.html#stringView">more</a></li>
+		<li>JspView - renders a jsp - <a href="/thundr/views.html#jspView">more</a></li>
+		<li>RedirectView - redirects the client to a new url -  <a href="/thundr/views.html#redirectView">more</a></li>
+		<li>JsonView - uses the <a href="http://code.google.com/p/google-gson/">Gson library</a> to return json to the client - <a href="/thundr/views.html#jsonView">more</a></li>
+		<li>StringView - returns a string to the client - <a href="/thundr/views.html#stringView">more</a></li>
+		<li>HttpStatusException - when thrown, this exception results in an error code being sent to the request client - <a href="/thundr/views.html#httpStatusException">more</a></li>
+		<li>StringView - returns a string to the client - <a href="/thundr/views.html#stringView">more</a></li>
 	</ul>
 </section>
 <section id="dataBinding">
@@ -232,7 +232,7 @@ public class Controller {
 <section id="injection">
 <h4>Controller Instantiation</h4>
 <p>
-	Controller classes are instantiated by the <a href="/injectionContext.html#injectionContext">InjectionContext</a>. As such each instance can be shared between multiple,
+	Controller classes are instantiated by the <a href="/thundr/injectionContext.html#injectionContext">InjectionContext</a>. As such each instance can be shared between multiple,
 	concurrent requests, so implementations should be treated as stateless.<br/>
 	Also, there is no guarantee that controllers are singletons and implementations should also take this into account.
 </p>
@@ -243,7 +243,7 @@ public class Controller {
 	not currently support the full JSR 330 specification, just the basic @Inject annotation.<br/>
 </p>
 <p>
-	You can read more <a href="/injectionContext.html">here</a> about the InjectionContext, dependency injection in thundr and how to write controller and
+	You can read more <a href="/thundr/injectionContext.html">here</a> about the InjectionContext, dependency injection in thundr and how to write controller and
 	service classes the 'right' way. 
 </p>
 <div>

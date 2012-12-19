@@ -17,15 +17,15 @@ id: basics
 		In this pattern, the model and the view and the relationship between them is mediated by a controller.
 	</p>
 	<p>
-		In thundr, this control is enacted by the method invoked inside your controller class. <a href="/controllers.html">more</a><br/>
-		The view is represented by a <code class="prettyprint">View</code> object, which is the return type of the controller method. <a href="/views.html">more</a><br/> 
+		In thundr, this control is enacted by the method invoked inside your controller class. <a href="/thundr/controllers.html">more</a><br/>
+		The view is represented by a <code class="prettyprint">View</code> object, which is the return type of the controller method. <a href="/thundr/views.html">more</a><br/> 
 		The model is provided to the view by the controller method, but the requirements of this depend on the type of view.
 	</p>
 </section>
 <section id="basicExample">
 <h4>Basic Example</h4>
 <figure>
-	<figcaption>Routes file - routes.json <a href="/actions.html#routes">more</a></figcaption>
+	<figcaption>Routes file - routes.json <a href="/thundr/actions.html#routes">more</a></figcaption>
 <pre class="prettyprint">
 {
 	"/"		: "com.threewks.web.Controller.home"
@@ -33,7 +33,7 @@ id: basics
 </pre>
 </figure>
 <figure>
-	<figcaption>Controller - Controller.java <a href="/controllers.html#overview">more</a></figcaption>
+	<figcaption>Controller - Controller.java <a href="/thundr/controllers.html#overview">more</a></figcaption>
 <pre class="prettyprint">
 package com.threewks.web;
 
@@ -51,7 +51,7 @@ public class Controller {
 </pre>
 </figure>
 <figure>
-<figcaption>Jsp - /WEB-INF/jsp/home.jsp <a href="/views.html#jspView">more</a></figcaption>
+<figcaption>Jsp - /WEB-INF/jsp/home.jsp <a href="/thundr/views.html#jspView">more</a></figcaption>
 <pre class="prettyprint">
 &lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
 &lt;!DOCTYPE html&gt;
@@ -73,9 +73,9 @@ public class Controller {
 	We can see the basics of thundr and the three elements of the MVC interacting here:
 </p>
 <ol>
-	<li>an incoming request is mapped to a controller using a <a href="/actions.html#routes">route</a></li>
-	<li>Our <a href="/controllers.html">controller</a> method populates the <strong>model</strong> map with our message,</li>
-	<li>which is then provided to our <a href="/views.html">view</a>, a JspView.<br/></li>
+	<li>an incoming request is mapped to a controller using a <a href="/thundr/actions.html#routes">route</a></li>
+	<li>Our <a href="/thundr/controllers.html">controller</a> method populates the <strong>model</strong> map with our message,</li>
+	<li>which is then provided to our <a href="/thundr/views.html">view</a>, a JspView.<br/></li>
 	<li>thundr takes care of the rest, serving up our jsp as html, substituting the el variable \${message} with the text 'Hello World!'.</li>
 </ol>
 </section>
