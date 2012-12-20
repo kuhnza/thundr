@@ -10,7 +10,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import jodd.util.URLCoder;
+import jodd.servlet.URLCoder;
 
 public class MailHttpServletResponse implements HttpServletResponse {
 	private String contentType = "text/html;charset=UTF-8";
@@ -123,7 +123,7 @@ public class MailHttpServletResponse implements HttpServletResponse {
 
 	@Override
 	public String encodeURL(String url) {
-		return URLCoder.encodeUrl(url);
+		return URLCoder.url(url);
 	}
 
 	@Override

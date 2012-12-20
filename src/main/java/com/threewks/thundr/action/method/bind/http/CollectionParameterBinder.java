@@ -50,7 +50,7 @@ public class CollectionParameterBinder<T extends Collection<Object>> implements 
 		Type type = parameterDescription.getGenericType(0);
 		Class<?> clazz = ReflectUtil.toClass(type);
 		for (String entry : entries) {
-			Object listEntry = TypeConverterManager.convertType(entry, clazz);
+			Object listEntry = ReflectUtil.castType(entry, clazz);
 			listParameter.add(listEntry);
 		}
 		return listParameter;

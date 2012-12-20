@@ -33,6 +33,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<slf4j.version>1.6.4</slf4j.version>
 		<downloadSources>true</downloadSources><!-- This is just for "eclipse:eclipse" goal to always attempt downloading sources -->
+		<jodd.version>3.4.0</jodd.version><!-- This is just for "eclipse:eclipse" goal to always attempt downloading sources -->
 	</properties>
 
 	<dependencies>
@@ -99,23 +100,36 @@
 			<scope>compile</scope>
 		</dependency>
 
-
+	<!-- 
 		<dependency>
 			<groupId>org.jodd</groupId>
 			<artifactId>jodd-bean</artifactId>
-			<version>3.4.0</version>
+			<version>${jodd.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jodd</groupId>
 			<artifactId>jodd-proxetta</artifactId>
-			<version>3.4.0</version>
+			<version>${jodd.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jodd</groupId>
 			<artifactId>jodd-servlet</artifactId>
-			<version>3.4.0</version>
+			<version>${jodd.version}</version>
+			<scope>compile</scope>
+		</dependency>
+	 -->
+		<dependency>
+			<groupId>org.jodd</groupId>
+			<artifactId>jodd</artifactId>
+			<version>3.3.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jodd</groupId>
+			<artifactId>jodd-wot</artifactId>
+			<version>3.3.1</version>
 			<scope>compile</scope>
 		</dependency>
 

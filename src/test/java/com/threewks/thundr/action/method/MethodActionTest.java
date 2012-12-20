@@ -15,8 +15,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.threewks.thundr.action.method.ActionInterceptor;
-import com.threewks.thundr.action.method.MethodAction;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class MethodActionTest {
@@ -25,7 +23,8 @@ public class MethodActionTest {
 
 	@Test
 	public void shouldFindClassAndMethod() {
-		MethodAction methodAction = new MethodAction(FakeController.class, ReflectUtil.findMethod(FakeController.class, "methodOne"), Collections.<Annotation, ActionInterceptor<Annotation>> emptyMap());
+		MethodAction methodAction = new MethodAction(FakeController.class, ReflectUtil.findMethod(FakeController.class, "methodOne"),
+				Collections.<Annotation, ActionInterceptor<Annotation>> emptyMap());
 		assertThat(methodAction.type().equals(FakeController.class), is(true));
 		Method expectedMethod = ReflectUtil.findMethod(FakeController.class, "methodOne");
 		assertThat(methodAction.method(), is(expectedMethod));
@@ -33,7 +32,8 @@ public class MethodActionTest {
 
 	@Test
 	public void shouldInvokeControllerMethod() throws Exception {
-		MethodAction methodAction = new MethodAction(FakeController.class, ReflectUtil.findMethod(FakeController.class, "methodOne"), Collections.<Annotation, ActionInterceptor<Annotation>> emptyMap());
+		MethodAction methodAction = new MethodAction(FakeController.class, ReflectUtil.findMethod(FakeController.class, "methodOne"),
+				Collections.<Annotation, ActionInterceptor<Annotation>> emptyMap());
 
 		FakeController controller = new FakeController();
 		Object result = methodAction.invoke(controller, list("Arg 1"));
@@ -44,20 +44,22 @@ public class MethodActionTest {
 
 	/*
 	 * @Test
-	public void shouldThrowActionExceptionWhenInvokingControllerMethodFailsBecauseOfWrongArgumentNumber() throws Exception {
-		thrown.expect(ActionException.class);
-		thrown.expectMessage("Failed in class com.threewks.thundr.routes.FakeController.methodOne: wrong number of arguments");
-
-		MethodAction methodAction = new MethodAction(FakeController.class, ReflectUtil.findMethod(FakeController.class, "methodOne"), Collections.<Annotation, ActionInterceptor<Annotation>> emptyMap());
-
-		FakeController controller = new FakeController();
-		methodAction.invoke(controller, list());
-	}
+	 * public void shouldThrowActionExceptionWhenInvokingControllerMethodFailsBecauseOfWrongArgumentNumber() throws Exception {
+	 * thrown.expect(ActionException.class);
+	 * thrown.expectMessage("Failed in class com.threewks.thundr.routes.FakeController.methodOne: wrong number of arguments");
+	 * 
+	 * MethodAction methodAction = new MethodAction(FakeController.class, ReflectUtil.findMethod(FakeController.class, "methodOne"), Collections.<Annotation, ActionInterceptor<Annotation>>
+	 * emptyMap());
+	 * 
+	 * FakeController controller = new FakeController();
+	 * methodAction.invoke(controller, list());
+	 * }
 	 */
 
 	@Test
 	public void shouldFindMethodParameters() {
-		MethodAction methodAction = new MethodAction(FakeController.class, ReflectUtil.findMethod(FakeController.class, "methodOne"), Collections.<Annotation, ActionInterceptor<Annotation>> emptyMap());
+		MethodAction methodAction = new MethodAction(FakeController.class, ReflectUtil.findMethod(FakeController.class, "methodOne"),
+				Collections.<Annotation, ActionInterceptor<Annotation>> emptyMap());
 		List<ParameterDescription> parameters = methodAction.parameters();
 		assertThat(parameters.size(), is(1));
 		assertThat(parameters.get(0).name(), is("argument1"));

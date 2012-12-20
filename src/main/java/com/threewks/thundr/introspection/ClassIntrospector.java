@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import jodd.bean.BeanUtil;
 import jodd.introspector.ClassDescriptor;
 import jodd.util.ReflectUtil;
 
