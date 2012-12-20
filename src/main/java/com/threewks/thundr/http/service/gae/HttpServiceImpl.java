@@ -66,7 +66,7 @@ public class HttpServiceImpl implements HttpService {
 			Class<?> type = outgoingTypeConvertorOrder.get(i);
 			if (Cast.is(t, type)) {
 				ETransformer<T, InputStream> transformer = (ETransformer<T, InputStream>) outgoingTypeConvertors.get(type);
-				return transformer.to(t);
+				return transformer.from(t);
 			}
 		}
 		throw new BaseException("Unable to convert the given object to an input stream, no convertor found. Object: %s", t);
@@ -79,7 +79,7 @@ public class HttpServiceImpl implements HttpService {
 		if (convertor == null) {
 			throw new BaseException("Unable to convert the response to the type %s, please make sure a convertor is registered", type.getName());
 		}
-		return (T) convertor.to(is);
+		return (T) convertor.from(is);
 	}
 
 	public HttpResponseImpl fetch(HTTPRequest request) {
