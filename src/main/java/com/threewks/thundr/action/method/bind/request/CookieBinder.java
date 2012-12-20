@@ -27,7 +27,7 @@ public class CookieBinder implements ActionMethodBinder {
 	@Override
 	public void bindAll(Map<ParameterDescription, Object> bindings, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {
 		if (req.getCookies() != null) {
-			Map<String, List<Cookie>> lookup = toLookup.to(list(req.getCookies()));
+			Map<String, List<Cookie>> lookup = toLookup.from(list(req.getCookies()));
 			for (Map.Entry<ParameterDescription, Object> binding : bindings.entrySet()) {
 				ParameterDescription key = binding.getKey();
 				String name = key.name();

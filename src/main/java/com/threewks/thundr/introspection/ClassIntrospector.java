@@ -81,7 +81,7 @@ public class ClassIntrospector {
 		// TODO - This should be migrated to the Expressive library - it looks pretty useful!
 		return new ETransformer<A, B>() {
 			@Override
-			public B to(A from) {
+			public B from(A from) {
 				return (B) from;
 			}
 		};

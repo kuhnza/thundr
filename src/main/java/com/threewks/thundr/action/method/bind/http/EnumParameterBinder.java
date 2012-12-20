@@ -10,7 +10,7 @@ public class EnumParameterBinder implements ParameterBinder<Object> {
 		String stringValue = stringValues == null || stringValues.length == 0 ? null : stringValues[0];
 		Class<?> classType = parameterDescription.classType();
 		Class<Enum> enumType = (Class<Enum>) classType;
-		return Expressive.Transformers.toEnum(enumType).to(stringValue);
+		return Expressive.Transformers.toEnum(enumType).from(stringValue);
 	}
 
 	@Override
