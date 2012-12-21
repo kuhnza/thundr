@@ -13,29 +13,29 @@ import com.atomicleopard.expressive.Expressive;
 public class RouteTest {
 	@Test
 	public void shouldCorrectlyReplaceSingleAndDoubleAsteriskInPathString() {
-		assertThat(Route.convertPathStringToRegex("/route/**"), isPath("/route/[%s]*?", Route.AcceptableMultiPathCharacters));
-		assertThat(Route.convertPathStringToRegex("/route/*"), isPath("/route/[%s]*?", Route.AcceptablePathCharacters));
+		assertThat(Route.convertPathStringToRegex("/route/**"), isPath("/route/[%s]*?(?:;.*?)*", Route.AcceptableMultiPathCharacters));
+		assertThat(Route.convertPathStringToRegex("/route/*"), isPath("/route/[%s]*?(?:;.*?)*", Route.AcceptablePathCharacters));
 
-		assertThat(Route.convertPathStringToRegex("*"), isPath("[%s]*?", Route.AcceptablePathCharacters));
-		assertThat(Route.convertPathStringToRegex("**"), isPath("[%s]*?", Route.AcceptableMultiPathCharacters));
+		assertThat(Route.convertPathStringToRegex("*"), isPath("[%s]*?(?:;.*?)*", Route.AcceptablePathCharacters));
+		assertThat(Route.convertPathStringToRegex("**"), isPath("[%s]*?(?:;.*?)*", Route.AcceptableMultiPathCharacters));
 
-		assertThat(Route.convertPathStringToRegex("/route/*/*/"), isPath("/route/[%s]*?/[%s]*?/", AcceptablePathCharacters, AcceptablePathCharacters));
-		assertThat(Route.convertPathStringToRegex("/route/*/**"), isPath("/route/[%s]*?/[%s]*?", AcceptablePathCharacters, AcceptableMultiPathCharacters));
-		assertThat(Route.convertPathStringToRegex("/route/**/**"), isPath("/route/[%s]*?/[%s]*?", AcceptableMultiPathCharacters, AcceptableMultiPathCharacters));
+		assertThat(Route.convertPathStringToRegex("/route/*/*/"), isPath("/route/[%s]*?/[%s]*?/(?:;.*?)*", AcceptablePathCharacters, AcceptablePathCharacters));
+		assertThat(Route.convertPathStringToRegex("/route/*/**"), isPath("/route/[%s]*?/[%s]*?(?:;.*?)*", AcceptablePathCharacters, AcceptableMultiPathCharacters));
+		assertThat(Route.convertPathStringToRegex("/route/**/**"), isPath("/route/[%s]*?/[%s]*?(?:;.*?)*", AcceptableMultiPathCharacters, AcceptableMultiPathCharacters));
 
-		assertThat(Route.convertPathStringToRegex("**/info"), isPath("[%s]*?/info", AcceptableMultiPathCharacters));
+		assertThat(Route.convertPathStringToRegex("**/info"), isPath("[%s]*?/info(?:;.*?)*", AcceptableMultiPathCharacters));
 
-		assertThat(Route.convertPathStringToRegex("**.png"), isPath("[%s]*?.png", AcceptableMultiPathCharacters));
+		assertThat(Route.convertPathStringToRegex("**.png"), isPath("[%s]*?.png(?:;.*?)*", AcceptableMultiPathCharacters));
 	}
 
 	@Test
 	public void shouldCorrectlyReplaceVariablesInPathString() {
-		assertThat(Route.convertPathStringToRegex("/something/{var}"), isPath("/something/([%s]+)", AcceptablePathCharacters));
-		assertThat(Route.convertPathStringToRegex("/something/{var}/{var2}"), isPath("/something/([%s]+)/([%s]+)", AcceptablePathCharacters, AcceptablePathCharacters));
-		assertThat(Route.convertPathStringToRegex("{var}"), isPath("([%s]+)", AcceptablePathCharacters));
-		assertThat(Route.convertPathStringToRegex("{var}/something/"), isPath("([%s]+)/something/", AcceptablePathCharacters));
-		assertThat(Route.convertPathStringToRegex("/something/{var}/more/{var2}"), isPath("/something/([%s]+)/more/([%s]+)", AcceptablePathCharacters, AcceptablePathCharacters));
-		assertThat(Route.convertPathStringToRegex("/something/{var}/more/{var2}.jpg"), isPath("/something/([%s]+)/more/([%s]+).jpg", AcceptablePathCharacters, AcceptablePathCharacters));
+		assertThat(Route.convertPathStringToRegex("/something/{var}"), isPath("/something/([%s]+)(?:;.*?)*", AcceptablePathCharacters));
+		assertThat(Route.convertPathStringToRegex("/something/{var}/{var2}"), isPath("/something/([%s]+)/([%s]+)(?:;.*?)*", AcceptablePathCharacters, AcceptablePathCharacters));
+		assertThat(Route.convertPathStringToRegex("{var}"), isPath("([%s]+)(?:;.*?)*", AcceptablePathCharacters));
+		assertThat(Route.convertPathStringToRegex("{var}/something/"), isPath("([%s]+)/something/(?:;.*?)*", AcceptablePathCharacters));
+		assertThat(Route.convertPathStringToRegex("/something/{var}/more/{var2}"), isPath("/something/([%s]+)/more/([%s]+)(?:;.*?)*", AcceptablePathCharacters, AcceptablePathCharacters));
+		assertThat(Route.convertPathStringToRegex("/something/{var}/more/{var2}.jpg"), isPath("/something/([%s]+)/more/([%s]+).jpg(?:;.*?)*", AcceptablePathCharacters, AcceptablePathCharacters));
 	}
 
 	@Test
@@ -44,6 +44,10 @@ public class RouteTest {
 		assertThat(new Route("/something/{var}/more/{var2}", null, null).matches("/something/123/more/1234"), is(true));
 		assertThat(new Route("/something/{var}/more/{var2}.jpg", null, null).matches("/something/123/more/1234.jpg"), is(true));
 		assertThat(new Route("/something/file.{ext}", null, null).matches("/something/file.gif"), is(true));
+		// appending query parameters using semi-colon is within the http rfc spec, although weird
+		// some versions of jetty and tomcat do this on redirects, for example
+		assertThat(new Route("/path/{var}/{var2}", null, null).matches("/path/result1/result2;jsessionid=ASD123-123DAFa"), is(true));
+		assertThat(new Route("/path/{var}/{var2}", null, null).matches("/path/result1/result2;jsessionid=ASD123-123DAFa;other=some%20value"), is(true));
 	}
 
 	@Test

@@ -108,7 +108,7 @@ public class RoutesTest {
 
 	private void assertRoute(List<Route> routes, int index, String actionName, RouteType routeType, String path) {
 		assertThat(routes.get(index).getActionName(), is(actionName));
-		assertThat(routes.get(index).getRouteMatchRegex(), is(path));
+		assertThat(routes.get(index).getRouteMatchRegex(), is(path + ("(?:;.*?)*")));
 		assertThat(routes.get(index).getRouteType(), is(routeType));
 	}
 }
