@@ -48,7 +48,6 @@ public class HttpBinderTest {
 		assertThat(parameterDescriptions.get(param1), is((Object) 1));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldBindValidContentTypes() {
 		request.contentType(ContentType.Null);

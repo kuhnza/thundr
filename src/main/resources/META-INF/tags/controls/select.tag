@@ -24,7 +24,7 @@
 		if (value.getClass().isArray()) {
 			valueList.addAll(Arrays.asList((Object[]) value));
 		} else if (value instanceof Collection) {
-			valueList.addAll((Collection) value);
+			valueList.addAll((Collection<?>) value);
 		} else {
 			valueList.add(value);
 		}
@@ -32,7 +32,7 @@
 
 	if (items != null) {
 		if (items instanceof Map) {
-			itemsMap.putAll((Map) items);
+			itemsMap.putAll((Map<?,?>) items);
 		} else {
 
 			List<Object> valueCollection = new ArrayList<Object>();
@@ -41,7 +41,7 @@
 			if (items.getClass().isArray()) {
 				valueCollection.addAll(Arrays.asList((Object[]) items));
 			} else if (items instanceof Collection) {
-				valueCollection.addAll((Collection) items);
+				valueCollection.addAll((Collection<?>) items);
 			}
 
 			if (labels == null) {
@@ -50,7 +50,7 @@
 				if (labels.getClass().isArray()) {
 					labelCollection.addAll(Arrays.asList((Object[]) labels));
 				} else {
-					labelCollection.addAll((Collection) labels);
+					labelCollection.addAll((Collection<?>) labels);
 				}
 			}
 

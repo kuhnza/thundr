@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jodd.typeconverter.TypeConverterManager;
 import jodd.util.ReflectUtil;
 
 import com.threewks.thundr.collection.factory.CollectionFactory;

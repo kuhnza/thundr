@@ -1,7 +1,7 @@
 package com.threewks.thundr.configuration;
 
 import static com.atomicleopard.expressive.Expressive.map;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;

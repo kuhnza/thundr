@@ -10,12 +10,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import jodd.bean.BeanUtil;
 import jodd.introspector.ClassDescriptor;
 import jodd.util.ReflectUtil;
 
 import com.atomicleopard.expressive.ETransformer;
-import com.atomicleopard.expressive.transform.ETransformers;
+import com.atomicleopard.expressive.Expressive;
 
 public class ClassIntrospector {
 	public static final boolean supportsInjection = classExists("javax.inject.Inject");
@@ -23,7 +22,7 @@ public class ClassIntrospector {
 	@SuppressWarnings({ "rawtypes" })
 	public <T> List<Constructor<T>> listConstructors(Class<T> type) {
 		ClassDescriptor classDescriptor = new ClassDescriptor(type, true);
-		List<Constructor<T>> ctors = ETransformers.transformAllUsing(ClassIntrospector.<Constructor, Constructor<T>> castTransformer()).to(classDescriptor.getAllCtors());
+		List<Constructor<T>> ctors = Expressive.Transformers.transformAllUsing(ClassIntrospector.<Constructor, Constructor<T>> castTransformer()).to(classDescriptor.getAllCtors());
 		Collections.sort(ctors, new Comparator<Constructor<T>>() {
 			@Override
 			public int compare(Constructor<T> o1, Constructor<T> o2) {

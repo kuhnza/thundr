@@ -11,6 +11,7 @@ import com.atomicleopard.expressive.EList;
 
 public class IsArrayOfMatcher<T> extends BaseMatcher<T[]> {
 	private EList<T> expected;
+	@SuppressWarnings("unused")
 	private Class<T> type;
 
 	public IsArrayOfMatcher(Class<T> type, EList<T> expected) {

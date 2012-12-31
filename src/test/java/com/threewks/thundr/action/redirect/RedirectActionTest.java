@@ -9,8 +9,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.threewks.thundr.action.redirect.RedirectAction;
-
 public class RedirectActionTest {
 	private Map<String, String> emptyPathVars = Collections.emptyMap();
 

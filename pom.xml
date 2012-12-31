@@ -1,11 +1,30 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.threewks.thundr</groupId>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>com.threewks.thundr</groupId>
+		<artifactId>thundr-parent</artifactId>
+		<version>0.9.6-SNAPSHOT</version>
+	</parent>
 	<artifactId>thundr</artifactId>
 	<name>thundr</name>
 	<packaging>jar</packaging>
-	<version>0.9.6-SNAPSHOT</version>
+
+	<url>http://3wks.github.com/thundr/</url>
+	<description>
+		thundr is a light-weight java web framework designed for use in cloud deployed web applications.
+ 	</description>
+
+	<organization>
+		<name>3wks</name>
+		<url>http://www.3wks.com.au</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>nick</id>
+			<name>Nicholas Okunew</name>
+			<email>nick@3wks.com.au</email>
+		</developer>
+	</developers>
 
 	<scm>
 		<connection>scm:git:https://github.com/3wks/thundr</connection>
@@ -21,19 +40,8 @@
 		</repository>
 	</distributionManagement>
 
-	<repositories>
-		<repository>
-			<id>oss.sonatype.org</id>
-			<url>http://oss.sonatype.org/content/groups/public</url>
-		</repository>
-	</repositories>
-
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<slf4j.version>1.6.4</slf4j.version>
-		<downloadSources>true</downloadSources><!-- This is just for "eclipse:eclipse" goal to always attempt downloading sources -->
-		<jodd.version>3.4.0</jodd.version><!-- This is just for "eclipse:eclipse" goal to always attempt downloading sources -->
+		<jodd.version>3.4.0</jodd.version>
 	</properties>
 
 	<dependencies>
@@ -58,8 +66,7 @@
 			<version>2.2.4</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- JSTL - this must be provided to avoid dependency conflicts when deployed 
-			to the appengine -->
+		<!-- JSTL - this must be provided to avoid dependency conflicts when deployed to the appengine -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
@@ -91,8 +98,7 @@
 			<scope>compile</scope>
 		</dependency>
 
-		<!-- Expressive is another library from Atomic Leopard that allows us to 
-			write collection and transformation code succinctly and expressively -->
+		<!-- Expressive is a library from Atomic Leopard that allows us to write collection and transformation code succinctly and expressively -->
 		<dependency>
 			<groupId>com.atomicleopard</groupId>
 			<artifactId>expressive</artifactId>
@@ -100,26 +106,9 @@
 			<scope>compile</scope>
 		</dependency>
 
-	<!-- 
-		<dependency>
-			<groupId>org.jodd</groupId>
-			<artifactId>jodd-bean</artifactId>
-			<version>${jodd.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.jodd</groupId>
-			<artifactId>jodd-proxetta</artifactId>
-			<version>${jodd.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.jodd</groupId>
-			<artifactId>jodd-servlet</artifactId>
-			<version>${jodd.version}</version>
-			<scope>compile</scope>
-		</dependency>
-	 -->
+		<!-- <dependency> <groupId>org.jodd</groupId> <artifactId>jodd-bean</artifactId> <version>${jodd.version}</version> <scope>compile</scope> </dependency> <dependency> <groupId>org.jodd</groupId> <artifactId>jodd-proxetta</artifactId> 
+			<version>${jodd.version}</version> <scope>compile</scope> </dependency> <dependency> <groupId>org.jodd</groupId> <artifactId>jodd-servlet</artifactId> <version>${jodd.version}</version> <scope>compile</scope> 
+			</dependency> -->
 		<dependency>
 			<groupId>org.jodd</groupId>
 			<artifactId>jodd</artifactId>
@@ -156,7 +145,6 @@
 			<scope>compile</scope>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.apache.directory.studio</groupId>
 			<artifactId>org.apache.commons.codec</artifactId>
@@ -164,13 +152,15 @@
 			<scope>compile</scope>
 		</dependency>
 
-		<!-- Test Dependencies -->
 		<dependency>
+			<!-- thundr provides some matchers for testing purposes, hence hamcrest is a compile time dependency -->
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
 			<version>1.1</version>
-			<scope>provided</scope>
+			<scope>compile</scope>
 		</dependency>
+
+		<!-- Test Dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -186,6 +176,16 @@
 	</dependencies>
 
 	<build>
+		<plugins>
+			<plugin> <!-- SCM config -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>1.8.1</version>
+				<configuration>
+					<connectionType>connection</connectionType>
+				</configuration>
+			</plugin>
+		</plugins>
 		<extensions>
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
@@ -193,48 +193,7 @@
 				<version>1.0-beta-2</version>
 			</extension>
 		</extensions>
-		<plugins>
-			<plugin> <!-- Release plugin -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.3.1</version>
-			</plugin>
-			<plugin> <!-- SCM config -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-scm-plugin</artifactId>
-				<version>1.7</version>
-				<configuration>
-					<connectionType>connection</connectionType>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin> <!-- Generate sources -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin> <!-- Generate javadoc -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
-			</plugin>
-		</plugins>
+
 		<pluginManagement>
 			<!-- Resolves M2E issues in Eclipse indigo+ -->
 			<plugins>
@@ -292,12 +251,10 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
-				<plugin> <!-- Run Unit tests with surefire -->
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.12</version>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
+	
+	<!-- Stuff nobody cares about -->
+	<modelVersion>4.0.0</modelVersion>
 </project>

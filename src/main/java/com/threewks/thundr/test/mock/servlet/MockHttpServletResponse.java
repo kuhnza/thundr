@@ -12,9 +12,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import com.threewks.thundr.exception.BaseException;
-
 import jodd.io.StringOutputStream;
+
+import com.threewks.thundr.exception.BaseException;
 
 public class MockHttpServletResponse implements HttpServletResponse {
 	private Map<String, String> headers = new HashMap<String, String>();

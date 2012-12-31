@@ -8,10 +8,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.threewks.thundr.route.Route;
-import com.threewks.thundr.route.RouteType;
-import com.threewks.thundr.route.Routes;
-
 public class RoutesTest {
 	@Test
 	public void shouldParseDeepWildcardRoutes() {

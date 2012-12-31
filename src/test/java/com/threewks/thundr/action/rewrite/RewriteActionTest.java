@@ -9,8 +9,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.threewks.thundr.action.rewrite.RewriteAction;
-
 public class RewriteActionTest {
 	private Map<String, String> emptyPathVars = Collections.emptyMap();
 

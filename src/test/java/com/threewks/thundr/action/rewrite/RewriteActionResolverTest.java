@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.threewks.thundr.action.rewrite.RewriteAction;
-import com.threewks.thundr.action.rewrite.RewriteActionResolver;
 import com.threewks.thundr.route.RouteType;
 import com.threewks.thundr.route.Routes;
 

@@ -17,8 +17,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import com.threewks.thundr.action.ActionException;
-import com.threewks.thundr.action.redirect.RedirectAction;
-import com.threewks.thundr.action.redirect.RedirectActionResolver;
 import com.threewks.thundr.route.RouteType;
 
 public class RedirectActionResolverTest {

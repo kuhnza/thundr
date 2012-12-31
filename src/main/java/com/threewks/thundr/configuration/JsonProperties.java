@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.atomicleopard.expressive.Cast;
-import com.threewks.thundr.json.JsonToMapDeserializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.threewks.thundr.json.JsonToMapDeserializer;
 
 public class JsonProperties {
 

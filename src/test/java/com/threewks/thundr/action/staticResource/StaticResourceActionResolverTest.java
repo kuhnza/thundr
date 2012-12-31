@@ -11,8 +11,6 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
-import jodd.util.MimeTypes;
-
 import org.junit.Test;
 
 import com.atomicleopard.expressive.Expressive;
