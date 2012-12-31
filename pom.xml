@@ -1,11 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.threewks.thundr</groupId>
+	<parent>
+		<groupId>com.threewks.thundr</groupId>
+		<artifactId>thundr-parent</artifactId>
+		<version>0.9.6-SNAPSHOT</version>
+	</parent>
 	<artifactId>thundr-gae</artifactId>
 	<name>thundr-gae</name>
 	<packaging>jar</packaging>
-	<version>0.9.6-SNAPSHOT</version>
+	<description>A thundr module enabling thundr for use on GAE (Google App Engine)</description>
 
 	<scm>
 		<connection>scm:git:https://github.com/3wks/thundr-gae</connection>
@@ -21,18 +24,8 @@
 		</repository>
 	</distributionManagement>
 
-	<repositories>
-		<repository>
-			<id>oss.sonatype.org</id>
-			<url>http://oss.sonatype.org/content/groups/public</url>
-		</repository>
-	</repositories>
-
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<gae.version>1.7.4</gae.version>
-		<slf4j.version>1.6.4</slf4j.version>
 	</properties>
 
 	<dependencies>
@@ -101,30 +94,6 @@
 			</extension>
 		</extensions>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin> <!-- Generate sources -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
-			</plugin>
-			<plugin> <!-- Generate javadoc -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
-			</plugin>
-			<plugin> <!-- Release plugin -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.3.1</version>
-			</plugin>
 			<plugin> <!-- SCM config -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-scm-plugin</artifactId>
@@ -157,4 +126,7 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	
+	<!-- Stuff nobody cares about -->
+	<modelVersion>4.0.0</modelVersion>
 </project>
