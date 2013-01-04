@@ -17,8 +17,11 @@
  */
 package com.threewks.thundr.module;
 
+import java.util.Collections;
 import java.util.Map;
 
+import com.atomicleopard.expressive.EList;
+import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.configuration.PropertiesLoader;
 import com.threewks.thundr.injection.InjectionConfiguration;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
@@ -48,7 +51,9 @@ public class ModuleInjectionConfiguration implements InjectionConfiguration {
 		if (properties.isEmpty()) {
 			throw new ModuleLoadingException("", "you must have an entry for your application configuration in %s", filename);
 		}
-		for (String key : properties.keySet()) {
+		EList<String> reverseOrder = Expressive.list(properties.keySet());
+		Collections.reverse(reverseOrder);
+		for (String key : reverseOrder) {
 			Module module = Module.createModule(key);
 			modules.addModule(module);
 		}

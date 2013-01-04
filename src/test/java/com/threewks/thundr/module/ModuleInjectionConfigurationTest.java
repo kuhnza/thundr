@@ -20,11 +20,14 @@ package com.threewks.thundr.module;
 import static com.atomicleopard.expressive.Expressive.*;
 import static com.threewks.thundr.test.TestSupport.setField;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -65,6 +68,19 @@ public class ModuleInjectionConfigurationTest {
 		assertThat(Cast.is(modules.listModules().get(0).getConfiguration(), TestInjectionConfiguration.class), is(true));
 	}
 
+	@Test
+	public void shouldLoadModulesInReverseOrderFromProperties() {
+		Map<String, String> properties = new LinkedHashMap<String, String>();
+		properties.put("com.threewks.thundr.module.test.m2","");
+		properties.put("com.threewks.thundr.module.test.m1","");
+		when(propertyLoader.load(anyString())).thenReturn(properties);
+		setField(config, "propertiesLoader", propertyLoader);
+		
+		config.configure(injectionContext);
+		List<Module> listModules = modules.listModules();
+		assertThat(listModules.get(0).getName(), is("M1"));
+		assertThat(listModules.get(1).getName(), is("M2"));
+	}
 	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldAddAModuleForEachEntryInProperties() {

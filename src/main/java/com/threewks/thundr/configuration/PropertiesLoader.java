@@ -17,26 +17,30 @@
  */
 package com.threewks.thundr.configuration;
 
-import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Properties;
+import java.util.Scanner;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.threewks.thundr.util.Streams;
 
 public class PropertiesLoader {
 	public Map<String, String> load(String filename) {
-		Properties loadProperties = loadProperties(filename);
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		Map<String, String> properties = (Map) loadProperties;
-		return new LinkedHashMap<String, String>(properties);
-	}
-
-	public Properties loadProperties(String filename) {
 		try {
-			Properties properties = new Properties();
-			InputStream propertiesStream = Streams.getResourceAsStream(filename);
-			properties.load(propertiesStream);
+			Map<String, String> properties = new LinkedHashMap<String, String>();
+			String resourceAsString = Streams.getResourceAsString(filename);
+			Scanner scanner = new Scanner(resourceAsString);
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				line = StringUtils.substringBefore(line, "#");
+				line = StringUtils.trimToNull(line);
+				String key = StringUtils.substringBefore(line, "=");
+				String value = StringUtils.substringAfter(line, "=");
+				if (key != null) {
+					properties.put(key, value);
+				}
+			}
 			return properties;
 		} catch (NullPointerException e) {
 			throw new ConfigurationException(e, "Failed to load properties from %s: no properties file found", filename);
