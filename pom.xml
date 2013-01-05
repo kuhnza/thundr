@@ -5,23 +5,49 @@
 		<version>0.9.6-SNAPSHOT</version>
 	</parent>
 	<artifactId>thundr-gae</artifactId>
-	<name>thundr-gae</name>
 	<packaging>jar</packaging>
+
+	<name>thundr-gae</name>
+	<url>http://3wks.github.com/thundr/</url>
 	<description>A thundr module enabling thundr for use on GAE (Google App Engine)</description>
 
+	<organization>
+		<name>3wks</name>
+		<url>http://www.3wks.com.au</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>nick</id>
+			<name>Nicholas Okunew</name>
+			<email>nick@3wks.com.au</email>
+		</developer>
+		<developer>
+			<id>shane</id>
+			<name>Shane Bell</name>
+			<email>shane@3wks.com.au</email>
+		</developer>
+		<developer>
+			<id>sean</id>
+			<name>Sean Elias</name>
+			<email>sean@3wks.com.au</email>
+		</developer>
+	</developers>
+
+	<!-- Licensing -->
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 	<scm>
 		<connection>scm:git:https://github.com/3wks/thundr-gae</connection>
 		<developerConnection>scm:git:https://github.com/3wks/thundr-gae</developerConnection>
 		<url>https://github.com/3wks/thundr-gae</url>
 		<tag>HEAD</tag>
 	</scm>
-
-	<distributionManagement>
-		<repository>
-			<id>newsclassifieds-cloudbees</id>
-			<url>dav:https://repository-newsclassifieds.forge.cloudbees.com/release/</url>
-		</repository>
-	</distributionManagement>
 
 	<properties>
 		<gae.version>1.7.4</gae.version>
