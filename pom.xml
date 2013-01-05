@@ -5,9 +5,9 @@
 		<version>0.9.6-SNAPSHOT</version>
 	</parent>
 	<artifactId>thundr</artifactId>
-	<name>thundr</name>
 	<packaging>jar</packaging>
 
+	<name>thundr</name>
 	<url>http://3wks.github.com/thundr/</url>
 	<description>
 		thundr is a light-weight java web framework designed for use in cloud deployed web applications.
@@ -24,7 +24,26 @@
 			<name>Nicholas Okunew</name>
 			<email>nick@3wks.com.au</email>
 		</developer>
+		<developer>
+			<id>shane</id>
+			<name>Shane Bell</name>
+			<email>shane@3wks.com.au</email>
+		</developer>
+		<developer>
+			<id>sean</id>
+			<name>Sean Elias</name>
+			<email>sean@3wks.com.au</email>
+		</developer>
 	</developers>
+
+	<!-- Licensing -->
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<scm>
 		<connection>scm:git:https://github.com/3wks/thundr</connection>
@@ -32,13 +51,6 @@
 		<url>https://github.com/3wks/thundr</url>
 		<tag>HEAD</tag>
 	</scm>
-
-	<distributionManagement>
-		<repository>
-			<id>newsclassifieds-cloudbees</id>
-			<url>dav:https://repository-newsclassifieds.forge.cloudbees.com/release/</url>
-		</repository>
-	</distributionManagement>
 
 	<properties>
 		<jodd.version>3.4.0</jodd.version>
