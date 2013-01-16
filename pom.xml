@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>com.threewks.thundr</groupId>
 		<artifactId>thundr-parent</artifactId>
-		<version>0.9.6</version>
+		<version>0.9.7-SNAPSHOT</version>
 	</parent>
 	<artifactId>thundr</artifactId>
 	<packaging>jar</packaging>
