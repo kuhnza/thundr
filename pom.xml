@@ -2,10 +2,11 @@
 	<parent>
 		<groupId>com.threewks.thundr</groupId>
 		<artifactId>thundr-parent</artifactId>
-		<version>0.9.6-SNAPSHOT</version>
+		<version>0.9.6</version>
 	</parent>
 	<artifactId>thundr</artifactId>
 	<packaging>jar</packaging>
+	<version>0.9.6-SNAPSHOT</version>
 
 	<name>thundr</name>
 	<url>http://3wks.github.com/thundr/</url>
