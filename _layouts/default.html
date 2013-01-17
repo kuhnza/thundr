@@ -9,12 +9,17 @@
 	<meta name="description" content="{{page.description}}"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
 	<meta name="keywords" content="{{page.keywords}}"/>
-	<link rel="stylesheet" href="/thundr/styles/lib/bootstrap/bootstrap.css"></link>
-	<link rel="stylesheet" href="/thundr/styles/lib/prettify.css"></link>
 	<!--
 	<t:style src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css"/>
 	<t:style src="/thundr/styles/lib/bootstrap/bootstrap.css"/>
 	-->
+	<link rel="stylesheet" href="/thundr/styles/lib/bootstrap/bootstrap.css"></link>
+	<link rel="stylesheet" href="/thundr/styles/style.css"></link>
+	<link rel="stylesheet" href="/thundr/styles/lib/font/font-awesome.css"></link>
+	<link rel="stylesheet" href="/thundr/styles/lib/prettify.css"></link>
+	<!--[if IE 7]>
+	<link rel="stylesheet" href="/thundr/styles/lib/font/font-awesome-ie7.css">
+	<![endif]-->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<!--
 	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
@@ -43,13 +48,13 @@
 			<div class="navbar-inner">
 				<a class="brand" href="/thundr/"><img src="/thundr/images/logoFullSmall.png"/></a>
 				<ul class="nav" role="navigation">
-					<li class="dropdown">
-						<a href="/thundr/index.html" class="{% if page.id == "home" %} active {% endif %} dropdown-toggle" data-toggle="dropdown">
+					<li class="{% if page.id == "home" %} active {% endif %}">
+						<a href="/thundr/index.html">
 							Overview
 						</a>
 					</li>
-					<li class="dropdown">
-						<a href="/thundr/basics.html" class="{% if page.id == "basics" %} active {% endif %} dropdown-toggle" data-toggle="dropdown">
+					<li class="dropdown {% if page.id == "basics" %} active {% endif %}">
+						<a href="/thundr/basics.html" class="dropdown-toggle" data-toggle="dropdown">
 						    Basics <b class="caret"></b>
 					  	</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -64,8 +69,8 @@
 							<li><a href="/thundr/basics.html#applicationProperties">application.properties</a></li>
 						</ul>
  						</li>
- 						<li class="dropdown">
-						<a href="/thundr/controllers.html" class="{% if page.id == "controllers" %} active {% endif %} dropdown-toggle" data-toggle="dropdown">
+ 						<li class="dropdown {% if page.id == "controllers" %} active {% endif %} ">
+						<a href="/thundr/controllers.html" class="dropdown-toggle" data-toggle="dropdown">
 						    Controllers <b class="caret"></b>
 					  	</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -78,8 +83,8 @@
 							<li><a href="/thundr/controllers.html#injection">Injection</a></li>
 						</ul>
  						</li>
-					<li class="dropdown">
-						<a href="/thundr/views.html" class="{% if page.id == "views" %} active {% endif %} dropdown-toggle" data-toggle="dropdown">
+					<li class="dropdown {% if page.id == "views" %} active {% endif %} ">
+						<a href="/thundr/views.html" class="dropdown-toggle" data-toggle="dropdown">
 						    Views <b class="caret"></b>
 					  	</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -94,8 +99,8 @@
 							<li><a href="/thundr/views.html#viewResolver">ViewResolver&nbsp;&nbsp;<span class="label label-info">Advanced</span></a></li>
 						</ul>
  						</li>
- 						<li class="dropdown">
-						<a href="/thundr/actions.html" class="{% if page.id == "actions" %} active {% endif %} dropdown-toggle" data-toggle="dropdown">
+ 						<li class="dropdown {% if page.id == "actions" %} active {% endif %}">
+						<a href="/thundr/actions.html" class=" dropdown-toggle" data-toggle="dropdown">
 						    Actions <b class="caret"></b>
 					  	</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -110,8 +115,8 @@
 							<li><a href="/thundr/actions.html#actionResolver">ActionResolver&nbsp;&nbsp;<span class="label label-info">Advanced</span></a></li>
 						</ul>
  						</li>
- 						<li class="dropdown">
-						<a href="/thundr/injectionContext.html" class="{% if page.id == "injectionContext" %} active {% endif %} dropdown-toggle" data-toggle="dropdown">
+ 						<li class="dropdown {% if page.id == "injectionContext" %} active {% endif %}">
+						<a href="/thundr/injectionContext.html" class=" dropdown-toggle" data-toggle="dropdown">
 						    Dependency Injection <b class="caret"></b>
 					  	</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
