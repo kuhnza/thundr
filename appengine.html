@@ -1,0 +1,100 @@
+---
+layout: default
+title: Google Appengine
+id: appengine
+---
+<div class="page-header">
+  <h1>thundr <small>on Google Appengine</small></h1>
+</div>
+<section class="overview">
+	<h2>Overview</h2>
+	<p>
+		Google Appengine (GAE) is a PaaS provided and run by Google. You can read more about it <a href="https://developers.google.com/appengine/docs/">here</a>.
+	</p>
+	<p>
+		<em>thundr-gae</em> is a thundr module which enables thundr to run in this environment adding abstractions around some common functions.
+	</p>
+</section>
+<section id="settingUp">
+	<h4>Setting Up</h4>
+	<p>
+		Beyond <a href="/thundr/basics.html#applicationConfiguration">normal thundr setup</a> (i.e. web.xml, application.properties, modules.properties and an InjectionConfiguration),
+		you will need to pull in the <em>thundr-gae</em> module and configure it.
+	</p>
+	<p>
+		This is accomplished by adding the <em>thundr-gae</em> library to your project (or adding the dependency to your maven or similar config).
+		You then need to load the <em>thundr-gae</em> module by adding it to your <code class="prettyprint">modules.properties</code> file.
+	</p>
+	
+	<figure>
+		<figcaption>pom.xml</figcaption>
+<pre class="prettyprint">
+&hellip;
+&lt;dependency&gt;
+	&lt;groupId&gt;com.threewks.thundr&lt;/groupId&gt;
+	&lt;artifactId&gt;thundr-gae&lt;/artifactId&gt;
+	&lt;version&gt;0.9.6&lt;/version&gt;
+	&lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+&hellip;
+</pre>
+	</figure>
+
+
+	<figure>
+		<figcaption>modules.properties</figcaption>
+<pre class="prettyprint">
+com.mycompany.myapp=
+com.threewks.thundr.gae=
+</pre>
+	</figure>
+
+	<div class="alert alert-info">
+	Remember order is important in modules.properties - include the <em>thundr-gae</em> module <strong>after</strong> you application.
+	</div>
+</section>
+<section id="moduleFeatures">
+	<h4>Module Features</h4>
+
+	<ul>
+		<li>
+			<h5>HttpService</h5>
+			<p>
+				
+				The module provides an implementation of the HttpService defined in the thundr-http module <span class="label label-warning">Undocumented <!-- TODO  --></span>. 
+				This is required because of the need to use the <a href="https://developers.google.com/appengine/docs/java/urlfetch/">UrlFetchService</a>.
+				You can then inject it into your controllers and services like this:
+			</p>
+<pre class="prettyprint">
+&hellip;
+private HttpService httpService;
+
+public MyController(HttpService httpService){
+	this.httpService = httpService;
+}
+&hellip;
+</pre>
+		</li>
+		<li>
+			<h5>CounterRepository</h5>
+			<p>
+				Atomic incrementing counters can be a little tricky in distributed environment. <em>thundr-gae</em> provides an implementation for sharding counters
+				based on the discussion <a href="https://developers.google.com/appengine/articles/sharding_counters">here</a>.
+			</p>
+			<p>
+				You can use this in your project by adding it to your injection configuration like this:
+<pre class="prettyprint">
+&hellip;
+MemcacheService cacheService = MemcacheServiceFactory.getMemcacheService();
+DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+CounterRepository counterRepository = new DatastoreCounterRepository(cacheService, datastoreService);
+injectionContext.inject(counterRepository).as(CounterRepository.class);
+&hellip;
+</pre>
+You can later use this in code like this:
+<pre class="prettyprint">
+long currentCount = counterRepository.incrementCount("CounterType", entityId);
+</pre>
+		</li>
+	</ul>
+</section>
