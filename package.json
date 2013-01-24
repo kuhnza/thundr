@@ -7,6 +7,7 @@
   		"grunt-lib-contrib": "~0.3.0",
   		"yeoman": "~0.9.6",
   		"coffee-script": "~1.4",
+      "express": "~3.0.6",
   		"marked": "~0.2",
   		"handlebars": "~1.0.7",
   		"js-yaml": "~1.0.1"
