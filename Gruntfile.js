@@ -27,6 +27,17 @@ module.exports = function( grunt ) {
       }
     },
 
+    'generate-html': {
+      compile: {
+        files: {
+          'temp/*.html': 'content/*.md'
+        },
+        options: {
+          basePath: 'content'
+        }
+      }
+    },
+
     // compile .scss/.sass to .css using Compass
     compass: {
       dist: {
