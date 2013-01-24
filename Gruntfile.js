@@ -180,7 +180,8 @@ module.exports = function( grunt ) {
       optimize: 'none',
       baseUrl: './scripts',
       wrap: true,
-      name: 'main'
+      name: 'main',
+      mainFile: '../temp/index.html'
     },
 
     // While Yeoman handles concat/min when using
@@ -193,8 +194,14 @@ module.exports = function( grunt ) {
       dist: ''
     }
   });
+  
+  // Register all tasks in the 'tasks' folder
+  grunt.loadTasks('tasks');
 
   // Alias the `test` task to run the `mocha` task instead
   grunt.registerTask('test', 'server:phantom mocha');
 
+  // Inject generate-html task into the `build` task 
+  grunt.renameTask('clean', 'yclean');
+  grunt.registerTask('clean', 'yclean generate-html');
 };
