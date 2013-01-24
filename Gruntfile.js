@@ -74,6 +74,14 @@ module.exports = function( grunt ) {
         ],
         tasks: 'compass reload'
       },
+      templates: {
+        files: 'template/**/*.hbs',
+        tasks: 'generate-html reload'
+      },
+      content: {
+        files: 'content/**/*.md',
+        tasks: 'generate-html reload'
+      },
       reload: {
         files: [
           'app/*.html',
