@@ -1,6 +1,6 @@
 {
   "author": "3wks",
-  "name": "static-dropbox-site",
+  "name": "static-site",
   "version": "0.0.1",
   "dependencies": {
   		"grunt": "http://github.com/cowboy/grunt/archive/0ba6d4b529.tar.gz",
