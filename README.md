@@ -16,7 +16,7 @@ This static boiler plate should give you a running start in building a static we
 To get started with the boilerplate, clone it with Git:
 
 ```
-git clone https://github.com/3wks/static-site.git
+git clone https://github.com/3wks/static-site-boilerplate.git
 ```
 
 ### Building the site
