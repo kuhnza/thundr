@@ -209,7 +209,10 @@ module.exports = function( grunt ) {
   // Alias the `test` task to run the `mocha` task instead
   grunt.registerTask('test', 'server:phantom mocha');
 
-  // Inject generate-html task into the `build` task 
+  // Alias the `rebuild` task to run the `rebuild:content` task
+  grunt.registerTask('rebuild', 'rebuild:content');
+
+  // Inject generate-html task into the `build` task
   grunt.renameTask('clean', 'yclean');
   grunt.registerTask('clean', 'yclean generate-html');
 };
