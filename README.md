@@ -13,11 +13,14 @@ This static boiler plate should give you a running start in building a static we
 
 ## Usage
 
-To get started with the boilerplate, clone it with Git:
+To get started with the boilerplate, create a new folder for your project and clone the boilerplate with Git
 
 ```
-git clone https://github.com/3wks/static-site-boilerplate.git
+mkdir new_project
+cd new_project
+git clone https://github.com/3wks/static-site-boilerplate.git .
 ```
+
 
 ### Building the site
 
