@@ -1,8 +1,8 @@
 ---
 template: index.hbs
 
-title: Dropbox site
-description: A site that's powered by content delivered from Dropbox.
+title: Static site boilerplate
+description: A static site built in a dynamic way
 
 ---
 
