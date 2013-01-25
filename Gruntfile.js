@@ -52,6 +52,15 @@ module.exports = function( grunt ) {
       }
     },
 
+    // compile less files, only the immediate children of the
+    less: {
+      dist: {
+        files: {
+          'temp/styles/*.css': 'app/styles/*.less' // only compile immediate children
+        }
+      }
+    },
+
     // generate application cache manifest
     manifest:{
       dest: ''
@@ -73,6 +82,12 @@ module.exports = function( grunt ) {
           'app/styles/**/*.{scss,sass}'
         ],
         tasks: 'compass reload'
+      },
+      less: {
+        files: [
+          'app/styles/**/*.less',
+        ],
+        tasks: 'less reload'
       },
       templates: {
         files: 'template/**/*.hbs',
@@ -203,14 +218,19 @@ module.exports = function( grunt ) {
     }
   });
   
-  // Register all tasks in the 'tasks' folder
+  // Register all tasks in the 'tasks' folder and other modules
   grunt.loadTasks('tasks');
+  grunt.loadNpmTasks('grunt-contrib-less');
 
   // Alias the `test` task to run the `mocha` task instead
   grunt.registerTask('test', 'server:phantom mocha');
 
   // Alias the `rebuild` task to run the `rebuild:content` task
   grunt.registerTask('rebuild', 'rebuild:content');
+
+  // Override the use of compass with less. Remove this line if you want to use Compass and SCSS
+  // instead of LESS
+  grunt.registerTask('compass', 'less');
 
   // Inject generate-html task into the `build` task
   grunt.renameTask('clean', 'yclean');

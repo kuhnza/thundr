@@ -5,6 +5,7 @@
   "dependencies": {
   		"grunt": "http://github.com/cowboy/grunt/archive/0ba6d4b529.tar.gz",
   		"grunt-lib-contrib": "~0.3.0",
+      "grunt-contrib-less": "~0.3.2",
   		"yeoman": "~0.9.6",
   		"coffee-script": "~1.4",
       "express": "~3.0.6",
