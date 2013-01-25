@@ -1,4 +1,25 @@
-# Building the site
+# Static site Boilerplate
+
+This static boiler plate should give you a running start in building a static website in a dynamic way with modern technologies. It features a build system that does the following:
+
+- Seperates content from markup (Markdown and Handlebars templates)
+- Enables the use of LESS (or SCSS)
+- Enables the use of CoffeeScript
+- Manages depedancies and optimizes scripts (RequireJS)
+- Optimizes images (OptiPNG/JPEGtran)
+- Generates an appcache manifest (Confess.js)
+- Facilitates testing of code (Mocha)
+- Sets you up Twitter Bootstrap
+
+## Usage
+
+To get started with the boilerplate, clone it with Git:
+
+```
+git clone https://github.com/3wks/static-site.git
+```
+
+### Building the site
 
 Of course, even though the site is static, we still want to build it in a dynamic way. To do this we use [Yeoman](http://yeoman.io/) (based on [Grunt](http://gruntjs.com/)) to build the site from it's source. In order to use Yeoman, you need to have Node (0.8+) and NPM installed. To install it, please see it's site for instructions (as it has some dependancies which go beyond the scope of this document).
 
@@ -19,8 +40,7 @@ yeoman server
 **Note:** after running the server, the `dist` folder will be gone. You will have to use the `build` task to make a proper build of the site again.
 
 
-
-## Rebuilding of content
+### Rebuilding of content
 
 In a world where content is king often little changes and tweaks need to be made to the copy of the site. With changes in content only, it's unnecessary (and sometimes annoying) to completely rebuild everything. Therefore it's possible to rebuild an existing build. To rebuild the content of the site run the following task:
 
@@ -29,11 +49,6 @@ yeoman rebuild
 ```
 
 **Note:** a current build (`dist` folder) will have to be present to base the rebuild off. Only html files of the build will be replaced.
-
-### Rebuilding a live site
-
-It's possible to rebuild the site while deployed so that the copy of pages can be changed without redeploying the site. See the Dropbox bit of the Content management section.
-
 
 ## Content management
 
@@ -222,9 +237,9 @@ All the base content files must specify a `template` attribute in their YAML fro
 
 
 # Setup, Running and Hosting on Heroku with Node.js
-The site is currently hosted on Heroku under an heroku-app called 'threewks-static'. As a result, the site is, aside from the 3wks.com.au domain, also accessible from [http://threewks-static.herokuapp.com](http://threewks-static.herokuapp.com). Deploying a new version of the app is as easy as `git push heroku` making it extremely easy to make changes or setup new servers for stuff like testing and staging.
+An easy way to host this site for anyone to see is by using Heroku. You can run up a single dyno (server instance) for free that is more than capable to run small sites. Once setup, deploying a new version of the app is as easy as `git push heroku` making it extremely easy to make changes or setup new servers for stuff like testing and staging.
 
-In order to run on Heroku we use a small Node.js based webserver to serve up whatever is in the `dist` folder. You can start the server by running
+The repo is completely setup to run on Heroku, straight out of the box. In order to run on Heroku we use a small Node.js based webserver to serve up whatever is in the `dist` folder. You can start the server by running
 
 ```
 bin/3wks-site
