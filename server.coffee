@@ -13,7 +13,8 @@ app.use express.favicon "#{__dirname}/dist/favicon.ico"
 app.use	app.router
 app.use express.static 'dist'
 
-# error handler for anything but the development environment
+# Error handler for anything but the development environment. Set NODE_ENV in your environment 
+# to use something else than 'development'
 unless app.get('env') is 'development'
 	app.use (err, req, res, next) ->
 		if err then res.send 500, 'Internal Server Error'
@@ -21,11 +22,6 @@ unless app.get('env') is 'development'
 
 # 404 handler
 app.use (req, res) -> res.send 404, 'Not Found'
-
-
-# Routes
-# ------
-app.get '/thundr', (req, res) -> res.redirect 'http://3wks.github.com/thundr/'
 
 
 # And gooo!
