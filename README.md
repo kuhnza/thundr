@@ -1,6 +1,6 @@
 # Static site Boilerplate
 
-This static boiler plate should give you a running start in building a static website in a dynamic way with modern technologies. It features a build system that does the following:
+This static boilerplate should give you a running start in building a static website in a dynamic way with modern technologies. It features a build system that does the following:
 
 - Seperates content from markup (Markdown and Handlebars templates)
 - Enables the use of LESS (or SCSS)
@@ -21,6 +21,23 @@ cd new_project
 git clone https://github.com/3wks/static-site-boilerplate.git .
 ```
 
+### Files and folders
+
+- `app/` contains the source of the site, develop your site here. It's folder structure will be copied straight to the build server, unless a file or path is blacklisted in the `app/.buildignore` file (which works just like a `.gitignore` does).
+- `bin/` is meant for executables to run or develop the site.
+- `bin/3wks-site` the shell script that will run the webserver for the site, making sure all dependancies are installed and environment is setup.
+- `content/` is the folder which contains all the content of the site, written in Markdown. For more information, see the 'Content Management' section.
+- `dist/` contains a built and optimised version of the site and the folder that gets served by the webserver.
+- `lib/` is the home of some general purpose code used by the build system, web server and other piece of code that finds it useful.
+- `tasks/` is where the custom tasks for the build system are defined. If there is a need to extend the build system with some custom tasks, this would be the place to put them.
+- `temp/` an intermediate folder used by the build system to build in, recreated every time you build. Unless you're playing around with the build system itself, there isn't much of a reason to be in there.
+- `templates/` is where the HTML of the app lives, defined in Handlebars templates. These templates decide how the content of `content/` should look. For more information, see the 'Content Management' section.
+- `test/` is where the app's test suite lives, powered by [Mocha](http://visionmedia.github.com/mocha/).
+- `test/spec/` is the folder where your app/site specific tests should go
+- `Gruntfile.js` the main configuration file for the build system and the first place to look if you want to change anything about how the site is being put together. Specifics to be found at [Grunt's documentation](https://github.com/gruntjs/grunt/wiki/Getting-started#wiki-the-gruntfile).
+- `package.json` Node's standard file for managing dependencies. 
+- `Procfile` a file that specifies the all the different processes required to run the site. Used by Heroku and usable with the 'foreman' gem to get the webserver going. [More information here](http://neilmiddleton.com/the-procfile-is-your-friend/)
+- `server.coffee` the Node script that launches a webserver that you can use to host the website. Uses [Express](http://expressjs.com/).
 
 ### Building the site
 
