@@ -29,7 +29,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 /**
- * Represents post parameters or query parameters in a strucuture hierarchical way so that 
+ * Represents post parameters or query parameters in a strucuture hierarchical way so that
  * they can be meaningfully parsed to java objects.
  * 
  * Given a request map, alters the key to represent the path as components.
@@ -50,7 +50,8 @@ public class HttpPostDataMap {
 		this();
 		for (Map.Entry<String, String[]> entry : input.entrySet()) {
 			String key = entry.getKey();
-			String expandedKey = key.replaceAll("\\.", "\r");
+			String removeDashes = key.replaceAll("-", "");
+			String expandedKey = removeDashes.replaceAll("\\.", "\r");
 			expandedKey = expandedKey.replaceAll("\\[([^\\]])", "\r[$1");
 			List<String> path = Collections.unmodifiableList(Arrays.asList(expandedKey.split("\r")));
 			delegate.put(path, entry.getValue());
@@ -147,7 +148,7 @@ public class HttpPostDataMap {
 				String stringKey = joinedKey.toString();
 				if (stringKey.length() > 0) {
 					String[] value = entry.getValue();
-					stringMap.put(stringKey, value == null || value.length > 1 ? value: value[0]);
+					stringMap.put(stringKey, value == null || value.length > 1 ? value : value[0]);
 				}
 			}
 		}

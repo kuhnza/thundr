@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 package com.threewks.thundr.bind;
+
 import static com.atomicleopard.expressive.Expressive.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -26,7 +27,7 @@ import org.junit.Test;
 
 import com.threewks.thundr.action.method.bind.http.HttpPostDataMap;
 
-public class PathMapTest {
+public class HttpPostDataMapTest {
 	@Test
 	public void shouldNotSplitWhenSimple() {
 		Map<String, String[]> map = map("key", new String[] { "value" });
@@ -63,6 +64,16 @@ public class PathMapTest {
 		HttpPostDataMap newPathMap = pathMap.pathMapFor("one");
 		assertThat(newPathMap.size(), is(2));
 		assertThat(newPathMap.get(list("[two]", "three")), is(array("value")));
+		assertThat(newPathMap.get(list("[one]", "two")), is(array("value2")));
+	}
+
+	@Test
+	public void shouldRemoveAllDashesFromPathElementsToEnableBetterBindingBetweenParametersAndJavaVariableNames() {
+		Map<String, String[]> map = mapKeys("one-One[two-Two-].-three-Three", "one-One[one].two").to(new String[] { "value-value" }, new String[] { "value2" });
+		HttpPostDataMap pathMap = new HttpPostDataMap(map);
+		HttpPostDataMap newPathMap = pathMap.pathMapFor("oneOne");
+		assertThat(newPathMap.size(), is(2));
+		assertThat(newPathMap.get(list("[twoTwo]", "threeThree")), is(array("value-value")));
 		assertThat(newPathMap.get(list("[one]", "two")), is(array("value2")));
 	}
 }

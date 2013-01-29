@@ -50,7 +50,7 @@ public class Mailer {
 		return new MailBuilderImpl(this, request);
 	}
 
-	void send(MailBuilderImpl mailBuilder) {
+	protected void send(MailBuilderImpl mailBuilder) {
 		Map.Entry<String, String> from = mailBuilder.from();
 		Map.Entry<String, String> replyTo = mailBuilder.replyTo();
 		Triplets<RecipientType, String, String> recipients = mailBuilder.recipients();

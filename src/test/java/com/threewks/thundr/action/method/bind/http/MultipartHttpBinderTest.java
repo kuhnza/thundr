@@ -17,7 +17,9 @@
  */
 package com.threewks.thundr.action.method.bind.http;
 
+import static com.atomicleopard.expressive.Expressive.*;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -140,6 +142,11 @@ public class MultipartHttpBinderTest {
 		assertThat(parameterDescriptions.get(field2), is((Object) "value2"));
 		assertThat(parameterDescriptions.get(data), is((Object) new byte[] { 1, 2, 3 }));
 		assertThat(parameterDescriptions.size(), is(3));
+	}
+
+	@Test
+	public void shouldFindItAsMultipart() {
+		assertThat(ContentType.anyMatch(list(ContentType.MultipartFormData), "multipart/form-data; boundary=127.0.0.1.1002.16893.1359095066.582.122048"), is(true));
 	}
 
 	private void addFormField(final String name, final String value) {
