@@ -1,5 +1,5 @@
 ---
-template: layout.hbs
+layout: layout.hbs
 title: Basics
 
 ---

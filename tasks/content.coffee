@@ -31,18 +31,18 @@ module.exports = (grunt) ->
 			grunt.verbose.writeln "Prepared data tree for #{content_file.cyan}"
 
 			# we can only render pages that specify a template to do it with
-			template_path = "templates/#{page_data.meta.template}"
-			unless template_path? and grunt.file.isFile template_path
-				grunt.log.error "Can't render page for #{content_file.cyan} because no template has been defined"
+			layout_path = "templates/#{page_data.meta.layout}"
+			unless layout_path? and grunt.file.isFile layout_path
+				grunt.log.error "Can't render page for #{content_file.cyan} because no layout has been defined"
 
 			try
-				template_src = grunt.file.read template_path
+				template_src = grunt.file.read layout_path
 				template = handlebars.compile template_src
 			catch error
 				grunt.log.error error
-				grunt.fail.warn "Handlebars failed to compile '#{template_path}'."
+				grunt.fail.warn "Handlebars failed to compile '#{layout_path}'."
 
-			grunt.verbose.writeln "Compiled template #{template_path.cyan}"
+			grunt.verbose.writeln "Compiled layout #{layout_path.cyan}"
 
 			# determine the file path of the rendered template file
 			dest_file_path = grunt_helpers.buildIndividualDest @file.dest, content_file, options.basePath, options.flatten
