@@ -1,5 +1,5 @@
 ---
-template: index.hbs
+template: layout.hbs
 
 title: Static site boilerplate
 description: A static site built in a dynamic way
