@@ -1,12 +1,10 @@
 ---
 layout: layout.hbs
 template: page.hbs
-title: Basics
+title: basics
 id: basics
 
 ---
-
-# Basics
 
 ## Overview
 
