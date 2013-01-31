@@ -1,6 +1,8 @@
 ---
 layout: layout.hbs
+template: page.hbs
 title: Basics
+id: basics
 
 ---
 
