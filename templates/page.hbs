@@ -2,6 +2,14 @@
 	<h1>thundr <small>{{meta.title}}</small></h1>
 </div>
 
-<section class="page_body">
+<section class="overview">
 	{{{marked content}}}
 </section>
+
+{{#if sections}} {{#each sections}}
+
+<section id="{{id}}">
+	{{{marked content}}}
+</section>
+
+{{/each}} {{/if}}
