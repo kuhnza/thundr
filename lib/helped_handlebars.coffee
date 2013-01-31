@@ -6,7 +6,14 @@ marked.setOptions
 	gfm: true
 	breaks: true
 	langPrefix: 'language-'
-	highlight: (code, lang) -> hljs.highlight(lang, code).value
+	highlight: (code, lang) ->
+		# quick and dirty language aliases
+		lang = 'xml' if lang is 'html'
+		lang = 'javascript' if lang is 'js'
+
+		code = hljs.highlight(lang, code).value if lang
+
+		code
 
 # setup a helper for Handlebars so that Markdown can be parsed within templates
 handlebars.registerHelper 'marked', (content) ->
