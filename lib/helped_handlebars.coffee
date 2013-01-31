@@ -1,6 +1,10 @@
 marked = require 'marked'
 handlebars = require 'handlebars'
 
+marked.setOptions
+	gfm: true
+	breaks: true
+
 # setup a helper for Handlebars so that Markdown can be parsed within templates
 handlebars.registerHelper 'marked', (content) ->
 	return marked content
