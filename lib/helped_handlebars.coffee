@@ -1,9 +1,12 @@
 marked = require 'marked'
 handlebars = require 'handlebars'
+hljs = require 'highlight.js'
 
 marked.setOptions
 	gfm: true
 	breaks: true
+	langPrefix: 'language-'
+	highlight: (code, lang) -> hljs.highlight(lang, code).value
 
 # setup a helper for Handlebars so that Markdown can be parsed within templates
 handlebars.registerHelper 'marked', (content) ->
