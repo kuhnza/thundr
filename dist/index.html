@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" lang="en-us"/>
+	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
+	<!--[if lt IE 9]> <script src="/thundr/javascript/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
+	<title>thundr - Static site boilerplate</title>
+	<link rel="shortcut icon" href="./favicon.ico" />
+	<meta name="description" content=""/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
+	<meta name="keywords" content=""/>
+	
+	<meta name="google-site-verification" content="V7Os0LLLfRti7XGzTPnlO_FfsjrL6Ldi3IKeq0tVGaY" />
+	
+	<!--
+	<t:style src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css"/>
+	<t:style src="/thundr/styles/lib/bootstrap/bootstrap.css"/>
+	-->
+	<link rel="stylesheet" href="styles/lib/bootstrap/1a11dd2d.bootstrap.css"></link>
+	<link rel="stylesheet" href="styles/27439f8c.main.css"></link>
+	<link rel="stylesheet" href="styles/lib/font/4712f287.font-awesome.css"></link>
+	<!--[if IE 7]>
+	<link rel="stylesheet" href="/thundr/styles/lib/font/font-awesome-ie7.css">
+	<![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!--
+	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+	-->
+	<script src="scripts/vendor/bootstrap/41e29a31.bootstrap.min.js"></script>
+	<script src="scripts/vendor/bootstrap/d0829daa.bootstrap-dropdown.js"></script>
+	<script src="scripts/vendor/bootstrap/be7d85b6.bootstrap-collapse.js"></script>
+	<script>
+	$(document).ready(function () {
+		// If we cross link pages to a collapsed accordian, open the entry of interest.
+		// We'll also open any collapsed accordian section within the same page
+		location.hash && $(location.hash + '.collapse').collapse('show');
+		$(window).bind('hashchange', function() {
+			location.hash && $(location.hash + '.collapse').collapse('show');
+		});
+		$('.dropdown-toggle').dropdown();
+		$(".collapse").collapse();
+		prettyPrint();
+	});
+	</script>
+</head>
+<body>
+	 <header class="container">
+		<nav class="navbar">
+			<div class="navbar-inner">
+				<a class="brand" href="/"><img src="images/79eca7d9.logoFullSmall.png"/></a>
+				<ul class="nav" role="navigation">
+					<li class="active">
+						<a href="./index.html">
+							Overview
+						</a>
+					</li>
+					<li class="dropdown">
+						<a href="./basics.html" class="dropdown-toggle" data-toggle="dropdown">
+							Basics <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="./basics.html">Overview</a></li>
+							<li class="divider"></li>
+							<li><a href="basics.html#basicExample">Example</a></li>
+							<li><a href="basics.html#applicationConfiguration">Configuration</a></li>
+							<li class="divider"></li>
+							<li><a href="basics.html#webXml">web.xml</a></li>
+							<li><a href="basics.html#modulesProperties">modules.properties</a></li>
+							<li><a href="basics.html#injectionConfiguration">InjectionConfiguration</a></li>
+							<li><a href="basics.html#applicationProperties">application.properties</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="controllers.html" class="dropdown-toggle" data-toggle="dropdown">
+							Controllers <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="controllers.html">Overview</a></li>
+							<li class="divider"></li>
+							<li><a href="controllers.html#controllers">Controllers</a></li>
+							<li><a href="controllers.html#views">Views</a></li>
+							<li><a href="controllers.html#dataBinding">Data Binding</a></li>
+							<li><a href="controllers.html#separationOfConcerns">Separation of concerns</a></li>
+							<li><a href="controllers.html#injection">Injection</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+	<article id="" class="container">
+	<div class="page-header">
+  <h1>thundr <small>a lightweight webframework</small></h1>
+</div>
+
+<ul class="benefits thumbnails">
+	<li class="span4">
+		<figure>
+			<h3>Lightweight</h3>
+		</figure>
+		
+		<figcaption class="caption">
+			Designed to spin up fast, with only a thin layer between the servlet container and your code.
+		</figcaption>
+	</li>
+	<li class="span4">
+		<figure>
+			<h3>No Magic</h3>
+		</figure>
+		
+		<figcaption class="caption">
+			Doesn't rely heavily on annotations, reflection, introspection or classpath scanning.
+		</figcaption>
+	</li>
+	<li class="span4">
+		<figure>
+			<h3>Easy to learn</h3>
+		</figure>
+		
+		<figcaption class="caption">
+			Delivers APIs that are straight-forward and easy to learn and explore using your IDE tools.
+		</figcaption>
+	</li>
+	
+	<li class="span4">
+		<figure>
+			<h3>Modular</h3>
+		</figure>
+		
+		<figcaption class="caption">
+			Pull in modular components to support rapid development and solve common problems easily
+		</figcaption>
+	</li>
+	<li class="span4">
+	</li>
+	<li class="span4">
+		<figure>
+			<h3>Get Started</h3>
+		</figure>
+		
+		<figcaption class="getStartedLink caption">
+			<a href="/thundr/basics.html">
+				Click here to get started
+			</a>
+			<a  href="/thundr/basics.html">
+			<i class="icon icon-circle-arrow-right"></i>
+			</a>
+		</figcaption>
+	</li>
+</ul>
+
+<ul class="getThundr thumbnails">
+	<li class="span4 lead">
+		<i class="icon icon-large icon-cloud-download"></i>
+		<a href="http://search.maven.org/#artifactdetails%7Ccom.threewks.thundr%7Cthundr%7C0.9.6%7Cjar">
+			Maven
+		</a>
+	</li>
+	<li class="span4 lead">
+		<i class="icon icon-large icon-github"></i>
+		<a href="http://github.com/3wks/thundr">
+		Source on github
+		</a>
+	</li>
+	<li class="span4 lead">
+		<i class="icon icon-large icon-download"></i>
+		<a href="http://repo1.maven.org/maven2/com/threewks/thundr/thundr/0.9.6/">
+			Download jars
+		</a>
+	</li>
+</ul>
+	</article>
+	
+	<footer class="container">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<span class="navbar-text pull-right">
+					Brought to you by <a href="http://www.3wks.com.au" title="3wks"><img class="threewksLogo" src="http://3wks.com.au/images/3wks_logo_2.png"/></a>
+				</span>
+				<span class="navbar-text">
+					<a href="mailto:nick@3wks.com.au?Subject=thundr">
+						<i class="icon icon-envelope-alt"></i> 
+						Get in touch
+					</a>
+				</span>
+				<span class="navbar-text">
+					<a href="https://groups.google.com/forum/?fromgroups#!forum/thundr-framework">
+						<i class="icon icon-group"></i> 
+						Join us on Google Groups 
+					</a>
+				</span>
+			</div>
+		</div>
+	</footer>
+
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-37139757-1']);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+</body>
+</html>
+		
