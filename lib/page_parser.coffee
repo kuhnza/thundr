@@ -43,7 +43,7 @@ module.exports = class PageParser
 		file_extension = path.extname content_file
 
 		# if there is no other data to use, return the data we have
-		return page_data unless grunt.file.isDir possible_dir_path
+		return @render_content page_data unless grunt.file.isDir possible_dir_path
 
 		# create an array of filenames that may contain data
 		child_content_files = fs.readdirSync possible_dir_path
@@ -78,4 +78,45 @@ module.exports = class PageParser
 				content_name = path.basename child_content_file, file_extension
 				page_data[content_name] = @parse_file child_content_file
 
+
+		# at this point we have the whole data tree for this file available
+
+		return @render_content page_data
+
+	# Render the content of the page data with a template that may have been defined
+	render_content: (page_data) ->
+		console.log 'Rendering content with %s', page_data.meta.template
+
+		template = @get_template page_data.meta.template
+
+		# render the content with the template
+		page_data.content = template page_data
+
 		return page_data
+
+	# Get the template function of a template file
+	get_template: do ->
+		# private cache so we don't compile templates more than necessary
+		template_cache = {}
+
+		(template_file) ->
+			return template_cache[template_file] if template_file? and template_cache[template_file]?
+
+			template_path = @options.templates_path + template_file
+
+			console.log 'template_path', template_path
+
+			unless template_file? and grunt.file.isFile template_path
+				# if there is no template, create a function that just passes back the original content
+				return (page_data) -> page_data.content
+
+			try
+				template_src = grunt.file.read template_path
+				template = handlebars.compile template_src
+			catch error
+				grunt.log.error error
+				grunt.fail.warn "Handlebars failed to compile '#{template_path}'."
+
+			template_cache[template_file] = template
+
+			return template
