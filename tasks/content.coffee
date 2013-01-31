@@ -1,14 +1,11 @@
 path = require 'path'
 fs = require 'fs'
-marked = require 'marked'
-handlebars = require 'handlebars'
-yaml = require 'js-yaml'
+handlebars = require './../lib/helped_handlebars.coffee'
+PageParser = require './../lib/page_parser'
 
 module.exports = (grunt) ->
 	grunt_helpers = require('grunt-lib-contrib').init(grunt);
 	_ = grunt.util._
-	parse_page_data = require './../lib/template_data.coffee'
-
 
 	grunt.registerMultiTask 'generate-html', 'Generate html files from the content files', ->
 		options = @options
@@ -18,6 +15,9 @@ module.exports = (grunt) ->
 
 		@file.dest = path.normalize @file.dest
 
+		page_parser = new PageParser
+			templates_path: 'templates/'
+
 		# read all the files specified in the task
 		content_files = grunt.file.expand @file.src
 
@@ -26,7 +26,7 @@ module.exports = (grunt) ->
 			# nothing we can do if this is not a file
 			continue unless grunt.file.isFile content_file
 
-			page_data = parse_page_data content_file
+			page_data = page_parser.parse_file content_file
 
 			grunt.verbose.writeln "Prepared data tree for #{content_file.cyan}"
 
@@ -52,29 +52,3 @@ module.exports = (grunt) ->
 
 			grunt.file.write dest_file_path, rendered_template
 			grunt.log.writeln "File '#{dest_file_path.cyan}' created."
-
-	# setup a helper for Handlebars so that Markdown can be parsed within templates
-	handlebars.registerHelper 'marked', (content) ->
-		return marked content
-
-	# wrap content in an header tag and parse the markdown
-	handlebars.registerHelper 'marked-heading', (size, content) ->
-		heading = "<h#{size}>#{content}</h#{size}>"
-		return marked heading
-
-	# make the iteration index available for each blocks
-	handlebars.registerHelper 'each', (content, options) ->
-		result = ""
-
-		result = (for item, i in content
-			item._i = i+1
-			options.fn item
-		).join('')
-
-	handlebars.registerHelper 'equal', (value1, value2, options) ->
-		options.fn(this) if value1 is value2
-
-	# conditional that checks whether this is the first element that's being iterated over
-	handlebars.registerHelper 'first', (options) ->
-		return unless this._i?
-		options.fn(this) if this._i is 1
