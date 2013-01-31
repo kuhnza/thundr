@@ -1,5 +1,6 @@
 @import "lib/bootstrap/variables.less";
 @import "lib/bootstrap/mixins.less";
+@import 'lib/bootstrap/alerts.less';
 @import "lib/highlight-tomorrow.css";
 
 .navbar-inner .nav {
@@ -75,4 +76,11 @@ footer {
 
 .threewksLogo {
 	height: 24px;
+}
+
+blockquote {
+	.alert;
+	.alert-info;
+
+	p { font-size: 14px; }
 }
