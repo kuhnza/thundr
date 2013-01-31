@@ -90,7 +90,7 @@ module.exports = function( grunt ) {
         tasks: 'less reload'
       },
       templates: {
-        files: 'template/**/*.hbs',
+        files: 'templates/**/*.hbs',
         tasks: 'generate-html reload'
       },
       content: {
