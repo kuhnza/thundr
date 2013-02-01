@@ -176,14 +176,14 @@
 <span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
 <p>will bind to</p>
 <pre><code class="lang-java"><span class="keyword">public</span> JspView method(String param1, Long param2){ … }</code></pre>
-<p>thundr is capable of binding all basic java types, collection classes and javabeans.</p>
+<p>thundr is capable of binding all basic java types, collection classes and javabeans. <span class="label label-warning">Link to more about binding</span></p>
 </li>
 <li><p><strong>Path variables</strong> - that is named variables as portion of the route. e.g.</p>
 <pre><code class="lang-java"><span class="string">"/{path}/{variables}"</span> : <span class="string">"com.threewks.web.Controller.method"</span></code></pre>
 <p>will bind to</p>
 <pre><code class="lang-java"><span class="keyword">public</span> JspView method(<span class="keyword">long</span> path, String variables){ … }</code></pre>
 </li>
-<li><p><strong>Multipart data</strong> - we can post files for example like this:</p>
+<li><p><strong>Multipart data</strong> <span class="label label-warning">Verify</span> - we can post files for example like this:</p>
 <pre><code class="lang-html"><span class="tag">&lt;<span class="title">form</span> <span class="attribute">action</span>=<span class="value">"/page"</span> <span class="attribute">enctype</span>=<span class="value">"multipart/form-data"</span> <span class="attribute">method</span>=<span class="value">"post"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">name</span>=<span class="value">"filename"</span> <span class="attribute">value</span>=<span class="value">""</span>/&gt;</span>
   <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"file"</span> <span class="attribute">name</span>=<span class="value">"fileData"</span> <span class="attribute">value</span>=<span class="value">""</span>/&gt;</span>
@@ -191,7 +191,7 @@
 <p>which would bind to</p>
 <pre><code class="lang-java"><span class="keyword">public</span> JspView postFile(String filename, <span class="keyword">byte</span>[] fileData){ … }</code></pre>
 </li>
-<li><p><strong>Json</strong> - using <a href="http://code.google.com/p/google-gson/">Gson</a>, json requests will bind data automatically.</p>
+<li><p><strong>Json</strong> <span class="label label-warning">Verify</span> - using <a href="http://code.google.com/p/google-gson/">Gson</a>, json requests will bind data automatically.</p>
 <p>For example, if the request posted json like this</p>
 <pre><code class="lang-json">{
    "<span class="attribute">id</span>": <span class="value"><span class="number">123</span></span>,
