@@ -21,8 +21,8 @@ module.exports = (grunt) ->
 		# read all the files specified in the task
 		content_files = grunt.file.expand @file.src
 
-		# for each task
-		for content_file in content_files
+		# for each file, retrieve the page data
+		pages = for content_file in content_files
 			# nothing we can do if this is not a file
 			continue unless grunt.file.isFile content_file
 
@@ -35,6 +35,21 @@ module.exports = (grunt) ->
 			unless layout_path? and grunt.file.isFile layout_path
 				grunt.log.error "Can't render page for #{content_file.cyan} because no layout has been defined"
 
+			# determine the file path of the rendered template file
+			dest_file_path = grunt_helpers.buildIndividualDest @file.dest, content_file, options.basePath, options.flatten
+
+			# merge the pages href into the page data (so it can be overridden by the page itself)
+			page_data.meta = _.extend {href: dest_file_path}, page_data.meta
+			page_data.meta._file = dest_file_path
+
+			page_data
+		
+		# for all the pages we have
+		for page in pages
+			layout_data = 
+				pages: pages
+				current_page: page
+
 			try
 				template_src = grunt.file.read layout_path
 				template = handlebars.compile template_src
@@ -44,11 +59,11 @@ module.exports = (grunt) ->
 
 			grunt.verbose.writeln "Compiled layout #{layout_path.cyan}"
 
-			# determine the file path of the rendered template file
-			dest_file_path = grunt_helpers.buildIndividualDest @file.dest, content_file, options.basePath, options.flatten
+			# use the relative 
+			dest_file_path = page.meta._file
 
 			# render the template
-			rendered_template = template page_data
+			rendered_template = template layout_data
 
 			grunt.file.write dest_file_path, rendered_template
 			grunt.log.writeln "File '#{dest_file_path.cyan}' created."

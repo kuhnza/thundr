@@ -4,11 +4,11 @@
 	<meta charset="utf-8" lang="en-us"/>
 	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
 	<!--[if lt IE 9]> <script src="/thundr/javascript/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
-	<title>thundr - {{meta.title}}</title>
+	<title>thundr - {{current_page.meta.title}}</title>
 	<link rel="shortcut icon" href="favicon.ico" />
-	<meta name="description" content="{{page.description}}"/>
+	<meta name="description" content="{{current_page.description}}"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
-	<meta name="keywords" content="{{page.keywords}}"/>
+	<meta name="keywords" content="{{current_page.keywords}}"/>
 	
 	<meta name="google-site-verification" content="V7Os0LLLfRti7XGzTPnlO_FfsjrL6Ldi3IKeq0tVGaY" />
 	
@@ -90,7 +90,7 @@
 	</header>
 
 	<article id="" class="container">
-	{{{ content }}}
+	{{{ current_page.content }}}
 	</article>
 	
 	<footer class="container">
