@@ -85,8 +85,6 @@ module.exports = class PageParser
 
 	# Render the content of the page data with a template that may have been defined
 	render_content: (page_data) ->
-		console.log 'Rendering content with %s', page_data.meta.template
-
 		template = @get_template page_data.meta.template
 
 		# render the content with the template
@@ -103,8 +101,6 @@ module.exports = class PageParser
 			return template_cache[template_file] if template_file? and template_cache[template_file]?
 
 			template_path = @options.templates_path + template_file
-
-			console.log 'template_path', template_path
 
 			unless template_file? and grunt.file.isFile template_path
 				# if there is no template, create a function that just passes back the original content
