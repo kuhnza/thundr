@@ -6,6 +6,7 @@ marked.setOptions
 	gfm: true
 	breaks: true
 	langPrefix: 'language-'
+	sanatize: false
 	highlight: (code, lang) ->
 		# quick and dirty language aliases
 		lang = 'xml' if lang is 'html'

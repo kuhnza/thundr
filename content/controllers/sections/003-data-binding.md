@@ -34,7 +34,7 @@ Data is bound from the following locations:
 	public JspView method(String param1, Long param2){ … }
 	```
 
-	thundr is capable of binding all basic java types, collection classes and javabeans.
+	thundr is capable of binding all basic java types, collection classes and javabeans. <span class="label label-warning">Link to more about binding</span>
 
 -	**Path variables** - that is named variables as portion of the route. e.g.
 	
@@ -48,7 +48,7 @@ Data is bound from the following locations:
 	public JspView method(long path, String variables){ … }
 	```
 
-- 	**Multipart data** - we can post files for example like this:
+- 	**Multipart data** <span class="label label-warning">Verify</span> - we can post files for example like this:
 	
 	```html
 	<form action="/page" enctype="multipart/form-data" method="post">
@@ -63,7 +63,7 @@ Data is bound from the following locations:
 	public JspView postFile(String filename, byte[] fileData){ … }
 	```
 
--	**Json** - using [Gson](http://code.google.com/p/google-gson/), json requests will bind data automatically.
+-	**Json** <span class="label label-warning">Verify</span> - using [Gson](http://code.google.com/p/google-gson/), json requests will bind data automatically.
 	
 	For example, if the request posted json like this
 
