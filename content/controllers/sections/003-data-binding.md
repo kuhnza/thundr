@@ -80,15 +80,15 @@ Data is bound from the following locations:
 	package com.mycompany;
 	public class MyDTO {
 		private int id;
-		private List&lt;String&gt; names;
+		private List<String> names;
 		
 		public void setId(int id){
 			this.id = id;
 		}
-		public void setNames(List&lt;String&gt; names){
+		public void setNames(List<String> names){
 			this.names = names;
 		}
-		public List&lt;String&gt; getNames(){
+		public List<String> getNames(){
 			return names;
 		}
 		public int getId(){
