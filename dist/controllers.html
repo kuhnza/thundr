@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" lang="en-us"/>
+	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
+	<!--[if lt IE 9]> <script src="/thundr/javascript/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
+	<title>thundr - controllers</title>
+	<link rel="shortcut icon" href="./favicon.ico" />
+	<meta name="description" content=""/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
+	<meta name="keywords" content=""/>
+	
+	<meta name="google-site-verification" content="V7Os0LLLfRti7XGzTPnlO_FfsjrL6Ldi3IKeq0tVGaY" />
+	
+	<!--
+	<t:style src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css"/>
+	<t:style src="/thundr/styles/lib/bootstrap/bootstrap.css"/>
+	-->
+	<link rel="stylesheet" href="styles/lib/bootstrap/1a11dd2d.bootstrap.css"></link>
+	<link rel="stylesheet" href="styles/0cdd21e5.main.css"></link>
+	<link rel="stylesheet" href="styles/lib/font/4712f287.font-awesome.css"></link>
+	<!--[if IE 7]>
+	<link rel="stylesheet" href="/thundr/styles/lib/font/font-awesome-ie7.css">
+	<![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!--
+	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+	-->
+	<script src="scripts/vendor/bootstrap/41e29a31.bootstrap.min.js"></script>
+	<script src="scripts/vendor/bootstrap/d0829daa.bootstrap-dropdown.js"></script>
+	<script src="scripts/vendor/bootstrap/be7d85b6.bootstrap-collapse.js"></script>
+	<script>
+	$(document).ready(function () {
+		// If we cross link pages to a collapsed accordian, open the entry of interest.
+		// We'll also open any collapsed accordian section within the same page
+		location.hash && $(location.hash + '.collapse').collapse('show');
+		$(window).bind('hashchange', function() {
+			location.hash && $(location.hash + '.collapse').collapse('show');
+		});
+		$('.dropdown-toggle').dropdown();
+		$(".collapse").collapse();
+		prettyPrint();
+	});
+	</script>
+</head>
+<body>
+	 <header class="container">
+		<nav class="navbar">
+			<div class="navbar-inner">
+				<a class="brand" href="/"><img src="images/79eca7d9.logoFullSmall.png"/></a>
+				<ul class="nav" role="navigation">
+					<li class="active">
+						<a href="./index.html">
+							Overview
+						</a>
+					</li>
+					<li class="dropdown">
+						<a href="./basics.html" class="dropdown-toggle" data-toggle="dropdown">
+							Basics <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="./basics.html">Overview</a></li>
+							<li class="divider"></li>
+							<li><a href="basics.html#basicExample">Example</a></li>
+							<li><a href="basics.html#applicationConfiguration">Configuration</a></li>
+							<li class="divider"></li>
+							<li><a href="basics.html#webXml">web.xml</a></li>
+							<li><a href="basics.html#modulesProperties">modules.properties</a></li>
+							<li><a href="basics.html#injectionConfiguration">InjectionConfiguration</a></li>
+							<li><a href="basics.html#applicationProperties">application.properties</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="./controllers.html" class="dropdown-toggle" data-toggle="dropdown">
+							Controllers <b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="./controllers.html">Overview</a></li>
+							<li class="divider"></li>
+							<li><a href="controllers.html#controllers">Controllers</a></li>
+							<li><a href="controllers.html#views">Views</a></li>
+							<li><a href="controllers.html#dataBinding">Data Binding</a></li>
+							<li><a href="controllers.html#separationOfConcerns">Separation of concerns</a></li>
+							<li><a href="controllers.html#injection">Injection</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+	<article id="" class="container">
+	<div class="page-header">
+	<h1>thundr <small>controllers</small></h1>
+</div>
+
+<section class="overview">
+	
+</section>
+
+ 
+
+<section id="controllers">
+	<p>We refer to the classes invoked when using the typical <a href="actions.html#routes">route</a> as <em>controllers</em>.
+
+</p>
+<p>When a http client makes a request, the appropriate method inside a controller is invoked. The method can perform processing and gather data for the response, then return a <code>View</code> object. The view controls the content and http response codes that are returned to the client.  
+
+</p>
+<p>Controller classes are ordinary classes, they don&#39;t require implementing any interfaces or annotations to function. Having one or more routes directing to a method inside a class is enough for thundr to <a href="#injection">create</a> and invoke your controller class when a request is made.
+
+
+</p>
+<h4>Basic Example</h4>
+<p>In the very basic example below, the controller renders the home.jsp for its view, to which it provides a simple model with the message &#39;Hello World!&#39;
+
+</p>
+<p>Controller - Controller.java
+
+</p>
+<pre><code class="lang-java"><span class="keyword">package</span> com.threewks.web;
+
+<span class="keyword">import</span> java.util.HashMap;
+<span class="keyword">import</span> java.util.Map;
+<span class="keyword">import</span> com.threewks.thundr.view.jsp.JspView;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> {</span>
+    <span class="keyword">public</span> JspView home() {
+        Map&lt;String, Object&gt; model = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();
+        model.put(<span class="string">"message"</span>, <span class="string">"Hello World!"</span>);
+        <span class="keyword">return</span> <span class="keyword">new</span> JspView(<span class="string">"home.jsp"</span>, model);
+    }
+}</code></pre>
+
+</section>
+
+
+
+<section id="views">
+	<h4>Views</h4>
+<p>In the above example, we see the <code>JspView</code> being returned from our controller. This resulted in a Jsp being processed and sent back to the user.<br>thundr supports different views, which control the content and http response returned to the user.
+
+</p>
+<ul>
+<li>JspView - renders a jsp - <a href="views.html#jspView">more</a></li>
+<li>RedirectView - redirects the client to a new url - <a href="views.html#redirectView">more</a></li>
+<li>JsonView - uses the <a href="http://code.google.com/p/google-gson/">Gson library</a> to return json to the client - <a href="views.html#jsonView">more</a></li>
+<li>StringView - returns a string to the client - <a href="views.html#stringView">more</a></li>
+<li>HttpStatusException - when thrown, this exception results in an error code being sent to the request client - <a href="views.html#httpStatusException">more</a></li>
+<li>StringView - returns a string to the client - <a href="views.html#stringView">more</a></li>
+</ul>
+
+</section>
+
+
+
+<section id="dataBinding">
+	<h4>Data binding</h4>
+<p>When a controller method is invoked, data from the request is bound and passed in using the method parameters.
+
+</p>
+<p>thundr binds data using the names of the variables and automatically converts to the target types.
+
+</p>
+<p>Data is bound from the following locations:
+
+</p>
+<ul>
+<li><p><strong>Request parameters</strong> - request parameters include request parameters for GET/DELETE request and form parameters for POST/PUT requests.</p>
+<p><code>http://localhost:8080/page?param1=parameter%20value&amp;param2=2</code> will bind to </p>
+<pre><code class="lang-java"><span class="keyword">public</span> JspView method(String param1, Long param2){ … }</code></pre>
+<p>likewise,</p>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">form</span> <span class="attribute">action</span>=<span class="value">"/page"</span> <span class="attribute">method</span>=<span class="value">"post"</span>&gt;</span>
+   <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">name</span>=<span class="value">"param1"</span> <span class="attribute">value</span>=<span class="value">"parameter value"</span>/&gt;</span>
+   <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">name</span>=<span class="value">"param2"</span> <span class="attribute">value</span>=<span class="value">"2"</span>/&gt;</span>
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<p>will bind to</p>
+<pre><code class="lang-java"><span class="keyword">public</span> JspView method(String param1, Long param2){ … }</code></pre>
+<p>thundr is capable of binding all basic java types, collection classes and javabeans.</p>
+</li>
+<li><p><strong>Path variables</strong> - that is named variables as portion of the route. e.g.</p>
+<pre><code class="lang-java"><span class="string">"/{path}/{variables}"</span> : <span class="string">"com.threewks.web.Controller.method"</span></code></pre>
+<p>will bind to</p>
+<pre><code class="lang-java"><span class="keyword">public</span> JspView method(<span class="keyword">long</span> path, String variables){ … }</code></pre>
+</li>
+<li><p><strong>Multipart data</strong> - we can post files for example like this:</p>
+<pre><code class="lang-html"><span class="tag">&lt;<span class="title">form</span> <span class="attribute">action</span>=<span class="value">"/page"</span> <span class="attribute">enctype</span>=<span class="value">"multipart/form-data"</span> <span class="attribute">method</span>=<span class="value">"post"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">name</span>=<span class="value">"filename"</span> <span class="attribute">value</span>=<span class="value">""</span>/&gt;</span>
+  <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"file"</span> <span class="attribute">name</span>=<span class="value">"fileData"</span> <span class="attribute">value</span>=<span class="value">""</span>/&gt;</span>
+<span class="tag">&lt;/<span class="title">form</span>&gt;</span></code></pre>
+<p>which would bind to</p>
+<pre><code class="lang-java"><span class="keyword">public</span> JspView postFile(String filename, <span class="keyword">byte</span>[] fileData){ … }</code></pre>
+</li>
+<li><p><strong>Json</strong> - using <a href="http://code.google.com/p/google-gson/">Gson</a>, json requests will bind data automatically.</p>
+<p>For example, if the request posted json like this</p>
+<pre><code class="lang-json">{
+   "<span class="attribute">id</span>": <span class="value"><span class="number">123</span></span>,
+   "<span class="attribute">names</span>": <span class="value">[<span class="string">"first"</span>, <span class="string">"last"</span>] 
+}</span></code></pre>
+<p>and we have a class like this:</p>
+<pre><code class="lang-java"><span class="keyword">package</span> com.mycompany;
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyDTO</span> {</span>
+   <span class="keyword">private</span> <span class="keyword">int</span> id;
+   <span class="keyword">private</span> List&lt;String&gt; names;
+
+   <span class="keyword">public</span> <span class="keyword">void</span> setId(<span class="keyword">int</span> id){
+       <span class="keyword">this</span>.id = id;
+   }
+   <span class="keyword">public</span> <span class="keyword">void</span> setNames(List&lt;String&gt; names){
+       <span class="keyword">this</span>.names = names;
+   }
+   <span class="keyword">public</span> List&lt;String&gt; getNames(){
+       <span class="keyword">return</span> names;
+   }
+   <span class="keyword">public</span> <span class="keyword">int</span> getId(){
+       <span class="keyword">return</span> id;
+   }
+}</code></pre>
+<p>it can automatically bind onto</p>
+<pre><code class="lang-java"><span class="keyword">public</span> JspView method(MyDTO dto){ … }</code></pre>
+</li>
+<li><p><strong>Servlet classes</strong> - thundr will pass in a <code>HttpServletRequest</code>, <code>HttpServletResponse</code> and an <code>HttpSession</code> object.<br>e.g. </p>
+<pre><code class="lang-java"><span class="keyword">public</span> JspView view(HttpServletRequest req, HttpServletResponse resp){ … }</code></pre>
+</li>
+<li><p><strong>Request headers</strong> - for example we could get the referer using the following: </p>
+<pre><code class="lang-java"><span class="keyword">public</span> JspView method(String Referer){ … }</code></pre>
+</li>
+</ul>
+<p>When data binding is used, you can generally mix any types of bindings, for example using path variables, request parameters and the <code>HttpServletRequest</code>. This gives you the flexibility to generally consume most types of http integration.
+
+</p>
+<blockquote>
+<p>Remember, if you can&#39;t automatically bind the data in your request, you can always just bind the HttpServletRequest and HttpServletResponse.<br>This is equivalent to writing a servlet, so you&#39;ll have to do the heavy lifting yourself, but it means that as long as a servlet could handle the input, your thundr controller can as well.</p>
+</blockquote>
+
+</section>
+
+
+
+<section id="separationOfConcerns">
+	<h4>Separation of concerns</h4>
+<p>The job of a controller is to service a request by performing any behaviour and marshalling response data into the form that is required by the resulting view. 
+
+</p>
+<p>In order to write maintainable, testable applications you should be sure to make sure your application leverages the concept of <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">&#39;separation of concerns&#39;</a>.<br>In this case, what we mean by that is that while the controller is designed for invoking behaviour, in general it should not actually contain behavioural logic as much as possible.
+
+</p>
+<p>To help you achieve this aim, controllers can have other instances passed into them at creation time.<br>This allows you to inject dependencies, such as business process, service and repository code.
+
+</p>
+<p>In the example below, two services are injected using the constructor at creation time, and then invoked on page requests:
+
+</p>
+<p>Controller - Controller.java
+
+</p>
+<pre><code class="lang-java">…
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> {</span>
+    <span class="keyword">private</span> DocumentService documentService;
+    <span class="keyword">private</span> CounterRepository counterRepository;
+
+    <span class="keyword">public</span> Controller(DocumentService documentService, CounterRepository counterRepository){
+        <span class="keyword">this</span>.documentService = documentService;
+        <span class="keyword">this</span>.counterRepository = counterRepository;
+    }
+    <span class="keyword">public</span> JspView home() {
+        counterRepository.incrementHomeViews();
+
+        List&lt;Document&gt; recentlyViewed = documentService.getRecentlyViewedDocuments()
+
+        Map&lt;String, Object&gt; model = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();
+        model.put(<span class="string">"recentlyViewed"</span>, recentlyViewed);
+        <span class="keyword">return</span> <span class="keyword">new</span> JspView(<span class="string">"home.jsp"</span>, model);
+    }
+}</code></pre>
+
+</section>
+
+
+
+<section id="injection">
+	<h4>Controller Instantiation</h4>
+<p>Controller classes are instantiated by the <a href="injectionContext.html#injectionContext">InjectionContext</a>. As such each instance can be shared between multiple, concurrent requests, so implementations should be treated as stateless.<br>Also, there is no guarantee that controllers are singletons and implementations should also take this into account.
+
+</p>
+<p>When a controller is instantiated, the injection context will attempt to use the constructor with the most arguments that it can satisfy.<br>The injection context will also invoke javabean setters for any objects it can satisfy.<br>Non-javabean properties can also be set by using the JSR 330 annotation <code>@Inject</code> on the property. Note that the InjectionContext does not currently support the full JSR 330 specification, just the basic @Inject annotation.
+
+</p>
+<p>You can read more <a href="injectionContext.html">here</a> about the InjectionContext, dependency injection in thundr and how to write controller and service classes the &#39;right&#39; way. 
+
+</p>
+<p>The below example demonstrates the different ways dependencies can be injected into controllers.
+
+</p>
+<p>Controller - Controller.java
+
+</p>
+<pre><code class="lang-java">…
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> {</span>
+    <span class="keyword">private</span> DocumentService documentService;
+    <span class="keyword">private</span> CounterRepository counterRepository;
+    <span class="annotation">@Inject</span>
+    <span class="keyword">private</span> CategoryService categoryService;
+
+    <span class="keyword">public</span> Controller(DocumentService documentService){
+        <span class="keyword">this</span>.documentService = documentService;
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> setCounterRepository(CounterRepository counterRepository){
+        <span class="keyword">this</span>.counterRepository = counterRepository;
+    }
+…</code></pre>
+
+</section>
+
+ 
+	</article>
+	
+	<footer class="container">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<span class="navbar-text pull-right">
+					Brought to you by <a href="http://www.3wks.com.au" title="3wks"><img class="threewksLogo" src="http://3wks.com.au/images/3wks_logo_2.png"/></a>
+				</span>
+				<span class="navbar-text">
+					<a href="mailto:nick@3wks.com.au?Subject=thundr">
+						<i class="icon icon-envelope-alt"></i> 
+						Get in touch
+					</a>
+				</span>
+				<span class="navbar-text">
+					<a href="https://groups.google.com/forum/?fromgroups#!forum/thundr-framework">
+						<i class="icon icon-group"></i> 
+						Join us on Google Groups 
+					</a>
+				</span>
+			</div>
+		</div>
+	</footer>
+
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-37139757-1']);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+</body>
+</html>
+		
