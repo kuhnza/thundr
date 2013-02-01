@@ -2,8 +2,9 @@
 layout: layout.hbs
 template: index.hbs
 id: index
+nav_position: 1
 
-title: Static site boilerplate
+title: overview
 description: A static site built in a dynamic way
 
 ---

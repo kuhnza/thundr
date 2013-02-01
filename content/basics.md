@@ -3,6 +3,7 @@ layout: layout.hbs
 template: page.hbs
 title: basics
 id: basics
+nav_position: 2
 
 ---
 
