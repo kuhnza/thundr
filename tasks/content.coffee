@@ -38,12 +38,19 @@ module.exports = (grunt) ->
 			# determine the file path of the rendered template file
 			dest_file_path = grunt_helpers.buildIndividualDest @file.dest, content_file, options.basePath, options.flatten
 
+			
+			# remove the destination path to be left with the relative url
+			# TODO: remove hardcoded temp
+			page_href = dest_file_path.replace 'temp', ''
+
 			# merge the pages href into the page data (so it can be overridden by the page itself)
-			page_data.meta = _.extend {href: dest_file_path}, page_data.meta
+			page_data.meta = _.extend {href: page_href}, page_data.meta
 			page_data.meta._file = dest_file_path
 
 			page_data
 		
+		pages = _.sortBy pages, (page) -> page.meta.nav_position
+
 		# for all the pages we have
 		for page in pages
 			layout_data = 
