@@ -11,7 +11,7 @@ marked.setOptions
 		# quick and dirty language aliases
 		lang = 'xml' if lang is 'html'
 		lang = 'javascript' if lang is 'js'
-
+ 
 		code = hljs.highlight(lang, code).value if lang
 
 		code
@@ -45,5 +45,9 @@ handlebars.registerHelper 'first', (options) ->
 # capatilize the first letter of a string
 handlebars.registerHelper 'ucfirst', (value, options) ->
 	return value.charAt(0).toUpperCase() + value.slice(1)
+
+# log helper for debugging
+handlebars.registerHelper 'log', (value) ->
+	console.log value
 
 module.exports = handlebars

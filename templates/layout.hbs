@@ -39,7 +39,6 @@
 		});
 		$('.dropdown-toggle').dropdown();
 		$(".collapse").collapse();
-		prettyPrint();
 	});
 	</script>
 </head>
@@ -52,9 +51,9 @@
 					{{#each pages}}
 						{{#if meta.nav_position}}
 						
+						<li class="{{#if sections}}dropdown{{/if}} {{#equal meta.id ../../current_page.meta.id}}active{{/equal}}">
 
 						{{#if sections}}
-						<li class="dropdown">
 							<a href="{{meta.href}}" class="dropdown-toggle" data-toggle="dropdown">
 								{{ucfirst meta.title}} <b class="caret"></b>
 							</a>
@@ -75,12 +74,12 @@
 							</ul>
 
 						{{else}}
-						<li class="">
 							<a href="{{meta.href}}">
 								{{ucfirst meta.title}}
 							</a>
-						</li>
 						{{/if}}
+
+						</li>
 						{{/if}}
 					{{/each}}
 				</ul>
