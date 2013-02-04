@@ -17,6 +17,10 @@
  */
 package com.threewks.thundr.view.jsp.el;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -39,5 +43,9 @@ public class StringFunctions {
 
 	public static String replace(Object arg, String regex, String replacement) {
 		return arg == null ? "" : arg.toString().replaceAll(regex == null ? "" : regex, replacement == null ? "" : replacement);
+	}
+	
+	public static List<String> split(Object arg, String regex) {
+		return arg == null ? Collections.<String>emptyList() : Arrays.asList(arg.toString().split(regex == null ? "\\s" : regex));
 	}
 }

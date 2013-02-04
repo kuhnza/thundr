@@ -20,7 +20,12 @@ package com.threewks.thundr.view.jsp.el;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.junit.Test;
+
+import com.atomicleopard.expressive.Expressive;
 
 public class StringFunctionsTest {
 
@@ -84,6 +89,16 @@ public class StringFunctionsTest {
 		assertThat(StringFunctions.replace("input", "(pu)", "$1"), is("input"));
 	}
 
+	
+	@Test
+	public void shouldSplitInputUsingRegex() {
+		assertThat(StringFunctions.split("text first", "\\s"), is(Arrays.asList("text", "first")));
+		assertThat(StringFunctions.split("text", "\\s"), is(Arrays.asList("text")));
+		assertThat(StringFunctions.split("", "\\s"), is(Arrays.asList("")));
+		assertThat(StringFunctions.split(null, "\\s"), is(Collections.<String>emptyList()));
+		
+		assertThat(StringFunctions.split(Expressive.list(1, 2, 3), ","), is(Arrays.asList("[1", " 2", " 3]")));
+	}
 	private static class TestObject {
 		@Override
 		public String toString() {
