@@ -269,4 +269,9 @@ public class MockHttpServletResponse implements HttpServletResponse {
 		};
 		return sos;
 	}
+
+	public List<Cookie> getCookies() {
+		return cookies;
+	}
+
 }
