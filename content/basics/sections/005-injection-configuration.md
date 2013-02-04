@@ -1,5 +1,6 @@
 ---
 id: injectionConfiguration
+title: InjectionConfiguration
 
 ---
 

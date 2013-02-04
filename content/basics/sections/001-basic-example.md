@@ -1,5 +1,6 @@
 ---
 id: basicExample
+title: Basic Example
 
 ---
 

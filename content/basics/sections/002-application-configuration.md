@@ -1,5 +1,6 @@
 ---
 id: applicationConfiguration
+title: Configuration
 
 ---
 

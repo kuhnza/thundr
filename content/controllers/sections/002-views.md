@@ -1,5 +1,6 @@
 ---
 id: views
+title: Views
 
 ---
 

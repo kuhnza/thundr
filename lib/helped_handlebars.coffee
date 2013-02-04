@@ -42,4 +42,8 @@ handlebars.registerHelper 'first', (options) ->
 	return unless this._i?
 	options.fn(this) if this._i is 1
 
+# capatilize the first letter of a string
+handlebars.registerHelper 'ucfirst', (value, options) ->
+	return value.charAt(0).toUpperCase() + value.slice(1)
+
 module.exports = handlebars

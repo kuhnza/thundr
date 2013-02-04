@@ -1,5 +1,6 @@
 ---
 id: controllers
+title: Controllers
 
 ---
 

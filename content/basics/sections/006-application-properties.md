@@ -1,5 +1,6 @@
 ---
 id: applicationProperties
+title: application.properties
 
 ---
 

@@ -1,5 +1,6 @@
 ---
 id: dataBinding
+title: Data binding
 
 ---
 

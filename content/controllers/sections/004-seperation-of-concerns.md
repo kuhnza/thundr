@@ -1,5 +1,6 @@
 ---
 id: separationOfConcerns
+title: Seperation of concerns
 
 ---
 

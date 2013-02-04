@@ -1,5 +1,6 @@
 ---
 id: modulesProperties
+title: modules.properties
 
 ---
 
