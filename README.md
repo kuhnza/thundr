@@ -1,47 +1,22 @@
-# Static site Boilerplate
+# Thundr Docs
+Documentation site for the thundr web framework by 3wks. Generated dynamically from documentation written in Markdown. Based on 3wks' [static site boilerplate][1].
 
-This static boilerplate should give you a running start in building a static website in a dynamic way with modern technologies. It features a build system that does the following:
-
-- Seperates content from markup (Markdown and Handlebars templates)
-- Enables the use of LESS (or SCSS)
-- Enables the use of CoffeeScript
-- Manages depedancies and optimizes scripts (RequireJS)
-- Optimizes images (OptiPNG/JPEGtran)
-- Generates an appcache manifest (Confess.js)
-- Facilitates testing of code (Mocha)
-- Sets you up Twitter Bootstrap
 
 ## Usage
 
-To get started with the boilerplate, create a new folder for your project and clone the boilerplate with Git
+### Most important files and folders
 
-```
-mkdir new_project
-cd new_project
-git clone https://github.com/3wks/static-site-boilerplate.git .
-```
-
-### Files and folders
+Below you'll find a description of the most important files and folders. For full documentation, have a look at the [static site boilerplate][1].
 
 - `app/` contains the source of the site, develop your site here. It's folder structure will be copied straight to the build server, unless a file or path is blacklisted in the `app/.buildignore` file (which works just like a `.gitignore` does).
-- `bin/` is meant for executables to run or develop the site.
-- `bin/3wks-site` the shell script that will run the webserver for the site, making sure all dependancies are installed and environment is setup.
 - `content/` is the folder which contains all the content of the site, written in Markdown. For more information, see the 'Content Management' section.
 - `dist/` contains a built and optimised version of the site and the folder that gets served by the webserver.
-- `lib/` is the home of some general purpose code used by the build system, web server and other piece of code that finds it useful.
-- `tasks/` is where the custom tasks for the build system are defined. If there is a need to extend the build system with some custom tasks, this would be the place to put them.
 - `temp/` an intermediate folder used by the build system to build in, recreated every time you build. Unless you're playing around with the build system itself, there isn't much of a reason to be in there.
 - `templates/` is where the HTML of the app lives, defined in Handlebars templates. These templates decide how the content of `content/` should look. For more information, see the 'Content Management' section.
-- `test/` is where the app's test suite lives, powered by [Mocha](http://visionmedia.github.com/mocha/).
-- `test/spec/` is the folder where your app/site specific tests should go
-- `Gruntfile.js` the main configuration file for the build system and the first place to look if you want to change anything about how the site is being put together. Specifics to be found at [Grunt's documentation](https://github.com/gruntjs/grunt/wiki/Getting-started#wiki-the-gruntfile).
-- `package.json` Node's standard file for managing dependencies. 
-- `Procfile` a file that specifies the all the different processes required to run the site. Used by Heroku and usable with the 'foreman' gem to get the webserver going. [More information here](http://neilmiddleton.com/the-procfile-is-your-friend/)
-- `server.coffee` the Node script that launches a webserver that you can use to host the website. Uses [Express](http://expressjs.com/).
 
 ### Building the site
 
-Of course, even though the site is static, we still want to build it in a dynamic way. To do this we use [Yeoman](http://yeoman.io/) (based on [Grunt](http://gruntjs.com/)) to build the site from it's source. In order to use Yeoman, you need to have Node (0.8+) and NPM installed. To install it, please see it's site for instructions (as it has some dependancies which go beyond the scope of this document).
+We use [Yeoman](http://yeoman.io/) (based on [Grunt](http://gruntjs.com/)) to build the site from it's source. In order to use Yeoman, you need to have Node (0.8+) and NPM installed. To install it, please see it's site for instructions (as it has some dependancies which go beyond the scope of this document).
 
 Once Yeoman is installed, you can build the site running the build task:
 
@@ -59,16 +34,16 @@ yeoman server
 
 **Note:** after running the server, the `dist` folder will be gone. You will have to use the `build` task to make a proper build of the site again.
 
+For full documentation on the building process refer to the [static site boilerplate documentation][1].
 
-### Rebuilding of content
 
-In a world where content is king often little changes and tweaks need to be made to the copy of the site. With changes in content only, it's unnecessary (and sometimes annoying) to completely rebuild everything. Therefore it's possible to rebuild an existing build. To rebuild the content of the site run the following task:
+### Publishing the documentation
 
-```
-yeoman rebuild
-```
+We do not yet have publishing of the docs figured out. But what seems most interesting is using subtree merging (using [subslit](https://github.com/dflydev/git-subsplit/blob/master/git-subsplit.sh)?) to push the `dist` folder to [the 'gh-pages' branch of the thundr repo](https://github.com/3wks/thundr/tree/gh-pages). This way we could:
 
-**Note:** a current build (`dist` folder) will have to be present to base the rebuild off. Only html files of the build will be replaced.
+- host the site on Github Pages, where it is at the moment
+- publish changes with a single command
+- still dynamically build the docs
 
 ## Content management
 
@@ -76,184 +51,30 @@ Using a custom built task (`generate-html`) for Yeoman we've seperated the site'
 
 ### Content files architecture
 
-Whatever is in one of the content files will be interpreted as Markdown and be made available under the 'content' key of the serialised object that gets passed to template.
+For documentation of the actual content files, see the [static site boilerplate's documentation][1].
 
-For example, a file containing
+### Pages
 
-```
-3WKS is awesome sauce
-```
+Every Markdown file that's a direct child of the `content` folder will be interpreted as a seperate page and rendered to html. E.g. the file `content/basics.md` will be generated and saved as `basics.html` in the root of the build folder. There is currently no support for placing the files anywhere else.
 
-will result in the following object being passed to the template
+All content files define the `layout` attribute in their YAML front matter to determine what layout should be used to render them. By default this is `layout.hbs` which refers to the template in the `templates` folder. This template holds the overall layout and navigation. When `layout` isn't defined, the content file will not be rendered.
 
-```
-{
-	"meta": {}
-	"content": "3WKS is awesome sauce"
-}
-```
+For a content file to be rendered as a Page (with support for Sections (see next section)) it should have the `template` attribute of it's YAML front matter defined as `page.hbs`. The `id` attribute should also be defined so that the rest of the site knows how to reference the page. Furthermore, defining `title` will asure for a human friendly name of the id and is used by the page template, navigation, etc.
 
-The content files that will be read and interpreted are located in the `content` folder.
+#### Sections
 
-#### YAML Front matter
-Just like Jekyll (probably the most populair static site generator) each file can begin with a YAML block that holds meta data about the page. Whatever is in this block (beginning and ending with `---`) will be parsed as YAML and made available as an object literal under the `meta` key.
+Each Page can have Sections. Sections are parts of a Page that are referable by id. This allows deep linking to certain bits of documentation. They are defined in their own content files. When a Page has Sections a dropdown menu will be generated in the navigation (see next section) containing deep links to these sections.
 
-For example. A file containing
+To add a Section to a Page, add a new content file at the following path `<content_filename_without_ext>/sections/`. For example, to add a Section to the basics page create the file `basics/sections/new_section.md`.
 
-```
----
-title: Rapid site launches for big business
+Sections are automatically included in the Page and sorted alphabetically. A good tip to easily manage the order they are in is by prefixing the filenames with a number like `001`, 002`, `003`, etc.
 
----
-3WKS is awesome sauce
-```
+#### Navigation 
 
-will result in the following object being passed to the template
+The navigation is automatically generated in the `layout.hbs` template. A Page has to opt-in to be included into the navigation by defining `nav_position`, a number determining it's position in the navigation bar, in it's YAML front matter. The Page's `title` will be used as the text representing the navigation item.
 
-```
-{
-	"meta": {
-		"title": "Rapid site launches for big business"
-	},
-	"content": "3WKS is awesome sauce"
-}
-```
+When a Page has Sections, a dropdown menu will be generated containing an item and deeplink for each Section. It uses the Section's `title` attribute as the text for the item.
 
-
-#### Nested data
-
-Of course, many pages have a lot of sections with different bits of content. In order to organise the data and make efficient templates with more complex data trees the generator supports a folder / file structure.
-
-After having interpreted a content file, the generator looks for a folder with the same name *without file extension*. For example, after a content file `index.md` has been interpreted it will look for a folder called `index`. 
-
-When such a folder is found, all the files found in it (with the same file extension as the original file) will also be interpreted and be made available under the filename of the child file *without file extension*.
-
-For example, consider the following folder structure:
-
-```
-├── index.md
-└── index
-    └── introduction.md
-```
-
-with the `index.md`
-
-```
----
-title: Rapid site launches for big business
-
----
-3WKS is awesome sauce
-```
-
-and `introduction.md`
-
-```
----
-title: This video explains it all
-
----
-This video is awesome but if you don't have 2 mins to spare, here's the *short version*
-```
-
-will result in the following object being passed to the template:
-
-```
-{
-	"meta": {
-		"title": "Rapid site launches for big business"
-	},
-	"content": "3WKS is awesome sauce",
-	"introduction": {
-		"meta": {
-			"title": "This video explains it all"
-		},
-		"content": "This video is awesome but if you don't have 2 mins to spare, here's the *short version*"
-	}
-}
-```
-
-This process is a recursive one, meaning that you can nest data practically indefinitely.
-
-
-#### Lists (arrays) of data
-
-The html generator supports a folder / file structure that results in serialisation into arrays. Quite common on sites are lists or arrays of things, for example blog posts, team members, steps, news items, etc. To be able to work well with these within templates, it's often convenient to have them be represented as arrays (mainly so they can be iterated over).
-
-Any folder that is found within a file's corresponding folder will be interpreted as an array (as long as it doesn't belong to another file). All the files within the 'array folder' will be processed and added to an array which will be available under the folder's name. The files are processed in alphabetical order.
-
-For example, consider the following folder structure:
-
-```
-├── index.md
-└── index
-	└── posts
-		├── first-post.md
- 	  	└── some-other-post.md
-```
-
-
-With `index.md` containing,
-
-```
----
-title: Rapid site launches for big business
-
----
-3WKS is awesome sauce
-```
-
-`first-post.md` containig
-
-```
----
-title: First post ever
-
----
-This is the first post we've ever made.
-```
-
-and `some-other-post.md` containing
-
-```
----
-title: Some other post
-
----
-Another post, totally unrelated to the first one
-```
-
-This will result in the following object being passed to the template:
-
-```
-{
-	"meta": {
-		"title": "Rapid site launches for big business"
-	},
-	"content": "3WKS is awesome sauce",
-	"posts": [
-		{
-			"meta": {
-				"title": "First post ever"
-			},
-			"content": "This is the first post we've ever made"
-		},
-		{
-			"meta": {
-				"title": "Some other post"
-			},
-			"content": "Another post, totally unrelated to the first one"
-		}
-	]
-}
-```
-
-### Linking up content files and templates
-In order for html files to be generated, the content has to be passed to a template. The templates are powered by Handlebars and contain the html and logic to create html files that make up the site.
-
-The template files are stored within the `templates` folder.
-
-All the base content files must specify a `template` attribute in their YAML front matter. The attribute should represent the path to the template to be used to render the content. The path should be relative from the `templates` folder. **Note:** if the `template` attribute is not defined, the content file is ignored. 
 
 
 # Setup, Running and Hosting on Heroku with Node.js
@@ -266,4 +87,7 @@ bin/3wks-site
 ```
 
 in the project root folder. This command is also defined in `Procfile`, the file that is used to instruct Heroku how to run the app.
+
+
+[1]: https://github.com/3wks/static-site-boilerplate
 
