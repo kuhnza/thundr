@@ -1,13 +1,6 @@
-ReferenceError: Can't find variable: prettyPrint
-
-  http://localhost:3501/:42
-  http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js:2
-  http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js:2
-  http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js:2
-  http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js:2
 CACHE MANIFEST
 
-# Time: Fri Feb 01 2013 11:07:56 GMT+1000 (EST)
+# Time: Mon Feb 04 2013 13:51:20 GMT+1000 (EST)
 # This manifest was created by confess.js, http://github.com/jamesgpearce/confess
 #
 # Retrieved URL: http://localhost:3501/
