@@ -4,7 +4,7 @@
 	<meta charset="utf-8" lang="en-us"/>
 	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
 	<!--[if lt IE 9]> <script src="/thundr/javascript/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
-	<title>thundr - overview</title>
+	<title>thundr - on Google Appengine</title>
 	<link rel="shortcut icon" href="./favicon.ico" />
 	<meta name="description" content=""/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
@@ -51,7 +51,7 @@
 					
 						
 						
-						<li class=" active">
+						<li class=" ">
 
 						
 							<a href="/./index.html">
@@ -359,7 +359,7 @@
 					
 						
 						
-						<li class="dropdown ">
+						<li class="dropdown active">
 
 						
 							<a href="/./appengine.html" class="dropdown-toggle" data-toggle="dropdown">
@@ -401,85 +401,81 @@
 
 	<article id="" class="container">
 	<div class="page-header">
-  <h1>thundr <small>a lightweight webframework</small></h1>
+	<h1>thundr <small>on Google Appengine</small></h1>
 </div>
 
-<ul class="benefits thumbnails">
-	<li class="span4">
-		<figure>
-			<h3>Lightweight</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Designed to spin up fast, with only a thin layer between the servlet container and your code.
-		</figcaption>
-	</li>
-	<li class="span4">
-		<figure>
-			<h3>No Magic</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Doesn't rely heavily on annotations, reflection, introspection or classpath scanning.
-		</figcaption>
-	</li>
-	<li class="span4">
-		<figure>
-			<h3>Easy to learn</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Delivers APIs that are straight-forward and easy to learn and explore using your IDE tools.
-		</figcaption>
-	</li>
-	
-	<li class="span4">
-		<figure>
-			<h3>Modular</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Pull in modular components to support rapid development and solve common problems easily
-		</figcaption>
-	</li>
-	<li class="span4">
-	</li>
-	<li class="span4">
-		<figure>
-			<h3>Get Started</h3>
-		</figure>
-		
-		<figcaption class="getStartedLink caption">
-			<a href="/thundr/basics.html">
-				Click here to get started
-			</a>
-			<a  href="/thundr/basics.html">
-			<i class="icon icon-circle-arrow-right"></i>
-			</a>
-		</figcaption>
-	</li>
+<section class="overview">
+	<h2>Overview</h2>
+<p>Google Appengine (GAE) is a PaaS provided and run by Google. You can read more about it <a href="https://developers.google.com/appengine/docs/">here</a>
+
+</p>
+<p><em>thundr-gae</em> is a thundr module which enables thundr to run in this environment adding abstractions around some common functions.</p>
+
+</section>
+
+ 
+
+<section id="settingUp">
+	<h4>Setting Up</h4>
+<p>Beyond <a href="basics.html#applicationConfiguration">normal thundr setup</a> (i.e. <code>web.xml</code>, <code>application.properties</code>, <code>modules.properties</code> and an <code>InjectionConfiguration</code>), you will need to pull in the <em>thundr-gae</em> module and configure it.
+
+</p>
+<p>This is accomplished by adding the <em>thundr-gae</em> library to your project (or adding the dependency to your maven or similar config). You then need to load the <em>thundr-gae</em> module by adding it to your <code>modules.properties</code> file.
+
+</p>
+<p>pom.xml
+</p>
+<pre><code class="lang-xml">…
+<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.threewks.thundr<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>thundr-gae<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>0.9.6<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+…</code></pre>
+<p>modules.properties
+
+</p>
+<pre><code class="lang-java">com.mycompany.myapp=
+com.threewks.thundr.gae=</code></pre>
+<blockquote>
+<p>Remember order is important in modules.properties - include the <em>thundr-gae</em> module <strong>after</strong> you application.</p>
+</blockquote>
+
+</section>
+
+
+
+<section id="moduleFeatures">
+	<h4>Module Features</h4>
+<ul>
+<li><h5>HttpService</h5>
+<p>The module provides an implementation of the HttpService defined in the thundr-http module <span class="label label-warning">Undocumented</span>. This is required because of the need to use the <a href="https://developers.google.com/appengine/docs/java/urlfetch/">UrlFetchService</a>. You can then inject it into your controllers and services like this:</p>
+<pre><code class="lang-java">…
+<span class="keyword">private</span> HttpService httpService;
+
+<span class="keyword">public</span> MyController(HttpService httpService){
+   <span class="keyword">this</span>.httpService = httpService;
+}
+…</code></pre>
+</li>
+<li><h5>CounterRepository</h5>
+<p>Atomic incrementing counters can be a little tricky in distributed environment. <em>thundr-gae</em> provides an implementation for sharding counters based on the discussion <a href="https://developers.google.com/appengine/articles/sharding_counters">here</a>.</p>
+<p>You can use this in your project by adding it to your injection configuration like this:</p>
+<pre><code class="lang-java">…
+MemcacheService cacheService = MemcacheServiceFactory.getMemcacheService();
+DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+CounterRepository counterRepository = <span class="keyword">new</span> DatastoreCounterRepository(cacheService, datastoreService);
+injectionContext.inject(counterRepository).as(CounterRepository.class);
+…</code></pre>
+<p>You can later use this in code like this:</p>
+<pre><code class="lang-java"><span class="keyword">long</span> currentCount = counterRepository.incrementCount(<span class="string">"CounterType"</span>, entityId);</code></pre>
+</li>
 </ul>
 
-<ul class="getThundr thumbnails">
-	<li class="span4 lead">
-		<i class="icon icon-large icon-cloud-download"></i>
-		<a href="http://search.maven.org/#artifactdetails%7Ccom.threewks.thundr%7Cthundr%7C0.9.6%7Cjar">
-			Maven
-		</a>
-	</li>
-	<li class="span4 lead">
-		<i class="icon icon-large icon-github"></i>
-		<a href="http://github.com/3wks/thundr">
-		Source on github
-		</a>
-	</li>
-	<li class="span4 lead">
-		<i class="icon icon-large icon-download"></i>
-		<a href="http://repo1.maven.org/maven2/com/threewks/thundr/thundr/0.9.6/">
-			Download jars
-		</a>
-	</li>
-</ul>
+</section>
+
+ 
 	</article>
 	
 	<footer class="container">

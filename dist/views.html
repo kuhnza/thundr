@@ -4,7 +4,7 @@
 	<meta charset="utf-8" lang="en-us"/>
 	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
 	<!--[if lt IE 9]> <script src="/thundr/javascript/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
-	<title>thundr - overview</title>
+	<title>thundr - views</title>
 	<link rel="shortcut icon" href="./favicon.ico" />
 	<meta name="description" content=""/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
@@ -51,7 +51,7 @@
 					
 						
 						
-						<li class=" active">
+						<li class=" ">
 
 						
 							<a href="/./index.html">
@@ -176,7 +176,7 @@
 					
 						
 						
-						<li class="dropdown ">
+						<li class="dropdown active">
 
 						
 							<a href="/./views.html" class="dropdown-toggle" data-toggle="dropdown">
@@ -401,85 +401,124 @@
 
 	<article id="" class="container">
 	<div class="page-header">
-  <h1>thundr <small>a lightweight webframework</small></h1>
+	<h1>thundr <small>views</small></h1>
 </div>
 
-<ul class="benefits thumbnails">
-	<li class="span4">
-		<figure>
-			<h3>Lightweight</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Designed to spin up fast, with only a thin layer between the servlet container and your code.
-		</figcaption>
-	</li>
-	<li class="span4">
-		<figure>
-			<h3>No Magic</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Doesn't rely heavily on annotations, reflection, introspection or classpath scanning.
-		</figcaption>
-	</li>
-	<li class="span4">
-		<figure>
-			<h3>Easy to learn</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Delivers APIs that are straight-forward and easy to learn and explore using your IDE tools.
-		</figcaption>
-	</li>
-	
-	<li class="span4">
-		<figure>
-			<h3>Modular</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Pull in modular components to support rapid development and solve common problems easily
-		</figcaption>
-	</li>
-	<li class="span4">
-	</li>
-	<li class="span4">
-		<figure>
-			<h3>Get Started</h3>
-		</figure>
-		
-		<figcaption class="getStartedLink caption">
-			<a href="/thundr/basics.html">
-				Click here to get started
-			</a>
-			<a  href="/thundr/basics.html">
-			<i class="icon icon-circle-arrow-right"></i>
-			</a>
-		</figcaption>
-	</li>
-</ul>
+<section class="overview">
+	<h4><code>Views</code></h4>
 
-<ul class="getThundr thumbnails">
-	<li class="span4 lead">
-		<i class="icon icon-large icon-cloud-download"></i>
-		<a href="http://search.maven.org/#artifactdetails%7Ccom.threewks.thundr%7Cthundr%7C0.9.6%7Cjar">
-			Maven
-		</a>
-	</li>
-	<li class="span4 lead">
-		<i class="icon icon-large icon-github"></i>
-		<a href="http://github.com/3wks/thundr">
-		Source on github
-		</a>
-	</li>
-	<li class="span4 lead">
-		<i class="icon icon-large icon-download"></i>
-		<a href="http://repo1.maven.org/maven2/com/threewks/thundr/thundr/0.9.6/">
-			Download jars
-		</a>
-	</li>
-</ul>
+</section>
+
+ 
+
+<section id="views">
+	<h4>Views</h4>
+<p><a href="./controllers.html">Controller</a> methods can return a <code>View</code> object, which controls what content is returned to the request client.
+
+</p>
+<p>thundr handles views by passing them to registered a <code>ViewResolver</code>. You can read more about registering custom view and view resolvers <a href="#viewResolver">here</a>.
+
+</p>
+<p>Below are the views that thundr supports out of the box, you can also inspect the ViewResolver hierarchy to see all implementations.
+</p>
+
+</section>
+
+
+
+<section id="jspView">
+	<h4>JspView</h4>
+<p><code>JspView</code> results in a jsp being processed and served from the Servlet engine. You specify the jsp file location, and optionally provide a data model to back it. Unless the jsp rendering fails, an Html file and a 200 OK will be sent back to the user.  
+
+
+</p>
+<p>The jsp file is considered to be relative to the path /WEB-INF/jsp/, unless it is given as an absolute path (i.e. starts with a forward slash, /)
+
+</p>
+<pre><code class="lang-java">…
+Map&lt;String, Object&gt; model = … 
+<span class="keyword">return</span> <span class="keyword">new</span> JspView(<span class="string">"path/to/my.jsp"</span>, model);
+…</code></pre>
+
+</section>
+
+
+
+<section id="redirectView">
+	<h4>RedirectView</h4>
+<p><code>RedirectView</code> results in a temporary redirect (302) being sent back to the client with the specified location. This will send a browser to the new url.
+
+</p>
+<pre><code class="lang-java">…
+<span class="keyword">return</span> <span class="keyword">new</span> RedirectView(<span class="string">"http://www.google.com.au/search?q=thundr"</span>);
+…</code></pre>
+
+</section>
+
+
+
+<section id="jsonView">
+	<h4>JsonView</h4>
+<p><code>JsonView</code> uses the <a href="http://code.google.com/p/google-gson/">Gson library</a> to serialize the given object to json, and return it to the request client.
+
+</p>
+<pre><code class="lang-java">…
+MyDto dto = … 
+<span class="keyword">return</span> <span class="keyword">new</span> JsonView(dto);
+…</code></pre>
+
+</section>
+
+
+
+<section id="stringView">
+	<h4>StringView</h4>
+<p><code>StringView</code> is a simple view which returns the given string as the response content, with a response code of 200 OK. 
+
+</p>
+<pre><code class="lang-java">…
+<span class="keyword">return</span> <span class="keyword">new</span> StringView(<span class="string">"Hello!"</span>);
+…</code></pre>
+
+</section>
+
+
+
+<section id="httpStatusException">
+	<h4>HttpStatusException</h4>
+<p><code>HttpStatusException</code> is a RuntimeException which takes a status code as a constructor parameter.
+
+</p>
+<p>When thrown, the specified status code is returned to the client as an http error, along with the specified message.
+
+</p>
+<pre><code class="lang-java">…
+<span class="keyword">throw</span> <span class="keyword">new</span> HttpStatusException(HttpServletResponse.SC_BAD_REQUEST, <span class="string">"Bad request at %d"</span>, System.currentTimeMillis());
+…</code></pre>
+<p>The servlet engine will process the response code as normal, so if your web.xml maps a jsp, then this is the content returned to the client. e.g.
+
+</p>
+<pre><code class="lang-xml">…
+<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">error-code</span>&gt;</span>404<span class="tag">&lt;/<span class="title">error-code</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/WEB-INF/jsp/errors/404.jsp<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+…</code></pre>
+
+</section>
+
+
+
+<section id="viewResolver">
+	<h4><code>ViewResolver</code> <span class="label label-info">Advanced</span></h4>
+<p>The <code>ViewResolverRegistry</code> returns a <code>ViewResolver</code> based on the class type of the view returned from a controller method. The view resolver is then given the view instance, the servlet request and servlet response and is expected to generate some output to the servlet response.
+
+</p>
+<p>The view resolver registry is available in the <code>InjectionContext</code> during startup. An instance of a <code>ViewResolver</code> can be registered at this point against <strong>any</strong> class type. That is, while most views do implement the <code>View</code> interface, this is for convenience and not a requirement.</p>
+
+</section>
+
+ 
 	</article>
 	
 	<footer class="container">

@@ -175,6 +175,224 @@
 						
 					
 						
+						
+						<li class="dropdown ">
+
+						
+							<a href="/./views.html" class="dropdown-toggle" data-toggle="dropdown">
+								Views <b class="caret"></b>
+							</a>
+
+							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+
+								<li><a href="/./views.html">Overview</a></li>
+								<li class="divider"></li>
+								
+								
+								
+
+								<li><a href="/views.html#views">Views</a></li>
+								
+								
+								
+								
+
+								<li><a href="/views.html#jspView">Jsp view</a></li>
+								
+								
+								
+								
+
+								<li><a href="/views.html#redirectView">Redirect View</a></li>
+								
+								
+								
+								
+
+								<li><a href="/views.html#jsonView">Json View</a></li>
+								
+								
+								
+								
+
+								<li><a href="/views.html#stringView">String View</a></li>
+								
+								
+								
+								
+
+								<li><a href="/views.html#httpStatusException">HttpStatusException</a></li>
+								
+								
+								
+								
+
+								<li><a href="/views.html#viewResolver">ViewResolver</a></li>
+								
+								
+								
+
+							</ul>
+
+						
+
+						</li>
+						
+					
+						
+						
+						<li class="dropdown ">
+
+						
+							<a href="/./actions.html" class="dropdown-toggle" data-toggle="dropdown">
+								Actions <b class="caret"></b>
+							</a>
+
+							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+
+								<li><a href="/./actions.html">Overview</a></li>
+								<li class="divider"></li>
+								
+								
+								
+
+								<li><a href="/actions.html#routes">Routes</a></li>
+								
+								
+								
+								
+
+								<li><a href="/actions.html#actions">Actions</a></li>
+								
+								
+								
+								
+
+								<li><a href="/actions.html#methodAction">MethodAction</a></li>
+								
+								
+								
+								
+
+								<li><a href="/actions.html#staticResourceAction">StaticResourceAction</a></li>
+								
+								
+								
+								
+
+								<li><a href="/actions.html#redirectAction">RedirectAction</a></li>
+								
+								
+								
+								
+
+								<li><a href="/actions.html#rewriteAction">RewriteAction</a></li>
+								
+								
+								
+								
+
+								<li><a href="/actions.html#actionResolver">ActionResolver</a></li>
+								
+								
+								
+
+							</ul>
+
+						
+
+						</li>
+						
+					
+						
+						
+						<li class="dropdown ">
+
+						
+							<a href="/./injection-context.html" class="dropdown-toggle" data-toggle="dropdown">
+								Dependancy injection <b class="caret"></b>
+							</a>
+
+							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+
+								<li><a href="/./injection-context.html">Overview</a></li>
+								<li class="divider"></li>
+								
+								
+								
+
+								<li><a href="/injection-context.html#injectionContext">InjectionContext</a></li>
+								
+								
+								
+								
+
+								<li><a href="/injection-context.html#injectionTypes">Injection by type</a></li>
+								
+								
+								
+								
+
+								<li><a href="/injection-context.html#namedTypes">Injection by named type</a></li>
+								
+								
+								
+								
+
+								<li><a href="/injection-context.html#instantiation">Instantiation</a></li>
+								
+								
+								
+								
+
+								<li><a href="/injection-context.html#properties">Properties</a></li>
+								
+								
+								
+
+							</ul>
+
+						
+
+						</li>
+						
+					
+						
+						
+						<li class="dropdown ">
+
+						
+							<a href="/./appengine.html" class="dropdown-toggle" data-toggle="dropdown">
+								On Google Appengine <b class="caret"></b>
+							</a>
+
+							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+
+								<li><a href="/./appengine.html">Overview</a></li>
+								<li class="divider"></li>
+								
+								
+								
+
+								<li><a href="/appengine.html#settingUp">Setting Up</a></li>
+								
+								
+								
+								
+
+								<li><a href="/appengine.html#moduleFeatures">Module Features</a></li>
+								
+								
+								
+
+							</ul>
+
+						
+
+						</li>
+						
+					
+						
 					
 				</ul>
 			</div>
@@ -194,7 +412,7 @@
 <p>In this pattern, the model and the view and the relationship between them is mediated by a controller.
 
 </p>
-<p>In thundr, this control is enacted by the method invoked inside your controller class. <a href="./controllers.html">more</a><br>The view is represented by a <code>View</code> object, which is the return type of the controller method. <a href="views.html">more</a><br>The model is provided to the view by the controller method, but the requirements of this depend on the type of view.</p>
+<p>In thundr, this control is enacted by the method invoked inside your controller class. <a href="./controllers.html">more</a><br>The view is represented by a <code>View</code> object, which is the return type of the controller method. <a href="./views.html">more</a><br>The model is provided to the view by the controller method, but the requirements of this depend on the type of view.</p>
 
 </section>
 
@@ -202,7 +420,7 @@
 
 <section id="basicExample">
 	<h4>Basic Example</h4>
-<p>Routes file - routes.json <a href="actions.html">more</a>
+<p>Routes file - routes.json <a href="./actions.html">more</a>
 
 </p>
 <pre><code class="lang-json">{
@@ -246,7 +464,7 @@
 <ul>
 <li>an incoming request is mapped to a controller using a <a href="actions.html#routes">route</a></li>
 <li>Our <a href="./controllers.html">controller</a> method populates the <strong>model</strong> map with our message,</li>
-<li>which is then provided to our <a href="views.html">view</a>, a JspView.</li>
+<li>which is then provided to our <a href="./views.html">view</a>, a JspView.</li>
 <li>thundr takes care of the rest, serving up our jsp as html, substituting the el variable \${message} with the text &#39;Hello World!&#39;.</li>
 </ul>
 

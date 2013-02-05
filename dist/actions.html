@@ -4,7 +4,7 @@
 	<meta charset="utf-8" lang="en-us"/>
 	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
 	<!--[if lt IE 9]> <script src="/thundr/javascript/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
-	<title>thundr - overview</title>
+	<title>thundr - Actions</title>
 	<link rel="shortcut icon" href="./favicon.ico" />
 	<meta name="description" content=""/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
@@ -51,7 +51,7 @@
 					
 						
 						
-						<li class=" active">
+						<li class=" ">
 
 						
 							<a href="/./index.html">
@@ -241,7 +241,7 @@
 					
 						
 						
-						<li class="dropdown ">
+						<li class="dropdown active">
 
 						
 							<a href="/./actions.html" class="dropdown-toggle" data-toggle="dropdown">
@@ -401,85 +401,152 @@
 
 	<article id="" class="container">
 	<div class="page-header">
-  <h1>thundr <small>a lightweight webframework</small></h1>
+	<h1>thundr <small>Actions</small></h1>
 </div>
 
-<ul class="benefits thumbnails">
-	<li class="span4">
-		<figure>
-			<h3>Lightweight</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Designed to spin up fast, with only a thin layer between the servlet container and your code.
-		</figcaption>
-	</li>
-	<li class="span4">
-		<figure>
-			<h3>No Magic</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Doesn't rely heavily on annotations, reflection, introspection or classpath scanning.
-		</figcaption>
-	</li>
-	<li class="span4">
-		<figure>
-			<h3>Easy to learn</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Delivers APIs that are straight-forward and easy to learn and explore using your IDE tools.
-		</figcaption>
-	</li>
+<section class="overview">
 	
-	<li class="span4">
-		<figure>
-			<h3>Modular</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Pull in modular components to support rapid development and solve common problems easily
-		</figcaption>
-	</li>
-	<li class="span4">
-	</li>
-	<li class="span4">
-		<figure>
-			<h3>Get Started</h3>
-		</figure>
-		
-		<figcaption class="getStartedLink caption">
-			<a href="/thundr/basics.html">
-				Click here to get started
-			</a>
-			<a  href="/thundr/basics.html">
-			<i class="icon icon-circle-arrow-right"></i>
-			</a>
-		</figcaption>
-	</li>
-</ul>
+</section>
 
-<ul class="getThundr thumbnails">
-	<li class="span4 lead">
-		<i class="icon icon-large icon-cloud-download"></i>
-		<a href="http://search.maven.org/#artifactdetails%7Ccom.threewks.thundr%7Cthundr%7C0.9.6%7Cjar">
-			Maven
-		</a>
-	</li>
-	<li class="span4 lead">
-		<i class="icon icon-large icon-github"></i>
-		<a href="http://github.com/3wks/thundr">
-		Source on github
-		</a>
-	</li>
-	<li class="span4 lead">
-		<i class="icon icon-large icon-download"></i>
-		<a href="http://repo1.maven.org/maven2/com/threewks/thundr/thundr/0.9.6/">
-			Download jars
-		</a>
-	</li>
+ 
+
+<section id="routes">
+	<h2>Routes</h2>
+<p>Incoming web requests are handled by thundr using <em>routes</em>.
+
+</p>
+<p>A route is a url wildcard pattern which maps to an <em>action</em>. Each route is of a http request type - <em>GET</em>, <em>PUT</em>, <em>POST</em> or <em>DELETE</em>. 
+
+</p>
+<p>By default routes are loaded from the resource file <code>routes.json</code>. Within this file, routes are defined as a json structure.
+
+</p>
+<pre><code class="lang-json">{
+    "<span class="attribute">/</span>"         : <span class="value"><span class="string">"au.com.threewks.thundrweb.Controller.home"</span></span>,
+    "<span class="attribute">/form/</span>"     : <span class="value">{
+        "<span class="attribute">GET</span>"     : <span class="value"><span class="string">"au.com.threewks.thundrweb.Controller.getForm"</span></span>,
+        "<span class="attribute">POST</span>"     : <span class="value"><span class="string">"au.com.threewks.thundrweb.Controller.postForm"</span>
+    }</span></span>,
+    "<span class="attribute">/view/{id}</span>"    : <span class="value"><span class="string">"au.com.threewks.thundrweb.Controller.view"</span>
+}</span></code></pre>
+<p>Routes can map to different types of actions. The most common action is <code>MethodAction</code>, which will result in a method being invoked on a <a href="./controllers.html">controller</a>. 
+
+</p>
+<p>In the above example, requests to the base url &#39;/&#39; will be processed by the <em>home</em> method defined in the <em>Controller</em> class.<br>GET Requests on &#39;/form/&#39; will be processed by <em>getForm()</em> and POSTs will be processed by <em>postForm()</em>.<br>Finally, requests matching the path <code>/view/*</code> will be processed by the method with the name <em>view</em>, with the addition that the value matching the wildcard can be passed as a parameter with the name &#39;id&#39;, permitting <em>view(String id)</em>.            </p>
+
+</section>
+
+
+
+<section id="actions">
+	<h4><code>Actions</code></h4>
+<p>Each route maps to a single <code>Action</code>. Actions determine how your application handles a web request. In general, an action will usually result in some code being invoked, but other types of actions exist.
+
+</p>
+<p>Currently thundr supports the following actions out of the box:</p>
+
+</section>
+
+
+
+<section id="methodAction">
+	<h4>MethodAction</h4>
+<p>This type of action results in a method being invoked on a class.<br>Classes invoked like this are referred to as <em>controllers</em>, however this is a semantic distinction - any class can be used as a controller.<br>You can read more about controllers <a href="./controllers.html">here</a>.
+
+</p>
+<p>For example, the route
+
+</p>
+<pre><code class="lang-java">…
+<span class="string">"/route/{variable}"</span>: <span class="string">"com.threewks.thundr.Controller.actionMethod"</span>
+…</code></pre>
+<p>will invoke the method
+
+</p>
+<pre><code class="lang-java"><span class="keyword">package</span> com.threewks.thundr;
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> {</span>
+    <span class="keyword">public</span> StringView actionMethod(String variable){
+        doSomething();
+        <span class="keyword">return</span> <span class="keyword">new</span> StringView(<span class="string">"Ok!"</span>);
+    }
+…</code></pre>
+
+</section>
+
+
+
+<section id="staticResourceAction">
+	<h4>StaticResourceAction</h4>
+<p>This type of action results in a resource being served directly. This is useful when serving javascript, css, text files or other resources which don&#39;t require any processing by your application.
+
+</p>
+<p>The routes below result in the favicon and all files under the folder &#39;static&#39; being server as static resources. 
+
+</p>
+<pre><code class="lang-java">…
+<span class="string">"/favicon.ico"</span>: <span class="string">"static"</span>,
+<span class="string">"/static/**"</span>: <span class="string">"static"</span>,
+…</code></pre>
+
+</section>
+
+
+
+<section id="redirectAction">
+	<h4>RedirectAction</h4>
+<p>This type of action results in a HTTP redirect being sent to the web request client (i.e. the user&#39;s browser). This will result in the browser requesting the resource specified in the redirect route.<br>The redirect is a <em>temporary redirect</em>, or 302.
+
+</p>
+<pre><code class="lang-java">…
+<span class="string">"/old"</span>: <span class="string">"redirect:/new"</span>,
+…</code></pre>
+
+</section>
+
+
+
+<section id="rewriteAction">
+	<h4>RewriteAction <span class="label label-warning">Verify</span></h4>
+<p>This type of action is used to cause another route to handle the request. It is similar in concept to the rewrite rules in an Apache config, but could also be considered to act as an alias.
+
+</p>
+<p>In the below example, the rewrite rule will cause the rewritten route to be invoked as though the request client invoked it directly, but unlike a redirect will be served with the url it was requested on.
+
+</p>
+<pre><code class="lang-java">…
+<span class="string">"/requestedPath"</span>    : <span class="string">"rewrite:/rewritten"</span>,
+<span class="string">"/rewritten"</span>        : <span class="string">"com.threewks.thundr.Controller.method"</span>
+…</code></pre>
+
+</section>
+
+
+
+<section id="actionResolver">
+	<h4><code>ActionResolver</code> <span class="label label-info">Advanced</span></h4>
+<p>Each type of action is handled by an <code>ActionResolver</code>. ActionResolvers process an Action when a route is requested. You can create and configure custom Action and ActionResolvers to handle routes, although in general this is not necessary. 
+
+</p>
+<p>An action resolver has two responsibilities:
+
+</p>
+<ul>
+<li>creating an <code>Action</code> for a route if it can process that route, and</li>
+<li>resolving an action it created when a route is requested by an http client</li>
 </ul>
+<p>Action resolution usually involves binding data based on route configuration and request parameters, and serving up response content and http response codes. This is done using the standard Java Servlet interfaces, <code>HttpServletRequest</code> and <code>HttpServletResponse</code>.
+
+</p>
+<p>If you wish to register a custom Action and ActionResolver, you can invoke the method
+
+</p>
+<pre><code class="lang-java">Routes.addActionResolver(Class&lt;A&gt; actionType, ActionResolver&lt;A&gt; actionResolver);</code></pre>
+<p>This needs to be done before the routes are loaded. The <code>Routes</code> object is available in the <code>InjectionConfiguration</code> during startup.
+</p>
+
+</section>
+
+ 
 	</article>
 	
 	<footer class="container">
