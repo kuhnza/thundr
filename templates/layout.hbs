@@ -55,7 +55,11 @@
 
 						{{#if sections}}
 							<a href="{{meta.href}}" class="dropdown-toggle" data-toggle="dropdown">
-								{{ucfirst meta.title}} <b class="caret"></b>
+								{{#if meta.nav_title}}
+									{{meta.nav_title}}
+								{{else}}
+									{{ucfirst meta.title}}
+								{{/if}} <b class="caret"></b>
 							</a>
 
 							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -82,7 +86,11 @@
 
 						{{else}}
 							<a href="{{meta.href}}">
-								{{ucfirst meta.title}}
+								{{#if meta.nav_title}}
+									{{meta.nav_title}}
+								{{else}}
+									{{ucfirst meta.title}}
+								{{/if}}
 							</a>
 						{{/if}}
 

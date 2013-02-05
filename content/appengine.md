@@ -4,6 +4,7 @@ template: page.hbs
 id: appengine
 title: on Google Appengine
 nav_position: 7
+nav_title: GAE
 
 ---
 
