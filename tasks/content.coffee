@@ -11,6 +11,9 @@ module.exports = (grunt) ->
 		options = @options
 			basePath: false
 			flatten: false
+			page_meta_defaults:
+				nav_position: null
+				nav_has_overview: true
 
 
 		@file.dest = path.normalize @file.dest
@@ -46,6 +49,9 @@ module.exports = (grunt) ->
 			# merge the pages href into the page data (so it can be overridden by the page itself)
 			page_data.meta = _.extend {href: page_href}, page_data.meta
 			page_data.meta._file = dest_file_path
+
+			# override the defaults with what was parsed
+			page_data.meta = _.extend {}, options.page_meta_defaults, page_data.meta
 
 			page_data
 		
