@@ -8,8 +8,17 @@
 
 {{#if sections}} {{#each sections}}
 
-<section id="{{meta.id}}">
-	{{{marked content}}}
-</section>
+{{log meta.template}}
+
+{{#if meta.template}}
+	
+	{{{content}}}
+
+{{else}}
+	<section id="{{meta.id}}">
+		{{{marked content}}}
+	</section>
+{{/if}}
+
 
 {{/each}} {{/if}}
