@@ -1,6 +1,7 @@
 ---
 id: viewResolver
 title: ViewResolver
+is_advanced_topic: true
 
 ---
 

@@ -68,7 +68,12 @@
 								{{#each sections}}
 								{{#if meta.title}}
 
-								<li><a href="{{../../meta.href}}#{{meta.id}}">{{meta.title}}</a></li>
+								<li><a href="{{../../meta.href}}#{{meta.id}}">
+									{{meta.title}}
+									{{#if meta.is_advanced_topic}}
+									<span class="label label-info">Advanced</span>
+									{{/if}}
+								</a></li>
 								
 								{{/if}}
 								{{/each}}
