@@ -1,6 +1,8 @@
 ---
 id: methodAction
 title: MethodAction
+template: sections/accordion.hbs
+starts_new_category: true
 
 ---
 

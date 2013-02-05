@@ -1,6 +1,7 @@
 ---
 id: rewriteAction
 title: RewriteAction
+template: sections/accordion.hbs
 
 ---
 

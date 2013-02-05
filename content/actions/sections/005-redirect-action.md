@@ -1,6 +1,7 @@
 ---
 id: redirectAction
 title: RedirectAction
+template: sections/accordion.hbs
 
 ---
 

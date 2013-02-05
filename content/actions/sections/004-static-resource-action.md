@@ -1,6 +1,7 @@
 ---
 id: staticResourceAction
 title: StaticResourceAction
+template: sections/accordion.hbs
 
 ---
 
