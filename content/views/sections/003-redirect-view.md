@@ -1,6 +1,7 @@
 ---
 id: redirectView
-title: Redirect View
+title: RedirectView
+template: sections/accordion.hbs
 
 ---
 

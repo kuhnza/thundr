@@ -1,6 +1,7 @@
 ---
 id: jsonView
-title: Json View
+title: JsonView
+template: sections/accordion.hbs
 
 ---
 

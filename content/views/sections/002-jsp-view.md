@@ -1,6 +1,7 @@
 ---
 id: jspView
-title: Jsp view
+title: JspView
+template: sections/accordion.hbs
 
 ---
 

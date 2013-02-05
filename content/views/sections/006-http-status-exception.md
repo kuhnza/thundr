@@ -1,6 +1,7 @@
 ---
 id: httpStatusException
 title: HttpStatusException
+template: sections/accordion.hbs
 
 ---
 

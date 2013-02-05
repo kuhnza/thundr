@@ -1,6 +1,7 @@
 ---
 id: stringView
-title: String View
+title: StringView
+template: sections/accordion.hbs
 
 ---
 
