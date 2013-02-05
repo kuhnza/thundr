@@ -2,6 +2,7 @@
 id: viewResolver
 title: ViewResolver
 is_advanced_topic: true
+starts_new_category: true
 
 ---
 
