@@ -60,8 +60,10 @@
 
 							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 
+								{{#if meta.nav_has_overview}}
 								<li><a href="{{meta.href}}">Overview</a></li>
 								<li class="divider"></li>
+								{{/if}}
 								
 								{{#each sections}}
 								{{#if meta.title}}
