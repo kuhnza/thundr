@@ -70,16 +70,19 @@
 								{{/if}}
 								
 								{{#each sections}}
-								{{#if meta.title}}
+									{{#if meta.title}}
+										
+										{{#if meta.starts_new_category}}<li class="divider"></li>{{/if}}
 
-								<li><a href="{{../../meta.href}}#{{meta.id}}">
-									{{meta.title}}
-									{{#if meta.is_advanced_topic}}
-									<span class="label label-info">Advanced</span>
+
+										<li><a href="{{../../meta.href}}#{{meta.id}}">
+											{{meta.title}}
+											{{#if meta.is_advanced_topic}}
+											<span class="label label-info">Advanced</span>
+											{{/if}}
+										</a></li>
+									
 									{{/if}}
-								</a></li>
-								
-								{{/if}}
 								{{/each}}
 
 							</ul>
