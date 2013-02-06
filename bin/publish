@@ -28,3 +28,4 @@ fi
 
 git subtree split --prefix="dist" --branch="gh-pages"
 git push $REMOTE_NAME gh-pages:gh-pages
+git branch -D gh-pages
