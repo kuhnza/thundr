@@ -822,13 +822,13 @@
 
 	<section id="injection">
 		<h4>Controller Instantiation</h4>
-<p>Controller classes are instantiated by the <a href="injectionContext.html#injectionContext">InjectionContext</a>. As such each instance can be shared between multiple, concurrent requests, so implementations should be treated as stateless.<br>Also, there is no guarantee that controllers are singletons and implementations should also take this into account.
+<p>Controller classes are instantiated by the <a href="injection-context.html#injectionContext">InjectionContext</a>. As such each instance can be shared between multiple, concurrent requests, so implementations should be treated as stateless.<br>Also, there is no guarantee that controllers are singletons and implementations should also take this into account.
 
 </p>
 <p>When a controller is instantiated, the injection context will attempt to use the constructor with the most arguments that it can satisfy.<br>The injection context will also invoke javabean setters for any objects it can satisfy.<br>Non-javabean properties can also be set by using the JSR 330 annotation <code>@Inject</code> on the property. Note that the InjectionContext does not currently support the full JSR 330 specification, just the basic @Inject annotation.
 
 </p>
-<p>You can read more <a href="injectionContext.html">here</a> about the InjectionContext, dependency injection in thundr and how to write controller and service classes the &#39;right&#39; way. 
+<p>You can read more <a href="./injection-context.html">here</a> about the InjectionContext, dependency injection in thundr and how to write controller and service classes the &#39;right&#39; way. 
 
 </p>
 <p>The below example demonstrates the different ways dependencies can be injected into controllers.
