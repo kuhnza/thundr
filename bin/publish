@@ -1,7 +1,30 @@
 #!/bin/sh
 
+REMOTE_NAME="$1"
+
 # die on anything that hits the fan
 set -e errexit;
 
+# Setup the enviroment
+PATH=$PATH:$(git --exec-path)
+
+. git-sh-setup
+
+# only work when we have subtree installed
+if [ "$(hash git-subtree &>/dev/null && echo OK)" = "" ]
+then
+	die "The publish command needs git-subtree; install git subtree (google is your best friend) or upgrade git to >=1.7.11"
+fi
+
+if [ -z $REMOTE_NAME ]
+then
+	die "Specify a valid git remote to which to publish the site to"
+fi
+
+if [ -z "$(git remote | grep ${REMOTE_NAME})" ]
+then
+	die "Could not find remote '${REMOTE_NAME}'"
+fi
+
 git subtree split --prefix="dist" --branch="gh-pages"
-git push origin gh-pages:gh-pages
+git push $REMOTE_NAME gh-pages:gh-pages
