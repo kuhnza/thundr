@@ -61,13 +61,37 @@ All content files define the `layout` attribute in their YAML front matter to de
 
 For a content file to be rendered as a Page (with support for Sections (see next section)) it should have the `template` attribute of it's YAML front matter defined as `page.hbs`. The `id` attribute should also be defined so that the rest of the site knows how to reference the page. Furthermore, defining `title` will asure for a human friendly name of the id and is used by the page template, navigation, etc.
 
+**Meta information reference**
+
+| Attribute 		| Description
+| ----------------- | -------------------------------
+| `layout`			| **required** path to the layout template (relative to template path). Use `layout.hbs` for the normal layout 
+| `template`		| **required** path to the page template (relative to template path). Use `page.hbs` for the normal page
+| `id` 				| **required** unique identifier for this page
+| `title` 			| Human friendly name of the page. Used for the site's title, in navigation, etc.
+| `description`		| Description of the page, used in the page's meta tags
+| `nav_position`	| *integer* when set the position in the navigation bar. When not set (or falsey) the page is excluded from the navigation
+| `nav_title`		| Human friendly title that will be used in the navigation. When not set, the Page's full `title` is used. Useful when the Page's title is lengthy
+| `nav_has_overview` | *boolean* when falsy a sub-navigation will not have an 'overview' item rendered. By default, it will
+
+
 #### Sections
 
 Each Page can have Sections. Sections are parts of a Page that are referable by id. This allows deep linking to certain bits of documentation. They are defined in their own content files. When a Page has Sections a dropdown menu will be generated in the navigation (see next section) containing deep links to these sections.
 
 To add a Section to a Page, add a new content file at the following path `<content_filename_without_ext>/sections/`. For example, to add a Section to the basics page create the file `basics/sections/new_section.md`.
 
-Sections are automatically included in the Page and sorted alphabetically. A good tip to easily manage the order they are in is by prefixing the filenames with a number like `001`, 002`, `003`, etc.
+Sections are automatically included in the Page and sorted alphabetically. A good tip to easily manage the order they are in is by prefixing the filenames with a number like `001`, `002`, `003`, etc.
+
+**Meta information reference**
+
+| Attribute 		| Description
+| ----------------- | -------------------------------
+| `id`				| **required** unique identifier for this section. Used in the navigation and section tag to reference it
+| `title`			| Human friendly title of section, used in the navigation
+| `starts_new_category` | *boolean* when truthy it marks a new category in sections. Basically just lets you add a divider line above the section in the navigation
+| `is_advanced_topic` | *boolean* when truthy it marks a section as an advanced topic. Basically just adds an 'advanced' label next to the section's title in the navigation
+
 
 #### Navigation 
 
