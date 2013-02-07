@@ -44,7 +44,7 @@ module.exports = (grunt) ->
 			
 			# remove the destination path to be left with the relative url
 			# TODO: remove hardcoded temp
-			page_href = dest_file_path.replace 'temp/', ''
+			page_href = path.normalize dest_file_path.replace 'temp/', ''
 
 			# merge the pages href into the page data (so it can be overridden by the page itself)
 			page_data.meta = _.extend {href: page_href}, page_data.meta
