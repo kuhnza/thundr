@@ -37,13 +37,29 @@ yeoman server
 For full documentation on the building process refer to the [static site boilerplate documentation][1].
 
 
-### Publishing the documentation
+### Publishing the built documentation
 
-We do not yet have publishing of the docs figured out. But what seems most interesting is using subtree merging (using [subslit](https://github.com/dflydev/git-subsplit/blob/master/git-subsplit.sh)?) to push the `dist` folder to [the 'gh-pages' branch of the thundr repo](https://github.com/3wks/thundr/tree/gh-pages). This way we could:
+The site can be easily published using [Github Pages](http://pages.github.com/). Simply add the repository on which to publish it as a remote
 
-- host the site on Github Pages, where it is at the moment
-- publish changes with a single command
-- still dynamically build the docs
+```
+git remote add cool-site <remote-url>
+```
+
+and run the publish script, specifying the remote to which to publish.
+
+```
+bin/publish cool-site
+```
+
+The currently commited `dist` folder of the branch that you're on will be extracted and pushed to the remote's `gh-pages` branch (the branch that github will publish).
+
+**Note:** the publish script uses Git's new 'subtree' functionality available in `v1.7.11` and above. You can also install it as a git plugin if you're running and older version of Git and have trouble upgrading by running:
+
+```
+git clone https://github.com/apenwarr/git-subtree.git
+cd git-subtree
+sudo ./install.sh
+```
 
 ## Content management
 
@@ -100,9 +116,8 @@ The navigation is automatically generated in the `layout.hbs` template. A Page h
 When a Page has Sections, a dropdown menu will be generated containing an item and deeplink for each Section. It uses the Section's `title` attribute as the text for the item.
 
 
-
 # Setup, Running and Hosting on Heroku with Node.js
-An easy way to host this site for anyone to see is by using Heroku. You can run up a single dyno (server instance) for free that is more than capable to run small sites. Once setup, deploying a new version of the app is as easy as `git push heroku` making it extremely easy to make changes or setup new servers for stuff like testing and staging.
+Another easy way to host this site for anyone to see is by using Heroku. You can run up a single dyno (server instance) for free that is more than capable to run small sites. Once setup, deploying a new version of the app is as easy as `git push heroku` making it extremely easy to make changes or setup new servers for stuff like testing and staging.
 
 The repo is completely setup to run on Heroku, straight out of the box. In order to run on Heroku we use a small Node.js based webserver to serve up whatever is in the `dist` folder. You can start the server by running
 
