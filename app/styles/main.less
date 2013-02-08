@@ -4,6 +4,10 @@
 @import "lib/highlight-tomorrow.css";
 
 .navbar-inner .nav {
+	&.hide {
+		display: none;
+	}
+
 	> li {
 		> a {
 			padding: 12px 15px 0px 15px;
@@ -12,8 +16,19 @@
 	}
 }
 .navbar .brand {
+
+.navbar-bottom {
+	
+	.tab-pane {
+		// .content-columns(4);
+	}
+}
 	padding: 2px 20px;
 }
+.navbar .navbar-search {
+	margin-top: 7px;
+}
+
 .benefits {
 	figure > h3 {
 		text-align: center;
