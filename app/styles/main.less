@@ -16,14 +16,31 @@
 	}
 }
 .navbar .brand {
+	padding: 2px 20px;
+}
 
 .navbar-bottom {
 	
 	.tab-pane {
-		// .content-columns(4);
+		.content-columns(4);
+		-webkit-column-fill: auto;
+		column-fill: auto;
+
+		.nav-list {
+			// display: inline-block;
+			margin-bottom: 10px;
+			vertical-align: top;
+			
+			-webkit-column-break-inside: avoid;
+			-moz-column-break-inside: avoid;
+			column-break-inside: avoid;
+
+			.nav-header {
+				display: block;
+				font-size: 14px;
+			}
+		}
 	}
-}
-	padding: 2px 20px;
 }
 .navbar .navbar-search {
 	margin-top: 7px;
