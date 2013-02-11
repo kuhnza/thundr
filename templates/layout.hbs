@@ -48,16 +48,18 @@
 		
 		<div class="navbar-bottom tabbable">
 			<ul class="nav nav-pills modules">
-				<li class="active"><a href="#tab-thundr" data-toggle="tab">thundr</a></li>
-				<li><a href="#tab-gae" data-toggle="tab">GAE</a></li>
+				{{#each modules}}
+				<li class="{{#equal ../current_module id}}active{{/equal}}"><a href="#{{id}}" data-toggle="tab">{{id}}</a></li>
+				{{/each}}
 			</ul>
 
 			<div class="tab-content well">
-				<div class="tab-pane active" id="tab-thundr">
+				{{#each modules}}
+				<div class="tab-pane {{#equal ../current_module id}}active{{/equal}}" id="{{id}}">
 					{{#each pages}} {{#if meta.nav_position}}
 						<ul class="nav nav-list" role="navigation">
 							
-							<li class="nav-header {{#equal meta.id ../../current_page.meta.id}}active{{/equal}}">
+							<li class="nav-header {{#equal meta.id ../../../current_page.meta.id}}active{{/equal}}">
 								<a href="{{meta.href}}">
 									{{#if meta.nav_title}}
 										{{meta.nav_title}}
@@ -95,9 +97,7 @@
 					</ul>
 					{{/if}} {{/each}}
 				</div>
-				<div class="tab-pane" id="tab-gae">
-					GAE pane
-				</div>
+				{{/each}}
 			</div>
 		</div>
 	</header>
