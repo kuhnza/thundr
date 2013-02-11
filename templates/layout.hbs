@@ -48,14 +48,14 @@
 		
 		<div class="navbar-bottom tabbable">
 			<ul class="nav nav-pills modules">
-				<li><a href="#tab-thundr" data-toggle="tab">thundr</a></li>
+				<li class="active"><a href="#tab-thundr" data-toggle="tab">thundr</a></li>
 				<li><a href="#tab-gae" data-toggle="tab">GAE</a></li>
 			</ul>
 
-			<div class="tab-content">
-				<div class="tab-pane well" id="tab-thundr">
+			<div class="tab-content well">
+				<div class="tab-pane active" id="tab-thundr">
 					{{#each pages}} {{#if meta.nav_position}}
-						<ul class="nav nav-list pull-left" role="navigation">
+						<ul class="nav nav-list" role="navigation">
 							
 							<li class="nav-header {{#equal meta.id ../../current_page.meta.id}}active{{/equal}}">
 								<a href="{{meta.href}}">

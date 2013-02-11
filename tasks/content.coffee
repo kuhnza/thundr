@@ -24,6 +24,60 @@ module.exports = (grunt) ->
 		# read all the files specified in the task
 		content_files = grunt.file.expand @file.src
 
+		# create a registery for modules so that we can nest pages properly
+		modules = {}
+		global_pages = []
+
+		module_name_regex = /modules\/([\w-_]+)\/.+/
+
+		for content_file in content_files
+			continue unless grunt.file.isFile content_file
+
+			module_name = content_file.match(module_name_regex)?[1]
+
+			registery = unless module_name?
+				# when no module name could be found
+				global_pages
+			else
+				# if we matched a module name
+				
+				unless modules[module_name]? # unless the module is already known
+					modules[module_name] = 
+						name: module_name
+						pages: []
+
+				modules[module_name].pages
+
+			# at this point we know of which this registery should be part
+
+			page_data = page_parser.parse_file content_file
+
+			# we can only render pages that specify a template to do it with
+			layout_path = "templates/#{page_data.meta.layout}"
+			unless layout_path? and grunt.file.isFile layout_path
+				grunt.log.error "Can't render page for #{content_file.cyan} because no layout has been defined"
+
+			# determine the file path of the rendered template file
+			dest_file_path = grunt_helpers.buildIndividualDest @file.dest, content_file, options.basePath, options.flatten
+			
+			# remove the destination path to be left with the relative url
+			# TODO: remove hardcoded temp
+			page_href = path.normalize dest_file_path.replace 'temp/', ''
+
+			# merge the pages href into the page data (so it can be overridden by the page itself)
+			page_data.meta = _.extend {href: page_href}, page_data.meta
+			page_data.meta._file = dest_file_path
+
+			# override the defaults with what was parsed
+			page_data.meta = _.extend {}, options.page_meta_defaults, page_data.meta
+
+			registery.push page_data
+
+		console.log modules
+
+
+
+
 		# for each file, retrieve the page data
 		pages = for content_file in content_files
 			# nothing we can do if this is not a file
@@ -40,7 +94,6 @@ module.exports = (grunt) ->
 
 			# determine the file path of the rendered template file
 			dest_file_path = grunt_helpers.buildIndividualDest @file.dest, content_file, options.basePath, options.flatten
-
 			
 			# remove the destination path to be left with the relative url
 			# TODO: remove hardcoded temp
@@ -55,6 +108,10 @@ module.exports = (grunt) ->
 
 			page_data
 		
+		# sort the pages of each module
+		for site_module of modules
+			site_module.pages = _.sortBy pages, (page) -> page.meta.nav
+
 		pages = _.sortBy pages, (page) -> page.meta.nav_position
 
 		# for all the pages we have

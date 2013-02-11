@@ -30,7 +30,7 @@ module.exports = function( grunt ) {
     'generate-html': {
       compile: {
         files: {
-          'temp/*.html': 'content/*.md'
+          'temp/*.html': ['content/modules/*/*.md', 'content/*.md']
         },
         options: {
           basePath: 'content'
