@@ -3,15 +3,15 @@
 <head>
 	<meta charset="utf-8" lang="en-us"/>
 	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
-	<!--[if lt IE 9]> <script src="/thundr/javascript/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
+	<!--[if lt IE 9]> <script src="/thundr/scripts/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
 	<title>thundr - {{current_page.meta.title}}</title>
 	<link rel="shortcut icon" href="favicon.ico" />
 	<meta name="description" content="{{current_page.description}}"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
 	<meta name="keywords" content="{{current_page.keywords}}"/>
+	<base href="{{current_page.meta.path_to_root}}" />
 	
 	<meta name="google-site-verification" content="V7Os0LLLfRti7XGzTPnlO_FfsjrL6Ldi3IKeq0tVGaY" />
-	
 	<!--
 	<t:style src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css"/>
 	<t:style src="/thundr/styles/lib/bootstrap/bootstrap.css"/>
@@ -20,7 +20,7 @@
 	<link rel="stylesheet" href="styles/main.css"></link>
 	<link rel="stylesheet" href="styles/lib/font/font-awesome.css"></link>
 	<!--[if IE 7]>
-	<link rel="stylesheet" href="/thundr/styles/lib/font/font-awesome-ie7.css">
+	<link rel="stylesheet" href="styles/lib/font/font-awesome-ie7.css">
 	<![endif]-->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<!--
@@ -49,13 +49,13 @@
 		<div class="navbar-bottom tabbable">
 			<ul class="nav nav-pills modules">
 				{{#each modules}}
-				<li class="{{#equal ../current_module id}}active{{/equal}}"><a href="#{{id}}" data-toggle="tab">{{id}}</a></li>
+				<li class="{{#equal ../current_module.id id}}active{{/equal}}"><a href="#{{id}}" data-toggle="tab">{{id}}</a></li>
 				{{/each}}
 			</ul>
 
 			<div class="tab-content well">
 				{{#each modules}}
-				<div class="tab-pane {{#equal ../current_module id}}active{{/equal}}" id="{{id}}">
+				<div class="tab-pane {{#equal ../current_module.id id}}active{{/equal}}" id="{{id}}">
 					{{#each pages}} {{#if meta.nav_position}}
 						<ul class="nav nav-list" role="navigation">
 							
@@ -80,7 +80,6 @@
 									{{#if meta.title}}
 										
 										{{#if meta.starts_new_category}}<li class="divider"></li>{{/if}}
-
 
 										<li><a href="{{../../meta.href}}#{{meta.id}}">
 											{{meta.title}}
