@@ -10,7 +10,7 @@ title: dependancy injection
 
 ## Overview
 
-thundr utilises the [dependency injection](http://en.wikipedia.org/wiki/Dependency_injection) pattern to help configure your code at runtime. In particular, any classes you wish to use as [controllers](controllers.html) are created by thundr using its dependency injection framework.
+thundr utilises the [dependency injection](http://en.wikipedia.org/wiki/Dependency_injection) pattern to help configure your code at runtime. In particular, any classes you wish to use as [controllers](modules/thundr/controllers.html) are created by thundr using its dependency injection framework.
 If your controller requires dependencies, they need to be configured so that thundr can provide them.
 
 Unlike many frameworks, dependencies are configured using basic java in thundr. It does this by enforcing a specified entry point for configuring your application, which is your InjectionConfiguration class. 

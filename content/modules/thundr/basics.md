@@ -13,6 +13,6 @@ thundr, like most other web frameworks, uses the *Model-View-Controller*, or [MV
 
 In this pattern, the model and the view and the relationship between them is mediated by a controller.
 
-In thundr, this control is enacted by the method invoked inside your controller class. [more](controllers.html)
-The view is represented by a `View` object, which is the return type of the controller method. [more](views.html)
+In thundr, this control is enacted by the method invoked inside your controller class. [more](modules/thundr/controllers.html)
+The view is represented by a `View` object, which is the return type of the controller method. [more](modules/thundr/views.html)
 The model is provided to the view by the controller method, but the requirements of this depend on the type of view.
