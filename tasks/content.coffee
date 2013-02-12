@@ -89,7 +89,8 @@ module.exports = (grunt) ->
 		
 		# sort the pages of each module
 		for _module in modules
-			_module.pages = _.sortBy _module.pages, (page) -> page.meta.nav
+			_module.pages = _.sortBy _module.pages, (page) -> page.meta.nav_position
+			console.log _.map _module.pages, (page) -> page.meta.id
 			modules_by_name[_module.id].pages = _module.pages
 		
 
