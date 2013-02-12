@@ -4,7 +4,7 @@ title: Controllers
 
 ---
 
-We refer to the classes invoked when using the typical [route](actions.html#routes) as *controllers*.
+We refer to the classes invoked when using the typical [route](modules/thundr/actions.html#routes) as *controllers*.
 
 When a http client makes a request, the appropriate method inside a controller is invoked. The method can perform processing and gather data for the response, then return a `View` object. The view controls the content and http response codes that are returned to the client.  
 

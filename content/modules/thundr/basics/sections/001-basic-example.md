@@ -6,7 +6,7 @@ title: Basic Example
 
 #### Basic Example
 
-Routes file - routes.json [more](actions.html)
+Routes file - routes.json [more](modules/thundr/actions.html)
 
 ```json
 {
@@ -14,7 +14,7 @@ Routes file - routes.json [more](actions.html)
 }
 ```
 
-Controller - Controller.java [more](controllers.html)
+Controller - Controller.java [more](modules/thundr/controllers.html)
 
 ```java
 package com.threewks.web;

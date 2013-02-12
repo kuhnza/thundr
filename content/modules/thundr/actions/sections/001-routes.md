@@ -24,7 +24,7 @@ By default routes are loaded from the resource file `routes.json`. Within this f
 ```
 
 
-Routes can map to different types of actions. The most common action is `MethodAction`, which will result in a method being invoked on a [controller](controllers.html). 
+Routes can map to different types of actions. The most common action is `MethodAction`, which will result in a method being invoked on a [controller](modules/thundr/controllers.html). 
 
 In the above example, requests to the base url '/' will be processed by the *home* method defined in the *Controller* class.
 GET Requests on '/form/' will be processed by *getForm()* and POSTs will be processed by *postForm()*.

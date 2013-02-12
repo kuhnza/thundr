@@ -10,7 +10,7 @@ starts_new_category: true
 
 This type of action results in a method being invoked on a class.
 Classes invoked like this are referred to as *controllers*, however this is a semantic distinction - any class can be used as a controller.
-You can read more about controllers [here](controllers.html).
+You can read more about controllers [here](modules/thundr/controllers.html).
 
 For example, the route
 

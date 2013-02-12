@@ -6,7 +6,7 @@ title: Views
 
 #### Views
 
-[Controller](controllers.html) methods can return a `View` object, which controls what content is returned to the request client.
+[Controller](modules/thundr/controllers.html) methods can return a `View` object, which controls what content is returned to the request client.
 
 thundr handles views by passing them to registered a `ViewResolver`. You can read more about registering custom view and view resolvers [here](#viewResolver).
 
