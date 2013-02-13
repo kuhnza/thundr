@@ -48,7 +48,7 @@ remote_content_main()
 
 	case "$COMMAND" in
 		register)
-			# make sure we have the name for the module and the repo url
+			# make sure we have the name for the module, the repo url and the branch
 			if [ $# -lt 1 ]; then die "To register remote content you need to name the remote module"; fi
 			if [ $# -lt 2 ]; then die "To register remote content the url to the remote to pull from is required"; fi
 			if [ $# -lt 3 ]; then die "To register remote content the remote branch to pull from is required"; fi
@@ -59,7 +59,16 @@ remote_content_main()
 			
 			shift 3
 
-			remote_content_register ;;
+			cmd_register ;;
+
+		pull)
+			if [ $# -lt 1 ]; then die "Specify the module you wish the pull updates for"; fi
+
+			REMOTE_NAME="$1"
+
+			shift 1
+			
+			cmd_pull ;;
 
 		*) die "Unknown command" ;;
 	esac
@@ -70,15 +79,27 @@ say() {
 	echo "$@" >&2
 }
 
-remote_content_register() {
-	say "register content"
+cmd_register() {
+	say "Registering content module '${REMOTE_NAME}'"
 	
 	LOCAL_PATH="${LOCAL_PATH}${REMOTE_NAME}"
 
-	if git subtree add $REMOTE_URL $REMOTE_BRANCH --prefix="$LOCAL_PATH"; then
+	if git subtree add $REMOTE_URL $REMOTE_BRANCH --prefix="$LOCAL_PATH" --message="Added remote content module '${REMOTE_NAME}'"; then
 		say "Awesome, remote content registered"
 	else
 		say "Too bad, coudn't register the remote content"
+	fi
+}
+
+cmd_pull() {
+	say "Pulling updates for module '${REMOTE_NAME}'"
+
+	LOCAL_PATH="${LOCAL_PATH}${REMOTE_NAME}"
+
+	if git subtree pull --prefix=$LOCAL_PATH --message="Pulled latest from content module '${REMOTE_NAME}'"; then
+		say "Pulled the latest changes for '${REMOTE_NAME}"
+	else
+		say "Could not pull the latest changs"
 	fi
 }
 
