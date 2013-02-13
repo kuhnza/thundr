@@ -1,0 +1,85 @@
+#!/bin/sh
+
+if [ $# -eq 0 ]; then
+	set -- -h
+fi
+
+OPTS_SPEC="\
+remote-content register <module_name> <remote_url> <branch>
+remote-content pull <module_name> <branch>
+--
+
+h,help 	show the help
+"
+eval "$(echo "$OPTS_SPEC" | git rev-parse --parseopt -- "$@" || echo exit $?)"
+
+
+# Setup the enviroment
+PATH=$PATH:$(git --exec-path)
+
+. git-sh-setup
+
+# only work when we have subtree installed
+if [ "$(hash git-subtree &>/dev/null && echo OK)" = "" ]
+then
+	die "To manage remote content we need git-subtree; install git subtree (google is your best friend) or upgrade git to >=1.7.11"
+fi
+
+LOCAL_PATH="content/modules/"
+REMOTE_NAME=
+REMOTE_URL=
+REMOTE_BRANCH=
+
+remote_content_main()
+{
+	# parse out the options first
+	while [ $# -gt 0 ]; do
+		opt="$1"
+		shift
+
+		case "$opt" in
+			--) break ;;
+			*) die "Unexpected option: $opt" ;;
+		esac
+	done
+
+	COMMAND="$1"
+	shift
+
+	case "$COMMAND" in
+		register)
+			# make sure we have the name for the module and the repo url
+			if [ $# -lt 1 ]; then die "To register remote content you need to name the remote module"; fi
+			if [ $# -lt 2 ]; then die "To register remote content the url to the remote to pull from is required"; fi
+			if [ $# -lt 3 ]; then die "To register remote content the remote branch to pull from is required"; fi
+			
+			REMOTE_NAME="$1"
+			REMOTE_URL="$2"
+			REMOTE_BRANCH="$3"
+			
+			shift 3
+
+			remote_content_register ;;
+
+		*) die "Unknown command" ;;
+	esac
+
+}
+
+say() {
+	echo "$@" >&2
+}
+
+remote_content_register() {
+	say "register content"
+	
+	LOCAL_PATH="${LOCAL_PATH}${REMOTE_NAME}"
+
+	if git subtree add $REMOTE_URL $REMOTE_BRANCH --prefix="$LOCAL_PATH"; then
+		say "Awesome, remote content registered"
+	else
+		say "Too bad, coudn't register the remote content"
+	fi
+}
+
+remote_content_main "$@"
