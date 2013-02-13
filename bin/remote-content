@@ -63,10 +63,14 @@ remote_content_main()
 
 		pull)
 			if [ $# -lt 1 ]; then die "Specify the module you wish the pull updates for"; fi
+			if [ $# -lt 2 ]; then die "Specify the url to the remote to pull from"; fi
+			if [ $# -lt 3 ]; then die "To register remote content the remote branch to pull from is required"; fi
 
 			REMOTE_NAME="$1"
+			REMOTE_URL="$2"
+			REMOTE_BRANCH="$3"
 
-			shift 1
+			shift 3
 			
 			cmd_pull ;;
 
@@ -96,7 +100,7 @@ cmd_pull() {
 
 	LOCAL_PATH="${LOCAL_PATH}${REMOTE_NAME}"
 
-	if git subtree pull --prefix=$LOCAL_PATH --message="Pulled latest from content module '${REMOTE_NAME}'"; then
+	if git subtree pull --prefix="$LOCAL_PATH" $REMOTE_URL $REMOTE_BRANCH --message="Pulled latest from content module '${REMOTE_NAME}'"; then
 		say "Pulled the latest changes for '${REMOTE_NAME}"
 	else
 		say "Could not pull the latest changs"
