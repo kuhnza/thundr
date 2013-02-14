@@ -110,18 +110,18 @@ cmd_pull() {
 
 	# default to pulling HEAD
 	if [ -z "$REMOTE_BRANCH" ]; then
-		$REMOTE_BRANCH="HEAD"
+		REMOTE_BRANCH="HEAD"
 	fi
 
 	if [ ! -e "$MODULE_PATH" ]; then
-		$command = "add"
+		COMMAND="add"
 	else
-		$command = "pull"
+		COMMAND="pull"
 	fi
 
-	if git subtree $command --prefix="$MODULE_PATH" $REMOTE --message="Pulled latest from content module '${MODULE_NAME}'" $REMOTE_BRANCH; then
+	if git subtree $COMMAND --prefix="$MODULE_PATH" $REMOTE --message="Pulled latest from content module '${MODULE_NAME}'" $REMOTE_BRANCH; then
 		[ $command = "pull" ] && say "Pulled the latest changes for '${MODULE_NAME}"
-		[ $command = "add"] && say "Added and pulled the latest changes for '${MODULE_NAME}"
+		[ $command = "add" ] && say "Added and pulled the latest changes for '${MODULE_NAME}"
 	else
 		die "Could not pull the latest changes"
 	fi
