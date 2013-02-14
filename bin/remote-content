@@ -89,6 +89,7 @@ cmd_register() {
 	if git subtree add --prefix="content/modules/${REMOTE_NAME}" "$REMOTE_URL"; then
 		say "Registered the content module '${REMOTE_NAME}'"
 	else
+		git remote rm "content/${REMOTE_NAME}"
 		say "Couldn't register the module '${REMOTE_NAME}'"
 	fi
 }
