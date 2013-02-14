@@ -51,24 +51,20 @@ remote_content_main()
 			# make sure we have the name for the module, the repo url and the branch
 			if [ $# -lt 1 ]; then die "To register remote content you need to name the remote module"; fi
 			if [ $# -lt 2 ]; then die "To register remote content the url to the remote to pull from is required"; fi
-			if [ $# -lt 3 ]; then die "To register remote content the remote branch to pull from is required"; fi
 			
 			REMOTE_NAME="$1"
 			REMOTE_URL="$2"
-			REMOTE_BRANCH="$3"
 			
-			shift 3
+			shift 2
 
 			cmd_register ;;
 
 		pull)
 			if [ $# -lt 1 ]; then die "Specify the module you wish the pull updates for"; fi
-			if [ $# -lt 2 ]; then die "Specify the url to the remote to pull from"; fi
-			if [ $# -lt 3 ]; then die "To register remote content the remote branch to pull from is required"; fi
+			#if [ $# -lt 2 ]; then die "To register remote content the remote branch to pull from is required"; fi
 
 			REMOTE_NAME="$1"
-			REMOTE_URL="$2"
-			REMOTE_BRANCH="$3"
+			REMOTE_BRANCH="$2"
 
 			shift 3
 			
@@ -85,13 +81,15 @@ say() {
 
 cmd_register() {
 	say "Registering content module '${REMOTE_NAME}'"
-	
-	LOCAL_PATH="${LOCAL_PATH}${REMOTE_NAME}"
 
-	if git subtree add $REMOTE_URL $REMOTE_BRANCH --prefix="$LOCAL_PATH" --message="Added remote content module '${REMOTE_NAME}'"; then
-		say "Awesome, remote content registered"
+	if ! git remote | grep "^content/${REMOTE_NAME}$" > /dev/null; then
+		git remote add "content/${REMOTE_NAME}" "${REMOTE_URL}"
+	fi
+
+	if git subtree add --prefix="content/modules/${REMOTE_NAME}" "$REMOTE_URL"; then
+		say "Registered the content module '${REMOTE_NAME}'"
 	else
-		say "Too bad, coudn't register the remote content"
+		say "Couldn't register the module '${REMOTE_NAME}'"
 	fi
 }
 
@@ -99,8 +97,9 @@ cmd_pull() {
 	say "Pulling updates for module '${REMOTE_NAME}'"
 
 	LOCAL_PATH="${LOCAL_PATH}${REMOTE_NAME}"
+	REMOTE="content/${REMOTE_NAME}"
 
-	if git subtree pull --prefix="$LOCAL_PATH" $REMOTE_URL $REMOTE_BRANCH --message="Pulled latest from content module '${REMOTE_NAME}'"; then
+	if git subtree pull --prefix="$LOCAL_PATH" $REMOTE --message="Pulled latest from content module '${REMOTE_NAME}'"; then
 		say "Pulled the latest changes for '${REMOTE_NAME}"
 	else
 		say "Could not pull the latest changs"
