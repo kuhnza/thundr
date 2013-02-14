@@ -114,7 +114,7 @@ cmd_pull() {
 		COMMAND="pull"
 	fi
 
-	if git subtree $COMMAND --prefix="$MODULE_PATH" $REMOTE --message="Pulled latest from content module '${MODULE_NAME}'" $REMOTE_BRANCH; then
+	if git subtree $COMMAND --prefix="$MODULE_PATH" $REMOTE $REMOTE_BRANCH --message="Pulled latest from content module '${MODULE_NAME}'"; then
 		[ $command = "pull" ] && say "Pulled the latest changes for '${MODULE_NAME}"
 		[ $command = "add" ] &&  say "Added and pulled the latest changes for '${MODULE_NAME}"
 	else
