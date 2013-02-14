@@ -62,7 +62,7 @@ remote_content_main()
 
 		pull)
 			if [ $# -lt 1 ]; then die "Specify the module you wish the pull updates for"; fi
-			#if [ $# -lt 2 ]; then die "To register remote content the remote branch to pull from is required"; fi
+			if [ $# -lt 2 ]; then die "Specify the branch on the remote which to pull from"; fi
 
 			MODULE_NAME="$1"
 			REMOTE_BRANCH="$2"
@@ -108,11 +108,6 @@ cmd_pull() {
 	REMOTE_NAME="content/${MODULE_NAME}"
 	MODULE_PATH="${LOCAL_PATH}${MODULE_NAME}"
 
-	# default to pulling HEAD
-	if [ -z "$REMOTE_BRANCH" ]; then
-		REMOTE_BRANCH="HEAD"
-	fi
-
 	if [ ! -e "$MODULE_PATH" ]; then
 		COMMAND="add"
 	else
@@ -121,7 +116,7 @@ cmd_pull() {
 
 	if git subtree $COMMAND --prefix="$MODULE_PATH" $REMOTE --message="Pulled latest from content module '${MODULE_NAME}'" $REMOTE_BRANCH; then
 		[ $command = "pull" ] && say "Pulled the latest changes for '${MODULE_NAME}"
-		[ $command = "add" ] && say "Added and pulled the latest changes for '${MODULE_NAME}"
+		[ $command = "add" ] &&  say "Added and pulled the latest changes for '${MODULE_NAME}"
 	else
 		die "Could not pull the latest changes"
 	fi
