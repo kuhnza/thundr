@@ -48,13 +48,13 @@
 		
 		<div class="navbar-bottom tabbable">
 			<ul class="nav nav-pills modules">
-				{{#each modules}}
-				<li class="{{#equal ../current_module.id id}}active{{/equal}}"><a href="#{{id}}" data-toggle="tab">{{id}}</a></li>
-				{{/each}}
+				{{#each modules}} {{#if nav.position }}
+				<li class="{{#equal ../current_module.id id}}active{{/equal}}"><a href="#{{id}}" data-toggle="tab">{{name}}</a></li>
+				{{/if}} {{/each}}
 			</ul>
 
 			<div class="tab-content well">
-				{{#each modules}}
+				{{#each modules}} {{#if nav.position }}
 				<div class="tab-pane {{#equal ../current_module.id id}}active{{/equal}}" id="{{id}}">
 					{{#each pages}} {{#if meta.nav_position}}
 						<ul class="nav nav-list" role="navigation">
@@ -96,7 +96,7 @@
 					</ul>
 					{{/if}} {{/each}}
 				</div>
-				{{/each}}
+				{{/if}} {{/each}}
 			</div>
 		</div>
 	</header>

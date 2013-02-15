@@ -29,12 +29,12 @@ module.exports = (grunt) ->
 		modules_by_name = {}
 		global_pages = []
 
-		module_name_regex = /modules\/([\w-_]+)\/.+/
+		module_name_regex = /(modules\/)([\w-_]+)\/(.+)/
 
 		pages = for content_file in content_files
 			continue unless grunt.file.isFile content_file
 
-			module_name = content_file.match(module_name_regex)?[1]
+			module_name = content_file.match(module_name_regex)?[2]
 
 			registery = unless module_name?
 				# when no module name could be found
@@ -43,8 +43,20 @@ module.exports = (grunt) ->
 				# if we matched a module name
 				
 				unless modules_by_name[module_name]? # unless the module is already known
-					new_module = modules_by_name[module_name] = 
+					# create a new module
+					module_path = content_file.replace module_name_regex, '$1$2'
+					module_manifest_path = path.join module_path, 'content_module.json'
+
+					if grunt.file.isFile module_manifest_path
+						module_manifest = grunt.file.readJSON module_manifest_path
+					else
+						module_manifest = {}
+
+					new_module = modules_by_name[module_name] = _.extend
 						id: module_name
+						name: module_name
+						nav: {}
+					, module_manifest,
 						pages: []
 
 					modules.push new_module
@@ -92,8 +104,9 @@ module.exports = (grunt) ->
 			_module.pages = _.sortBy _module.pages, (page) -> page.meta.nav_position
 			console.log _.map _module.pages, (page) -> page.meta.id
 			modules_by_name[_module.id].pages = _module.pages
-		
 
+		# sort the modules and the global pages by navigation position
+		modules = _.sortBy modules, (_module) -> _module.nav.position
 		global_pages = _.sortBy global_pages, (page) -> page.meta.nav_position
 
 		# for all the pages we have
