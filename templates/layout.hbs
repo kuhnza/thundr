@@ -30,6 +30,7 @@
 	<script src="scripts/vendor/bootstrap/bootstrap-collapse.js"></script>
 	<script src="scripts/vendor/bootstrap/bootstrap-dropdown.js"></script>
 	<script src="scripts/vendor/bootstrap/bootstrap-tab.js"></script>
+	<script src="scripts/vendor/bootstrap/bootstrap-affix.js"></script>
 </head>
 <body>
 	 <header class="container">
@@ -76,11 +77,12 @@
 	{{#equal current_page.meta.template "page.hbs"}}
 	<div class="container">
 		<div class="row">
-			<aside class="module_nav span3">
-				{{#if current_module}}
-				{{#each current_module.pages}} {{#if meta.nav_position}}
+			<aside class="module_nav_container span3">
+				<div class="module_nav">
+					{{#if current_module}}
 					<ul class="nav nav-list" role="navigation">
-						
+					{{#each current_module.pages}} {{#if meta.nav_position}}
+							
 						<li class="nav-header {{#equal meta.id ../../current_page.meta.id}}active{{/equal}}">
 							<a href="{{meta.href}}">
 								{{#if meta.nav_title}}
@@ -91,30 +93,34 @@
 							</a>
 						</li>
 
-						{{#if sections}}
-							{{#if meta.nav_has_overview}}
-							<li><a href="{{meta.href}}">Overview</a></li>
-							<li class="divider"></li>
-							{{/if}}
-
-							{{#each sections}}
-								{{#if meta.title}}
-									
-									{{#if meta.starts_new_category}}<li class="divider"></li>{{/if}}
-									<li><a href="{{../../meta.href}}#{{meta.id}}">
-										{{meta.title}}
-										{{#if meta.is_advanced_topic}}
-										<span class="label label-info">Advanced</span>
-										{{/if}}
-									</a></li>
-								
+						{{#equal meta.id ../../current_page.meta.id}}
+							{{#if sections}}
+								{{#if meta.nav_has_overview}}
+								<li><a href="{{meta.href}}">Overview</a></li>
+								<li class="divider"></li>
 								{{/if}}
-							{{/each}}
-						
-						{{/if}}
 
-				</ul>
-				{{/if}} {{/each}} {{/if}}
+								{{#each sections}}
+									{{#if meta.title}}
+										
+										{{#if meta.starts_new_category}}<li class="divider"></li>{{/if}}
+										<li><a href="{{../../meta.href}}#{{meta.id}}">
+											{{meta.title}}
+											{{#if meta.is_advanced_topic}}
+											<span class="label label-info">Advanced</span>
+											{{/if}}
+										</a></li>
+									
+									{{/if}}
+								{{/each}}
+							
+							{{/if}}
+						{{/equal}}
+					{{/if}} {{/each}} 
+					</ul>
+
+					{{/if}}
+				</div>
 			</aside>
 
 			<article id="" class="span9">
