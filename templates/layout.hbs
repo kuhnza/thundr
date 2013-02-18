@@ -40,7 +40,30 @@
 
 					<ul class="nav" role="navigation">
 						{{#each modules}} {{#if nav.position }}
-						<li class="{{#equal ../../current_module.id id}}active{{/equal}}"><a href="#{{id}}">{{name}}</a></li>
+							{{#equal pages.length 1}}
+								<li class="{{#equal ../../current_module.id id}}active{{/equal}}">
+									<a href="{{href}}">{{name}}</a>
+								</li>
+							{{else}}
+								<li class="dropdown {{#equal ../../current_module.id id}}active{{/equal}}">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" >{{name}} <b class="caret"></b></a>
+
+									<ul class="dropdown-menu">
+										{{#each pages}} {{#if meta.nav_position}}
+										<li class="{{#equal meta.id ../../../../../current_page.meta.id}}active{{/equal}}">
+											<a href="{{meta.href}}">
+												{{#if meta.nav_title}}
+													{{meta.nav_title}}
+												{{else}}
+													{{ucfirst meta.title}}
+												{{/if}}
+											</a>
+										</li>
+										{{/if}} {{/each}}
+									</ul>
+
+								</li>
+							{{/equal}}
 						{{/if}} {{/each}}
 					</ul>
 				</div>
@@ -50,7 +73,6 @@
 		
 	</header>
 
-	{{log current_page.template}}
 	{{#equal current_page.meta.template "page.hbs"}}
 	<div class="container">
 		<div class="row">
