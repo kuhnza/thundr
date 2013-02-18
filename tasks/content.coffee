@@ -99,11 +99,19 @@ module.exports = (grunt) ->
 			
 			page_data
 		
-		# sort the pages of each module
-		for _module in modules
+		for _module in modules # prefixing module with an underscore to not conflict with node's packages
+			# sort the pages of each module
 			_module.pages = _.sortBy _module.pages, (page) -> page.meta.nav_position
-			console.log _.map _module.pages, (page) -> page.meta.id
 			modules_by_name[_module.id].pages = _module.pages
+
+			# try and see if we can determine the link to the module
+			pages_for_nav = _.filter _module.pages, (page) -> page.meta.nav_position
+
+			# if we only have 1 page for navigation, set the href of the module to the href of the first page
+			if pages_for_nav.length > 0
+				_module.href = _.first(pages_for_nav).meta.href
+			else
+				_module.href = null
 
 		# sort the modules and the global pages by navigation position
 		modules = _.sortBy modules, (_module) -> _module.nav.position
