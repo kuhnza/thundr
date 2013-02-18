@@ -38,72 +38,74 @@
 				<div class="navbar-top">
 					<a class="brand" href="index.html"><img src="images/logoFullSmall.png"/></a>
 
-					<ul class="nav pull-right" role="navigation">
-						<li><a href="#table-of-contents">Table of contents</a></li>
+					<ul class="nav" role="navigation">
+						{{#each modules}} {{#if nav.position }}
+						<li class="{{#equal ../../current_module.id id}}active{{/equal}}"><a href="#{{id}}">{{name}}</a></li>
+						{{/if}} {{/each}}
 					</ul>
 				</div>
 			</div>
 
 		</nav>
 		
-		<div class="navbar-bottom tabbable">
-			<ul class="nav nav-pills modules">
-				{{#each modules}} {{#if nav.position }}
-				<li class="{{#equal ../current_module.id id}}active{{/equal}}"><a href="#{{id}}" data-toggle="tab">{{name}}</a></li>
-				{{/if}} {{/each}}
-			</ul>
-
-			<div class="tab-content well">
-				{{#each modules}} {{#if nav.position }}
-				<div class="tab-pane {{#equal ../current_module.id id}}active{{/equal}}" id="{{id}}">
-					{{#each pages}} {{#if meta.nav_position}}
-						<ul class="nav nav-list" role="navigation">
-							
-							<li class="nav-header {{#equal meta.id ../../../current_page.meta.id}}active{{/equal}}">
-								<a href="{{meta.href}}">
-									{{#if meta.nav_title}}
-										{{meta.nav_title}}
-									{{else}}
-										{{ucfirst meta.title}}
-									{{/if}}
-								</a>
-							</li>
-
-							{{#if sections}}
-
-								{{#if meta.nav_has_overview}}
-								<li><a href="{{meta.href}}">Overview</a></li>
-								<li class="divider"></li>
-								{{/if}}
-
-								{{#each sections}}
-									{{#if meta.title}}
-										
-										{{#if meta.starts_new_category}}<li class="divider"></li>{{/if}}
-
-										<li><a href="{{../../meta.href}}#{{meta.id}}">
-											{{meta.title}}
-											{{#if meta.is_advanced_topic}}
-											<span class="label label-info">Advanced</span>
-											{{/if}}
-										</a></li>
-									
-									{{/if}}
-								{{/each}}
-							
-							{{/if}}
-
-					</ul>
-					{{/if}} {{/each}}
-				</div>
-				{{/if}} {{/each}}
-			</div>
-		</div>
 	</header>
 
+	{{log current_page.template}}
+	{{#equal current_page.meta.template "page.hbs"}}
+	<div class="container">
+		<div class="row">
+			<aside class="module_nav span3">
+				{{#if current_module}}
+				{{#each current_module.pages}} {{#if meta.nav_position}}
+					<ul class="nav nav-list" role="navigation">
+						
+						<li class="nav-header {{#equal meta.id ../../current_page.meta.id}}active{{/equal}}">
+							<a href="{{meta.href}}">
+								{{#if meta.nav_title}}
+									{{meta.nav_title}}
+								{{else}}
+									{{ucfirst meta.title}}
+								{{/if}}
+							</a>
+						</li>
+
+						{{#if sections}}
+							{{#if meta.nav_has_overview}}
+							<li><a href="{{meta.href}}">Overview</a></li>
+							<li class="divider"></li>
+							{{/if}}
+
+							{{#each sections}}
+								{{#if meta.title}}
+									
+									{{#if meta.starts_new_category}}<li class="divider"></li>{{/if}}
+									<li><a href="{{../../meta.href}}#{{meta.id}}">
+										{{meta.title}}
+										{{#if meta.is_advanced_topic}}
+										<span class="label label-info">Advanced</span>
+										{{/if}}
+									</a></li>
+								
+								{{/if}}
+							{{/each}}
+						
+						{{/if}}
+
+				</ul>
+				{{/if}} {{/each}} {{/if}}
+			</aside>
+
+			<article id="" class="span9">
+			{{{ current_page.content }}}
+			</article>
+		</div>
+	</div>
+	{{else}}
+
 	<article id="" class="container">
-	{{{ current_page.content }}}
+		{{{ current_page.content }}}
 	</article>
+	{{/equal}}
 	
 	<footer class="container">
 		<div class="navbar">
