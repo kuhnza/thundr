@@ -19,6 +19,17 @@ require([], function() {
 
 		$('.dropdown-toggle').dropdown();
 		$('.collapse').collapse();
+
+		// with timeout, just as Bootstraps own docs use
+		setTimeout(function() {
+			$('.module_nav').affix({
+				offset: {
+					top: function() {
+						return $('.module_nav_container').offset().top;
+					}
+				}
+			});
+		}, 100);
 	});
 	
 });

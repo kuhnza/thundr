@@ -17,7 +17,7 @@
 	<t:style src="styles/lib/bootstrap/bootstrap.css"/>
 	-->
 	<link rel="stylesheet" href="styles/lib/bootstrap/1a11dd2d.bootstrap.css"></link>
-	<link rel="stylesheet" href="styles/dfe2cf67.main.css"></link>
+	<link rel="stylesheet" href="styles/dcca9bf0.main.css"></link>
 	<link rel="stylesheet" href="styles/lib/font/4712f287.font-awesome.css"></link>
 	<!--[if IE 7]>
 	<link rel="stylesheet" href="styles/lib/font/8edda79c.font-awesome-ie7.css">
@@ -30,6 +30,7 @@
 	<script src="scripts/vendor/bootstrap/be7d85b6.bootstrap-collapse.js"></script>
 	<script src="scripts/vendor/bootstrap/d0829daa.bootstrap-dropdown.js"></script>
 	<script src="scripts/vendor/bootstrap/9fb1af1d.bootstrap-tab.js"></script>
+	<script src="scripts/vendor/bootstrap/0d084ac1.bootstrap-affix.js"></script>
 </head>
 <body>
 	 <header class="container">
@@ -38,39 +39,92 @@
 				<div class="navbar-top">
 					<a class="brand" href="./index.html"><img src="images/79eca7d9.logoFullSmall.png"/></a>
 
-					<ul class="nav pull-right" role="navigation">
-						<li><a href="#table-of-contents">Table of contents</a></li>
+					<ul class="nav" role="navigation">
+						 
+							
+								<li class="dropdown ">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" >thundr <b class="caret"></b></a>
+
+									<ul class="dropdown-menu">
+										 
+										<li class="active">
+											<a href="modules/thundr/basics.html">
+												
+													Basics
+												
+											</a>
+										</li>
+										  
+										<li class="">
+											<a href="modules/thundr/controllers.html">
+												
+													Controllers
+												
+											</a>
+										</li>
+										  
+										<li class="">
+											<a href="modules/thundr/views.html">
+												
+													Views
+												
+											</a>
+										</li>
+										  
+										<li class="">
+											<a href="modules/thundr/actions.html">
+												
+													Actions
+												
+											</a>
+										</li>
+										  
+										<li class="">
+											<a href="modules/thundr/injection-context.html">
+												
+													Dependancy injection
+												
+											</a>
+										</li>
+										 
+									</ul>
+
+								</li>
+							
+						  
+							
+								<li class="">
+									<a href="modules/thundr-gae/appengine.html">thundr-gae</a>
+								</li>
+							
+						 
 					</ul>
 				</div>
 			</div>
 
 		</nav>
 		
-		<div class="navbar-bottom tabbable">
-			<ul class="nav nav-pills modules">
-				
-				<li class="active"><a href="#thundr" data-toggle="tab">thundr</a></li>
-				
-				<li class=""><a href="#thundr-gae" data-toggle="tab">thundr-gae</a></li>
-				
-			</ul>
+	</header>
 
-			<div class="tab-content well">
-				
-				<div class="tab-pane active" id="thundr">
+	
+	<div class="container">
+		<div class="row">
+			<aside class="module_nav_container span3">
+				<div class="module_nav">
+					
+					<ul class="nav nav-list" role="navigation">
 					 
-						<ul class="nav nav-list" role="navigation">
 							
-							<li class="nav-header active">
-								<a href="modules/thundr/basics.html">
-									
-										Basics
-									
-								</a>
-							</li>
+						<li class="nav-header active">
+							<a href="modules/thundr/basics.html">
+								
+									Basics
+								
+							</a>
+						</li>
 
+						
 							
-
 								
 								<li><a href="modules/thundr/basics.html">Overview</a></li>
 								<li class="divider"></li>
@@ -80,7 +134,6 @@
 									
 										
 										
-
 										<li><a href="modules/thundr/basics.html#basicExample">
 											Basic Example
 											
@@ -91,7 +144,6 @@
 									
 										
 										
-
 										<li><a href="modules/thundr/basics.html#applicationConfiguration">
 											Configuration
 											
@@ -102,7 +154,6 @@
 									
 										
 										<li class="divider"></li>
-
 										<li><a href="modules/thundr/basics.html#webXml">
 											web.xml
 											
@@ -113,7 +164,6 @@
 									
 										
 										
-
 										<li><a href="modules/thundr/basics.html#modulesProperties">
 											modules.properties
 											
@@ -124,7 +174,6 @@
 									
 										
 										
-
 										<li><a href="modules/thundr/basics.html#injectionConfiguration">
 											InjectionConfiguration
 											
@@ -135,7 +184,6 @@
 									
 										
 										
-
 										<li><a href="modules/thundr/basics.html#applicationProperties">
 											application.properties
 											
@@ -145,423 +193,60 @@
 								
 							
 							
-
-					</ul>
+						
 					  
-						<ul class="nav nav-list" role="navigation">
 							
-							<li class="nav-header ">
-								<a href="modules/thundr/controllers.html">
-									
-										Controllers
-									
-								</a>
-							</li>
-
-							
-
+						<li class="nav-header ">
+							<a href="modules/thundr/controllers.html">
 								
-								<li><a href="modules/thundr/controllers.html">Overview</a></li>
-								<li class="divider"></li>
+									Controllers
 								
+							</a>
+						</li>
 
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/controllers.html#controllers">
-											Controllers
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/controllers.html#views">
-											Views
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/controllers.html#dataBinding">
-											Data binding
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/controllers.html#separationOfConcerns">
-											Seperation of concerns
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/controllers.html#injection">
-											Injection
-											
-										</a></li>
-									
-									
-								
-							
-							
-
-					</ul>
+						
 					  
-						<ul class="nav nav-list" role="navigation">
 							
-							<li class="nav-header ">
-								<a href="modules/thundr/views.html">
-									
-										Views
-									
-								</a>
-							</li>
-
-							
-
+						<li class="nav-header ">
+							<a href="modules/thundr/views.html">
 								
-								<li><a href="modules/thundr/views.html">Overview</a></li>
-								<li class="divider"></li>
+									Views
 								
+							</a>
+						</li>
 
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/views.html#views">
-											Views
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/views.html#jspView">
-											JspView
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/views.html#redirectView">
-											RedirectView
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/views.html#jsonView">
-											JsonView
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/views.html#stringView">
-											StringView
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/views.html#httpStatusException">
-											HttpStatusException
-											
-										</a></li>
-									
-									
-								
-									
-										
-										<li class="divider"></li>
-
-										<li><a href="modules/thundr/views.html#viewResolver">
-											ViewResolver
-											
-											<span class="label label-info">Advanced</span>
-											
-										</a></li>
-									
-									
-								
-							
-							
-
-					</ul>
+						
 					  
-						<ul class="nav nav-list" role="navigation">
 							
-							<li class="nav-header ">
-								<a href="modules/thundr/actions.html">
-									
-										Actions
-									
-								</a>
-							</li>
-
-							
-
+						<li class="nav-header ">
+							<a href="modules/thundr/actions.html">
 								
-
+									Actions
 								
-									
-										
-										
+							</a>
+						</li>
 
-										<li><a href="modules/thundr/actions.html#routes">
-											Routes
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/actions.html#actions">
-											Actions
-											
-										</a></li>
-									
-									
-								
-									
-										
-										<li class="divider"></li>
-
-										<li><a href="modules/thundr/actions.html#methodAction">
-											MethodAction
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/actions.html#staticResourceAction">
-											StaticResourceAction
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/actions.html#redirectAction">
-											RedirectAction
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/actions.html#rewriteAction">
-											RewriteAction
-											
-										</a></li>
-									
-									
-								
-									
-										
-										<li class="divider"></li>
-
-										<li><a href="modules/thundr/actions.html#actionResolver">
-											ActionResolver
-											
-											<span class="label label-info">Advanced</span>
-											
-										</a></li>
-									
-									
-								
-							
-							
-
-					</ul>
+						
 					  
-						<ul class="nav nav-list" role="navigation">
 							
-							<li class="nav-header ">
-								<a href="modules/thundr/injection-context.html">
-									
-										Dependancy injection
-									
-								</a>
-							</li>
-
-							
-
+						<li class="nav-header ">
+							<a href="modules/thundr/injection-context.html">
 								
-								<li><a href="modules/thundr/injection-context.html">Overview</a></li>
-								<li class="divider"></li>
+									Dependancy injection
 								
+							</a>
+						</li>
 
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/injection-context.html#injectionContext">
-											InjectionContext
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/injection-context.html#injectionTypes">
-											Injection by type
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/injection-context.html#namedTypes">
-											Injection by named type
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/injection-context.html#instantiation">
-											Instantiation
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr/injection-context.html#properties">
-											Properties
-											
-										</a></li>
-									
-									
-								
-							
-							
-
+						
+					  
 					</ul>
-					 
+
+					
 				</div>
-				
-				<div class="tab-pane " id="thundr-gae">
-					 
-						<ul class="nav nav-list" role="navigation">
-							
-							<li class="nav-header ">
-								<a href="modules/thundr-gae/appengine.html">
-									
-										GAE
-									
-								</a>
-							</li>
+			</aside>
 
-							
-
-								
-								<li><a href="modules/thundr-gae/appengine.html">Overview</a></li>
-								<li class="divider"></li>
-								
-
-								
-									
-										
-										
-
-										<li><a href="modules/thundr-gae/appengine.html#settingUp">
-											Setting Up
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-
-										<li><a href="modules/thundr-gae/appengine.html#moduleFeatures">
-											Module Features
-											
-										</a></li>
-									
-									
-								
-							
-							
-
-					</ul>
-					 
-				</div>
-				
-			</div>
-		</div>
-	</header>
-
-	<article id="" class="container">
-	<div class="page-header">
+			<article id="" class="span9">
+			<div class="page-header">
 	<h1>thundr <small>basics</small></h1>
 </div>
 
@@ -786,7 +471,10 @@ serverUrl%production=www.production.com</code></pre>
 
 
  
-	</article>
+			</article>
+		</div>
+	</div>
+	
 	
 	<footer class="container">
 		<div class="navbar">
@@ -822,7 +510,7 @@ serverUrl%production=www.production.com</code></pre>
 	  })();
 	</script>
 
-	<script src="scripts/032177d9.amd-app.js"></script>
+	<script src="scripts/16ccd7a9.amd-app.js"></script>
 </body>
 </html>
 		
