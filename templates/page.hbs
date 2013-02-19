@@ -1,22 +1,73 @@
-<div class="page-header">
-	<h1>thundr <small>{{meta.title}}</small></h1>
+<div class="row">
+	<aside class="module_nav_container span3">
+		<div class="module_nav">
+			{{#if meta.module}}
+			<ul class="nav nav-list" role="navigation">
+			{{#each meta.module.pages}} {{#if meta.nav_position}}
+					
+				<li class="nav-header {{#equal meta.id ../../meta.id}}active{{/equal}}">
+					<a href="{{meta.href}}">
+						{{#if meta.nav_title}}
+							{{meta.nav_title}}
+						{{else}}
+							{{ucfirst meta.title}}
+						{{/if}}
+					</a>
+				</li>
+
+				{{#equal meta.id ../../meta.id}}
+					{{#if sections}}
+						{{#if meta.nav_has_overview}}
+						<li><a href="{{meta.href}}#page-overview" data-target="#page-overview">Overview</a></li>
+						<li class="divider"></li>
+						{{/if}}
+
+						{{#each sections}}
+							{{#if meta.title}}
+								
+								{{#if meta.starts_new_category}}<li class="divider"></li>{{/if}}
+								<li><a href="{{../../meta.href}}#{{meta.id}}" data-target="#{{meta.id}}">
+									{{meta.title}}
+									{{#if meta.is_advanced_topic}}
+									<span class="label label-info">Advanced</span>
+									{{/if}}
+								</a></li>
+							
+							{{/if}}
+						{{/each}}
+					
+					{{/if}}
+				{{/equal}}
+			{{/if}} {{/each}} 
+			</ul>
+
+			{{/if}}
+		</div>
+	</aside>
+
+	<article id="{{meta.id}}" class="span9">
+		<div class="page-header">
+			<h1>thundr <small>{{meta.title}}</small></h1>
+		</div>
+
+		<section id="page-overview" class="overview">
+			{{{marked content}}}
+		</section>
+
+		{{#if sections}} {{#each sections}}
+
+		{{#if meta.template}}
+			
+			{{{content}}}
+
+		{{else}}
+			<section id="{{meta.id}}">
+				{{{marked content}}}
+			</section>
+		{{/if}}
+
+
+		{{/each}} {{/if}}
+
+	</article>
 </div>
-
-<section id="page-overview" class="overview">
-	{{{marked content}}}
-</section>
-
-{{#if sections}} {{#each sections}}
-
-{{#if meta.template}}
-	
-	{{{content}}}
-
-{{else}}
-	<section id="{{meta.id}}">
-		{{{marked content}}}
-	</section>
-{{/if}}
-
-
-{{/each}} {{/if}}
