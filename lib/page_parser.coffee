@@ -99,7 +99,6 @@ module.exports = class PageParser
 		for child_node in child_nodes
 			if _.isArray child_node
 				for child_page in child_node
-					console.log child_page.meta.id
 					@render_page child_page
 			else
 				@render_page child_node
