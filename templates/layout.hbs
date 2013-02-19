@@ -27,12 +27,8 @@
 	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
 	-->
 	<script src="scripts/vendor/bootstrap/bootstrap.min.js"></script>
-	<script src="scripts/vendor/bootstrap/bootstrap-collapse.js"></script>
-	<script src="scripts/vendor/bootstrap/bootstrap-dropdown.js"></script>
-	<script src="scripts/vendor/bootstrap/bootstrap-tab.js"></script>
-	<script src="scripts/vendor/bootstrap/bootstrap-affix.js"></script>
 </head>
-<body>
+<body data-spy="scroll" data-target=".module_nav">
 	 <header class="container">
 		<nav class="navbar">
 			<div class="navbar-inner">
@@ -96,7 +92,7 @@
 						{{#equal meta.id ../../current_page.meta.id}}
 							{{#if sections}}
 								{{#if meta.nav_has_overview}}
-								<li><a href="{{meta.href}}">Overview</a></li>
+								<li><a href="{{meta.href}}#page-overview" data-target="#page-overview">Overview</a></li>
 								<li class="divider"></li>
 								{{/if}}
 
@@ -104,7 +100,7 @@
 									{{#if meta.title}}
 										
 										{{#if meta.starts_new_category}}<li class="divider"></li>{{/if}}
-										<li><a href="{{../../meta.href}}#{{meta.id}}">
+										<li><a href="{{../../meta.href}}#{{meta.id}}" data-target="#{{meta.id}}">
 											{{meta.title}}
 											{{#if meta.is_advanced_topic}}
 											<span class="label label-info">Advanced</span>
