@@ -85,7 +85,8 @@ module.exports = (grunt) ->
 			# merge the pages href into the page data (so it can be overridden by the page itself)
 			page_data.meta = _.extend 
 				href: page_href
-				module: module_name
+				module_name: module_name
+				module: modules_by_name[module_name]
 				path_to_root: path_to_doc_root
 			, page_data.meta
 
@@ -125,7 +126,7 @@ module.exports = (grunt) ->
 				modules: modules
 				global_pages: global_pages
 				current_page: page
-				current_module: modules_by_name[page.meta.module]
+				current_module: page.meta.module
 
 			try
 				template_src = grunt.file.read layout_path
