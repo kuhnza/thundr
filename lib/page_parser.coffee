@@ -81,7 +81,31 @@ module.exports = class PageParser
 
 		# at this point we have the whole data tree for this file available
 
+		return page_data
+
+	# recursively render a page and all it's childs
+	render_page: (page_data) ->
+		# exclude meta
+		child_nodes = _.filter page_data, (page_node, node_key) ->
+			return false if node_key is 'meta' or node_key is 'content'
+
+			# the child page has to contain a meta node to be a page of itself
+			if _.isArray page_node
+				# if this is an array
+				_.some page_node, (child_node) -> child_node.meta?
+			else
+				page_node.meta?
+
+		for child_node in child_nodes
+			if _.isArray child_node
+				for child_page in child_node
+					console.log child_page.meta.id
+					@render_page child_page
+			else
+				@render_page child_node
+
 		return @render_content page_data
+
 
 	# Render the content of the page data with a template that may have been defined
 	render_content: (page_data) ->

@@ -119,6 +119,10 @@ module.exports = (grunt) ->
 
 		# for all the pages we have
 		for page in pages
+			page = page_parser.render_page page
+
+			console.log Object.keys page
+
 			layout_data =
 				modules: modules
 				global_pages: global_pages
