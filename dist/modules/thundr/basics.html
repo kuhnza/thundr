@@ -27,12 +27,8 @@
 	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
 	-->
 	<script src="scripts/vendor/bootstrap/41e29a31.bootstrap.min.js"></script>
-	<script src="scripts/vendor/bootstrap/be7d85b6.bootstrap-collapse.js"></script>
-	<script src="scripts/vendor/bootstrap/d0829daa.bootstrap-dropdown.js"></script>
-	<script src="scripts/vendor/bootstrap/9fb1af1d.bootstrap-tab.js"></script>
-	<script src="scripts/vendor/bootstrap/0d084ac1.bootstrap-affix.js"></script>
 </head>
-<body>
+<body data-spy="scroll" data-target=".module_nav">
 	 <header class="container">
 		<nav class="navbar">
 			<div class="navbar-inner">
@@ -126,7 +122,7 @@
 						
 							
 								
-								<li><a href="modules/thundr/basics.html">Overview</a></li>
+								<li><a href="modules/thundr/basics.html#page-overview" data-target="#page-overview">Overview</a></li>
 								<li class="divider"></li>
 								
 
@@ -134,7 +130,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/basics.html#basicExample">
+										<li><a href="modules/thundr/basics.html#basicExample" data-target="#basicExample">
 											Basic Example
 											
 										</a></li>
@@ -144,7 +140,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/basics.html#applicationConfiguration">
+										<li><a href="modules/thundr/basics.html#applicationConfiguration" data-target="#applicationConfiguration">
 											Configuration
 											
 										</a></li>
@@ -154,7 +150,7 @@
 									
 										
 										<li class="divider"></li>
-										<li><a href="modules/thundr/basics.html#webXml">
+										<li><a href="modules/thundr/basics.html#webXml" data-target="#webXml">
 											web.xml
 											
 										</a></li>
@@ -164,7 +160,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/basics.html#modulesProperties">
+										<li><a href="modules/thundr/basics.html#modulesProperties" data-target="#modulesProperties">
 											modules.properties
 											
 										</a></li>
@@ -174,7 +170,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/basics.html#injectionConfiguration">
+										<li><a href="modules/thundr/basics.html#injectionConfiguration" data-target="#injectionConfiguration">
 											InjectionConfiguration
 											
 										</a></li>
@@ -184,7 +180,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/basics.html#applicationProperties">
+										<li><a href="modules/thundr/basics.html#applicationProperties" data-target="#applicationProperties">
 											application.properties
 											
 										</a></li>
@@ -250,7 +246,7 @@
 	<h1>thundr <small>basics</small></h1>
 </div>
 
-<section class="overview">
+<section id="page-overview" class="overview">
 	<h2>Overview</h2>
 <p>thundr, like most other web frameworks, uses the <em>Model-View-Controller</em>, or <a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC</a>, pattern for separation of concerns between data processing and view presentation.
 

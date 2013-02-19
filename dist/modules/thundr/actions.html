@@ -27,12 +27,8 @@
 	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
 	-->
 	<script src="scripts/vendor/bootstrap/41e29a31.bootstrap.min.js"></script>
-	<script src="scripts/vendor/bootstrap/be7d85b6.bootstrap-collapse.js"></script>
-	<script src="scripts/vendor/bootstrap/d0829daa.bootstrap-dropdown.js"></script>
-	<script src="scripts/vendor/bootstrap/9fb1af1d.bootstrap-tab.js"></script>
-	<script src="scripts/vendor/bootstrap/0d084ac1.bootstrap-affix.js"></script>
 </head>
-<body>
+<body data-spy="scroll" data-target=".module_nav">
 	 <header class="container">
 		<nav class="navbar">
 			<div class="navbar-inner">
@@ -164,7 +160,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/actions.html#routes">
+										<li><a href="modules/thundr/actions.html#routes" data-target="#routes">
 											Routes
 											
 										</a></li>
@@ -174,7 +170,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/actions.html#actions">
+										<li><a href="modules/thundr/actions.html#actions" data-target="#actions">
 											Actions
 											
 										</a></li>
@@ -184,7 +180,7 @@
 									
 										
 										<li class="divider"></li>
-										<li><a href="modules/thundr/actions.html#methodAction">
+										<li><a href="modules/thundr/actions.html#methodAction" data-target="#methodAction">
 											MethodAction
 											
 										</a></li>
@@ -194,7 +190,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/actions.html#staticResourceAction">
+										<li><a href="modules/thundr/actions.html#staticResourceAction" data-target="#staticResourceAction">
 											StaticResourceAction
 											
 										</a></li>
@@ -204,7 +200,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/actions.html#redirectAction">
+										<li><a href="modules/thundr/actions.html#redirectAction" data-target="#redirectAction">
 											RedirectAction
 											
 										</a></li>
@@ -214,7 +210,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/actions.html#rewriteAction">
+										<li><a href="modules/thundr/actions.html#rewriteAction" data-target="#rewriteAction">
 											RewriteAction
 											
 										</a></li>
@@ -224,7 +220,7 @@
 									
 										
 										<li class="divider"></li>
-										<li><a href="modules/thundr/actions.html#actionResolver">
+										<li><a href="modules/thundr/actions.html#actionResolver" data-target="#actionResolver">
 											ActionResolver
 											
 											<span class="label label-info">Advanced</span>
@@ -259,7 +255,7 @@
 	<h1>thundr <small>Actions</small></h1>
 </div>
 
-<section class="overview">
+<section id="page-overview" class="overview">
 	
 </section>
 
@@ -323,12 +319,20 @@
 
 		<section id="methodAction" class="accordion-body collapse">
 			<div class="accordion-inner">
-				<h4>MethodAction</h4>
-<p>This type of action results in a method being invoked on a class.<br>Classes invoked like this are referred to as <em>controllers</em>, however this is a semantic distinction - any class can be used as a controller.<br>You can read more about controllers <a href="modules/thundr/controllers.html">here</a>.
+				<div class="accordion"><br>    <div class="accordion-group"><br>        <div class="accordion-heading"><br>            <a class="accordion-toggle" data-toggle="collapse" href="#methodAction"><br>                <i class="icon icon-chevron-down"></i><br>                MethodAction<br>            </a><br>        </div>
+
+<pre><code>    &lt;section id=&quot;methodAction&quot; class=&quot;accordion-body collapse&quot;&gt;
+        &lt;div class=&quot;accordion-inner&quot;&gt;
+            &lt;h4&gt;MethodAction&lt;/h4&gt;</code></pre>
+<p><p>This type of action results in a method being invoked on a class.<br>Classes invoked like this are referred to as <em>controllers</em>, however this is a semantic distinction - any class can be used as a controller.<br>You can read more about controllers <a href="modules/thundr/controllers.html">here</a>.
 
 </p>
-<p>For example, the route
+<p></p>
+</p>
+<p><p>For example, the route
 
+</p>
+<p></p>
 </p>
 <pre><code class="lang-java">…
 <span class="string">"/route/{variable}"</span>: <span class="string">"com.threewks.thundr.Controller.actionMethod"</span>
@@ -343,6 +347,11 @@
         <span class="keyword">return</span> <span class="keyword">new</span> StringView(<span class="string">"Ok!"</span>);
     }
 …</code></pre>
+
+<pre><code>        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/div&gt;</code></pre>
+<p></div></p>
 
 			</div>
 		</section>
@@ -367,17 +376,30 @@
 
 		<section id="staticResourceAction" class="accordion-body collapse">
 			<div class="accordion-inner">
-				<h4>StaticResourceAction</h4>
-<p>This type of action results in a resource being served directly. This is useful when serving javascript, css, text files or other resources which don&#39;t require any processing by your application.
+				<div class="accordion"><br>    <div class="accordion-group"><br>        <div class="accordion-heading"><br>            <a class="accordion-toggle" data-toggle="collapse" href="#staticResourceAction"><br>                <i class="icon icon-chevron-down"></i><br>                StaticResourceAction<br>            </a><br>        </div>
+
+<pre><code>    &lt;section id=&quot;staticResourceAction&quot; class=&quot;accordion-body collapse&quot;&gt;
+        &lt;div class=&quot;accordion-inner&quot;&gt;
+            &lt;h4&gt;StaticResourceAction&lt;/h4&gt;</code></pre>
+<p><p>This type of action results in a resource being served directly. This is useful when serving javascript, css, text files or other resources which don&#39;t require any processing by your application.
 
 </p>
-<p>The routes below result in the favicon and all files under the folder &#39;static&#39; being server as static resources. 
+<p></p>
+</p>
+<p><p>The routes below result in the favicon and all files under the folder &#39;static&#39; being server as static resources. 
 
+</p>
+<p></p>
 </p>
 <pre><code class="lang-java">…
 <span class="string">"/favicon.ico"</span>: <span class="string">"static"</span>,
 <span class="string">"/static/**"</span>: <span class="string">"static"</span>,
 …</code></pre>
+
+<pre><code>        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/div&gt;</code></pre>
+<p></div></p>
 
 			</div>
 		</section>
@@ -402,13 +424,24 @@
 
 		<section id="redirectAction" class="accordion-body collapse">
 			<div class="accordion-inner">
-				<h4>RedirectAction</h4>
-<p>This type of action results in a HTTP redirect being sent to the web request client (i.e. the user&#39;s browser). This will result in the browser requesting the resource specified in the redirect route.<br>The redirect is a <em>temporary redirect</em>, or 302.
+				<div class="accordion"><br>    <div class="accordion-group"><br>        <div class="accordion-heading"><br>            <a class="accordion-toggle" data-toggle="collapse" href="#redirectAction"><br>                <i class="icon icon-chevron-down"></i><br>                RedirectAction<br>            </a><br>        </div>
 
+<pre><code>    &lt;section id=&quot;redirectAction&quot; class=&quot;accordion-body collapse&quot;&gt;
+        &lt;div class=&quot;accordion-inner&quot;&gt;
+            &lt;h4&gt;RedirectAction&lt;/h4&gt;</code></pre>
+<p><p>This type of action results in a HTTP redirect being sent to the web request client (i.e. the user&#39;s browser). This will result in the browser requesting the resource specified in the redirect route.<br>The redirect is a <em>temporary redirect</em>, or 302.
+
+</p>
+<p></p>
 </p>
 <pre><code class="lang-java">…
 <span class="string">"/old"</span>: <span class="string">"redirect:/new"</span>,
 …</code></pre>
+
+<pre><code>        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/div&gt;</code></pre>
+<p></div></p>
 
 			</div>
 		</section>
@@ -433,17 +466,30 @@
 
 		<section id="rewriteAction" class="accordion-body collapse">
 			<div class="accordion-inner">
-				<h4>RewriteAction <span class="label label-warning">Verify</span></h4>
-<p>This type of action is used to cause another route to handle the request. It is similar in concept to the rewrite rules in an Apache config, but could also be considered to act as an alias.
+				<div class="accordion"><br>    <div class="accordion-group"><br>        <div class="accordion-heading"><br>            <a class="accordion-toggle" data-toggle="collapse" href="#rewriteAction"><br>                <i class="icon icon-chevron-down"></i><br>                RewriteAction<br>            </a><br>        </div>
+
+<pre><code>    &lt;section id=&quot;rewriteAction&quot; class=&quot;accordion-body collapse&quot;&gt;
+        &lt;div class=&quot;accordion-inner&quot;&gt;
+            &lt;h4&gt;RewriteAction &lt;span class=&quot;label label-warning&quot;&gt;Verify&lt;/span&gt;&lt;/h4&gt;</code></pre>
+<p><p>This type of action is used to cause another route to handle the request. It is similar in concept to the rewrite rules in an Apache config, but could also be considered to act as an alias.
 
 </p>
-<p>In the below example, the rewrite rule will cause the rewritten route to be invoked as though the request client invoked it directly, but unlike a redirect will be served with the url it was requested on.
+<p></p>
+</p>
+<p><p>In the below example, the rewrite rule will cause the rewritten route to be invoked as though the request client invoked it directly, but unlike a redirect will be served with the url it was requested on.
 
+</p>
+<p></p>
 </p>
 <pre><code class="lang-java">…
 <span class="string">"/requestedPath"</span>    : <span class="string">"rewrite:/rewritten"</span>,
 <span class="string">"/rewritten"</span>        : <span class="string">"com.threewks.thundr.Controller.method"</span>
 …</code></pre>
+
+<pre><code>        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/div&gt;</code></pre>
+<p></div></p>
 
 			</div>
 		</section>

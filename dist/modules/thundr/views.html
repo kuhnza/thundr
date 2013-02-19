@@ -27,12 +27,8 @@
 	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
 	-->
 	<script src="scripts/vendor/bootstrap/41e29a31.bootstrap.min.js"></script>
-	<script src="scripts/vendor/bootstrap/be7d85b6.bootstrap-collapse.js"></script>
-	<script src="scripts/vendor/bootstrap/d0829daa.bootstrap-dropdown.js"></script>
-	<script src="scripts/vendor/bootstrap/9fb1af1d.bootstrap-tab.js"></script>
-	<script src="scripts/vendor/bootstrap/0d084ac1.bootstrap-affix.js"></script>
 </head>
-<body>
+<body data-spy="scroll" data-target=".module_nav">
 	 <header class="container">
 		<nav class="navbar">
 			<div class="navbar-inner">
@@ -148,15 +144,12 @@
 						
 							
 								
-								<li><a href="modules/thundr/views.html">Overview</a></li>
-								<li class="divider"></li>
-								
 
 								
 									
 										
 										
-										<li><a href="modules/thundr/views.html#views">
+										<li><a href="modules/thundr/views.html#views" data-target="#views">
 											Views
 											
 										</a></li>
@@ -166,7 +159,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/views.html#jspView">
+										<li><a href="modules/thundr/views.html#jspView" data-target="#jspView">
 											JspView
 											
 										</a></li>
@@ -176,7 +169,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/views.html#redirectView">
+										<li><a href="modules/thundr/views.html#redirectView" data-target="#redirectView">
 											RedirectView
 											
 										</a></li>
@@ -186,7 +179,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/views.html#jsonView">
+										<li><a href="modules/thundr/views.html#jsonView" data-target="#jsonView">
 											JsonView
 											
 										</a></li>
@@ -196,7 +189,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/views.html#stringView">
+										<li><a href="modules/thundr/views.html#stringView" data-target="#stringView">
 											StringView
 											
 										</a></li>
@@ -206,7 +199,7 @@
 									
 										
 										
-										<li><a href="modules/thundr/views.html#httpStatusException">
+										<li><a href="modules/thundr/views.html#httpStatusException" data-target="#httpStatusException">
 											HttpStatusException
 											
 										</a></li>
@@ -216,7 +209,7 @@
 									
 										
 										<li class="divider"></li>
-										<li><a href="modules/thundr/views.html#viewResolver">
+										<li><a href="modules/thundr/views.html#viewResolver" data-target="#viewResolver">
 											ViewResolver
 											
 											<span class="label label-info">Advanced</span>
@@ -262,7 +255,7 @@
 	<h1>thundr <small>views</small></h1>
 </div>
 
-<section class="overview">
+<section id="page-overview" class="overview">
 	<h4><code>Views</code></h4>
 
 </section>
@@ -300,18 +293,31 @@
 
 		<section id="jspView" class="accordion-body collapse">
 			<div class="accordion-inner">
-				<h4>JspView</h4>
-<p><code>JspView</code> results in a jsp being processed and served from the Servlet engine. You specify the jsp file location, and optionally provide a data model to back it. Unless the jsp rendering fails, an Html file and a 200 OK will be sent back to the user.  
+				<div class="accordion"><br>    <div class="accordion-group"><br>        <div class="accordion-heading"><br>            <a class="accordion-toggle" data-toggle="collapse" href="#jspView"><br>                <i class="icon icon-chevron-down"></i><br>                JspView<br>            </a><br>        </div>
+
+<pre><code>    &lt;section id=&quot;jspView&quot; class=&quot;accordion-body collapse&quot;&gt;
+        &lt;div class=&quot;accordion-inner&quot;&gt;
+            &lt;h4&gt;JspView&lt;/h4&gt;</code></pre>
+<p><p><code>JspView</code> results in a jsp being processed and served from the Servlet engine. You specify the jsp file location, and optionally provide a data model to back it. Unless the jsp rendering fails, an Html file and a 200 OK will be sent back to the user.  
 
 
 </p>
-<p>The jsp file is considered to be relative to the path /WEB-INF/jsp/, unless it is given as an absolute path (i.e. starts with a forward slash, /)
+<p></p>
+</p>
+<p><p>The jsp file is considered to be relative to the path /WEB-INF/jsp/, unless it is given as an absolute path (i.e. starts with a forward slash, /)
 
+</p>
+<p></p>
 </p>
 <pre><code class="lang-java">…
 Map&lt;String, Object&gt; model = … 
 <span class="keyword">return</span> <span class="keyword">new</span> JspView(<span class="string">"path/to/my.jsp"</span>, model);
 …</code></pre>
+
+<pre><code>        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/div&gt;</code></pre>
+<p></div></p>
 
 			</div>
 		</section>
@@ -336,13 +342,24 @@ Map&lt;String, Object&gt; model = …
 
 		<section id="redirectView" class="accordion-body collapse">
 			<div class="accordion-inner">
-				<h4>RedirectView</h4>
-<p><code>RedirectView</code> results in a temporary redirect (302) being sent back to the client with the specified location. This will send a browser to the new url.
+				<div class="accordion"><br>    <div class="accordion-group"><br>        <div class="accordion-heading"><br>            <a class="accordion-toggle" data-toggle="collapse" href="#redirectView"><br>                <i class="icon icon-chevron-down"></i><br>                RedirectView<br>            </a><br>        </div>
 
+<pre><code>    &lt;section id=&quot;redirectView&quot; class=&quot;accordion-body collapse&quot;&gt;
+        &lt;div class=&quot;accordion-inner&quot;&gt;
+            &lt;h4&gt;RedirectView&lt;/h4&gt;</code></pre>
+<p><p><code>RedirectView</code> results in a temporary redirect (302) being sent back to the client with the specified location. This will send a browser to the new url.
+
+</p>
+<p></p>
 </p>
 <pre><code class="lang-java">…
 <span class="keyword">return</span> <span class="keyword">new</span> RedirectView(<span class="string">"http://www.google.com.au/search?q=thundr"</span>);
 …</code></pre>
+
+<pre><code>        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/div&gt;</code></pre>
+<p></div></p>
 
 			</div>
 		</section>
@@ -367,14 +384,25 @@ Map&lt;String, Object&gt; model = …
 
 		<section id="jsonView" class="accordion-body collapse">
 			<div class="accordion-inner">
-				<h4>JsonView</h4>
-<p><code>JsonView</code> uses the <a href="http://code.google.com/p/google-gson/">Gson library</a> to serialize the given object to json, and return it to the request client.
+				<div class="accordion"><br>    <div class="accordion-group"><br>        <div class="accordion-heading"><br>            <a class="accordion-toggle" data-toggle="collapse" href="#jsonView"><br>                <i class="icon icon-chevron-down"></i><br>                JsonView<br>            </a><br>        </div>
 
+<pre><code>    &lt;section id=&quot;jsonView&quot; class=&quot;accordion-body collapse&quot;&gt;
+        &lt;div class=&quot;accordion-inner&quot;&gt;
+            &lt;h4&gt;JsonView&lt;/h4&gt;</code></pre>
+<p><p><code>JsonView</code> uses the <a href="http://code.google.com/p/google-gson/">Gson library</a> to serialize the given object to json, and return it to the request client.
+
+</p>
+<p></p>
 </p>
 <pre><code class="lang-java">…
 MyDto dto = … 
 <span class="keyword">return</span> <span class="keyword">new</span> JsonView(dto);
 …</code></pre>
+
+<pre><code>        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/div&gt;</code></pre>
+<p></div></p>
 
 			</div>
 		</section>
@@ -399,13 +427,24 @@ MyDto dto = …
 
 		<section id="stringView" class="accordion-body collapse">
 			<div class="accordion-inner">
-				<h4>StringView</h4>
-<p><code>StringView</code> is a simple view which returns the given string as the response content, with a response code of 200 OK. 
+				<div class="accordion"><br>    <div class="accordion-group"><br>        <div class="accordion-heading"><br>            <a class="accordion-toggle" data-toggle="collapse" href="#stringView"><br>                <i class="icon icon-chevron-down"></i><br>                StringView<br>            </a><br>        </div>
 
+<pre><code>    &lt;section id=&quot;stringView&quot; class=&quot;accordion-body collapse&quot;&gt;
+        &lt;div class=&quot;accordion-inner&quot;&gt;
+            &lt;h4&gt;StringView&lt;/h4&gt;</code></pre>
+<p><p><code>StringView</code> is a simple view which returns the given string as the response content, with a response code of 200 OK. 
+
+</p>
+<p></p>
 </p>
 <pre><code class="lang-java">…
 <span class="keyword">return</span> <span class="keyword">new</span> StringView(<span class="string">"Hello!"</span>);
 …</code></pre>
+
+<pre><code>        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/div&gt;</code></pre>
+<p></div></p>
 
 			</div>
 		</section>
@@ -430,12 +469,20 @@ MyDto dto = …
 
 		<section id="httpStatusException" class="accordion-body collapse">
 			<div class="accordion-inner">
-				<h4>HttpStatusException</h4>
-<p><code>HttpStatusException</code> is a RuntimeException which takes a status code as a constructor parameter.
+				<div class="accordion"><br>    <div class="accordion-group"><br>        <div class="accordion-heading"><br>            <a class="accordion-toggle" data-toggle="collapse" href="#httpStatusException"><br>                <i class="icon icon-chevron-down"></i><br>                HttpStatusException<br>            </a><br>        </div>
+
+<pre><code>    &lt;section id=&quot;httpStatusException&quot; class=&quot;accordion-body collapse&quot;&gt;
+        &lt;div class=&quot;accordion-inner&quot;&gt;
+            &lt;h4&gt;HttpStatusException&lt;/h4&gt;</code></pre>
+<p><p><code>HttpStatusException</code> is a RuntimeException which takes a status code as a constructor parameter.
 
 </p>
-<p>When thrown, the specified status code is returned to the client as an http error, along with the specified message.
+<p></p>
+</p>
+<p><p>When thrown, the specified status code is returned to the client as an http error, along with the specified message.
 
+</p>
+<p></p>
 </p>
 <pre><code class="lang-java">…
 <span class="keyword">throw</span> <span class="keyword">new</span> HttpStatusException(HttpServletResponse.SC_BAD_REQUEST, <span class="string">"Bad request at %d"</span>, System.currentTimeMillis());
@@ -449,6 +496,11 @@ MyDto dto = …
     <span class="tag">&lt;<span class="title">location</span>&gt;</span>/WEB-INF/jsp/errors/404.jsp<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
 …</code></pre>
+
+<pre><code>        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/div&gt;</code></pre>
+<p></div></p>
 
 			</div>
 		</section>
