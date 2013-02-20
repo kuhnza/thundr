@@ -102,142 +102,141 @@
 		
 	</header>
 
-	
 	<div class="container">
 		<div class="row">
-			<aside class="module_nav_container span3">
-				<div class="module_nav">
+	<aside class="module_nav_container span3">
+		<div class="module_nav">
+			
+			<ul class="nav nav-list" role="navigation">
+			 
 					
-					<ul class="nav nav-list" role="navigation">
-					 
-							
-						<li class="nav-header ">
-							<a href="modules/thundr/basics.html">
-								
-									Basics
-								
-							</a>
-						</li>
-
+				<li class="nav-header ">
+					<a href="modules/thundr/basics.html">
 						
-					  
-							
-						<li class="nav-header ">
-							<a href="modules/thundr/controllers.html">
-								
-									Controllers
-								
-							</a>
-						</li>
-
+							Basics
 						
-					  
-							
-						<li class="nav-header ">
-							<a href="modules/thundr/views.html">
-								
-									Views
-								
-							</a>
-						</li>
+					</a>
+				</li>
 
-						
-					  
-							
-						<li class="nav-header ">
-							<a href="modules/thundr/actions.html">
-								
-									Actions
-								
-							</a>
-						</li>
-
-						
-					  
-							
-						<li class="nav-header active">
-							<a href="modules/thundr/injection-context.html">
-								
-									Dependancy injection
-								
-							</a>
-						</li>
-
-						
-							
-								
-								<li><a href="modules/thundr/injection-context.html#page-overview" data-target="#page-overview">Overview</a></li>
-								<li class="divider"></li>
-								
-
-								
-									
-										
-										
-										<li><a href="modules/thundr/injection-context.html#injectionContext" data-target="#injectionContext">
-											InjectionContext
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-										<li><a href="modules/thundr/injection-context.html#injectionTypes" data-target="#injectionTypes">
-											Injection by type
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-										<li><a href="modules/thundr/injection-context.html#namedTypes" data-target="#namedTypes">
-											Injection by named type
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-										<li><a href="modules/thundr/injection-context.html#instantiation" data-target="#instantiation">
-											Instantiation
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-										<li><a href="modules/thundr/injection-context.html#properties" data-target="#properties">
-											Properties
-											
-										</a></li>
-									
-									
-								
-							
-							
-						
-					  
-					</ul>
-
+				
+			  
 					
-				</div>
-			</aside>
+				<li class="nav-header ">
+					<a href="modules/thundr/controllers.html">
+						
+							Controllers
+						
+					</a>
+				</li>
 
-			<article id="" class="span9">
-			<div class="page-header">
-	<h1>thundr <small>dependancy injection</small></h1>
-</div>
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/views.html">
+						
+							Views
+						
+					</a>
+				</li>
 
-<section id="page-overview" class="overview">
-	<h2>Overview</h2>
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/actions.html">
+						
+							Actions
+						
+					</a>
+				</li>
+
+				
+			  
+					
+				<li class="nav-header active">
+					<a href="modules/thundr/injection-context.html">
+						
+							Dependancy injection
+						
+					</a>
+				</li>
+
+				
+					
+						
+						<li><a href="modules/thundr/injection-context.html#page-overview" data-target="#page-overview">Overview</a></li>
+						<li class="divider"></li>
+						
+
+						
+							
+								
+								
+								<li><a href="modules/thundr/injection-context.html#injectionContext" data-target="#injectionContext">
+									InjectionContext
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/injection-context.html#injectionTypes" data-target="#injectionTypes">
+									Injection by type
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/injection-context.html#namedTypes" data-target="#namedTypes">
+									Injection by named type
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/injection-context.html#instantiation" data-target="#instantiation">
+									Instantiation
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/injection-context.html#properties" data-target="#properties">
+									Properties
+									
+								</a></li>
+							
+							
+						
+					
+					
+				
+			  
+			</ul>
+
+			
+		</div>
+	</aside>
+
+	<article id="injectionContext" class="span9">
+		<div class="page-header">
+			<h1>thundr <small>dependancy injection</small></h1>
+		</div>
+
+		<section id="page-overview" class="overview">
+			<h2>Overview</h2>
 <p>thundr utilises the <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a> pattern to help configure your code at runtime. In particular, any classes you wish to use as <a href="modules/thundr/controllers.html">controllers</a> are created by thundr using its dependency injection framework.<br>If your controller requires dependencies, they need to be configured so that thundr can provide them.
 
 </p>
@@ -273,27 +272,33 @@
     }
 }</code></pre>
 
-</section>
+		</section>
 
- 
+		 
 
+			
 
-	<section id="injectionContext">
-		<h4><code>InjectionContext</code></h4>
+			
+				
+				<section id="injectionContext">
+					<h4><code>InjectionContext</code></h4>
 <p>Dependency injection is managed by the <code>InjectionContext</code>.
 
 </p>
 <p>The injection context acts like a bucket for instances.<br>It can both provide existing instances and create new instances of required types. When the injection context creates new instances, it will try to satisfy dependencies using other instances it contains or can create.</p>
 
-	</section>
+				</section>
+			
 
 
+		
 
+			
 
-
-
-	<section id="injectionTypes">
-		<h4>Injection by type</h4>
+			
+				
+				<section id="injectionTypes">
+					<h4>Injection by type</h4>
 <p>For the injection context to be able to create and provide instances, it needs to know about the types. This is achieved by registering them. Types can only be registered through the interface <code>UpdatableInjectionContext</code>. This interface is provided to <code>InjectionConfiguration</code> implementations.
 
 </p>
@@ -318,15 +323,18 @@
     MyRepositoryInterface myRepository = injectionContext.get(MyRepositoryInterface.class);
 …</code></pre>
 
-	</section>
+				</section>
+			
 
 
+		
 
+			
 
-
-
-	<section id="namedTypes">
-		<h4>Injection by named type</h4>
+			
+				
+				<section id="namedTypes">
+					<h4>Injection by named type</h4>
 <p>As well as specifying types, you can also specified <em>named types</em>.Named types are types or instances registered as above, but also with specific names. For example: 
 
 </p>
@@ -344,15 +352,18 @@
     MyServiceInterface myService2 = injectionContext.get(MyServiceInterface.class, <span class="string">"alternativeService"</span>);
 …</code></pre>
 
-	</section>
+				</section>
+			
 
 
+		
 
+			
 
-
-
-	<section id="instantiation">
-		<h4>Instantiation</h4>
+			
+				
+				<section id="instantiation">
+					<h4>Instantiation</h4>
 <p>When an instance is requested from the InjectionContext it will return an existing instance if possible, and if not, it will instantiate a new one.
 
 </p>
@@ -383,15 +394,18 @@
 …</code></pre>
 <p>In the above example, we inject two different <code>MyServiceInterface</code>s into our context, and when we get an instance of <code>MyProcess</code>, the constructor is invoked with each parameter being satisfied by the corresponding named type.</p>
 
-	</section>
+				</section>
+			
 
 
+		
 
+			
 
-
-
-	<section id="properties">
-		<h4>Properties</h4>
+			
+				
+				<section id="properties">
+					<h4>Properties</h4>
 <p>After instantiation, the injection context will attempt to set any javabean properties it can. It does this using standard setter style methods.
 
 </p>
@@ -425,15 +439,15 @@
     }
 …</code></pre>
 
-	</section>
+				</section>
+			
 
 
+		 
 
- 
-			</article>
-		</div>
+	</article>
+</div>
 	</div>
-	
 	
 	<footer class="container">
 		<div class="navbar">
@@ -469,7 +483,7 @@
 	  })();
 	</script>
 
-	<script src="scripts/16ccd7a9.amd-app.js"></script>
+	<script src="scripts/91b88f08.amd-app.js"></script>
 </body>
 </html>
 		

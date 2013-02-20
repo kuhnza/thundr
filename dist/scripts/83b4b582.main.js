@@ -18,7 +18,6 @@ require([], function() {
 		});
 
 		$('.dropdown-toggle').dropdown();
-		$('.collapse').collapse();
 
 		// with timeout, just like Bootstraps own docs
 		setTimeout(function() {
@@ -30,6 +29,11 @@ require([], function() {
 				}
 			});
 		}, 100);
+
+		$('.collapse').collapse();
+		$('.collapse').on('shown hidden', function() {
+			$('.module_nav').scroll('refresh');
+		});
 	});
 	
 });

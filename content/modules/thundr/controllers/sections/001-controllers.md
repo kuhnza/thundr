@@ -8,7 +8,7 @@ We refer to the classes invoked when using the typical [route](modules/thundr/ac
 
 When a http client makes a request, the appropriate method inside a controller is invoked. The method can perform processing and gather data for the response, then return a `View` object. The view controls the content and http response codes that are returned to the client.  
 
-Controller classes are ordinary classes, they don't require implementing any interfaces or annotations to function. Having one or more routes directing to a method inside a class is enough for thundr to [create](#injection) and invoke your controller class when a request is made.
+Controller classes are ordinary classes, they don't require implementing any interfaces or annotations to function. Having one or more routes directing to a method inside a class is enough for thundr to [create](modules/thundr/controllers.html#injection) and invoke your controller class when a request is made.
 
 
 #### Basic Example

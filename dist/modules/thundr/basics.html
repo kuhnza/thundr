@@ -102,152 +102,151 @@
 		
 	</header>
 
-	
 	<div class="container">
 		<div class="row">
-			<aside class="module_nav_container span3">
-				<div class="module_nav">
+	<aside class="module_nav_container span3">
+		<div class="module_nav">
+			
+			<ul class="nav nav-list" role="navigation">
+			 
 					
-					<ul class="nav nav-list" role="navigation">
-					 
-							
-						<li class="nav-header active">
-							<a href="modules/thundr/basics.html">
-								
-									Basics
-								
-							</a>
-						</li>
+				<li class="nav-header active">
+					<a href="modules/thundr/basics.html">
+						
+							Basics
+						
+					</a>
+				</li>
+
+				
+					
+						
+						<li><a href="modules/thundr/basics.html#page-overview" data-target="#page-overview">Overview</a></li>
+						<li class="divider"></li>
+						
 
 						
 							
 								
-								<li><a href="modules/thundr/basics.html#page-overview" data-target="#page-overview">Overview</a></li>
+								
+								<li><a href="modules/thundr/basics.html#basicExample" data-target="#basicExample">
+									Basic Example
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/basics.html#applicationConfiguration" data-target="#applicationConfiguration">
+									Configuration
+									
+								</a></li>
+							
+							
+						
+							
+								
 								<li class="divider"></li>
-								
-
-								
+								<li><a href="modules/thundr/basics.html#webXml" data-target="#webXml">
+									web.xml
 									
-										
-										
-										<li><a href="modules/thundr/basics.html#basicExample" data-target="#basicExample">
-											Basic Example
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-										<li><a href="modules/thundr/basics.html#applicationConfiguration" data-target="#applicationConfiguration">
-											Configuration
-											
-										</a></li>
-									
-									
-								
-									
-										
-										<li class="divider"></li>
-										<li><a href="modules/thundr/basics.html#webXml" data-target="#webXml">
-											web.xml
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-										<li><a href="modules/thundr/basics.html#modulesProperties" data-target="#modulesProperties">
-											modules.properties
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-										<li><a href="modules/thundr/basics.html#injectionConfiguration" data-target="#injectionConfiguration">
-											InjectionConfiguration
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-										<li><a href="modules/thundr/basics.html#applicationProperties" data-target="#applicationProperties">
-											application.properties
-											
-										</a></li>
-									
-									
-								
+								</a></li>
 							
 							
 						
-					  
 							
-						<li class="nav-header ">
-							<a href="modules/thundr/controllers.html">
 								
-									Controllers
 								
-							</a>
-						</li>
-
-						
-					  
+								<li><a href="modules/thundr/basics.html#modulesProperties" data-target="#modulesProperties">
+									modules.properties
+									
+								</a></li>
 							
-						<li class="nav-header ">
-							<a href="modules/thundr/views.html">
-								
-									Views
-								
-							</a>
-						</li>
-
-						
-					  
 							
-						<li class="nav-header ">
-							<a href="modules/thundr/actions.html">
-								
-									Actions
-								
-							</a>
-						</li>
-
 						
-					  
 							
-						<li class="nav-header ">
-							<a href="modules/thundr/injection-context.html">
 								
-									Dependancy injection
 								
-							</a>
-						</li>
-
+								<li><a href="modules/thundr/basics.html#injectionConfiguration" data-target="#injectionConfiguration">
+									InjectionConfiguration
+									
+								</a></li>
+							
+							
 						
-					  
-					</ul>
-
+							
+								
+								
+								<li><a href="modules/thundr/basics.html#applicationProperties" data-target="#applicationProperties">
+									application.properties
+									
+								</a></li>
+							
+							
+						
 					
-				</div>
-			</aside>
+					
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/controllers.html">
+						
+							Controllers
+						
+					</a>
+				</li>
 
-			<article id="" class="span9">
-			<div class="page-header">
-	<h1>thundr <small>basics</small></h1>
-</div>
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/views.html">
+						
+							Views
+						
+					</a>
+				</li>
 
-<section id="page-overview" class="overview">
-	<h2>Overview</h2>
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/actions.html">
+						
+							Actions
+						
+					</a>
+				</li>
+
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/injection-context.html">
+						
+							Dependancy injection
+						
+					</a>
+				</li>
+
+				
+			  
+			</ul>
+
+			
+		</div>
+	</aside>
+
+	<article id="basics" class="span9">
+		<div class="page-header">
+			<h1>thundr <small>basics</small></h1>
+		</div>
+
+		<section id="page-overview" class="overview">
+			<h2>Overview</h2>
 <p>thundr, like most other web frameworks, uses the <em>Model-View-Controller</em>, or <a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC</a>, pattern for separation of concerns between data processing and view presentation.
 
 </p>
@@ -256,13 +255,16 @@
 </p>
 <p>In thundr, this control is enacted by the method invoked inside your controller class. <a href="modules/thundr/controllers.html">more</a><br>The view is represented by a <code>View</code> object, which is the return type of the controller method. <a href="modules/thundr/views.html">more</a><br>The model is provided to the view by the controller method, but the requirements of this depend on the type of view.</p>
 
-</section>
+		</section>
 
- 
+		 
 
+			
 
-	<section id="basicExample">
-		<h4>Basic Example</h4>
+			
+				
+				<section id="basicExample">
+					<h4>Basic Example</h4>
 <p>Routes file - routes.json <a href="modules/thundr/actions.html">more</a>
 
 </p>
@@ -311,15 +313,18 @@
 <li>thundr takes care of the rest, serving up our jsp as html, substituting the el variable \${message} with the text &#39;Hello World!&#39;.</li>
 </ul>
 
-	</section>
+				</section>
+			
 
 
+		
 
+			
 
-
-
-	<section id="applicationConfiguration">
-		<h4>Application Configuration</h4>
+			
+				
+				<section id="applicationConfiguration">
+					<h4>Application Configuration</h4>
 <p>Beyond the basics of controller invocation and returning a view, there are several elements of configuration required for a thundr based application.
 
 </p>
@@ -330,15 +335,18 @@
 <li><a href="#applicationProperties">application properties</a> - your environmental properties</li>
 </ul>
 
-	</section>
+				</section>
+			
 
 
+		
 
+			
 
-
-
-	<section id="webXml">
-		<h4><code>webXml</code></h4>
+			
+				
+				<section id="webXml">
+					<h4><code>webXml</code></h4>
 <p>The minimum web.xml required for a thundr app is to include the thundr servlet.
 
 </p>
@@ -360,15 +368,18 @@
 <span class="tag">&lt;/<span class="title">web-app</span>&gt;</span></code></pre>
 <p>Beyond this, you can use any servlets, servlet filters or other web.xml features you want. Remember that thundr is capable of invoking a servlet as a controller if you so wish. </p>
 
-	</section>
+				</section>
+			
 
 
+		
 
+			
 
-
-
-	<section id="modulesProperties">
-		<h4><code>modules.properties</code></h4>
+			
+				
+				<section id="modulesProperties">
+					<h4><code>modules.properties</code></h4>
 <p>thundr is extensible, it allows extra features and components to be added to applications. These components are called <strong>modules</strong>.
 
 </p>
@@ -386,15 +397,18 @@
 <p>The order of modules in this file is significant, you should always put your application module at the top.</p>
 </blockquote>
 
-	</section>
+				</section>
+			
 
 
+		
 
+			
 
-
-
-	<section id="injectionConfiguration">
-		<h4><code>InjectionConfiguration</code></h4>
+			
+				
+				<section id="injectionConfiguration">
+					<h4><code>InjectionConfiguration</code></h4>
 <p>A module is defined as a group of code and an <code>InjectionConfiguration</code> file.
 
 </p>
@@ -433,15 +447,18 @@
 </blockquote>
 <p>Rather than implement <code>InjectionConfiguration</code>, you can also extend <code>BaseInjectionConfiguration</code> for convenience.</p>
 
-	</section>
+				</section>
+			
 
 
+		
 
+			
 
-
-
-	<section id="applicationProperties">
-		<h4><code>application.properties</code></h4>
+			
+				
+				<section id="applicationProperties">
+					<h4><code>application.properties</code></h4>
 <p>thundr automatically loads properties from the <code>application.properties</code> file and puts them as named strings into the InjectionContext. This makes them available both in your InjectionConfiguration and also as constructor arguments to injected dependencies.
 
 </p>
@@ -462,15 +479,15 @@ serverUrl%production=www.production.com</code></pre>
 <p>The environment named &#39;dev&#39; is special, in that it specifically applies to local development, rather than a target deployment environment.</p>
 </blockquote>
 
-	</section>
+				</section>
+			
 
 
+		 
 
- 
-			</article>
-		</div>
+	</article>
+</div>
 	</div>
-	
 	
 	<footer class="container">
 		<div class="navbar">
@@ -506,7 +523,7 @@ serverUrl%production=www.production.com</code></pre>
 	  })();
 	</script>
 
-	<script src="scripts/16ccd7a9.amd-app.js"></script>
+	<script src="scripts/91b88f08.amd-app.js"></script>
 </body>
 </html>
 		

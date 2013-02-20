@@ -102,80 +102,82 @@
 		
 	</header>
 
-	
 	<div class="container">
 		<div class="row">
-			<aside class="module_nav_container span3">
-				<div class="module_nav">
+	<aside class="module_nav_container span3">
+		<div class="module_nav">
+			
+			<ul class="nav nav-list" role="navigation">
+			 
 					
-					<ul class="nav nav-list" role="navigation">
-					 
-							
-						<li class="nav-header active">
-							<a href="modules/thundr-gae/appengine.html">
-								
-									GAE
-								
-							</a>
-						</li>
+				<li class="nav-header active">
+					<a href="modules/thundr-gae/appengine.html">
+						
+							GAE
+						
+					</a>
+				</li>
+
+				
+					
+						
+						<li><a href="modules/thundr-gae/appengine.html#page-overview" data-target="#page-overview">Overview</a></li>
+						<li class="divider"></li>
+						
 
 						
 							
 								
-								<li><a href="modules/thundr-gae/appengine.html#page-overview" data-target="#page-overview">Overview</a></li>
-								<li class="divider"></li>
 								
-
-								
+								<li><a href="modules/thundr-gae/appengine.html#settingUp" data-target="#settingUp">
+									Setting Up
 									
-										
-										
-										<li><a href="modules/thundr-gae/appengine.html#settingUp" data-target="#settingUp">
-											Setting Up
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-										<li><a href="modules/thundr-gae/appengine.html#moduleFeatures" data-target="#moduleFeatures">
-											Module Features
-											
-										</a></li>
-									
-									
-								
+								</a></li>
 							
 							
 						
-					  
-					</ul>
-
+							
+								
+								
+								<li><a href="modules/thundr-gae/appengine.html#moduleFeatures" data-target="#moduleFeatures">
+									Module Features
+									
+								</a></li>
+							
+							
+						
 					
-				</div>
-			</aside>
+					
+				
+			  
+			</ul>
 
-			<article id="" class="span9">
-			<div class="page-header">
-	<h1>thundr <small>on Google Appengine</small></h1>
-</div>
+			
+		</div>
+	</aside>
 
-<section id="page-overview" class="overview">
-	<h2>Overview</h2>
+	<article id="appengine" class="span9">
+		<div class="page-header">
+			<h1>thundr <small>on Google Appengine</small></h1>
+		</div>
+
+		<section id="page-overview" class="overview">
+			<h2>Overview</h2>
 <p>Google Appengine (GAE) is a PaaS provided and run by Google. You can read more about it <a href="https://developers.google.com/appengine/docs/">here</a>
 
 </p>
 <p><em>thundr-gae</em> is a thundr module which enables thundr to run in this environment adding abstractions around some common functions.</p>
 
-</section>
+		</section>
 
- 
+		 
 
+			
 
-	<section id="settingUp">
-		<h4>Setting Up</h4>
+			
+				
+				<section id="settingUp">
+					<h4>Setting Up</h4>
 <p>Beyond <a href="basics.html#applicationConfiguration">normal thundr setup</a> (i.e. <code>web.xml</code>, <code>application.properties</code>, <code>modules.properties</code> and an <code>InjectionConfiguration</code>), you will need to pull in the <em>thundr-gae</em> module and configure it.
 
 </p>
@@ -201,15 +203,18 @@ com.threewks.thundr.gae=</code></pre>
 <p>Remember order is important in modules.properties - include the <em>thundr-gae</em> module <strong>after</strong> you application.</p>
 </blockquote>
 
-	</section>
+				</section>
+			
 
 
+		
 
+			
 
-
-
-	<section id="moduleFeatures">
-		<h4>Module Features</h4>
+			
+				
+				<section id="moduleFeatures">
+					<h4>Module Features</h4>
 <ul>
 <li><h5>HttpService</h5>
 <p>The module provides an implementation of the HttpService defined in the thundr-http module <span class="label label-warning">Undocumented</span>. This is required because of the need to use the <a href="https://developers.google.com/appengine/docs/java/urlfetch/">UrlFetchService</a>. You can then inject it into your controllers and services like this:</p>
@@ -235,15 +240,15 @@ injectionContext.inject(counterRepository).as(CounterRepository.class);
 </li>
 </ul>
 
-	</section>
+				</section>
+			
 
 
+		 
 
- 
-			</article>
-		</div>
+	</article>
+</div>
 	</div>
-	
 	
 	<footer class="container">
 		<div class="navbar">
@@ -279,7 +284,7 @@ injectionContext.inject(counterRepository).as(CounterRepository.class);
 	  })();
 	</script>
 
-	<script src="scripts/16ccd7a9.amd-app.js"></script>
+	<script src="scripts/91b88f08.amd-app.js"></script>
 </body>
 </html>
 		

@@ -102,152 +102,154 @@
 		
 	</header>
 
-	
 	<div class="container">
 		<div class="row">
-			<aside class="module_nav_container span3">
-				<div class="module_nav">
+	<aside class="module_nav_container span3">
+		<div class="module_nav">
+			
+			<ul class="nav nav-list" role="navigation">
+			 
 					
-					<ul class="nav nav-list" role="navigation">
-					 
-							
-						<li class="nav-header ">
-							<a href="modules/thundr/basics.html">
-								
-									Basics
-								
-							</a>
-						</li>
+				<li class="nav-header ">
+					<a href="modules/thundr/basics.html">
+						
+							Basics
+						
+					</a>
+				</li>
+
+				
+			  
+					
+				<li class="nav-header active">
+					<a href="modules/thundr/controllers.html">
+						
+							Controllers
+						
+					</a>
+				</li>
+
+				
+					
+						
 
 						
-					  
 							
-						<li class="nav-header active">
-							<a href="modules/thundr/controllers.html">
 								
+								
+								<li><a href="modules/thundr/controllers.html#controllers" data-target="#controllers">
 									Controllers
-								
-							</a>
-						</li>
-
-						
-							
-								
-
-								
 									
-										
-										
-										<li><a href="modules/thundr/controllers.html#controllers" data-target="#controllers">
-											Controllers
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-										<li><a href="modules/thundr/controllers.html#views" data-target="#views">
-											Views
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-										<li><a href="modules/thundr/controllers.html#dataBinding" data-target="#dataBinding">
-											Data binding
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-										<li><a href="modules/thundr/controllers.html#separationOfConcerns" data-target="#separationOfConcerns">
-											Seperation of concerns
-											
-										</a></li>
-									
-									
-								
-									
-										
-										
-										<li><a href="modules/thundr/controllers.html#injection" data-target="#injection">
-											Injection
-											
-										</a></li>
-									
-									
-								
+								</a></li>
 							
 							
 						
-					  
 							
-						<li class="nav-header ">
-							<a href="modules/thundr/views.html">
 								
+								
+								<li><a href="modules/thundr/controllers.html#views" data-target="#views">
 									Views
-								
-							</a>
-						</li>
-
-						
-					  
+									
+								</a></li>
 							
-						<li class="nav-header ">
-							<a href="modules/thundr/actions.html">
-								
-									Actions
-								
-							</a>
-						</li>
-
-						
-					  
 							
-						<li class="nav-header ">
-							<a href="modules/thundr/injection-context.html">
-								
-									Dependancy injection
-								
-							</a>
-						</li>
-
 						
-					  
-					</ul>
-
+							
+								
+								
+								<li><a href="modules/thundr/controllers.html#dataBinding" data-target="#dataBinding">
+									Data binding
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/controllers.html#separationOfConcerns" data-target="#separationOfConcerns">
+									Seperation of concerns
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/controllers.html#injection" data-target="#injection">
+									Injection
+									
+								</a></li>
+							
+							
+						
 					
-				</div>
-			</aside>
+					
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/views.html">
+						
+							Views
+						
+					</a>
+				</li>
 
-			<article id="" class="span9">
-			<div class="page-header">
-	<h1>thundr <small>controllers</small></h1>
-</div>
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/actions.html">
+						
+							Actions
+						
+					</a>
+				</li>
 
-<section id="page-overview" class="overview">
-	
-</section>
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/injection-context.html">
+						
+							Dependancy injection
+						
+					</a>
+				</li>
 
- 
+				
+			  
+			</ul>
 
+			
+		</div>
+	</aside>
 
-	<section id="controllers">
-		<p>We refer to the classes invoked when using the typical <a href="modules/thundr/actions.html#routes">route</a> as <em>controllers</em>.
+	<article id="controllers" class="span9">
+		<div class="page-header">
+			<h1>thundr <small>controllers</small></h1>
+		</div>
+
+		<section id="page-overview" class="overview">
+			
+		</section>
+
+		 
+
+			
+
+			
+				
+				<section id="controllers">
+					<p>We refer to the classes invoked when using the typical <a href="modules/thundr/actions.html#routes">route</a> as <em>controllers</em>.
 
 </p>
 <p>When a http client makes a request, the appropriate method inside a controller is invoked. The method can perform processing and gather data for the response, then return a <code>View</code> object. The view controls the content and http response codes that are returned to the client.  
 
 </p>
-<p>Controller classes are ordinary classes, they don&#39;t require implementing any interfaces or annotations to function. Having one or more routes directing to a method inside a class is enough for thundr to <a href="#injection">create</a> and invoke your controller class when a request is made.
+<p>Controller classes are ordinary classes, they don&#39;t require implementing any interfaces or annotations to function. Having one or more routes directing to a method inside a class is enough for thundr to <a href="modules/thundr/controllers.html#injection">create</a> and invoke your controller class when a request is made.
 
 
 </p>
@@ -272,15 +274,18 @@
     }
 }</code></pre>
 
-	</section>
+				</section>
+			
 
 
+		
 
+			
 
-
-
-	<section id="views">
-		<h4>Views</h4>
+			
+				
+				<section id="views">
+					<h4>Views</h4>
 <p>In the above example, we see the <code>JspView</code> being returned from our controller. This resulted in a Jsp being processed and sent back to the user.<br>thundr supports different views, which control the content and http response returned to the user.
 
 </p>
@@ -293,15 +298,18 @@
 <li>StringView - returns a string to the client - <a href="modules/thundr/views.html#stringView">more</a></li>
 </ul>
 
-	</section>
+				</section>
+			
 
 
+		
 
+			
 
-
-
-	<section id="dataBinding">
-		<h4>Data binding</h4>
+			
+				
+				<section id="dataBinding">
+					<h4>Data binding</h4>
 <p>When a controller method is invoked, data from the request is bound and passed in using the method parameters.
 
 </p>
@@ -379,15 +387,18 @@
 <p>Remember, if you can&#39;t automatically bind the data in your request, you can always just bind the HttpServletRequest and HttpServletResponse.<br>This is equivalent to writing a servlet, so you&#39;ll have to do the heavy lifting yourself, but it means that as long as a servlet could handle the input, your thundr controller can as well.</p>
 </blockquote>
 
-	</section>
+				</section>
+			
 
 
+		
 
+			
 
-
-
-	<section id="separationOfConcerns">
-		<h4>Separation of concerns</h4>
+			
+				
+				<section id="separationOfConcerns">
+					<h4>Separation of concerns</h4>
 <p>The job of a controller is to service a request by performing any behaviour and marshalling response data into the form that is required by the resulting view. 
 
 </p>
@@ -423,15 +434,18 @@
     }
 }</code></pre>
 
-	</section>
+				</section>
+			
 
 
+		
 
+			
 
-
-
-	<section id="injection">
-		<h4>Controller Instantiation</h4>
+			
+				
+				<section id="injection">
+					<h4>Controller Instantiation</h4>
 <p>Controller classes are instantiated by the <a href="modules/thundr/injection-context.html#injectionContext">InjectionContext</a>. As such each instance can be shared between multiple, concurrent requests, so implementations should be treated as stateless.<br>Also, there is no guarantee that controllers are singletons and implementations should also take this into account.
 
 </p>
@@ -462,15 +476,15 @@
     }
 …</code></pre>
 
-	</section>
+				</section>
+			
 
 
+		 
 
- 
-			</article>
-		</div>
+	</article>
+</div>
 	</div>
-	
 	
 	<footer class="container">
 		<div class="navbar">
@@ -506,7 +520,7 @@
 	  })();
 	</script>
 
-	<script src="scripts/16ccd7a9.amd-app.js"></script>
+	<script src="scripts/91b88f08.amd-app.js"></script>
 </body>
 </html>
 		
