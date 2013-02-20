@@ -85,7 +85,8 @@ module.exports = (grunt) ->
 			# merge the pages href into the page data (so it can be overridden by the page itself)
 			page_data.meta = _.extend 
 				href: page_href
-				module: module_name
+				module_name: module_name
+				module: modules_by_name[module_name]
 				path_to_root: path_to_doc_root
 			, page_data.meta
 
@@ -99,11 +100,19 @@ module.exports = (grunt) ->
 			
 			page_data
 		
-		# sort the pages of each module
-		for _module in modules
+		for _module in modules # prefixing module with an underscore to not conflict with node's packages
+			# sort the pages of each module
 			_module.pages = _.sortBy _module.pages, (page) -> page.meta.nav_position
-			console.log _.map _module.pages, (page) -> page.meta.id
 			modules_by_name[_module.id].pages = _module.pages
+
+			# try and see if we can determine the link to the module
+			pages_for_nav = _.filter _module.pages, (page) -> page.meta.nav_position
+
+			# if we only have 1 page for navigation, set the href of the module to the href of the first page
+			if pages_for_nav.length > 0
+				_module.href = _.first(pages_for_nav).meta.href
+			else
+				_module.href = null
 
 		# sort the modules and the global pages by navigation position
 		modules = _.sortBy modules, (_module) -> _module.nav.position
@@ -111,11 +120,13 @@ module.exports = (grunt) ->
 
 		# for all the pages we have
 		for page in pages
+			page = page_parser.render_page page
+
 			layout_data =
 				modules: modules
 				global_pages: global_pages
 				current_page: page
-				current_module: modules_by_name[page.meta.module]
+				current_module: page.meta.module
 
 			try
 				template_src = grunt.file.read layout_path

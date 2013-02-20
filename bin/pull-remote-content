@@ -1,0 +1,5 @@
+#!/bin/sh
+
+if ! git subtree pull --prefix="content/modules/thundr-gae"; then
+	echo "does not exist"
+fi

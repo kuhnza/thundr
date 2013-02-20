@@ -18,7 +18,22 @@ require([], function() {
 		});
 
 		$('.dropdown-toggle').dropdown();
+
+		// with timeout, just like Bootstraps own docs
+		setTimeout(function() {
+			$('.module_nav').affix({
+				offset: {
+					top: function() {
+						return $('.module_nav_container').offset().top;
+					}
+				}
+			});
+		}, 100);
+
 		$('.collapse').collapse();
+		$('.collapse').on('shown hidden', function() {
+			$('.module_nav').scroll('refresh');
+		});
 	});
 	
 });

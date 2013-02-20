@@ -4,6 +4,7 @@ template: page.hbs
 id: views
 title: views
 nav_position: 4
+nav_has_overview: false
 
 ---
 
