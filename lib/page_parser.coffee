@@ -43,7 +43,7 @@ module.exports = class PageParser
 		file_extension = path.extname content_file
 
 		# if there is no other data to use, return the data we have
-		return @render_content page_data unless grunt.file.isDir possible_dir_path
+		return page_data unless grunt.file.isDir possible_dir_path
 
 		# create an array of filenames that may contain data
 		child_content_files = fs.readdirSync possible_dir_path

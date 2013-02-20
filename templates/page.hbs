@@ -56,15 +56,19 @@
 
 		{{#if sections}} {{#each sections}}
 
-		{{#if meta.template}}
-			
-			{{{content}}}
+			{{log meta.template}}
 
-		{{else}}
-			<section id="{{meta.id}}">
-				{{{marked content}}}
-			</section>
-		{{/if}}
+			{{#if meta.template}}
+				{{log content}}
+				
+				{{{content}}}
+
+			{{else}}
+				{{log "no template"}}
+				<section id="{{meta.id}}">
+					{{{marked content}}}
+				</section>
+			{{/if}}
 
 
 		{{/each}} {{/if}}
