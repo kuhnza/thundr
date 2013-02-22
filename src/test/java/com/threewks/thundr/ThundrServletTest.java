@@ -112,7 +112,7 @@ public class ThundrServletTest {
 	@Test
 	public void shouldUseApplicationDefaultConfiguration() {
 		ServletContext servletContext = new MockServletContext();
-		assertThat(servlet.getInjectionConfigInstance(servletContext), is(DefaultInjectionConfiguration.class));
+		assertThat(servlet.getInjectionConfigInstance(servletContext), instanceOf(DefaultInjectionConfiguration.class));
 	}
 
 	@Test

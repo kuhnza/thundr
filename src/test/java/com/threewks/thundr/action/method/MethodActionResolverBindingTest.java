@@ -18,12 +18,13 @@
 package com.threewks.thundr.action.method;
 
 import static com.atomicleopard.expressive.Expressive.*;
-import static com.threewks.thundr.matchers.ExtendedMatchers.*;
+import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -70,59 +71,66 @@ public class MethodActionResolverBindingTest {
 	@Test
 	public void shouldInvokeSingleString() throws Exception {
 		MethodAction method = method("methodSingleString");
-		assertThat(resolver.bindArguments(method, request, null, emptyMap), isList(o, nullObject));
-		assertThat(resolver.bindArguments(method, request("argument1", "value1"), null, emptyMap), isList(o, "value1"));
+		assertThat(resolver.bindArguments(method, request, null, emptyMap), is(asList(nullObject)));
+		assertThat(resolver.bindArguments(method, request("argument1", "value1"), null, emptyMap), is(Arrays.<Object> asList("value1")));
+	}
+
+	@Test
+	public void shouldtestname() {
+
 	}
 
 	@Test
 	public void shouldInvokeDoubleString() throws Exception {
+
 		MethodAction method = method("methodDoubleString");
-		assertThat(resolver.bindArguments(method, request, null, emptyMap), isList(o, nullObject, nullObject));
-		assertThat(resolver.bindArguments(method, request("argument1", "value1", "argument2", "value2"), null, emptyMap), isList(o, "value1", "value2"));
-		assertThat(resolver.bindArguments(method, request("argument1", "value1"), null, emptyMap), isList(o, "value1", null));
-		assertThat(resolver.bindArguments(method, request("argument2", "value2"), null, emptyMap), isList(o, null, "value2"));
+		assertThat(resolver.bindArguments(method, request, null, emptyMap), is(asList(nullObject, nullObject)));
+		assertThat(resolver.bindArguments(method, request("argument1", "value1", "argument2", "value2"), null, emptyMap), is(Arrays.<Object> asList("value1", "value2")));
+		assertThat(resolver.bindArguments(method, request("argument1", "value1"), null, emptyMap), is(Arrays.<Object> asList("value1", null)));
+		assertThat(resolver.bindArguments(method, request("argument2", "value2"), null, emptyMap), is(Arrays.<Object> asList(null, "value2")));
 	}
 
 	@Test
 	public void shouldInvokeStringList() throws Exception {
 		MethodAction method = method("methodStringList");
 		assertThat(resolver.bindArguments(method, request, null, emptyMap).size(), is(1));
-		assertThat(resolver.bindArguments(method, request, null, emptyMap), isList(o, nullObject));
-		assertThat(resolver.bindArguments(method, request("argument1[0]", "value1"), null, emptyMap), isList(o, list("value1")));
+		assertThat(resolver.bindArguments(method, request, null, emptyMap), is(asList(nullObject)));
+		assertThat(resolver.bindArguments(method, request("argument1[0]", "value1"), null, emptyMap), is(Arrays.<Object> asList(list("value1"))));
 		assertThat(resolver.bindArguments(method, request("argument1[0]", "value1", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap),
-				isList(o, list("value1", "value2", null, "value3")));
-		assertThat(resolver.bindArguments(method, request("argument1[0]", "", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap), isList(o, list("", "value2", null, "value3")));
-		assertThat(resolver.bindArguments(method, request("argument1", new String[] { "value1", "value2" }), null, emptyMap), isList(o, list("value1", "value2")));
-		assertThat(resolver.bindArguments(method, request("argument1", null), null, emptyMap), isList(o, nullObject));
-		assertThat(resolver.bindArguments(method, request("argument1", ""), null, emptyMap), isList(o, nullObject));
+				is(Arrays.<Object> asList(list("value1", "value2", null, "value3"))));
+		assertThat(resolver.bindArguments(method, request("argument1[0]", "", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap),
+				is(Arrays.<Object> asList(list("", "value2", null, "value3"))));
+		assertThat(resolver.bindArguments(method, request("argument1", new String[] { "value1", "value2" }), null, emptyMap), is(Arrays.<Object> asList(list("value1", "value2"))));
+		assertThat(resolver.bindArguments(method, request("argument1", null), null, emptyMap), is(asList(nullObject)));
+		assertThat(resolver.bindArguments(method, request("argument1", ""), null, emptyMap), is(asList(nullObject)));
 	}
 
 	@Test
 	public void shouldInvokeStringMap() throws Exception {
 		MethodAction method = method("methodMap");
 		assertThat(resolver.bindArguments(method, request, null, emptyMap).size(), is(1));
-		assertThat(resolver.bindArguments(method, request, null, emptyMap), isList(o, nullObject));
-		assertThat(resolver.bindArguments(method, request("argument1[0]", "value1"), null, emptyMap), isList(o, map("0", list("value1"))));
+		assertThat(resolver.bindArguments(method, request, null, emptyMap), is(asList(nullObject)));
+		assertThat(resolver.bindArguments(method, request("argument1[0]", "value1"), null, emptyMap), is(Arrays.<Object> asList(map("0", list("value1")))));
 		assertThat(resolver.bindArguments(method, request("argument1[first]", "value1", "argument1[second]", "value2", "argument1[third]", "value3"), null, emptyMap),
-				isList(o, map("first", list("value1"), "second", list("value2"), "third", list("value3"))));
+				is(Arrays.<Object> asList(map("first", list("value1"), "second", list("value2"), "third", list("value3")))));
 		assertThat(resolver.bindArguments(method, request("argument1[first]", "", "argument1[second_second]", "value2", "argument1[THIRD]", "value3", "argument1[fourth]", null), null, emptyMap),
-				isList(o, map("first", null, "second_second", list("value2"), "THIRD", list("value3"), "fourth", null)));
+				is(Arrays.<Object> asList(map("first", null, "second_second", list("value2"), "THIRD", list("value3"), "fourth", null))));
 		// TODO - Implicit map - what would an unindexed map posted look like?
-		// assertThat(resolver.bindArguments(method("methodMap"), request("argument1", new String[] { "value1", "value2" }), null, emptyMap), isList(o, map("value1", "value2")));
+		// assertThat(resolver.bindArguments(method("methodMap"), request("argument1", new String[] { "value1", "value2" }), null, emptyMap), is(asList(map("value1", "value2"))));
 	}
 
 	@Test
 	public void shouldInvokeArray() throws ClassNotFoundException {
 		MethodAction method = method("methodStringArray");
 		assertThat(resolver.bindArguments(method, request, null, emptyMap).size(), is(1));
-		assertThat(resolver.bindArguments(method, request, null, emptyMap), isList(o, nullObject));
-		assertThat((String[]) resolver.bindArguments(method, request("argument1[0]", "value1"), null, emptyMap).get(0), isArray(String.class, "value1"));
+		assertThat(resolver.bindArguments(method, request, null, emptyMap), is(asList(nullObject)));
+		assertThat((String[]) resolver.bindArguments(method, request("argument1[0]", "value1"), null, emptyMap).get(0), is(array("value1")));
 		assertThat((String[]) resolver.bindArguments(method, request("argument1[0]", "value1", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap).get(0),
-				isArray(String.class, "value1", "value2", null, "value3"));
+				is(array("value1", "value2", null, "value3")));
 		assertThat((String[]) resolver.bindArguments(method, request("argument1[0]", "", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap).get(0),
-				isArray(String.class, "", "value2", null, "value3"));
-		assertThat((String[]) resolver.bindArguments(method, request("argument1", new String[] { "value1", "value2" }), null, emptyMap).get(0), isArray(String.class, "value1", "value2"));
-		assertThat(resolver.bindArguments(method, request("argument1", null), null, emptyMap), isList(o, nullObject));
+				is(array("", "value2", null, "value3")));
+		assertThat((String[]) resolver.bindArguments(method, request("argument1", new String[] { "value1", "value2" }), null, emptyMap).get(0), is(array("value1", "value2")));
+		assertThat(resolver.bindArguments(method, request("argument1", null), null, emptyMap), is(asList(nullObject)));
 		List<Object> bind = resolver.bindArguments(method, request("argument1", ""), null, emptyMap);
 		assertThat(bind.size(), is(1));
 		assertThat((String[]) bind.get(0), is(new String[0]));
@@ -132,14 +140,14 @@ public class MethodActionResolverBindingTest {
 	public void shouldInvokeGenericArray() throws ClassNotFoundException {
 		MethodAction method = method("methodGenericArray");
 		assertThat(resolver.bindArguments(method, request, null, emptyMap).size(), is(1));
-		assertThat(resolver.bindArguments(method, request, null, emptyMap), isList(o, nullObject));
-		assertThat((String[]) resolver.bindArguments(method, request("argument1[0]", "value1"), null, emptyMap).get(0), isArray(String.class, "value1"));
+		assertThat(resolver.bindArguments(method, request, null, emptyMap), is(asList(nullObject)));
+		assertThat((String[]) resolver.bindArguments(method, request("argument1[0]", "value1"), null, emptyMap).get(0), is(array("value1")));
 		assertThat((String[]) resolver.bindArguments(method, request("argument1[0]", "value1", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap).get(0),
-				isArray(String.class, "value1", "value2", null, "value3"));
+				is(array("value1", "value2", null, "value3")));
 		assertThat((String[]) resolver.bindArguments(method, request("argument1[0]", "", "argument1[1]", "value2", "argument1[3]", "value3"), null, emptyMap).get(0),
-				isArray(String.class, "", "value2", null, "value3"));
-		assertThat((String[]) resolver.bindArguments(method, request("argument1", new String[] { "value1", "value2" }), null, emptyMap).get(0), isArray(String.class, "value1", "value2"));
-		assertThat(resolver.bindArguments(method, request("argument1", null), null, emptyMap), isList(o, nullObject));
+				is(array("", "value2", null, "value3")));
+		assertThat((String[]) resolver.bindArguments(method, request("argument1", new String[] { "value1", "value2" }), null, emptyMap).get(0), is(array("value1", "value2")));
+		assertThat(resolver.bindArguments(method, request("argument1", null), null, emptyMap), is(asList(nullObject)));
 		List<Object> bind = resolver.bindArguments(method, request("argument1", ""), null, emptyMap);
 		assertThat(bind.size(), is(1));
 		assertThat((String[]) bind.get(0), is(new String[0]));
@@ -149,32 +157,32 @@ public class MethodActionResolverBindingTest {
 	public void shouldInvokeJavaBean() throws ClassNotFoundException {
 		MethodAction method = method("methodJavaBean");
 		assertThat(resolver.bindArguments(method, request, null, emptyMap).size(), is(1));
-		assertThat(resolver.bindArguments(method, request, null, emptyMap), isList(o, nullObject));
-		assertThat(resolver.bindArguments(method, request("argument1.name", "myname"), null, emptyMap), isList(Object.class, new JavaBean("myname", null)));
-		assertThat(resolver.bindArguments(method, request("argument1.name", "myname", "argument1.value", "my value"), null, emptyMap), isList(Object.class, new JavaBean("myname", "my value")));
-		assertThat(resolver.bindArguments(method, request("argument1.value", "my value"), null, emptyMap), isList(Object.class, new JavaBean(null, "my value")));
-		assertThat(resolver.bindArguments(method, request("argument1.name", new String[] { "value1", "value2" }), null, emptyMap), isList(Object.class, new JavaBean("value1,value2", null)));
-		assertThat(resolver.bindArguments(method, request("argument1.name", null), null, emptyMap), isList(Object.class, new JavaBean(null, null)));
-		assertThat(resolver.bindArguments(method, request("argument1.name", ""), null, emptyMap), isList(Object.class, new JavaBean("", null)));
-		assertThat(resolver.bindArguments(method, request("argument1.name", "multiline\ncontent"), null, emptyMap), isList(Object.class, new JavaBean("multiline\ncontent", null)));
-		assertThat(resolver.bindArguments(method, request("argument1", null), null, emptyMap), isList(o, nullObject));
-		assertThat(resolver.bindArguments(method, request("argument1", ""), null, emptyMap), isList(o, nullObject));
+		assertThat(resolver.bindArguments(method, request, null, emptyMap), is(asList(nullObject)));
+		assertThat(resolver.bindArguments(method, request("argument1.name", "myname"), null, emptyMap), is(Arrays.<Object> asList(new JavaBean("myname", null))));
+		assertThat(resolver.bindArguments(method, request("argument1.name", "myname", "argument1.value", "my value"), null, emptyMap), is(Arrays.<Object> asList(new JavaBean("myname", "my value"))));
+		assertThat(resolver.bindArguments(method, request("argument1.value", "my value"), null, emptyMap), is(Arrays.<Object> asList(new JavaBean(null, "my value"))));
+		assertThat(resolver.bindArguments(method, request("argument1.name", new String[] { "value1", "value2" }), null, emptyMap), is(Arrays.<Object> asList(new JavaBean("value1,value2", null))));
+		assertThat(resolver.bindArguments(method, request("argument1.name", null), null, emptyMap), is(Arrays.<Object> asList(new JavaBean(null, null))));
+		assertThat(resolver.bindArguments(method, request("argument1.name", ""), null, emptyMap), is(Arrays.<Object> asList(new JavaBean("", null))));
+		assertThat(resolver.bindArguments(method, request("argument1.name", "multiline\ncontent"), null, emptyMap), is(Arrays.<Object> asList(new JavaBean("multiline\ncontent", null))));
+		assertThat(resolver.bindArguments(method, request("argument1", null), null, emptyMap), is(asList(nullObject)));
+		assertThat(resolver.bindArguments(method, request("argument1", ""), null, emptyMap), is(asList(nullObject)));
 	}
 
 	@Test
 	public void shouldInvokeDeepJavaBean() throws ClassNotFoundException {
 		MethodAction method = method("methodDeepJavaBean");
 		assertThat(resolver.bindArguments(method, request, null, emptyMap).size(), is(1));
-		assertThat(resolver.bindArguments(method, request, null, emptyMap), isList(o, nullObject));
-		assertThat(resolver.bindArguments(method, request("argument1.name", "myname"), null, emptyMap), isList(Object.class, new DeepJavaBean("myname", null)));
+		assertThat(resolver.bindArguments(method, request, null, emptyMap), is(asList(nullObject)));
+		assertThat(resolver.bindArguments(method, request("argument1.name", "myname"), null, emptyMap), is(Arrays.<Object> asList(new DeepJavaBean("myname", null))));
 		assertThat(resolver.bindArguments(method, request("argument1.name", "myname", "argument1.beans[0].name", "some name"), null, emptyMap),
-				isList(Object.class, new DeepJavaBean("myname", list(new JavaBean("some name", null)))));
+				is(Arrays.<Object> asList(new DeepJavaBean("myname", list(new JavaBean("some name", null))))));
 		assertThat(resolver.bindArguments(method, request("argument1.name", "myname", "argument1.beans[0].name", "some name", "argument1.beans[1].name", "some other"), null, emptyMap),
-				isList(Object.class, new DeepJavaBean("myname", list(new JavaBean("some name", null), new JavaBean("some other", null)))));
+				is(Arrays.<Object> asList(new DeepJavaBean("myname", list(new JavaBean("some name", null), new JavaBean("some other", null))))));
 		assertThat(resolver.bindArguments(method, request("argument1.name", "myname", "argument1.beans[1].name", "some name"), null, emptyMap),
-				isList(Object.class, new DeepJavaBean("myname", list(null, new JavaBean("some name", null)))));
-		assertThat(resolver.bindArguments(method, request("argument1", null), null, emptyMap), isList(o, nullObject));
-		assertThat(resolver.bindArguments(method, request("argument1", ""), null, emptyMap), isList(o, nullObject));
+				is(Arrays.<Object> asList(new DeepJavaBean("myname", list(null, new JavaBean("some name", null))))));
+		assertThat(resolver.bindArguments(method, request("argument1", null), null, emptyMap), is(asList(nullObject)));
+		assertThat(resolver.bindArguments(method, request("argument1", ""), null, emptyMap), is(asList(nullObject)));
 	}
 
 	private HttpServletRequest request(String... args) {

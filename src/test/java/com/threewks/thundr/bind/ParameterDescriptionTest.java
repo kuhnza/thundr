@@ -17,7 +17,7 @@
  */
 package com.threewks.thundr.bind;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 import java.lang.annotation.Annotation;
@@ -42,7 +42,7 @@ public class ParameterDescriptionTest {
 		assertThat(first.isGeneric(), is(true));
 		assertThat(first.isA(Map.class), is(true));
 		assertThat(first.getGenericType(0).equals(String.class), is(true));
-		assertThat(first.getGenericType(1), is(ParameterizedType.class));
+		assertThat(first.getGenericType(1), instanceOf(ParameterizedType.class));
 		assertThat(((ParameterizedType) first.getGenericType(1)).getRawType().equals(List.class), is(true));
 		assertThat(((ParameterizedType) first.getGenericType(1)).getActualTypeArguments()[0].equals(String.class), is(true));
 	}

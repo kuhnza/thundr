@@ -32,10 +32,10 @@ public class Route {
 	// from -> http://www.ietf.org/rfc/rfc1738.txt: "Thus, only alphanumerics, the special characters "$-_.+!*'()," ... may be used unencoded within a URL."
 	static final String AcceptablePathCharacters = "\\w%:@&=+$,!~*'()\\.\\-";
 	static final String AcceptableMultiPathCharacters = AcceptablePathCharacters + "/";
-	
+
 	// TODO - Binding path segment request parameters
 	// The spec allows for request parameters to be encoded in the format /url/url2/url3;key=value;key2=value2
-	// This seems to only happen in jetty and tomcat (some versions) when redirects are invoked, particularly if the server 
+	// This seems to only happen in jetty and tomcat (some versions) when redirects are invoked, particularly if the server
 	// hasn't confirmed that the client supports cookies. i.e. redirect -> /go/here;jsessionid=12345678
 	// This is a hack implementation which satisfies most current web development needs, further reading on a fuller implementation here:
 	// http://www.skorks.com/2010/05/what-every-developer-should-know-about-urls/
