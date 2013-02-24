@@ -17,13 +17,22 @@
  */
 package com.threewks.thundr.route;
 
+import static com.atomicleopard.expressive.Expressive.list;
 import static com.threewks.thundr.route.RouteType.GET;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
+
+import com.threewks.thundr.action.Action;
+import com.threewks.thundr.action.ActionException;
+import com.threewks.thundr.action.ActionResolver;
 
 public class RoutesTest {
 	@Test
@@ -77,26 +86,26 @@ public class RoutesTest {
 
 	@Test
 	public void shouldParseMultipleRoutes() {
-		String json = "{"+
-							"\"/route1/**\": \"some.java.Class.method1\","+
-							"\"/route2/**\": {\"PUT\": \"some.java.Class.method2\"},"+
-							"\"/route3/**\": {\"POST\": \"some.java.Class.method3\"}"+
-						"}";
+		String json = "{" +
+				"\"/route1/**\": \"some.java.Class.method1\"," +
+				"\"/route2/**\": {\"PUT\": \"some.java.Class.method2\"}," +
+				"\"/route3/**\": {\"POST\": \"some.java.Class.method3\"}" +
+				"}";
 		List<Route> routes = Routes.parseJsonRoutes(json);
 		assertThat(routes.size(), is(3));
 		assertRoute(routes, 0, "some.java.Class.method1", RouteType.GET, String.format("/route1/[%s]*?", Route.AcceptableMultiPathCharacters));
 		assertRoute(routes, 1, "some.java.Class.method2", RouteType.PUT, String.format("/route2/[%s]*?", Route.AcceptableMultiPathCharacters));
 		assertRoute(routes, 2, "some.java.Class.method3", RouteType.POST, String.format("/route3/[%s]*?", Route.AcceptableMultiPathCharacters));
 	}
-	
+
 	@Test
 	public void shouldParseMixedCaseRouteTypes() {
-		String json = "{"+
-							"\"/route1/**\": {\"get\": \"some.java.Class.method1\"},"+
-							"\"/route2/**\": {\"pUt\": \"some.java.Class.method2\"},"+
-							"\"/route3/**\": {\"post\": \"some.java.Class.method3\"},"+
-							"\"/route4/**\": {\"deLEte\": \"some.java.Class.method4\"}"+
-						"}";
+		String json = "{" +
+				"\"/route1/**\": {\"get\": \"some.java.Class.method1\"}," +
+				"\"/route2/**\": {\"pUt\": \"some.java.Class.method2\"}," +
+				"\"/route3/**\": {\"post\": \"some.java.Class.method3\"}," +
+				"\"/route4/**\": {\"deLEte\": \"some.java.Class.method4\"}" +
+				"}";
 		List<Route> routes = Routes.parseJsonRoutes(json);
 		assertThat(routes.size(), is(4));
 		assertRoute(routes, 0, "some.java.Class.method1", RouteType.GET, String.format("/route1/[%s]*?", Route.AcceptableMultiPathCharacters));
@@ -104,13 +113,13 @@ public class RoutesTest {
 		assertRoute(routes, 2, "some.java.Class.method3", RouteType.POST, String.format("/route3/[%s]*?", Route.AcceptableMultiPathCharacters));
 		assertRoute(routes, 3, "some.java.Class.method4", RouteType.DELETE, String.format("/route4/[%s]*?", Route.AcceptableMultiPathCharacters));
 	}
-	
+
 	@Test
 	public void shouldParseMultipleRouteTypesPerEntryCaseRouteTypes() {
-		String json = "{"+
-							"\"/route1/**\": {\"GET\": \"some.java.Class.method1\", \"PUT\": \"some.java.Class.method1\"},"+
-							"\"/route2/**\": {\"PUT\": \"some.java.Class.method2\", \"DELETE\": \"some.java.Class.method3\"}"+
-						"}";
+		String json = "{" +
+				"\"/route1/**\": {\"GET\": \"some.java.Class.method1\", \"PUT\": \"some.java.Class.method1\"}," +
+				"\"/route2/**\": {\"PUT\": \"some.java.Class.method2\", \"DELETE\": \"some.java.Class.method3\"}" +
+				"}";
 		List<Route> routes = Routes.parseJsonRoutes(json);
 		assertThat(routes.size(), is(4));
 		assertRoute(routes, 0, "some.java.Class.method1", RouteType.GET, String.format("/route1/[%s]*?", Route.AcceptableMultiPathCharacters));
@@ -119,9 +128,38 @@ public class RoutesTest {
 		assertRoute(routes, 3, "some.java.Class.method3", RouteType.DELETE, String.format("/route2/[%s]*?", Route.AcceptableMultiPathCharacters));
 	}
 
+	@Test
+	public void shouldHaveRouteAfterAddingRoutes() {
+		Routes routes = new Routes();
+		routes.addActionResolver(TestAction.class, new TestActionResolver());
+		Route route1 = new Route("/path/*.jpg", "static", RouteType.GET);
+		routes.addRoutes(list(route1));
+
+		assertThat(routes.findMatchingRoute("/path/image.jpg", RouteType.GET), is(route1));
+		assertThat(routes.findMatchingRoute("/path/image.jpg", RouteType.POST), is(nullValue()));
+		assertThat(routes.findMatchingRoute("/path/image.jpeg", RouteType.GET), is(nullValue()));
+	}
+
 	private void assertRoute(List<Route> routes, int index, String actionName, RouteType routeType, String path) {
 		assertThat(routes.get(index).getActionName(), is(actionName));
 		assertThat(routes.get(index).getRouteMatchRegex(), is(path + ("(?:;.*?)*")));
 		assertThat(routes.get(index).getRouteType(), is(routeType));
+	}
+
+	private static class TestAction implements Action {
+
+	}
+
+	private static class TestActionResolver implements ActionResolver<TestAction> {
+		@Override
+		public TestAction resolve(TestAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) throws ActionException {
+			return action;
+		}
+
+		@Override
+		public TestAction createActionIfPossible(String actionName) {
+			return new TestAction();
+		}
+
 	}
 }

@@ -55,28 +55,40 @@ public class Routes {
 
 	public void addRoutes(Collection<Route> routes) {
 		for (Route route : routes) {
-			String path = route.getRouteMatchRegex();
-			String actionName = route.getActionName();
-			RouteType routeType = route.getRouteType();
-			Action action = createAction(actionName);
-			this.routes.get(routeType).put(path, route);
-			this.actionsForRoutes.put(route, action);
-			Logger.info("Added route %s", route);
+			addRoute(route);
 		}
+	}
+
+	private void addRoute(Route route) {
+		String path = route.getRouteMatchRegex();
+		String actionName = route.getActionName();
+		RouteType routeType = route.getRouteType();
+		Action action = createAction(actionName);
+		this.routes.get(routeType).put(path, route);
+		this.actionsForRoutes.put(route, action);
+		Logger.info("Added route %s", route);
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T extends Action> Object invoke(String routePath, RouteType routeType, HttpServletRequest req, HttpServletResponse resp) {
 		Logger.debug("Requesting '%s'", routePath);
-		Map<String, Route> routesForRouteType = routes.get(routeType);
-		for (Route route : routesForRouteType.values()) {
-			if (route.matches(routePath)) {
-				T action = (T) actionsForRoutes.get(route);
-				return resolveAction(routePath, routeType, req, resp, route, action);
-			}
+		Route route = findMatchingRoute(routePath, routeType);
+		if (route != null) {
+			T action = (T) actionsForRoutes.get(route);
+			return resolveAction(routePath, routeType, req, resp, route, action);
 		}
 		String debugString = debug ? listRoutes() : "";
 		throw new RouteNotFoundException("No route matching the request %s %s\n%s", routeType, routePath, debugString);
+	}
+
+	public Route findMatchingRoute(String routePath, RouteType routeType) {
+		Map<String, Route> routesForRouteType = routes.get(routeType);
+		for (Route route : routesForRouteType.values()) {
+			if (route.matches(routePath)) {
+				return route;
+			}
+		}
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
