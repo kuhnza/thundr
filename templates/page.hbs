@@ -1,0 +1,22 @@
+<div class="page-header">
+	<h1>thundr <small>{{meta.title}}</small></h1>
+</div>
+
+<section class="overview">
+	{{{marked content}}}
+</section>
+
+{{#if sections}} {{#each sections}}
+
+{{#if meta.template}}
+	
+	{{{content}}}
+
+{{else}}
+	<section id="{{meta.id}}">
+		{{{marked content}}}
+	</section>
+{{/if}}
+
+
+{{/each}} {{/if}}

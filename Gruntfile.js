@@ -90,7 +90,7 @@ module.exports = function( grunt ) {
         tasks: 'less reload'
       },
       templates: {
-        files: 'template/**/*.hbs',
+        files: 'templates/**/*.hbs',
         tasks: 'generate-html reload'
       },
       content: {
@@ -158,7 +158,7 @@ module.exports = function( grunt ) {
 
     // concat css/**/*.css files, inline @import, output a single minified css
     css: {
-      'styles/main.css': ['styles/**/*.css']
+      'styles/main.css': ['styles/*.css']
     },
 
     // renames JS/CSS to prepend a hash of their contents for easier

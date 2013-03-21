@@ -1,49 +1,80 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>{{meta.title}}</title>
-        <meta name="description" content="{{meta.description}}">
-        <meta name="viewport" content="width=device-width">
+<div class="page-header">
+  <h1>thundr <small>a lightweight webframework</small></h1>
+</div>
 
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+<ul class="benefits thumbnails">
+	<li class="span4">
+		<figure>
+			<h3>Lightweight</h3>
+		</figure>
+		
+		<figcaption class="caption">
+			Designed to spin up fast, with only a thin layer between the servlet container and your code.
+		</figcaption>
+	</li>
+	<li class="span4">
+		<figure>
+			<h3>No Magic</h3>
+		</figure>
+		
+		<figcaption class="caption">
+			Doesn't rely heavily on annotations, reflection, introspection or classpath scanning.
+		</figcaption>
+	</li>
+	<li class="span4">
+		<figure>
+			<h3>Easy to learn</h3>
+		</figure>
+		
+		<figcaption class="caption">
+			Delivers APIs that are straight-forward and easy to learn and explore using your IDE tools.
+		</figcaption>
+	</li>
+	
+	<li class="span4">
+		<figure>
+			<h3>Modular</h3>
+		</figure>
+		
+		<figcaption class="caption">
+			Pull in modular components to support rapid development and solve common problems easily
+		</figcaption>
+	</li>
+	<li class="span4">
+	</li>
+	<li class="span4">
+		<figure>
+			<h3>Get Started</h3>
+		</figure>
+		
+		<figcaption class="getStartedLink caption">
+			<a href="basics.html">
+				Click here to get started
+			</a>
+			<a href="basics.html">
+			<i class="icon icon-circle-arrow-right"></i>
+			</a>
+		</figcaption>
+	</li>
+</ul>
 
-        
-        <link rel="stylesheet" href="styles/main.css">
-        <script src="scripts/vendor/modernizr.min.js"></script>
-    </head>
-    <body>
-    <div class="container" style="margin-top:50px">
-        <div class="hero-unit">
-            {{{marked content}}}
-        </div>
-    </div>
-
-        <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
-        <![endif]-->
-
-        <!-- Add your site or application content here -->
-
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="scripts/vendor/jquery.min.js"><\/script>')</script>
-        
-        
-
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-            s.parentNode.insertBefore(g,s)}(document,'script'));
-        </script>
-    
-    <!-- build:js scripts/amd-app.js -->
-    <script data-main="scripts/main" src="scripts/vendor/require.js"></script>
-    <!-- endbuild -->
-</body>
-</html>
+<ul class="getThundr thumbnails">
+	<li class="span4 lead">
+		<i class="icon icon-large icon-cloud-download"></i>
+		<a href="http://search.maven.org/#artifactdetails%7Ccom.threewks.thundr%7Cthundr%7C0.9.6%7Cjar">
+			Maven
+		</a>
+	</li>
+	<li class="span4 lead">
+		<i class="icon icon-large icon-github"></i>
+		<a href="http://github.com/3wks/thundr">
+		Source on github
+		</a>
+	</li>
+	<li class="span4 lead">
+		<i class="icon icon-large icon-download"></i>
+		<a href="http://repo1.maven.org/maven2/com/threewks/thundr/thundr/0.9.6/">
+			Download jars
+		</a>
+	</li>
+</ul>

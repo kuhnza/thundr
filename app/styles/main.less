@@ -1,1 +1,90 @@
-/* Will be compiled down to a single stylesheet with your sass files */
+@import "lib/bootstrap/variables.less";
+@import "lib/bootstrap/mixins.less";
+@import 'lib/bootstrap/alerts.less';
+@import "lib/highlight-tomorrow.css";
+
+.navbar-inner .nav {
+	> li {
+		> a {
+			padding: 12px 15px 0px 15px;
+			height: 32px;
+		}
+	}
+}
+.navbar .brand {
+	padding: 2px 20px;
+}
+.benefits {
+	figure > h3 {
+		text-align: center;
+	}
+	
+	.getStartedLink {
+		display: block;
+		text-align: center;
+		vertical-align: middle;
+		margin-top: -10px;
+		
+		a {
+			display: inline-block;
+			height: 38px;
+			&:hover {
+				text-decoration: none;
+			}
+		}
+		i {
+			color: #EEE;
+			font-size: 5em;
+		}
+	}
+}
+.getThundr {
+	margin-top: 24px;
+	border-top: 1px solid #EEE;
+	li {
+		margin-top: 20px;
+		i {
+			display: inline-block;
+			font-size: 3em;
+			color: #EEE;
+		}
+		a {
+			display: inline-block;
+			height: 60px;
+			vertical-align: middle;
+		}
+	}
+}
+footer {
+	.navbar-text {
+		margin-right: 8px;
+	}
+	a {
+	 	color: @textColor;
+	 	
+	 	i {
+	 		font-size: 20px;
+	 		color: #CCC;
+	 	}
+	 	
+	 	&:hover {
+	 	 	text-decoration: none;
+	 	 	color: @grayLight;
+	 	}
+	}
+}
+
+.threewksLogo {
+	height: 24px;
+}
+
+blockquote {
+	.alert;
+	.alert-info;
+
+	p { font-size: 14px; }
+}
+
+pre {
+	margin-bottom: 25px;
+}

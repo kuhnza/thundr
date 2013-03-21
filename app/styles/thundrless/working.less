@@ -1,0 +1,151 @@
+.showLineHeight {
+	background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAEUlEQVQIW2O8e/fuf8b/QAAAJMEHlZKYyTIAAAAASUVORK5CYII=') top left repeat;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: -o-crisp-edges; 
+	background-size: auto @baseLineHeight * 2;
+	
+	> * {
+	 	image-rendering: auto;
+	}
+}
+
+
+.fixed() {
+	width: 960px;
+	.marginH(auto);
+}
+.fluid(){
+	.marginH(@standardMargin);
+}
+
+.inline-block-fix(){
+	line-height: 0;
+    font-size: 0;
+	> * {
+		line-height: @baseLineHeight;
+    	font-size: @baseFontSize;
+	}
+}
+.formField(){
+	.horizontal(@labelWidth: 100px) {
+		.inline-block-fix();
+		
+		> label {
+			min-width: @labelWidth;
+			.inline-block();
+			.marginV(@baseLineHeight/2);
+			line-height: @baseLineHeight * 2;
+			vertical-align: middle;
+		}
+		> div,
+		> input,
+		> select,
+		> textarea {
+			.inline-block();
+			vertical-align: middle;
+			.marginV(@baseLineHeight/2);
+		}
+		> button,
+		> input[type="file"],
+		> input[type="reset"],
+		> input[type="button"],
+		> input[type="submit"] {
+			.marginV(@baseLineHeight/2);
+		}
+	}
+	.vertical(){
+		.inline-block-fix();
+		> label {
+			display: block;
+			line-height: @baseLineHeight;
+			padding: 0 (@baseLineHeight /4);
+			margin: @baseLineHeight 0;
+		}
+
+		> div,
+		> input,
+		> textarea {
+			display: block;
+			margin: @baseLineHeight 0;
+		}
+		> select {
+			.inline-block();
+		}
+		> button,
+		> input[type="file"],
+		> input[type="reset"],
+		> input[type="button"],
+		> input[type="submit"] {
+			display: block;
+			.marginV(@baseLineHeight/2);
+			margin-left: 0;
+		}
+	}
+}
+
+
+#controls {
+	.tiny()		{ min-width: 40px; width: 94%; max-width: 40px; }
+	.narrow()	{ min-width: 80px; width: 94%; max-width: 100px; }
+	.normal()	{ min-width: 80px; width: 94%; max-width: 210px; }
+	.wide()		{ min-width: 80px; width: 94%; max-width: 400px;}
+	.fluid()	{ max-width: 96%; width: 94%; }
+	
+	.controlGroup(){
+		.inline-block-fix();
+		vertical-align: middle;
+		max-width: 96%;
+		
+		> input 	{ .controlGroupElement(); }
+		> textarea 	{ .controlGroupElement(); }
+		> select 	{ .controlGroupElement(); }
+		> button 	{ .controlGroupElement(); }
+		> label 	{ .controlGroupElement(); .controlGroupLabel(); }
+		> span 		{ .controlGroupElement(); .controlGroupLabel(); }
+	}
+	.joinLeft(){
+		margin-left: 0;
+		.border-left-radius(0);
+	}
+	.joinRight(){
+		border-right: none;
+		margin-right: 0;
+		.border-right-radius(0);
+	}
+	.controlGroupElement(){
+		&:not(:first-child)	{ .joinLeft(); }
+		&:not(:last-child)	{ .joinRight(); }
+	} 
+	.controlGroupLabel(){
+		.inline-block();
+		.inputField();
+		vertical-align: bottom;
+		padding-top: @inputPaddingTop + 2px;
+		padding-bottom: @inputPaddingBottom - 2px;
+		color: #666;
+		font-weight: lighter;
+		.background.gradient.linear .vertical(#EDEDED, #DEDEDE);
+	}
+	.embed(@labelWidth) {
+		padding-left: @labelWidth;
+	}
+	.embedded(@zIndex: 2) {
+		position: relative;
+		.inline-block();
+		top: 0 !important;
+		left: @inputMarginLeft + @inputBorderWidth !important;
+		width: 0 !important;
+		overflow: display;
+		height: @inputHeight !important;
+		line-height: @inputHeight !important;
+		vertical-align: baseline !important;
+		text-align: center;
+		white-space: nowrap;
+		margin: 0 -1px !important;
+		padding: @inputPaddingTop 0 @inputPaddingBottom 0 !important;
+		border: 1px solid transparent !important; 
+		z-index: @zIndex !important;
+		color: @disabledColour !important;
+		background: transparent !important;
+	}
+}  

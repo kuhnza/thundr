@@ -1,0 +1,416 @@
+/**
+* Basic Element styling.
+* The core value affecting sizing and layout is the @baseLineHeight. Most
+* values (margins, paddings, heights etc) are directly influenced by this.
+*/
+body {
+	color: @textColour;
+	font-size: @baseFontSize;
+	line-height: @baseLineHeight;
+}
+
+
+h1 {
+	font-size: 3 * @baseFontSize;
+	line-height: 3 * @baseLineHeight;
+	padding: @baseLineHeight 0;
+	margin: 0;
+}
+
+h2  {
+	font-weight: bold;
+	font-size: 2.4 * @baseFontSize;
+	line-height: 3 * @baseLineHeight;
+	padding: @baseLineHeight/2 0;
+	margin: 0;
+}
+
+h3 {
+	font-weight: bold;
+	font-size: 1.8 * @baseFontSize;
+	line-height: 2 * @baseLineHeight;
+	padding: @baseLineHeight/2 0;
+	margin: 0;
+}
+
+h4 {
+	font-weight: bold;
+	font-size: 1.2 * @baseFontSize;
+	line-height: 2 * @baseLineHeight;
+	padding: @baseLineHeight/2 0;
+	margin: 0;
+}
+
+h5 {
+	font-weight: bold;
+	font-size: @baseFontSize;
+	line-height: @baseLineHeight;
+	padding: @baseLineHeight/2 0;
+	margin: 0;
+}
+
+h6 {
+	font-weight: normal;
+	font-size: 0.8 * @baseFontSize;
+	line-height: @baseLineHeight;
+	padding: @baseLineHeight/2 0;
+	margin: 0;
+}
+
+p {
+	margin: @baseLineHeight 0;
+	padding: 0;
+}
+
+a {
+	color: @linkColour;
+	text-decoration: none;
+	&:hover {
+		color: @linkColour;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+}
+
+hr {
+	width: 80%;
+	margin: @baseLineHeight/2 auto;
+	border: 0;
+	border-bottom: 2px solid @borderColour;
+}
+
+pre {
+	color: textColour;
+	.panel(@borderColour, @preBackground);
+}
+code {
+	color: textColour;
+	.panel(@borderColour, @preBackground);
+}
+
+fieldset {
+	color: @fieldsetColour;
+	background: @fieldsetBackground;
+	border: @fieldsetBorder;
+	.box-shadow(@fieldsetBoxShadow);
+	margin: @baseLineHeight 0;
+	.border-radius(2px);
+}
+
+/**
+* Form elements
+*/
+input[type="text"]		{ .inputField(); .inputInsetShadow(); .focusable(); }
+input[type="search"]	{ .inputField(); .inputInsetShadow(); .focusable(); }
+input[type="email"]		{ .inputField(); .inputInsetShadow(); .focusable(); }
+input[type="number"]	{ .inputField(); .inputInsetShadow(); .focusable(); }
+input[type="tel"]		{ .inputField(); .inputInsetShadow(); .focusable(); }
+input[type="time"]		{ .inputField(); .inputInsetShadow(); .focusable(); }
+input[type="url"]		{ .inputField(); .inputInsetShadow(); .focusable(); }
+input[type="password"]	{ .inputField(); .inputInsetShadow(); .focusable(); }
+input[type="file"] 		{ .inputFieldBorderBox(); .button(); .focusable(); }
+input[type="reset"] 	{ .inputFieldBorderBox(); .button(); .focusable(); }
+input[type="submit"] 	{ .inputFieldBorderBox(); .button(); .focusable(); }
+input[type="button"] 	{ .inputFieldBorderBox(); .button(); .focusable(); }
+button 					{ .inputFieldBorderBox(); .button(); .focusable(); } 
+input[type="checkbox"]	{ 
+	.inputField();
+	margin-top: @inputMarginTop + 4px;
+	margin-bottom: @inputMarginBottom + 4px;
+	padding-top: @baseLineHeight/2; 
+}
+select { 
+	.inputFieldBorderBox();
+	.inputInsetShadow(); 
+	.focusable();
+	//background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAASUlEQVQYV2NkIBIwEqmOgXHmzJn/iVFMksJ6oIkNBExtALsRaD0+xQ3p6emNcM/gUAxWBDIMxddoiuGKMBQiOYMBZhLM7USHIwAGUhvp82EW9gAAAABJRU5ErkJggg==') right center no-repeat scroll #FFF;
+}
+textarea {
+	.inputField();
+	.inputInsetShadow(); 
+    .focusable();
+	height: @baseLineHeight * 6 + 4px; 
+    resize: none;
+}
+
+// Mixins for shared styling of input fields
+.focusable(){
+	&:focus {
+		border: @inputBorderWidth solid @inputFocusColour;
+	   	.box-shadow(0 0 4px 2px @inputFocusColour);
+	   	outline: none;
+	}
+}
+.inputInsetShadow(){
+	.box-shadow(inset 0px 0px 8px 8px @inputInsetColour);
+}
+.inputField(){
+	// This requires custom images for the select, radio and checkboxes but would result in a much better cross browser experience
+	// it also resolves lack of box shadow around select and checkboxes etc 
+	//-webkit-appearance: none;
+	
+	height: @inputHeight;
+	margin: @inputMarginTop @inputMarginRight @inputMarginBottom @inputMarginLeft;
+	padding: @inputPaddingTop @inputPaddingRight @inputPaddingBottom @inputPaddingLeft;
+	border: @inputBorder;
+	.border-radius(@inputBorderRadius);
+	color: @textColour;
+	&[readonly='readonly']{
+		color: @disabledColour;
+	}
+	&[disabled='disabled']{
+		color: @disabledColour;
+	}
+	&::-webkit-input-placeholder {
+	    color: @placeholderColour;
+	    font-style: italic;
+	}
+	&:-moz-placeholder {
+	    color: @placeholderColour;
+	    font-style: italic;
+	}
+}
+.inputFieldBorderBox(){
+	.inputField();
+	height: @inputHeight + @inputPaddingTop + @inputPaddingBottom + 2px;
+	min-width: 140px;
+	.marginH(0);
+}
+
+/**
+* Table styling
+*/
+table {
+	margin: @baseLineHeight 0;
+	width: 100%;
+
+	thead, tfoot{
+		border: @tableBorder;
+		
+		> tr > th {
+			> input { .marginV(0); }
+			> select { .marginV(0); }
+		}
+	}
+	tbody {
+		border: @tableBorder;
+	 	> tr{
+	 		border-bottom: @tableBorder;
+	 		&:hover {
+				background-color: @tableRowHover;
+			}
+			> td {
+				> select{ .marginV(0); }
+				> input{
+					.marginV(0);
+					&[type="checkbox"]{
+						margin-top: 2px;
+					}
+				}
+			}
+		}
+	}
+	th {
+		text-align: left;
+		font-weight: bold;
+		.background.gradient.linear .vertical(@tableHeaderColour, @tableHeaderColourEnd);
+		.effects .gloss();
+		padding: 4px 0;
+	}
+	td {
+		padding: 4px 8px 3px 8px;
+		text-align: left;
+	}
+}
+
+/**
+* Page Menu
+* <div|nav|*>
+* 	<ul|ol>
+*		<li/>
+*		<li/>
+*	</ul|ol>
+* </div|nav|*>
+*/
+.menu() {
+	display: block;
+	.inline-block-fix();
+	.background.gradient.linear .vertical(@menuBackgroundColour, @menuBackgroundColourEnd);
+
+	// permits .menu() on a <ul|ol>, or its parent element
+	> li, > * > li {
+		.menuItem();
+	}
+}
+.menuItem(){
+	.inline-block();
+	min-width: 80px;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	border: @menuBorder;
+	text-align: center;
+	
+	> a {
+		display: block;
+		padding: (@baseLineHeight - @menuBorderSize) @baseLineHeight/2;
+		color: @menuForegroundColour;
+		
+		&:hover, &:focus, &:active {
+			background-color: rgba(255, 255, 255, 0.1);
+			text-decoration: none;
+			color: lighten(@menuForegroundColour, 15%);
+			outline: none;
+		}
+		
+		// matches up with bootstrap-dropdown layout
+		& + ul {
+			position: absolute;
+			display: none;
+			left: 0;
+			.subMenu();
+		}
+	}
+	// matches up with bootstrap-dropdown layout
+	&.open {
+		> a + ul {
+			display: block;
+		}
+	}
+}
+.subMenu() {
+	@borderWidth: 1px;
+	@borderColourAndStyle: solid #333;
+	@backgroundColour: #FFF;
+	@backgroundShadow: 0px 0px 2px 1px rgba(255, 255, 255, .8);
+	margin: -@baseLineHeight/2 0 0 0;
+	padding: @baseLineHeight/4 @baseLineHeight/4;
+	.commonSubMenuStyling();
+	width: 120px;
+	.box-shadow(@backgroundShadow, 4px 4px 8px 2px rgba(0, 0, 0, .2));
+	
+	&:before{
+	    position: absolute; 
+	    display: block; 
+	    .commonSubMenuStyling();
+	    border-width: @borderWidth @borderWidth 0 0;
+	    width: @baseLineHeight; 
+	    height: @baseLineHeight;
+	    top: -@baseLineHeight/2 - @borderWidth;
+	    left: 2*@baseLineHeight;
+	    content: ' '; 
+	    z-index: 9;
+	    .box-shadow(@backgroundShadow); 
+	    
+	    .transform(rotate(-45deg));
+	    .transform-origin(50% 50%);
+	}
+	
+	.commonSubMenuStyling {
+	    border: @borderWidth @borderColourAndStyle;
+	    background: @backgroundColour;
+	     
+	}
+	
+	.colourSet {
+		.apply(@colourSet){
+			@textColour: "@{colourSet}TextColour";
+			@backgroundColour: "@{colourSet}BackgroundColour";
+			@backgroundColourEnd: "@{colourSet}BackgroundColourEnd";
+			
+			color: @@textColour;
+			.applyBackground(@@backgroundColour, @@backgroundColourEnd);
+		}
+		.applyBackground(@backgroundColourStart, @backgroundColourEnd) when(@backgroundColourEnd){
+			.background.gradient.linear .vertical(@backgroundColourStart, @backgroundColourEnd);
+		}
+		.applyBackground(@backgroundColourStart, @backgroundColourEnd) {
+			background: @backgroundColourStart;
+		}
+	}
+
+	> li {
+		@colourSet: 'colourSet1';
+		@colourSetTextColour: "@{colourSet}TextColour";
+		@colourSetBackgroundColour: "@{colourSet}BackgroundColour";
+		
+		position: relative;
+		display: block;
+		z-index: 10;
+		.colourSet .apply(@colourSet);
+		
+		&:hover {
+			.colourSet .apply(@colourSet);
+		}
+	}
+}
+
+/**
+*  Common types of informational display
+*/
+.info {
+	.panel(@infoColour, @infoBackgroundColour);
+}
+.alert {
+	.panel(@alertColour, @alertBackgroundColour);
+}
+.success {
+	.panel(@successColour, @successBackgroundColour);
+}
+.error {
+	.panel(@errorColour, @errorBackgroundColour);
+}
+
+.panel(@foreground, @background){
+	color: @foreground;
+	background-color: @background;
+	border: 1px solid @foreground;
+	margin: @baseLineHeight/2 0;
+	padding: @baseLineHeight/2 - 1px @baseLineHeight;
+}
+
+.button(@actionColour: @actionColour, @textColour: white) {
+	.inline-block();
+	height: @baseLineHeight * 2;
+	padding: @baseLineHeight/2 - 1px  40px;
+	.border-radius(6px);
+	border: 1px solid @actionColour;
+	.background.gradient.linear .vertical(lighten(@actionColour, 10%), darken(@actionColour, 10%));
+	
+	color: @textColour;
+	font-weight: bold;
+	font-size: @baseFontSize;
+	text-decoration: none;
+	text-shadow: rgba(0, 0, 0, 0.4) -1px -1px 1px;
+	
+	-webkit-appearance:none;
+	
+	&:hover, &:focus {
+		@hoverColour: lighten(@actionColour, 40%);
+		@shadowHeight: @baseFontSize*2;
+		text-decoration: underline;
+		outline: none;
+		.box-shadow( 
+	    	inset 0px (@shadowHeight/2) (@shadowHeight) fade(@hoverColour, 10%),
+			inset 0px (@shadowHeight/3) (@shadowHeight) fade(@hoverColour, 20%)
+		); 
+	}
+	&:active {
+		@activeColour: darken(@actionColour, 40%);
+		@shadowHeight: @baseFontSize*2;
+		text-decoration: underline;
+		outline: none;
+		.box-shadow( 
+	    	inset 0px -(@shadowHeight/2) (@shadowHeight) fade(@activeColour, 10%),
+			inset 0px -(@shadowHeight/3) (@shadowHeight) fade(@activeColour, 20%)
+		);
+	}
+	&.small {
+		padding: 2px 10px 4px 10px;
+	}
+	&.large {
+		height: @baseLineHeight * 3;
+		padding: (@baseLineHeight - 1px)  40px;
+		font-size: 1.2em;
+	}
+}
