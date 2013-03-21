@@ -35,7 +35,10 @@ handlebars.registerHelper 'each', (content, options) ->
 	).join('')
 
 handlebars.registerHelper 'equal', (value1, value2, options) ->
-	options.fn(this) if value1 is value2
+	if value1 is value2 
+		options.fn(this) 
+	else 
+		options.inverse(this)
 
 # conditional that checks whether this is the first element that's being iterated over
 handlebars.registerHelper 'first', (options) ->

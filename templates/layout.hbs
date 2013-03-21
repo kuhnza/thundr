@@ -3,111 +3,76 @@
 <head>
 	<meta charset="utf-8" lang="en-us"/>
 	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
-	<!--[if lt IE 9]> <script src="/thundr/javascript/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
+	<!--[if lt IE 9]> <script src="scripts/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
 	<title>thundr - {{current_page.meta.title}}</title>
 	<link rel="shortcut icon" href="favicon.ico" />
 	<meta name="description" content="{{current_page.description}}"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
 	<meta name="keywords" content="{{current_page.keywords}}"/>
+	<base href="{{current_page.meta.path_to_root}}" />
 	
 	<meta name="google-site-verification" content="V7Os0LLLfRti7XGzTPnlO_FfsjrL6Ldi3IKeq0tVGaY" />
-	
 	<!--
 	<t:style src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css"/>
-	<t:style src="/thundr/styles/lib/bootstrap/bootstrap.css"/>
+	<t:style src="styles/lib/bootstrap/bootstrap.css"/>
 	-->
 	<link rel="stylesheet" href="styles/lib/bootstrap/bootstrap.css"></link>
 	<link rel="stylesheet" href="styles/main.css"></link>
 	<link rel="stylesheet" href="styles/lib/font/font-awesome.css"></link>
 	<!--[if IE 7]>
-	<link rel="stylesheet" href="/thundr/styles/lib/font/font-awesome-ie7.css">
+	<link rel="stylesheet" href="styles/lib/font/font-awesome-ie7.css">
 	<![endif]-->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<!--
 	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
 	-->
 	<script src="scripts/vendor/bootstrap/bootstrap.min.js"></script>
-	<script src="scripts/vendor/bootstrap/bootstrap-dropdown.js"></script>
-	<script src="scripts/vendor/bootstrap/bootstrap-collapse.js"></script>
-	<script>
-	$(document).ready(function () {
-		// If we cross link pages to a collapsed accordian, open the entry of interest.
-		// We'll also open any collapsed accordian section within the same page
-		location.hash && $(location.hash + '.collapse').collapse('show');
-		$(window).bind('hashchange', function() {
-			location.hash && $(location.hash + '.collapse').collapse('show');
-		});
-		$('.dropdown-toggle').dropdown();
-		$(".collapse").collapse();
-	});
-	</script>
 </head>
-<body>
+<body data-spy="scroll" data-target=".module_nav">
 	 <header class="container">
 		<nav class="navbar">
 			<div class="navbar-inner">
-				<a class="brand" href="index.html"><img src="images/logoFullSmall.png"/></a>
-				<ul class="nav" role="navigation">
-					{{#each pages}}
-						{{#if meta.nav_position}}
-						
-						<li class="{{#if sections}}dropdown{{/if}} {{#equal meta.id ../../current_page.meta.id}}active{{/equal}}">
+				<div class="navbar-top">
+					<a class="brand" href="index.html"><img src="images/logoFullSmall.png"/></a>
 
-						{{#if sections}}
-							<a href="{{meta.href}}" class="dropdown-toggle" data-toggle="dropdown">
-								{{#if meta.nav_title}}
-									{{meta.nav_title}}
-								{{else}}
-									{{ucfirst meta.title}}
-								{{/if}} <b class="caret"></b>
-							</a>
+					<ul class="nav" role="navigation">
+						{{#each modules}} {{#if nav.position }}
+							{{#equal pages.length 1}}
+								<li class="{{#equal ../../current_module.id id}}active{{/equal}}">
+									<a href="{{href}}">{{name}}</a>
+								</li>
+							{{else}}
+								<li class="dropdown {{#equal ../../current_module.id id}}active{{/equal}}">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" >{{name}} <b class="caret"></b></a>
 
-							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+									<ul class="dropdown-menu">
+										{{#each pages}} {{#if meta.nav_position}}
+										<li class="{{#equal meta.id ../../../../../current_page.meta.id}}active{{/equal}}">
+											<a href="{{meta.href}}">
+												{{#if meta.nav_title}}
+													{{meta.nav_title}}
+												{{else}}
+													{{ucfirst meta.title}}
+												{{/if}}
+											</a>
+										</li>
+										{{/if}} {{/each}}
+									</ul>
 
-								{{#if meta.nav_has_overview}}
-								<li><a href="{{meta.href}}">Overview</a></li>
-								<li class="divider"></li>
-								{{/if}}
-								
-								{{#each sections}}
-									{{#if meta.title}}
-										
-										{{#if meta.starts_new_category}}<li class="divider"></li>{{/if}}
-
-
-										<li><a href="{{../../meta.href}}#{{meta.id}}">
-											{{meta.title}}
-											{{#if meta.is_advanced_topic}}
-											<span class="label label-info">Advanced</span>
-											{{/if}}
-										</a></li>
-									
-									{{/if}}
-								{{/each}}
-
-							</ul>
-
-						{{else}}
-							<a href="{{meta.href}}">
-								{{#if meta.nav_title}}
-									{{meta.nav_title}}
-								{{else}}
-									{{ucfirst meta.title}}
-								{{/if}}
-							</a>
-						{{/if}}
-
-						</li>
-						{{/if}}
-					{{/each}}
-				</ul>
+								</li>
+							{{/equal}}
+						{{/if}} {{/each}}
+					</ul>
+				</div>
 			</div>
+
 		</nav>
+		
 	</header>
 
-	<article id="" class="container">
-	{{{ current_page.content }}}
-	</article>
+	<div class="container">
+		{{{ current_page.content }}}
+	</div>
 	
 	<footer class="container">
 		<div class="navbar">
@@ -142,6 +107,10 @@
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
 	</script>
+
+	<!-- build:js scripts/amd-app.js -->
+	<script data-main="scripts/main" src="scripts/vendor/require.js"></script>
+	<!-- endbuild -->
 </body>
 </html>
 		

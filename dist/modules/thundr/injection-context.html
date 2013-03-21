@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" lang="en-us"/>
+	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
+	<!--[if lt IE 9]> <script src="scripts/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
+	<title>thundr - dependancy injection</title>
+	<link rel="shortcut icon" href="./favicon.ico" />
+	<meta name="description" content=""/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
+	<meta name="keywords" content=""/>
+	<base href="../../" />
+	
+	<meta name="google-site-verification" content="V7Os0LLLfRti7XGzTPnlO_FfsjrL6Ldi3IKeq0tVGaY" />
+	<!--
+	<t:style src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css"/>
+	<t:style src="styles/lib/bootstrap/bootstrap.css"/>
+	-->
+	<link rel="stylesheet" href="styles/lib/bootstrap/1a11dd2d.bootstrap.css"></link>
+	<link rel="stylesheet" href="styles/dcca9bf0.main.css"></link>
+	<link rel="stylesheet" href="styles/lib/font/4712f287.font-awesome.css"></link>
+	<!--[if IE 7]>
+	<link rel="stylesheet" href="styles/lib/font/8edda79c.font-awesome-ie7.css">
+	<![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!--
+	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+	-->
+	<script src="scripts/vendor/bootstrap/41e29a31.bootstrap.min.js"></script>
+</head>
+<body data-spy="scroll" data-target=".module_nav">
+	 <header class="container">
+		<nav class="navbar">
+			<div class="navbar-inner">
+				<div class="navbar-top">
+					<a class="brand" href="./index.html"><img src="images/79eca7d9.logoFullSmall.png"/></a>
+
+					<ul class="nav" role="navigation">
+						 
+							
+								<li class="dropdown ">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" >thundr <b class="caret"></b></a>
+
+									<ul class="dropdown-menu">
+										 
+										<li class="">
+											<a href="modules/thundr/basics.html">
+												
+													Basics
+												
+											</a>
+										</li>
+										  
+										<li class="">
+											<a href="modules/thundr/controllers.html">
+												
+													Controllers
+												
+											</a>
+										</li>
+										  
+										<li class="">
+											<a href="modules/thundr/views.html">
+												
+													Views
+												
+											</a>
+										</li>
+										  
+										<li class="">
+											<a href="modules/thundr/actions.html">
+												
+													Actions
+												
+											</a>
+										</li>
+										  
+										<li class="active">
+											<a href="modules/thundr/injection-context.html">
+												
+													Dependancy injection
+												
+											</a>
+										</li>
+										 
+									</ul>
+
+								</li>
+							
+						  
+							
+								<li class="">
+									<a href="modules/thundr-gae/appengine.html">thundr-gae</a>
+								</li>
+							
+						 
+					</ul>
+				</div>
+			</div>
+
+		</nav>
+		
+	</header>
+
+	<div class="container">
+		<div class="row">
+	<aside class="module_nav_container span3">
+		<div class="module_nav">
+			
+			<ul class="nav nav-list" role="navigation">
+			 
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/basics.html">
+						
+							Basics
+						
+					</a>
+				</li>
+
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/controllers.html">
+						
+							Controllers
+						
+					</a>
+				</li>
+
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/views.html">
+						
+							Views
+						
+					</a>
+				</li>
+
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/actions.html">
+						
+							Actions
+						
+					</a>
+				</li>
+
+				
+			  
+					
+				<li class="nav-header active">
+					<a href="modules/thundr/injection-context.html">
+						
+							Dependancy injection
+						
+					</a>
+				</li>
+
+				
+					
+						
+						<li><a href="modules/thundr/injection-context.html#page-overview" data-target="#page-overview">Overview</a></li>
+						<li class="divider"></li>
+						
+
+						
+							
+								
+								
+								<li><a href="modules/thundr/injection-context.html#injectionContext" data-target="#injectionContext">
+									InjectionContext
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/injection-context.html#injectionTypes" data-target="#injectionTypes">
+									Injection by type
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/injection-context.html#namedTypes" data-target="#namedTypes">
+									Injection by named type
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/injection-context.html#instantiation" data-target="#instantiation">
+									Instantiation
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/injection-context.html#properties" data-target="#properties">
+									Properties
+									
+								</a></li>
+							
+							
+						
+					
+					
+				
+			  
+			</ul>
+
+			
+		</div>
+	</aside>
+
+	<article id="injectionContext" class="span9">
+		<div class="page-header">
+			<h1>thundr <small>dependancy injection</small></h1>
+		</div>
+
+		<section id="page-overview" class="overview">
+			<h2>Overview</h2>
+<p>thundr utilises the <a href="http://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a> pattern to help configure your code at runtime. In particular, any classes you wish to use as <a href="modules/thundr/controllers.html">controllers</a> are created by thundr using its dependency injection framework.<br>If your controller requires dependencies, they need to be configured so that thundr can provide them.
+
+</p>
+<p>Unlike many frameworks, dependencies are configured using basic java in thundr. It does this by enforcing a specified entry point for configuring your application, which is your InjectionConfiguration class. 
+
+</p>
+<p>Your application uses an InjectionConfiguration to make available all the instances and classes you wish to inject into your controllers and each-other. It is up to you how much you wish to rely on this, but in general utilising dependency injection increases the testability of controllers and other code resources, and reduces code coupling. 
+
+</p>
+<p>Your injection configuration needs to implement <code>com.threewks.thundr.injection.InjectionConfiguration</code>. It also has to have a specific name, which is <strong>X</strong>InjectionConfiguration where <strong>X</strong> is the name of the package it resides in. This requirement means that thundr doesn&#39;t need to perform any classpath scanning to locate configuration resources.
+
+</p>
+<p>For example, if your injection configuration is in the package <code>com.mycompany.myapp</code>, your configuration must be the java class <code>com.mycompany.myapp.MyappInjectionConfiguration</code>. In this case, you <em>module</em> will be com.mycompany.myapp.
+
+</p>
+<p>com.mycompany.myapp.MyappInjectionConfiguration
+
+</p>
+<pre><code class="lang-java"><span class="keyword">package</span> com.mycompany.myapp;
+
+<span class="keyword">import</span> com.threewks.thundr.injection.BaseInjectionConfiguration;
+<span class="keyword">import</span> com.threewks.thundr.injection.InjectionConfiguration;
+<span class="keyword">import</span> com.threewks.thundr.injection.UpdatableInjectionContext;
+<span class="keyword">import</span> com.threewks.thundr.profiler.BasicProfiler;
+<span class="keyword">import</span> com.threewks.thundr.profiler.Profiler;
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyappInjectionConfiguration</span> <span class="keyword">implements</span> <span class="title">InjectionConfiguration</span> {</span>
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> configure(UpdatableInjectionContext injectionContext) {
+        injectionContext.inject(MyServiceImpl.class).as(MyServiceInterface.class);
+        injectionContext.inject(MyRepositoryImpl.class).as(MyRepositoryInterface.class);
+    }
+}</code></pre>
+
+		</section>
+
+		 
+
+			
+
+			
+				
+				<section id="injectionContext">
+					<h4><code>InjectionContext</code></h4>
+<p>Dependency injection is managed by the <code>InjectionContext</code>.
+
+</p>
+<p>The injection context acts like a bucket for instances.<br>It can both provide existing instances and create new instances of required types. When the injection context creates new instances, it will try to satisfy dependencies using other instances it contains or can create.</p>
+
+				</section>
+			
+
+
+		
+
+			
+
+			
+				
+				<section id="injectionTypes">
+					<h4>Injection by type</h4>
+<p>For the injection context to be able to create and provide instances, it needs to know about the types. This is achieved by registering them. Types can only be registered through the interface <code>UpdatableInjectionContext</code>. This interface is provided to <code>InjectionConfiguration</code> implementations.
+
+</p>
+<p>You can register either an instance, or more commonly, the concrete type you wish instantiated. Registration requires the interface type that the desired type or instance is returned for to be specified.
+
+</p>
+<p>For example:
+
+</p>
+<pre><code class="lang-java">…
+<span class="keyword">public</span> <span class="keyword">void</span> configure(UpdatableInjectionContext injectionContext) {
+    injectionContext.inject(MyServiceImpl.class).as(MyServiceInterface.class);
+    MyRepositoryImpl repository = <span class="keyword">new</span> MyRepositoryImpl();
+    injectionContext.inject(repository).as(MyRepositoryInterface.class);
+}
+…</code></pre>
+<p>In the above example, we register the type <code>MyServiceImpl</code> to be returned when a <code>MyServiceInterface</code> is requested, and a specific instance of <code>MyRepositoryImpl</code> to be returned when a <code>MyRepositoryInterface</code> is requested.<br>After this, the following is possible:
+
+</p>
+<pre><code class="lang-java">…
+    MyServiceInterface myService = injectionContext.get(MyServiceInterface.class);
+    MyRepositoryInterface myRepository = injectionContext.get(MyRepositoryInterface.class);
+…</code></pre>
+
+				</section>
+			
+
+
+		
+
+			
+
+			
+				
+				<section id="namedTypes">
+					<h4>Injection by named type</h4>
+<p>As well as specifying types, you can also specified <em>named types</em>.Named types are types or instances registered as above, but also with specific names. For example: 
+
+</p>
+<pre><code class="lang-java">…
+<span class="keyword">public</span> <span class="keyword">void</span> configure(UpdatableInjectionContext injectionContext) {
+    injectionContext.inject(MyServiceImpl.class).named(<span class="string">"myService"</span>).as(MyServiceInterface.class);
+    injectionContext.inject(<span class="keyword">new</span> MyServiceImpl(<span class="string">"debugMode"</span>)).named(<span class="string">"alternativeService"</span>).as(MyServiceInterface.class);
+}
+…</code></pre>
+<p>In the above example, we register two different different <code>MyServiceInterface</code>s, with two different names.<br>When an instance is requested from the injection context, a different instance is returned depending on the name specified.
+
+</p>
+<pre><code class="lang-java">…
+    MyServiceInterface myService1 = injectionContext.get(MyServiceInterface.class, <span class="string">"myService"</span>);
+    MyServiceInterface myService2 = injectionContext.get(MyServiceInterface.class, <span class="string">"alternativeService"</span>);
+…</code></pre>
+
+				</section>
+			
+
+
+		
+
+			
+
+			
+				
+				<section id="instantiation">
+					<h4>Instantiation</h4>
+<p>When an instance is requested from the InjectionContext it will return an existing instance if possible, and if not, it will instantiate a new one.
+
+</p>
+<p>To create a new instance, the injection context will invoke the constructor with the most number of arguments it can satisfy. If no constructor can be satisfied, an <code>InjectionException</code> will be thrown.<br>A constructor can only be satisfied if the injection context can find at least a matching type for each argument.
+
+</p>
+<p>As well as matching type, the injection context will attempt to match the name. If a named type or instance was registered with the injection context, and the parameter name of the argument match it will be supplied to constructor over a type or instance registered without a name.
+
+</p>
+<p>For example:
+
+</p>
+<pre><code class="lang-java">… 
+<span class="keyword">public</span> <span class="keyword">void</span> configure(UpdatableInjectionContext injectionContext) {
+    injectionContext.inject(MyServiceImpl.class).named(<span class="string">"myService"</span>).as(MyServiceInterface.class);
+    injectionContext.inject(<span class="keyword">new</span> MyServiceImpl(<span class="string">"debugMode"</span>)).named(<span class="string">"debugService"</span>).as(MyServiceInterface.class);
+    injectionContext.inject(MyProcess.class).as(MyProcess.class);
+
+    MyProcess myProcess = injectionContext.get(MyProcess.class);
+}
+…
+
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyProcess</span> {</span>
+    <span class="keyword">public</span> MyProcess(MyServiceInterface myService, MyServiceInterface debugService){
+    …
+    }
+}
+…</code></pre>
+<p>In the above example, we inject two different <code>MyServiceInterface</code>s into our context, and when we get an instance of <code>MyProcess</code>, the constructor is invoked with each parameter being satisfied by the corresponding named type.</p>
+
+				</section>
+			
+
+
+		
+
+			
+
+			
+				
+				<section id="properties">
+					<h4>Properties</h4>
+<p>After instantiation, the injection context will attempt to set any javabean properties it can. It does this using standard setter style methods.
+
+</p>
+<p>As with instantiation, named instances and named types take preference over just instances and types.
+
+</p>
+<p>The injection context also supports a subset of JSR 330. This allows you to put the <code>@Inject</code> annotation directly on a member variable, rather than using a javabean property.<br>Note that the InjectionContext does not currently support the full JSR 330 specification, just the basic @Inject annotation.
+
+</p>
+<p>Where thundr interprets constructor arguments as <em>mandatory</em>, properties specified using setters or <code>@Inject</code>are considered <em>optional</em>. That is, no <code>InjectionException</code> will be thrown if the injection configuration cannot satisfy the desired parameters.
+
+</p>
+<p>In general, this division between mandatory and optional properties should give you guidance as to whether a given property should be a constructor argument, or a simple property on your types.
+
+</p>
+<p>The following is an example of the three basic ways of injecting required dependencies:
+
+</p>
+<pre><code class="lang-java">…
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> {</span>
+    <span class="keyword">private</span> DocumentService documentService;
+    <span class="keyword">private</span> CounterRepository counterRepository;
+    <span class="annotation">@Inject</span>
+    <span class="keyword">private</span> CategoryService categoryService;
+
+    <span class="keyword">public</span> Controller(DocumentService documentService){
+        <span class="keyword">this</span>.documentService = documentService;
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> setCounterRepository(CounterRepository counterRepository){
+        <span class="keyword">this</span>.counterRepository = counterRepository;
+    }
+…</code></pre>
+
+				</section>
+			
+
+
+		 
+
+	</article>
+</div>
+	</div>
+	
+	<footer class="container">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<span class="navbar-text pull-right">
+					Brought to you by <a href="http://www.3wks.com.au" title="3wks"><img class="threewksLogo" src="http://3wks.com.au/images/3wks_logo_2.png"/></a>
+				</span>
+				<span class="navbar-text">
+					<a href="mailto:nick@3wks.com.au?Subject=thundr">
+						<i class="icon icon-envelope-alt"></i> 
+						Get in touch
+					</a>
+				</span>
+				<span class="navbar-text">
+					<a href="https://groups.google.com/forum/?fromgroups#!forum/thundr-framework">
+						<i class="icon icon-group"></i> 
+						Join us on Google Groups 
+					</a>
+				</span>
+			</div>
+		</div>
+	</footer>
+
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-37139757-1']);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+
+	<script src="scripts/91b88f08.amd-app.js"></script>
+</body>
+</html>
+		

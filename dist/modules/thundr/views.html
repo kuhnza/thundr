@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" lang="en-us"/>
+	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
+	<!--[if lt IE 9]> <script src="scripts/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
+	<title>thundr - views</title>
+	<link rel="shortcut icon" href="./favicon.ico" />
+	<meta name="description" content=""/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
+	<meta name="keywords" content=""/>
+	<base href="../../" />
+	
+	<meta name="google-site-verification" content="V7Os0LLLfRti7XGzTPnlO_FfsjrL6Ldi3IKeq0tVGaY" />
+	<!--
+	<t:style src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css"/>
+	<t:style src="styles/lib/bootstrap/bootstrap.css"/>
+	-->
+	<link rel="stylesheet" href="styles/lib/bootstrap/1a11dd2d.bootstrap.css"></link>
+	<link rel="stylesheet" href="styles/dcca9bf0.main.css"></link>
+	<link rel="stylesheet" href="styles/lib/font/4712f287.font-awesome.css"></link>
+	<!--[if IE 7]>
+	<link rel="stylesheet" href="styles/lib/font/8edda79c.font-awesome-ie7.css">
+	<![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!--
+	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+	-->
+	<script src="scripts/vendor/bootstrap/41e29a31.bootstrap.min.js"></script>
+</head>
+<body data-spy="scroll" data-target=".module_nav">
+	 <header class="container">
+		<nav class="navbar">
+			<div class="navbar-inner">
+				<div class="navbar-top">
+					<a class="brand" href="./index.html"><img src="images/79eca7d9.logoFullSmall.png"/></a>
+
+					<ul class="nav" role="navigation">
+						 
+							
+								<li class="dropdown ">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" >thundr <b class="caret"></b></a>
+
+									<ul class="dropdown-menu">
+										 
+										<li class="">
+											<a href="modules/thundr/basics.html">
+												
+													Basics
+												
+											</a>
+										</li>
+										  
+										<li class="">
+											<a href="modules/thundr/controllers.html">
+												
+													Controllers
+												
+											</a>
+										</li>
+										  
+										<li class="active">
+											<a href="modules/thundr/views.html">
+												
+													Views
+												
+											</a>
+										</li>
+										  
+										<li class="">
+											<a href="modules/thundr/actions.html">
+												
+													Actions
+												
+											</a>
+										</li>
+										  
+										<li class="">
+											<a href="modules/thundr/injection-context.html">
+												
+													Dependancy injection
+												
+											</a>
+										</li>
+										 
+									</ul>
+
+								</li>
+							
+						  
+							
+								<li class="">
+									<a href="modules/thundr-gae/appengine.html">thundr-gae</a>
+								</li>
+							
+						 
+					</ul>
+				</div>
+			</div>
+
+		</nav>
+		
+	</header>
+
+	<div class="container">
+		<div class="row">
+	<aside class="module_nav_container span3">
+		<div class="module_nav">
+			
+			<ul class="nav nav-list" role="navigation">
+			 
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/basics.html">
+						
+							Basics
+						
+					</a>
+				</li>
+
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/controllers.html">
+						
+							Controllers
+						
+					</a>
+				</li>
+
+				
+			  
+					
+				<li class="nav-header active">
+					<a href="modules/thundr/views.html">
+						
+							Views
+						
+					</a>
+				</li>
+
+				
+					
+						
+
+						
+							
+								
+								
+								<li><a href="modules/thundr/views.html#views" data-target="#views">
+									Views
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/views.html#jspView" data-target="#jspView">
+									JspView
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/views.html#redirectView" data-target="#redirectView">
+									RedirectView
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/views.html#jsonView" data-target="#jsonView">
+									JsonView
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/views.html#stringView" data-target="#stringView">
+									StringView
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr/views.html#httpStatusException" data-target="#httpStatusException">
+									HttpStatusException
+									
+								</a></li>
+							
+							
+						
+							
+								
+								<li class="divider"></li>
+								<li><a href="modules/thundr/views.html#viewResolver" data-target="#viewResolver">
+									ViewResolver
+									
+									<span class="label label-info">Advanced</span>
+									
+								</a></li>
+							
+							
+						
+					
+					
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/actions.html">
+						
+							Actions
+						
+					</a>
+				</li>
+
+				
+			  
+					
+				<li class="nav-header ">
+					<a href="modules/thundr/injection-context.html">
+						
+							Dependancy injection
+						
+					</a>
+				</li>
+
+				
+			  
+			</ul>
+
+			
+		</div>
+	</aside>
+
+	<article id="views" class="span9">
+		<div class="page-header">
+			<h1>thundr <small>views</small></h1>
+		</div>
+
+		<section id="page-overview" class="overview">
+			<h4><code>Views</code></h4>
+
+		</section>
+
+		 
+
+			
+
+			
+				
+				<section id="views">
+					<h4>Views</h4>
+<p><a href="modules/thundr/controllers.html">Controller</a> methods can return a <code>View</code> object, which controls what content is returned to the request client.
+
+</p>
+<p>thundr handles views by passing them to registered a <code>ViewResolver</code>. You can read more about registering custom view and view resolvers <a href="modules/thundr/views.html#viewResolver">here</a>.
+
+</p>
+<p>Below are the views that thundr supports out of the box, you can also inspect the ViewResolver hierarchy to see all implementations.
+</p>
+
+				</section>
+			
+
+
+		
+
+			
+
+			
+				
+				
+				<div class="accordion">
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" href="#jspView">
+				<i class="icon icon-chevron-down"></i>
+				JspView
+			</a>
+		</div>
+
+		<section id="jspView" class="accordion-body collapse">
+			<div class="accordion-inner">
+				<h4>JspView</h4>
+<p><code>JspView</code> results in a jsp being processed and served from the Servlet engine. You specify the jsp file location, and optionally provide a data model to back it. Unless the jsp rendering fails, an Html file and a 200 OK will be sent back to the user.  
+
+
+</p>
+<p>The jsp file is considered to be relative to the path /WEB-INF/jsp/, unless it is given as an absolute path (i.e. starts with a forward slash, /)
+
+</p>
+<pre><code class="lang-java">…
+Map&lt;String, Object&gt; model = … 
+<span class="keyword">return</span> <span class="keyword">new</span> JspView(<span class="string">"path/to/my.jsp"</span>, model);
+…</code></pre>
+
+			</div>
+		</section>
+	</div>
+</div>
+
+			
+
+
+		
+
+			
+
+			
+				
+				
+				<div class="accordion">
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" href="#redirectView">
+				<i class="icon icon-chevron-down"></i>
+				RedirectView
+			</a>
+		</div>
+
+		<section id="redirectView" class="accordion-body collapse">
+			<div class="accordion-inner">
+				<h4>RedirectView</h4>
+<p><code>RedirectView</code> results in a temporary redirect (302) being sent back to the client with the specified location. This will send a browser to the new url.
+
+</p>
+<pre><code class="lang-java">…
+<span class="keyword">return</span> <span class="keyword">new</span> RedirectView(<span class="string">"http://www.google.com.au/search?q=thundr"</span>);
+…</code></pre>
+
+			</div>
+		</section>
+	</div>
+</div>
+
+			
+
+
+		
+
+			
+
+			
+				
+				
+				<div class="accordion">
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" href="#jsonView">
+				<i class="icon icon-chevron-down"></i>
+				JsonView
+			</a>
+		</div>
+
+		<section id="jsonView" class="accordion-body collapse">
+			<div class="accordion-inner">
+				<h4>JsonView</h4>
+<p><code>JsonView</code> uses the <a href="http://code.google.com/p/google-gson/">Gson library</a> to serialize the given object to json, and return it to the request client.
+
+</p>
+<pre><code class="lang-java">…
+MyDto dto = … 
+<span class="keyword">return</span> <span class="keyword">new</span> JsonView(dto);
+…</code></pre>
+
+			</div>
+		</section>
+	</div>
+</div>
+
+			
+
+
+		
+
+			
+
+			
+				
+				
+				<div class="accordion">
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" href="#stringView">
+				<i class="icon icon-chevron-down"></i>
+				StringView
+			</a>
+		</div>
+
+		<section id="stringView" class="accordion-body collapse">
+			<div class="accordion-inner">
+				<h4>StringView</h4>
+<p><code>StringView</code> is a simple view which returns the given string as the response content, with a response code of 200 OK. 
+
+</p>
+<pre><code class="lang-java">…
+<span class="keyword">return</span> <span class="keyword">new</span> StringView(<span class="string">"Hello!"</span>);
+…</code></pre>
+
+			</div>
+		</section>
+	</div>
+</div>
+
+			
+
+
+		
+
+			
+
+			
+				
+				
+				<div class="accordion">
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" href="#httpStatusException">
+				<i class="icon icon-chevron-down"></i>
+				HttpStatusException
+			</a>
+		</div>
+
+		<section id="httpStatusException" class="accordion-body collapse">
+			<div class="accordion-inner">
+				<h4>HttpStatusException</h4>
+<p><code>HttpStatusException</code> is a RuntimeException which takes a status code as a constructor parameter.
+
+</p>
+<p>When thrown, the specified status code is returned to the client as an http error, along with the specified message.
+
+</p>
+<pre><code class="lang-java">…
+<span class="keyword">throw</span> <span class="keyword">new</span> HttpStatusException(HttpServletResponse.SC_BAD_REQUEST, <span class="string">"Bad request at %d"</span>, System.currentTimeMillis());
+…</code></pre>
+<p>The servlet engine will process the response code as normal, so if your web.xml maps a jsp, then this is the content returned to the client. e.g.
+
+</p>
+<pre><code class="lang-xml">…
+<span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">error-code</span>&gt;</span>404<span class="tag">&lt;/<span class="title">error-code</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">location</span>&gt;</span>/WEB-INF/jsp/errors/404.jsp<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
+…</code></pre>
+
+			</div>
+		</section>
+	</div>
+</div>
+
+			
+
+
+		
+
+			
+
+			
+				
+				<section id="viewResolver">
+					<h4><code>ViewResolver</code> <span class="label label-info">Advanced</span></h4>
+<p>The <code>ViewResolverRegistry</code> returns a <code>ViewResolver</code> based on the class type of the view returned from a controller method. The view resolver is then given the view instance, the servlet request and servlet response and is expected to generate some output to the servlet response.
+
+</p>
+<p>The view resolver registry is available in the <code>InjectionContext</code> during startup. An instance of a <code>ViewResolver</code> can be registered at this point against <strong>any</strong> class type. That is, while most views do implement the <code>View</code> interface, this is for convenience and not a requirement.</p>
+
+				</section>
+			
+
+
+		 
+
+	</article>
+</div>
+	</div>
+	
+	<footer class="container">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<span class="navbar-text pull-right">
+					Brought to you by <a href="http://www.3wks.com.au" title="3wks"><img class="threewksLogo" src="http://3wks.com.au/images/3wks_logo_2.png"/></a>
+				</span>
+				<span class="navbar-text">
+					<a href="mailto:nick@3wks.com.au?Subject=thundr">
+						<i class="icon icon-envelope-alt"></i> 
+						Get in touch
+					</a>
+				</span>
+				<span class="navbar-text">
+					<a href="https://groups.google.com/forum/?fromgroups#!forum/thundr-framework">
+						<i class="icon icon-group"></i> 
+						Join us on Google Groups 
+					</a>
+				</span>
+			</div>
+		</div>
+	</footer>
+
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-37139757-1']);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+
+	<script src="scripts/91b88f08.amd-app.js"></script>
+</body>
+</html>
+		

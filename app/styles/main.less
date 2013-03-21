@@ -4,6 +4,10 @@
 @import "lib/highlight-tomorrow.css";
 
 .navbar-inner .nav {
+	&.hide {
+		display: none;
+	}
+
 	> li {
 		> a {
 			padding: 12px 15px 0px 15px;
@@ -14,6 +18,52 @@
 .navbar .brand {
 	padding: 2px 20px;
 }
+
+.module_nav_container {
+	padding-top: 28px;
+	min-height: 30px;
+	position: relative;
+}
+
+.module_nav {
+	width: 218px;
+	// margin-right: -2px; // accomodate border
+	padding-top: 9px;
+	background-color: @wellBackground;
+	border: 1px solid darken(@wellBackground, 7%);
+	.border-radius(4px);
+  	.box-shadow(inset 0 1px 1px rgba(0,0,0,.05));
+
+  	&.affix {
+  		position: fixed;
+  		top: 28px;
+  	}
+
+	.nav-list {
+		padding-bottom: @baseLineHeight - 9px;
+		
+
+		li {
+			padding-left: 15px;
+
+			&.divider {
+				margin: 5px 0;
+				border-bottom: none;
+				background: transparent;
+			}
+
+			&.nav-header {
+				margin-top: 5px;
+			}
+
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+	}
+
+}
+
 .benefits {
 	figure > h3 {
 		text-align: center;
