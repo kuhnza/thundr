@@ -17,10 +17,24 @@
  */
 package com.threewks.thundr.injection;
 
-public class InstanceAlreadyExistsException extends InjectionException {
-	private static final long serialVersionUID = 7013626764201680479L;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
-	public InstanceAlreadyExistsException(String format, Object[] formatArgs) {
-		super(format, formatArgs);
+import org.junit.Test;
+
+public class InjectionExceptionTest {
+	@Test
+	public void shouldFormatAndRetainReason() {
+		InjectionException injectionException = new InjectionException("String %s", "format");
+		assertThat(injectionException.getMessage(), is("String format"));
+		assertThat(injectionException.getCause(), is(nullValue()));
+	}
+
+	@Test
+	public void shouldFormatAndRetainCauseAndReason() {
+		Exception exception = new Exception("cause");
+		InjectionException injectionException = new InjectionException(exception, "String %s", "format");
+		assertThat(injectionException.getMessage(), is("String format"));
+		assertThat(injectionException.getCause(), is((Throwable) exception));
 	}
 }

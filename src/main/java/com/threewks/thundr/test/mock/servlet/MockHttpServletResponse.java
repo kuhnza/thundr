@@ -274,4 +274,9 @@ public class MockHttpServletResponse implements HttpServletResponse {
 		return cookies;
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> T header(String name) {
+		return (T) headers.get(name);
+	}
+
 }

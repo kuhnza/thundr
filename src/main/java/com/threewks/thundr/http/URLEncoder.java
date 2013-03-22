@@ -31,8 +31,6 @@ import com.threewks.thundr.exception.BaseException;
 public class URLEncoder {
 	private static final String unreserved = "a-zA-Z0-9";
 	private static final String mark = "_!~*'()\\.\\-";
-	/** These values are all technically permitted in the path segment, however the appengine does not like them. */
-	private static final String pathChars = "&:@=+$,";
 	private static final Pattern acceptableQueryCharacters = Pattern.compile("[" + unreserved + mark + "]*");
 	private static final Pattern acceptablePathCharacters = Pattern.compile("[" + unreserved + mark + "]*");
 

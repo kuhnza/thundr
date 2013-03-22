@@ -18,7 +18,9 @@
 package com.threewks.thundr.util;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 import jodd.io.FastByteArrayOutputStream;
@@ -27,6 +29,7 @@ import com.threewks.thundr.exception.BaseException;
 
 public class Streams {
 	private static final String DefaultEncoding = "UTF-8";
+	private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 
 	public static String readString(InputStream inputStream) {
 		return readString(inputStream, DefaultEncoding);
@@ -52,7 +55,7 @@ public class Streams {
 			byteArrayOutputStream.flush();
 			byteArrayOutputStream.close();
 			return byteArrayOutputStream.toByteArray();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			throw new BaseException(e, "Failed to read from InputStream: %s", e.getMessage());
 		}
 	}
@@ -78,9 +81,45 @@ public class Streams {
 	public static InputStream getResourceAsStream(String resource) {
 		try {
 			InputStream resourceAsStream = Streams.class.getClassLoader().getResourceAsStream(resource);
+			if (resourceAsStream == null) {
+				throw new BaseException("Could not load resource %s: resource not found", resource);
+			}
 			return new BufferedInputStream(resourceAsStream);
 		} catch (Exception e) {
 			throw new BaseException(e, "Could not load resource %s: %s", resource, e.getMessage());
+		}
+	}
+
+	/**
+	 * Copy from the given input stream to the given output stream using a temporary buffer.
+	 * 
+	 * @param input
+	 * @param output
+	 * @return
+	 */
+	public static long copy(InputStream input, OutputStream output) {
+		return copy(input, output, new byte[DEFAULT_BUFFER_SIZE]);
+	}
+
+	/**
+	 * Copy from the given input stream to the given output stream using the given byte[] as a buffer.
+	 * 
+	 * @param input
+	 * @param output
+	 * @param buffer
+	 * @return
+	 */
+	public static long copy(InputStream input, OutputStream output, byte[] buffer) {
+		try {
+			long count = 0;
+			int n = 0;
+			while ((n = input.read(buffer)) > -1) {
+				output.write(buffer, 0, n);
+				count += n;
+			}
+			return count;
+		} catch (IOException e) {
+			throw new BaseException(e, "Could not copy input stream to output stream: %s", e.getMessage());
 		}
 	}
 }

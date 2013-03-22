@@ -102,7 +102,8 @@ public class Module {
 			Object newInstance = configurationClass.newInstance();
 			InjectionConfiguration configuration = Cast.as(newInstance, InjectionConfiguration.class);
 			if (configuration == null) {
-				throw new ModuleLoadingException(configurationClass.getPackage().getName(), "the configuration class %s does not implement '%s'", configurationClass.getName(), InjectionConfiguration.class.getName());
+				throw new ModuleLoadingException(configurationClass.getPackage().getName(), "the configuration class %s does not implement '%s'", configurationClass.getName(),
+						InjectionConfiguration.class.getName());
 			}
 			return configuration;
 		} catch (InstantiationException e) {

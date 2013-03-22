@@ -24,6 +24,8 @@ import com.threewks.thundr.route.RouteNotFoundException;
 import com.threewks.thundr.view.exception.ExceptionViewResolver;
 import com.threewks.thundr.view.exception.HttpStatusExceptionViewResolver;
 import com.threewks.thundr.view.exception.RouteNotFoundViewResolver;
+import com.threewks.thundr.view.file.FileView;
+import com.threewks.thundr.view.file.FileViewResolver;
 import com.threewks.thundr.view.json.JsonView;
 import com.threewks.thundr.view.json.JsonViewResolver;
 import com.threewks.thundr.view.jsp.JspView;
@@ -54,6 +56,7 @@ public class ViewResolverInjectionConfiguration implements InjectionConfiguratio
 		viewResolverRegistry.addResolver(RouteNotFoundException.class, new RouteNotFoundViewResolver());
 		viewResolverRegistry.addResolver(RedirectView.class, new RedirectViewResolver());
 		viewResolverRegistry.addResolver(JsonView.class, new JsonViewResolver());
+		viewResolverRegistry.addResolver(FileView.class, new FileViewResolver());
 		viewResolverRegistry.addResolver(JspView.class, new JspViewResolver());
 		viewResolverRegistry.addResolver(StringView.class, new StringViewResolver());
 	}
