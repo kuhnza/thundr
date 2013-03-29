@@ -44,7 +44,6 @@ import com.threewks.thundr.bind.TestBindTo;
 public class MethodActionResolverBindingTest {
 
 	private static Object nullObject = null;
-	private static Class<Object> o = Object.class;
 	private Map<String, String> emptyMap = Collections.emptyMap();
 
 	private HttpServletRequest request;
