@@ -47,7 +47,7 @@ public class ExceptionViewResolver implements ViewResolver<Throwable> {
 			exceptionOfInterest.printStackTrace(writer);
 			writer.flush();
 			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, stringWriter.toString());
-			System.err.println(stringWriter.toString());
+			Logger.error(stringWriter.toString());
 		} catch (IOException e) {
 			Logger.error("Failed to render an exception view because '%s' - original exception: %s", e.getMessage(), viewResult.getMessage());
 			viewResult.printStackTrace();

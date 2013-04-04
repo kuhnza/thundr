@@ -24,12 +24,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import com.threewks.thundr.introspection.ClassIntrospector;
 import com.threewks.thundr.logger.Logger;
 
 public class ViewResolverRegistry {
 	private Map<Class<?>, ViewResolver<?>> resolvers = new HashMap<Class<?>, ViewResolver<?>>();
 	private List<Class<?>> resolversOrder = new ArrayList<Class<?>>();
 	private Map<Class<?>, ViewResolver<?>> resolversCache = new WeakHashMap<Class<?>, ViewResolver<?>>();
+	private ClassIntrospector classIntrospector = new ClassIntrospector();
 
 	public <T> void addResolver(Class<T> viewResult, ViewResolver<T> resolver) {
 		resolvers.put(viewResult, (ViewResolver<T>) resolver);
@@ -60,14 +62,18 @@ public class ViewResolverRegistry {
 
 	@SuppressWarnings("unchecked")
 	protected <T> ViewResolver<T> createAndCacheResolver(T viewResult) {
+		Class<?> resultType = getViewResultType(viewResult);
+		List<Class<?>> orderedTypes = classIntrospector.listImplementedTypes(resultType);
 		synchronized (resolversCache) {
-			for (int i = resolversOrder.size() - 1; i >= 0; i--) {
-				Class<?> resolverClass = resolversOrder.get(i);
-				Class<? extends Object> viewResultClass = viewResult.getClass();
-				if (resolverClass.isAssignableFrom(viewResultClass)) {
-					ViewResolver<T> viewResolver = (ViewResolver<T>) resolvers.get(resolverClass);
-					resolversCache.put(viewResultClass, viewResolver);
-					return viewResolver;
+			for (Class<?> type : orderedTypes) {
+				for (int i = resolversOrder.size() - 1; i >= 0; i--) {
+					Class<?> resolverClass = resolversOrder.get(i);
+					Class<?> viewResultClass = type;
+					if (resolverClass == viewResultClass) {
+						ViewResolver<T> viewResolver = (ViewResolver<T>) resolvers.get(resolverClass);
+						resolversCache.put(resultType, viewResolver);
+						return viewResolver;
+					}
 				}
 			}
 			return null;
@@ -76,8 +82,14 @@ public class ViewResolverRegistry {
 
 	@SuppressWarnings("unchecked")
 	protected <T> ViewResolver<T> findViewResolverInCache(T viewResult) {
+		Class<?> type = getViewResultType(viewResult);
 		synchronized (resolversCache) {
-			return (ViewResolver<T>) resolversCache.get(viewResult);
+			return (ViewResolver<T>) resolversCache.get(type);
 		}
+	}
+
+	private <T> Class<?> getViewResultType(T viewResult) {
+		Class<?> type = viewResult == null ? null : viewResult.getClass();
+		return type;
 	}
 }

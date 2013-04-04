@@ -27,9 +27,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.ClassUtils;
+
 import jodd.introspector.ClassDescriptor;
 import jodd.util.ReflectUtil;
 
+import com.atomicleopard.expressive.EList;
 import com.atomicleopard.expressive.ETransformer;
 import com.atomicleopard.expressive.Expressive;
 
@@ -81,6 +84,13 @@ public class ClassIntrospector {
 			}
 		}
 		return injectionFields;
+	}
+
+	public List<Class<?>> listImplementedTypes(Class<?> type) {
+		EList<Class<?>> types = Expressive.<Class<?>>list(type);
+		types.addItems(ClassUtils.getAllSuperclasses(type));
+		types.addItems(ClassUtils.getAllInterfaces(type));
+		return types;
 	}
 
 	public static boolean classExists(String name) {
