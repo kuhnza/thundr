@@ -18,7 +18,7 @@ pom.xml
 <dependency>
 	<groupId>com.threewks.thundr</groupId>
 	<artifactId>thundr-gae</artifactId>
-	<version>0.9.6</version>
+	<version>0.9.7</version>
 	<scope>compile</scope>
 </dependency>
 …

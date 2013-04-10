@@ -267,14 +267,9 @@
 				
 				<section id="views">
 					<h4>Views</h4>
-<p><a href="modules/thundr/controllers.html">Controller</a> methods can return a <code>View</code> object, which controls what content is returned to the request client.
-
-</p>
-<p>thundr handles views by passing them to registered a <code>ViewResolver</code>. You can read more about registering custom view and view resolvers <a href="modules/thundr/views.html#viewResolver">here</a>.
-
-</p>
-<p>Below are the views that thundr supports out of the box, you can also inspect the ViewResolver hierarchy to see all implementations.
-</p>
+<p><a href="modules/thundr/controllers.html">Controller</a> methods can return a <code>View</code> object, which controls what content is returned to the request client.</p>
+<p>thundr handles views by passing them to registered a <code>ViewResolver</code>. You can read more about registering custom view and view resolvers <a href="modules/thundr/views.html#viewResolver">here</a>.</p>
+<p>Below are the views that thundr supports out of the box, you can also inspect the ViewResolver hierarchy to see all implementations.</p>
 
 				</section>
 			
@@ -299,14 +294,9 @@
 		<section id="jspView" class="accordion-body collapse">
 			<div class="accordion-inner">
 				<h4>JspView</h4>
-<p><code>JspView</code> results in a jsp being processed and served from the Servlet engine. You specify the jsp file location, and optionally provide a data model to back it. Unless the jsp rendering fails, an Html file and a 200 OK will be sent back to the user.  
-
-
-</p>
-<p>The jsp file is considered to be relative to the path /WEB-INF/jsp/, unless it is given as an absolute path (i.e. starts with a forward slash, /)
-
-</p>
-<pre><code class="lang-java">…
+<p><code>JspView</code> results in a jsp being processed and served from the Servlet engine. You specify the jsp file location, and optionally provide a data model to back it. Unless the jsp rendering fails, an Html file and a 200 OK will be sent back to the user.  </p>
+<p>The jsp file is considered to be relative to the path /WEB-INF/jsp/, unless it is given as an absolute path (i.e. starts with a forward slash, /)</p>
+<pre><code class="language-java">…
 Map&lt;String, Object&gt; model = … 
 <span class="keyword">return</span> <span class="keyword">new</span> JspView(<span class="string">"path/to/my.jsp"</span>, model);
 …</code></pre>
@@ -338,10 +328,8 @@ Map&lt;String, Object&gt; model = …
 		<section id="redirectView" class="accordion-body collapse">
 			<div class="accordion-inner">
 				<h4>RedirectView</h4>
-<p><code>RedirectView</code> results in a temporary redirect (302) being sent back to the client with the specified location. This will send a browser to the new url.
-
-</p>
-<pre><code class="lang-java">…
+<p><code>RedirectView</code> results in a temporary redirect (302) being sent back to the client with the specified location. This will send a browser to the new url.</p>
+<pre><code class="language-java">…
 <span class="keyword">return</span> <span class="keyword">new</span> RedirectView(<span class="string">"http://www.google.com.au/search?q=thundr"</span>);
 …</code></pre>
 
@@ -372,10 +360,8 @@ Map&lt;String, Object&gt; model = …
 		<section id="jsonView" class="accordion-body collapse">
 			<div class="accordion-inner">
 				<h4>JsonView</h4>
-<p><code>JsonView</code> uses the <a href="http://code.google.com/p/google-gson/">Gson library</a> to serialize the given object to json, and return it to the request client.
-
-</p>
-<pre><code class="lang-java">…
+<p><code>JsonView</code> uses the <a href="http://code.google.com/p/google-gson/">Gson library</a> to serialize the given object to json, and return it to the request client.</p>
+<pre><code class="language-java">…
 MyDto dto = … 
 <span class="keyword">return</span> <span class="keyword">new</span> JsonView(dto);
 …</code></pre>
@@ -407,10 +393,8 @@ MyDto dto = …
 		<section id="stringView" class="accordion-body collapse">
 			<div class="accordion-inner">
 				<h4>StringView</h4>
-<p><code>StringView</code> is a simple view which returns the given string as the response content, with a response code of 200 OK. 
-
-</p>
-<pre><code class="lang-java">…
+<p><code>StringView</code> is a simple view which returns the given string as the response content, with a response code of 200 OK. </p>
+<pre><code class="language-java">…
 <span class="keyword">return</span> <span class="keyword">new</span> StringView(<span class="string">"Hello!"</span>);
 …</code></pre>
 
@@ -441,19 +425,13 @@ MyDto dto = …
 		<section id="httpStatusException" class="accordion-body collapse">
 			<div class="accordion-inner">
 				<h4>HttpStatusException</h4>
-<p><code>HttpStatusException</code> is a RuntimeException which takes a status code as a constructor parameter.
-
-</p>
-<p>When thrown, the specified status code is returned to the client as an http error, along with the specified message.
-
-</p>
-<pre><code class="lang-java">…
+<p><code>HttpStatusException</code> is a RuntimeException which takes a status code as a constructor parameter.</p>
+<p>When thrown, the specified status code is returned to the client as an http error, along with the specified message.</p>
+<pre><code class="language-java">…
 <span class="keyword">throw</span> <span class="keyword">new</span> HttpStatusException(HttpServletResponse.SC_BAD_REQUEST, <span class="string">"Bad request at %d"</span>, System.currentTimeMillis());
 …</code></pre>
-<p>The servlet engine will process the response code as normal, so if your web.xml maps a jsp, then this is the content returned to the client. e.g.
-
-</p>
-<pre><code class="lang-xml">…
+<p>The servlet engine will process the response code as normal, so if your web.xml maps a jsp, then this is the content returned to the client. e.g.</p>
+<pre><code class="language-xml">…
 <span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
     <span class="tag">&lt;<span class="title">error-code</span>&gt;</span>404<span class="tag">&lt;/<span class="title">error-code</span>&gt;</span>
     <span class="tag">&lt;<span class="title">location</span>&gt;</span>/WEB-INF/jsp/errors/404.jsp<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
@@ -476,9 +454,7 @@ MyDto dto = …
 				
 				<section id="viewResolver">
 					<h4><code>ViewResolver</code> <span class="label label-info">Advanced</span></h4>
-<p>The <code>ViewResolverRegistry</code> returns a <code>ViewResolver</code> based on the class type of the view returned from a controller method. The view resolver is then given the view instance, the servlet request and servlet response and is expected to generate some output to the servlet response.
-
-</p>
+<p>The <code>ViewResolverRegistry</code> returns a <code>ViewResolver</code> based on the class type of the view returned from a controller method. The view resolver is then given the view instance, the servlet request and servlet response and is expected to generate some output to the servlet response.</p>
 <p>The view resolver registry is available in the <code>InjectionContext</code> during startup. An instance of a <code>ViewResolver</code> can be registered at this point against <strong>any</strong> class type. That is, while most views do implement the <code>View</code> interface, this is for convenience and not a requirement.</p>
 
 				</section>

@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Time: Thu Mar 21 2013 10:45:08 GMT+1000 (EST)
+# Time: Thu Apr 11 2013 08:46:55 GMT+1000 (EST)
 # This manifest was created by confess.js, http://github.com/jamesgpearce/confess
 #
 # Retrieved URL: http://localhost:3501/
@@ -18,7 +18,7 @@ CACHE MANIFEST
 #   cacheFilter: .*
 #   networkFilter: null
 #  url: http://localhost:3501
-#  configFile: /usr/local/lib/node_modules/yeoman/lib/support/confess.json
+#  configFile: /usr/local/share/npm/lib/node_modules/yeoman/lib/support/confess.json
 
 CACHE:
 http://3wks.com.au/images/3wks_logo_2.png

@@ -163,9 +163,7 @@
 
 		<section id="page-overview" class="overview">
 			<h2>Overview</h2>
-<p>Google Appengine (GAE) is a PaaS provided and run by Google. You can read more about it <a href="https://developers.google.com/appengine/docs/">here</a>
-
-</p>
+<p>Google Appengine (GAE) is a PaaS provided and run by Google. You can read more about it <a href="https://developers.google.com/appengine/docs/">here</a></p>
 <p><em>thundr-gae</em> is a thundr module which enables thundr to run in this environment adding abstractions around some common functions.</p>
 
 		</section>
@@ -178,26 +176,19 @@
 				
 				<section id="settingUp">
 					<h4>Setting Up</h4>
-<p>Beyond <a href="basics.html#applicationConfiguration">normal thundr setup</a> (i.e. <code>web.xml</code>, <code>application.properties</code>, <code>modules.properties</code> and an <code>InjectionConfiguration</code>), you will need to pull in the <em>thundr-gae</em> module and configure it.
-
-</p>
-<p>This is accomplished by adding the <em>thundr-gae</em> library to your project (or adding the dependency to your maven or similar config). You then need to load the <em>thundr-gae</em> module by adding it to your <code>modules.properties</code> file.
-
-</p>
-<p>pom.xml
-</p>
-<pre><code class="lang-xml">…
+<p>Beyond <a href="modules/thundr/basics.html#applicationConfiguration">normal thundr setup</a> (i.e. <code>web.xml</code>, <code>application.properties</code>, <code>modules.properties</code> and an <code>InjectionConfiguration</code>), you will need to pull in the <em>thundr-gae</em> module and configure it.</p>
+<p>This is accomplished by adding the <em>thundr-gae</em> library to your project (or adding the dependency to your maven or similar config). You then need to load the <em>thundr-gae</em> module by adding it to your <code>modules.properties</code> file.</p>
+<p>pom.xml</p>
+<pre><code class="language-xml">…
 <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
     <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.threewks.thundr<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
     <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>thundr-gae<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">version</span>&gt;</span>0.9.6<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>0.9.7<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
     <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
 …</code></pre>
-<p>modules.properties
-
-</p>
-<pre><code class="lang-java">com.mycompany.myapp=
+<p>modules.properties</p>
+<pre><code class="language-java">com.mycompany.myapp=
 com.threewks.thundr.gae=</code></pre>
 <blockquote>
 <p>Remember order is important in modules.properties - include the <em>thundr-gae</em> module <strong>after</strong> you application.</p>
@@ -218,7 +209,7 @@ com.threewks.thundr.gae=</code></pre>
 <ul>
 <li><h5>HttpService</h5>
 <p>The module provides an implementation of the HttpService defined in the thundr-http module <span class="label label-warning">Undocumented</span>. This is required because of the need to use the <a href="https://developers.google.com/appengine/docs/java/urlfetch/">UrlFetchService</a>. You can then inject it into your controllers and services like this:</p>
-<pre><code class="lang-java">…
+<pre><code class="language-java">…
 <span class="keyword">private</span> HttpService httpService;
 
 <span class="keyword">public</span> MyController(HttpService httpService){
@@ -229,14 +220,14 @@ com.threewks.thundr.gae=</code></pre>
 <li><h5>CounterRepository</h5>
 <p>Atomic incrementing counters can be a little tricky in distributed environment. <em>thundr-gae</em> provides an implementation for sharding counters based on the discussion <a href="https://developers.google.com/appengine/articles/sharding_counters">here</a>.</p>
 <p>You can use this in your project by adding it to your injection configuration like this:</p>
-<pre><code class="lang-java">…
+<pre><code class="language-java">…
 MemcacheService cacheService = MemcacheServiceFactory.getMemcacheService();
 DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
 CounterRepository counterRepository = <span class="keyword">new</span> DatastoreCounterRepository(cacheService, datastoreService);
 injectionContext.inject(counterRepository).as(CounterRepository.class);
 …</code></pre>
 <p>You can later use this in code like this:</p>
-<pre><code class="lang-java"><span class="keyword">long</span> currentCount = counterRepository.incrementCount(<span class="string">"CounterType"</span>, entityId);</code></pre>
+<pre><code class="language-java"><span class="keyword">long</span> currentCount = counterRepository.incrementCount(<span class="string">"CounterType"</span>, entityId);</code></pre>
 </li>
 </ul>
 
