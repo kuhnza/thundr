@@ -17,7 +17,7 @@ Data is bound from the following locations:
 	`http://localhost:8080/page?param1=parameter%20value&param2=2` will bind to 
 
 	```java
-	public JspView method(String param1, Long param2){ … }
+	public JspView method(String param1, Long param2){ ... }
 	```
 
 	likewise,
@@ -32,7 +32,7 @@ Data is bound from the following locations:
 	will bind to
 
 	```java
-	public JspView method(String param1, Long param2){ … }
+	public JspView method(String param1, Long param2){ ... }
 	```
 
 	thundr is capable of binding all basic java types, collection classes and javabeans. <span class="label label-warning">Link to more about binding</span>
@@ -46,7 +46,7 @@ Data is bound from the following locations:
 	will bind to
 
 	```java
-	public JspView method(long path, String variables){ … }
+	public JspView method(long path, String variables){ ... }
 	```
 
 - 	**Multipart data** <span class="label label-warning">Verify</span> - we can post files for example like this:
@@ -61,7 +61,7 @@ Data is bound from the following locations:
 	which would bind to
 
 	```java
-	public JspView postFile(String filename, byte[] fileData){ … }
+	public JspView postFile(String filename, byte[] fileData){ ... }
 	```
 
 -	**Json** <span class="label label-warning">Verify</span> - using [Gson](http://code.google.com/p/google-gson/), json requests will bind data automatically.
@@ -101,20 +101,20 @@ Data is bound from the following locations:
 	it can automatically bind onto
 
 	```java
-	public JspView method(MyDTO dto){ … }
+	public JspView method(MyDTO dto){ ... }
 	```
 
 - 	**Servlet classes** - thundr will pass in a `HttpServletRequest`, `HttpServletResponse` and an `HttpSession` object.
 	e.g. 
 
 	```java
-	public JspView view(HttpServletRequest req, HttpServletResponse resp){ … }
+	public JspView view(HttpServletRequest req, HttpServletResponse resp){ ... }
 	```
 
 - 	**Request headers** - for example we could get the referer using the following: 
 	
 	```java
-	public JspView method(String Referer){ … }
+	public JspView method(String Referer){ ... }
 	```
 
 When data binding is used, you can generally mix any types of bindings, for example using path variables, request parameters and the `HttpServletRequest`. This gives you the flexibility to generally consume most types of http integration.

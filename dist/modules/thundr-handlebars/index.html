@@ -4,12 +4,12 @@
 	<meta charset="utf-8" lang="en-us"/>
 	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
 	<!--[if lt IE 9]> <script src="scripts/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
-	<title>thundr - overview</title>
+	<title>thundr - with Handlebars</title>
 	<link rel="shortcut icon" href="./favicon.ico" />
 	<meta name="description" content=""/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
 	<meta name="keywords" content=""/>
-	<base href="" />
+	<base href="../../" />
 	
 	<meta name="google-site-verification" content="V7Os0LLLfRti7XGzTPnlO_FfsjrL6Ldi3IKeq0tVGaY" />
 	<!--
@@ -109,86 +109,128 @@
 	</header>
 
 	<div class="container">
+		<div class="row">
+	<aside class="module_nav_container span3">
+		<div class="module_nav">
+			
+			<ul class="nav nav-list" role="navigation">
+			 
+					
+				<li class="nav-header active">
+					<a href="modules/thundr-handlebars/index.html">
+						
+							Handlebars
+						
+					</a>
+				</li>
+
+				
+					
+						
+						<li><a href="modules/thundr-handlebars/index.html#page-overview" data-target="#page-overview">Overview</a></li>
+						<li class="divider"></li>
+						
+
+						
+							
+								
+								
+								<li><a href="modules/thundr-handlebars/index.html#settingUp" data-target="#settingUp">
+									Setting Up
+									
+								</a></li>
+							
+							
+						
+							
+								
+								
+								<li><a href="modules/thundr-handlebars/index.html#moduleFeatures" data-target="#moduleFeatures">
+									Module Features
+									
+								</a></li>
+							
+							
+						
+					
+					
+				
+			  
+			</ul>
+
+			
+		</div>
+	</aside>
+
+	<article id="index" class="span9">
 		<div class="page-header">
-  <h1>thundr <small>a lightweight webframework</small></h1>
+			<h1>thundr <small>with Handlebars</small></h1>
+		</div>
+
+		<section id="page-overview" class="overview">
+			<h2>Overview</h2>
+<p>Handlebars is a templating language based on the popular Mustache templating language.<br>You can read about Handlebars in general <a href="http://handlebarsjs.com/">here</a>.</p>
+<p>thundr-handlebars provides the HandlebarsView and HandlebarsViewResolver implementations that allow you to use handlebars templates with thundr.</p>
+<p>The handlebars implementation is provided by <a href="https://github.com/jknack/handlebars.java">jknack</a>.</p>
+
+		</section>
+
+		 
+
+			
+
+			
+				
+				<section id="settingUp">
+					<h4>Setting Up</h4>
+<p>Including the thundr-handlebars module will automatically register the HandlebarsViewResovler.</p>
+<p>This is accomplished by adding the <em>thundr-handlebars</em> library to your project (or adding the dependency to your maven or similar config). You then need to load the <em>thundr-handlebars</em> module by adding it to your <code>modules.properties</code> file.</p>
+<p>pom.xml</p>
+<pre><code class="language-xml">...
+<span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.threewks.thundr<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>thundr-handlebars<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>0.9.8<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
+...</code></pre>
+<p>modules.properties</p>
+<pre><code class="language-java">com.mycompany.myapp=
+com.threewks.thundr.handlebars=</code></pre>
+
+				</section>
+			
+
+
+		
+
+			
+
+			
+				
+				<section id="moduleFeatures">
+					<h4>Module Features</h4>
+<ul>
+<li><h5>HandlebarsView and HandlebarsViewResolver</h5>
+<p>Once you have included the module, you can return a HandlebarsView from any controller method (or provide it for emails) like the following example:</p>
+<pre><code class="language-java">...
+<span class="keyword">public</span> HandlebarsView view() {
+   Map&lt;String, Object&gt; model = model();
+   populateReferenceData(model);
+   <span class="keyword">return</span> <span class="keyword">new</span> HandlebarsView(<span class="string">"view.hbs"</span>, model);
+}
+...</code></pre>
+</li>
+</ul>
+
+				</section>
+			
+
+
+		 
+
+	</article>
 </div>
-
-<ul class="benefits thumbnails">
-	<li class="span4">
-		<figure>
-			<h3>Lightweight</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Designed to spin up fast, with only a thin layer between the servlet container and your code.
-		</figcaption>
-	</li>
-	<li class="span4">
-		<figure>
-			<h3>No Magic</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Doesn't rely heavily on annotations, reflection, introspection or classpath scanning.
-		</figcaption>
-	</li>
-	<li class="span4">
-		<figure>
-			<h3>Easy to learn</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Delivers APIs that are straight-forward and easy to learn and explore using your IDE tools.
-		</figcaption>
-	</li>
-	
-	<li class="span4">
-		<figure>
-			<h3>Modular</h3>
-		</figure>
-		
-		<figcaption class="caption">
-			Pull in modular components to support rapid development and solve common problems easily
-		</figcaption>
-	</li>
-	<li class="span4">
-	</li>
-	<li class="span4">
-		<figure>
-			<h3>Get Started</h3>
-		</figure>
-		
-		<figcaption class="getStartedLink caption">
-			<a href="modules/thundr/basics.html">
-				Click here to get started
-			</a>
-			<a href="modules/thundr/basics.html">
-				<i class="icon icon-circle-arrow-right"></i>
-			</a>
-		</figcaption>
-	</li>
-</ul>
-
-<ul class="getThundr thumbnails">
-	<li class="span4 lead">
-		<i class="icon icon-large icon-cloud-download"></i>
-		<a href="http://search.maven.org/#artifactdetails%7Ccom.threewks.thundr%7Cthundr%7C0.9.8%7Cjar">
-			Maven
-		</a>
-	</li>
-	<li class="span4 lead">
-		<i class="icon icon-large icon-github"></i>
-		<a href="http://github.com/3wks/thundr">
-		Source on github
-		</a>
-	</li>
-	<li class="span4 lead">
-		<i class="icon icon-large icon-download"></i>
-		<a href="http://repo1.maven.org/maven2/com/threewks/thundr/thundr/0.9.8/">
-			Download jars
-		</a>
-	</li>
-</ul>
 	</div>
 	
 	<footer class="container">

@@ -20,7 +20,7 @@ In the example below, two services are injected using the constructor at creatio
 Controller - Controller.java
 
 ```java
-…
+...
 public class Controller {
 	private DocumentService documentService;
 	private CounterRepository counterRepository;

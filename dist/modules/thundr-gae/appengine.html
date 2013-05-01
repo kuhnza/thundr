@@ -93,6 +93,12 @@
 									<a href="modules/thundr-gae/appengine.html">thundr-gae</a>
 								</li>
 							
+						  
+							
+								<li class="">
+									<a href="modules/thundr-handlebars/index.html">thundr-handlebars</a>
+								</li>
+							
 						 
 					</ul>
 				</div>
@@ -179,14 +185,14 @@
 <p>Beyond <a href="modules/thundr/basics.html#applicationConfiguration">normal thundr setup</a> (i.e. <code>web.xml</code>, <code>application.properties</code>, <code>modules.properties</code> and an <code>InjectionConfiguration</code>), you will need to pull in the <em>thundr-gae</em> module and configure it.</p>
 <p>This is accomplished by adding the <em>thundr-gae</em> library to your project (or adding the dependency to your maven or similar config). You then need to load the <em>thundr-gae</em> module by adding it to your <code>modules.properties</code> file.</p>
 <p>pom.xml</p>
-<pre><code class="language-xml">…
+<pre><code class="language-xml">...
 <span class="tag">&lt;<span class="title">dependency</span>&gt;</span>
     <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.threewks.thundr<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span>
     <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>thundr-gae<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">version</span>&gt;</span>0.9.7<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">version</span>&gt;</span>0.9.8<span class="tag">&lt;/<span class="title">version</span>&gt;</span>
     <span class="tag">&lt;<span class="title">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">scope</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span>
-…</code></pre>
+...</code></pre>
 <p>modules.properties</p>
 <pre><code class="language-java">com.mycompany.myapp=
 com.threewks.thundr.gae=</code></pre>
@@ -207,25 +213,45 @@ com.threewks.thundr.gae=</code></pre>
 				<section id="moduleFeatures">
 					<h4>Module Features</h4>
 <ul>
+<li><h5>SearchService</h5>
+<p>The module provides an abstraction on top of the native <a href="https://developers.google.com/appengine/docs/java/search/">AppEngine search service</a>. This abstraction allows you to interact with the search service using your<br>java object model (i.e. pojos and javabeans), rather than the low level api. The search service is implemented by the <em>class com.threewks.thundr.search.google.GoogleSearchService</em>.</p>
+<pre><code class="language-java">...
+<span class="keyword">private</span> SearchService searchService;
+
+<span class="keyword">public</span> MyController(SearchService searchService){
+   <span class="keyword">this</span>.searchService = searchService;
+}
+
+<span class="keyword">public</span> DomainModel search(String query, <span class="keyword">long</span> time){
+SearchRequest&lt;DomainModel&gt; query = searchService.search(DomainModel.class);
+   <span class="comment">// to perform a general query across all fields</span>
+   query = query.query(<span class="string">"search terms"</span>);
+
+   <span class="comment">// to perform a query on a specific field</span>
+   query = query.field(<span class="string">"timestamp"</span>).greaterThan(time);
+}
+...</code></pre>
+<p>As you can see from this simple example, the SearchService provides a fluent api for querying specific fields.<br>It also provides facilities for limits, orders and offsets.    </p>
+</li>
 <li><h5>HttpService</h5>
 <p>The module provides an implementation of the HttpService defined in the thundr-http module <span class="label label-warning">Undocumented</span>. This is required because of the need to use the <a href="https://developers.google.com/appengine/docs/java/urlfetch/">UrlFetchService</a>. You can then inject it into your controllers and services like this:</p>
-<pre><code class="language-java">…
+<pre><code class="language-java">...
 <span class="keyword">private</span> HttpService httpService;
 
 <span class="keyword">public</span> MyController(HttpService httpService){
    <span class="keyword">this</span>.httpService = httpService;
 }
-…</code></pre>
+...</code></pre>
 </li>
 <li><h5>CounterRepository</h5>
 <p>Atomic incrementing counters can be a little tricky in distributed environment. <em>thundr-gae</em> provides an implementation for sharding counters based on the discussion <a href="https://developers.google.com/appengine/articles/sharding_counters">here</a>.</p>
 <p>You can use this in your project by adding it to your injection configuration like this:</p>
-<pre><code class="language-java">…
+<pre><code class="language-java">...
 MemcacheService cacheService = MemcacheServiceFactory.getMemcacheService();
 DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
 CounterRepository counterRepository = <span class="keyword">new</span> DatastoreCounterRepository(cacheService, datastoreService);
 injectionContext.inject(counterRepository).as(CounterRepository.class);
-…</code></pre>
+...</code></pre>
 <p>You can later use this in code like this:</p>
 <pre><code class="language-java"><span class="keyword">long</span> currentCount = counterRepository.incrementCount(<span class="string">"CounterType"</span>, entityId);</code></pre>
 </li>

@@ -14,14 +14,14 @@ This is accomplished by adding the *thundr-gae* library to your project (or addi
 
 pom.xml
 ```xml
-…
+...
 <dependency>
 	<groupId>com.threewks.thundr</groupId>
 	<artifactId>thundr-gae</artifactId>
-	<version>0.9.7</version>
+	<version>0.9.8</version>
 	<scope>compile</scope>
 </dependency>
-…
+...
 ```
 
 modules.properties

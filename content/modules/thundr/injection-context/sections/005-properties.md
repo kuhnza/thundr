@@ -20,7 +20,7 @@ In general, this division between mandatory and optional properties should give 
 The following is an example of the three basic ways of injecting required dependencies:
 
 ```java
-…
+...
 public class Controller {
 	private DocumentService documentService;
 	private CounterRepository counterRepository;
@@ -33,5 +33,5 @@ public class Controller {
 	public void setCounterRepository(CounterRepository counterRepository){
 		this.counterRepository = counterRepository;
 	}
-…
+...
 ```

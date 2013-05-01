@@ -15,9 +15,9 @@ You can read more about controllers [here](modules/thundr/controllers.html).
 For example, the route
 
 ```java	
-…
+...
 "/route/{variable}": "com.threewks.thundr.Controller.actionMethod"
-…
+...
 ```
 
 will invoke the method
@@ -25,10 +25,11 @@ will invoke the method
 ```java
 package com.threewks.thundr;
 public class Controller {
+...
 	public StringView actionMethod(String variable){
 		doSomething();
 		return new StringView("Ok!");
 	}
-…
+...
 
 ```

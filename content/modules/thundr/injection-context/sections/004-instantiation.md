@@ -16,7 +16,7 @@ As well as matching type, the injection context will attempt to match the name. 
 For example:
 
 ```java
-… 
+... 
 public void configure(UpdatableInjectionContext injectionContext) {
 	injectionContext.inject(MyServiceImpl.class).named("myService").as(MyServiceInterface.class);
 	injectionContext.inject(new MyServiceImpl("debugMode")).named("debugService").as(MyServiceInterface.class);
@@ -24,14 +24,14 @@ public void configure(UpdatableInjectionContext injectionContext) {
 
 	MyProcess myProcess = injectionContext.get(MyProcess.class);
 }
-…
+...
 
 public class MyProcess {
 	public MyProcess(MyServiceInterface myService, MyServiceInterface debugService){
-	…
+	...
 	}
 }
-…
+...
 ```
 
 In the above example, we inject two different `MyServiceInterface`s into our context, and when we get an instance of `MyProcess`, the constructor is invoked with each parameter being satisfied by the corresponding named type.

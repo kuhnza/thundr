@@ -93,6 +93,12 @@
 									<a href="modules/thundr-gae/appengine.html">thundr-gae</a>
 								</li>
 							
+						  
+							
+								<li class="">
+									<a href="modules/thundr-handlebars/index.html">thundr-handlebars</a>
+								</li>
+							
 						 
 					</ul>
 				</div>
@@ -320,17 +326,18 @@
 				<h4>MethodAction</h4>
 <p>This type of action results in a method being invoked on a class.<br>Classes invoked like this are referred to as <em>controllers</em>, however this is a semantic distinction - any class can be used as a controller.<br>You can read more about controllers <a href="modules/thundr/controllers.html">here</a>.</p>
 <p>For example, the route</p>
-<pre><code class="language-java">…
+<pre><code class="language-java">...
 <span class="string">"/route/{variable}"</span>: <span class="string">"com.threewks.thundr.Controller.actionMethod"</span>
-…</code></pre>
+...</code></pre>
 <p>will invoke the method</p>
 <pre><code class="language-java"><span class="keyword">package</span> com.threewks.thundr;
 <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> {</span>
+...
     <span class="keyword">public</span> StringView actionMethod(String variable){
         doSomething();
         <span class="keyword">return</span> <span class="keyword">new</span> StringView(<span class="string">"Ok!"</span>);
     }
-…</code></pre>
+...</code></pre>
 
 			</div>
 		</section>
@@ -361,10 +368,10 @@
 				<h4>StaticResourceAction</h4>
 <p>This type of action results in a resource being served directly. This is useful when serving javascript, css, text files or other resources which don&#39;t require any processing by your application.</p>
 <p>The routes below result in the favicon and all files under the folder &#39;static&#39; being server as static resources. </p>
-<pre><code class="language-java">…
+<pre><code class="language-java">...
 <span class="string">"/favicon.ico"</span>: <span class="string">"static"</span>,
 <span class="string">"/static/**"</span>: <span class="string">"static"</span>,
-…</code></pre>
+...</code></pre>
 
 			</div>
 		</section>
@@ -394,9 +401,10 @@
 			<div class="accordion-inner">
 				<h4>RedirectAction</h4>
 <p>This type of action results in a HTTP redirect being sent to the web request client (i.e. the user&#39;s browser). This will result in the browser requesting the resource specified in the redirect route.<br>The redirect is a <em>temporary redirect</em>, or 302.</p>
-<pre><code class="language-java">…
+<pre><code class="language-java">...
 <span class="string">"/old"</span>: <span class="string">"redirect:/new"</span>,
-…</code></pre>
+<span class="string">"/old/{withParam}"</span>: <span class="string">"redirect:/new/{withParam}"</span>,
+...</code></pre>
 
 			</div>
 		</section>
@@ -427,10 +435,10 @@
 				<h4>RewriteAction <span class="label label-warning">Verify</span></h4>
 <p>This type of action is used to cause another route to handle the request. It is similar in concept to the rewrite rules in an Apache config, but could also be considered to act as an alias.</p>
 <p>In the below example, the rewrite rule will cause the rewritten route to be invoked as though the request client invoked it directly, but unlike a redirect will be served with the url it was requested on.</p>
-<pre><code class="language-java">…
+<pre><code class="language-java">...
 <span class="string">"/requestedPath"</span>    : <span class="string">"rewrite:/rewritten"</span>,
 <span class="string">"/rewritten"</span>        : <span class="string">"com.threewks.thundr.Controller.method"</span>
-…</code></pre>
+...</code></pre>
 
 			</div>
 		</section>

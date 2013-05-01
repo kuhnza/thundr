@@ -93,6 +93,12 @@
 									<a href="modules/thundr-gae/appengine.html">thundr-gae</a>
 								</li>
 							
+						  
+							
+								<li class="">
+									<a href="modules/thundr-handlebars/index.html">thundr-handlebars</a>
+								</li>
+							
 						 
 					</ul>
 				</div>
@@ -296,10 +302,10 @@
 				<h4>JspView</h4>
 <p><code>JspView</code> results in a jsp being processed and served from the Servlet engine. You specify the jsp file location, and optionally provide a data model to back it. Unless the jsp rendering fails, an Html file and a 200 OK will be sent back to the user.  </p>
 <p>The jsp file is considered to be relative to the path /WEB-INF/jsp/, unless it is given as an absolute path (i.e. starts with a forward slash, /)</p>
-<pre><code class="language-java">…
-Map&lt;String, Object&gt; model = … 
+<pre><code class="language-java">...
+Map&lt;String, Object&gt; model = ... 
 <span class="keyword">return</span> <span class="keyword">new</span> JspView(<span class="string">"path/to/my.jsp"</span>, model);
-…</code></pre>
+...</code></pre>
 
 			</div>
 		</section>
@@ -329,9 +335,9 @@ Map&lt;String, Object&gt; model = …
 			<div class="accordion-inner">
 				<h4>RedirectView</h4>
 <p><code>RedirectView</code> results in a temporary redirect (302) being sent back to the client with the specified location. This will send a browser to the new url.</p>
-<pre><code class="language-java">…
+<pre><code class="language-java">...
 <span class="keyword">return</span> <span class="keyword">new</span> RedirectView(<span class="string">"http://www.google.com.au/search?q=thundr"</span>);
-…</code></pre>
+...</code></pre>
 
 			</div>
 		</section>
@@ -361,10 +367,10 @@ Map&lt;String, Object&gt; model = …
 			<div class="accordion-inner">
 				<h4>JsonView</h4>
 <p><code>JsonView</code> uses the <a href="http://code.google.com/p/google-gson/">Gson library</a> to serialize the given object to json, and return it to the request client.</p>
-<pre><code class="language-java">…
-MyDto dto = … 
+<pre><code class="language-java">...
+MyDto dto = ... 
 <span class="keyword">return</span> <span class="keyword">new</span> JsonView(dto);
-…</code></pre>
+...</code></pre>
 
 			</div>
 		</section>
@@ -394,9 +400,9 @@ MyDto dto = …
 			<div class="accordion-inner">
 				<h4>StringView</h4>
 <p><code>StringView</code> is a simple view which returns the given string as the response content, with a response code of 200 OK. </p>
-<pre><code class="language-java">…
+<pre><code class="language-java">...
 <span class="keyword">return</span> <span class="keyword">new</span> StringView(<span class="string">"Hello!"</span>);
-…</code></pre>
+...</code></pre>
 
 			</div>
 		</section>
@@ -427,16 +433,16 @@ MyDto dto = …
 				<h4>HttpStatusException</h4>
 <p><code>HttpStatusException</code> is a RuntimeException which takes a status code as a constructor parameter.</p>
 <p>When thrown, the specified status code is returned to the client as an http error, along with the specified message.</p>
-<pre><code class="language-java">…
+<pre><code class="language-java">...
 <span class="keyword">throw</span> <span class="keyword">new</span> HttpStatusException(HttpServletResponse.SC_BAD_REQUEST, <span class="string">"Bad request at %d"</span>, System.currentTimeMillis());
-…</code></pre>
+...</code></pre>
 <p>The servlet engine will process the response code as normal, so if your web.xml maps a jsp, then this is the content returned to the client. e.g.</p>
-<pre><code class="language-xml">…
+<pre><code class="language-xml">...
 <span class="tag">&lt;<span class="title">error-page</span>&gt;</span>
     <span class="tag">&lt;<span class="title">error-code</span>&gt;</span>404<span class="tag">&lt;/<span class="title">error-code</span>&gt;</span>
     <span class="tag">&lt;<span class="title">location</span>&gt;</span>/WEB-INF/jsp/errors/404.jsp<span class="tag">&lt;/<span class="title">location</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">error-page</span>&gt;</span>
-…</code></pre>
+...</code></pre>
 
 			</div>
 		</section>

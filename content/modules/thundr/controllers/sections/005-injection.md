@@ -20,7 +20,7 @@ The below example demonstrates the different ways dependencies can be injected i
 Controller - Controller.java
 
 ```java
-…
+...
 public class Controller {
 	private DocumentService documentService;
 	private CounterRepository counterRepository;
@@ -33,5 +33,5 @@ public class Controller {
 	public void setCounterRepository(CounterRepository counterRepository){
 		this.counterRepository = counterRepository;
 	}
-…
+...
 ```
