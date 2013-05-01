@@ -6,7 +6,7 @@
 	</parent>
 	<artifactId>thundr</artifactId>
 	<packaging>jar</packaging>
-	<version>0.9.8</version>
+	<version>0.9.9-SNAPSHOT</version>
 
 	<name>thundr</name>
 	<url>http://3wks.github.com/thundr/</url>
