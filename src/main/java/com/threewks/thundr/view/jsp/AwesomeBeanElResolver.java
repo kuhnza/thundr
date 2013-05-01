@@ -153,14 +153,14 @@ public class AwesomeBeanElResolver extends BeanELResolver {
 		public BeanProperties(Class<?> baseClass) {
 			try {
 				ClassDescriptor cd = new ClassDescriptor(baseClass, false);
-				Method[] allMethods = cd.getAllMethods();
+				Method[] allMethods = cd.getAllMethods(true);
 				for (Method method : allMethods) {
 					if (method.getParameterTypes().length == 0 && !void.class.equals(method.getReturnType()) && !Void.class.equals(method.getReturnType())) {
 						// anything that takes no variables looks like a readMethod!
 						String propertyName = method.getName();
-						Method readMethod = cd.getMethod(propertyName, new Class[0]);
+						Method readMethod = cd.getMethod(propertyName, new Class[0], true);
 						// if there's a read method - look for a write method
-						Method writeMethod = cd.getMethod(propertyName, new Class[] { readMethod.getReturnType() });
+						Method writeMethod = cd.getMethod(propertyName, new Class[] { readMethod.getReturnType() }, true);
 						PropertyDescriptor pd = new PropertyDescriptor(propertyName, readMethod, writeMethod);
 						propertyMap.put(pd.getName(), new BeanProperty(baseClass, pd));
 					}

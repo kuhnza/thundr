@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jodd.typeconverter.TypeConverterManager;
 import jodd.util.ReflectUtil;
 
 import com.threewks.thundr.collection.factory.CollectionFactory;
@@ -66,7 +67,7 @@ public class CollectionParameterBinder<T extends Collection<Object>> implements 
 		Type type = parameterDescription.getGenericType(0);
 		Class<?> clazz = ReflectUtil.toClass(type);
 		for (String entry : entries) {
-			Object listEntry = ReflectUtil.castType(entry, clazz);
+			Object listEntry = TypeConverterManager.convertType(entry, clazz);
 			listParameter.add(listEntry);
 		}
 		return listParameter;

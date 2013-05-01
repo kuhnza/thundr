@@ -21,7 +21,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import jodd.bean.BeanTool;
+import jodd.bean.BeanLoaderManager;
+import jodd.bean.BeanUtil;
 
 import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.action.method.bind.BindException;
@@ -35,7 +36,7 @@ public class JavaBeanParameterBinder implements ParameterBinder<Object> {
 		if (!stringMap.isEmpty()) {
 			try {
 				Object bean = parameterDescription.classType().newInstance();
-				BeanTool.load(bean, stringMap);
+				BeanLoaderManager.load(bean, stringMap);
 				return bean;
 			} catch (Exception e) {
 				throw new BindException(e, "Failed to bind onto %s: %s", parameterDescription.classType(), e.getMessage());

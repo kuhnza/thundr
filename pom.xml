@@ -54,7 +54,7 @@
 	</scm>
 
 	<properties>
-		<jodd.version>3.4.0</jodd.version>
+		<jodd.version>3.4.3</jodd.version>
 	</properties>
 
 	<dependencies>
@@ -119,19 +119,22 @@
 			<scope>compile</scope>
 		</dependency>
 
-		<!-- <dependency> <groupId>org.jodd</groupId> <artifactId>jodd-bean</artifactId> <version>${jodd.version}</version> <scope>compile</scope> </dependency> <dependency> <groupId>org.jodd</groupId> <artifactId>jodd-proxetta</artifactId> 
-			<version>${jodd.version}</version> <scope>compile</scope> </dependency> <dependency> <groupId>org.jodd</groupId> <artifactId>jodd-servlet</artifactId> <version>${jodd.version}</version> <scope>compile</scope> 
-			</dependency> -->
 		<dependency>
 			<groupId>org.jodd</groupId>
-			<artifactId>jodd</artifactId>
-			<version>3.3.1</version>
+			<artifactId>jodd-bean</artifactId>
+			<version>${jodd.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jodd</groupId>
-			<artifactId>jodd-wot</artifactId>
-			<version>3.3.1</version>
+			<artifactId>jodd-proxetta</artifactId>
+			<version>${jodd.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jodd</groupId>
+			<artifactId>jodd-servlet</artifactId>
+			<version>${jodd.version}</version>
 			<scope>compile</scope>
 		</dependency>
 

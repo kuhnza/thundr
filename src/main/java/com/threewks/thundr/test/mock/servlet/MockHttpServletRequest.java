@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import jodd.io.StringInputStream;
+import jodd.io.StringInputStream.Mode;
 
 import com.atomicleopard.expressive.Cast;
 import com.threewks.thundr.http.ContentType;
@@ -188,7 +189,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 	@SuppressWarnings("resource")
 	@Override
 	public ServletInputStream getInputStream() throws IOException {
-		final StringInputStream sis = new StringInputStream(content);
+		final StringInputStream sis = new StringInputStream(content, Mode.ALL);
 		return new ServletInputStream() {
 			@Override
 			public int read() throws IOException {

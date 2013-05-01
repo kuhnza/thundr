@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jodd.typeconverter.TypeConverterManager;
 import jodd.util.ReflectUtil;
 
 import com.threewks.thundr.introspection.ParameterDescription;
@@ -62,7 +63,7 @@ public class ArrayParameterBinder<T> implements ParameterBinder<T[]> {
 		T[] arrayParameter = createArray(entries.length, clazz);
 		for (int i = 0; i < entries.length; i++) {
 			String entry = entries[i];
-			arrayParameter[i] = ReflectUtil.castType(entry, clazz);
+			arrayParameter[i] = TypeConverterManager.convertType(entry, clazz);
 		}
 		return arrayParameter;
 	}

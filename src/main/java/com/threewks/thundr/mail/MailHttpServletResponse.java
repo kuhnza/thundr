@@ -27,7 +27,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import jodd.servlet.URLCoder;
+import jodd.util.URLCoder;
 
 public class MailHttpServletResponse implements HttpServletResponse {
 	private String contentType = "text/html;charset=UTF-8";
@@ -140,7 +140,7 @@ public class MailHttpServletResponse implements HttpServletResponse {
 
 	@Override
 	public String encodeURL(String url) {
-		return URLCoder.url(url);
+		return URLCoder.encodeUrl(url);
 	}
 
 	@Override
