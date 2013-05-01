@@ -17,17 +17,20 @@
  */
 package com.threewks.thundr.introspection;
 
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 public class ClassIntrospectorTest {
@@ -55,9 +58,11 @@ public class ClassIntrospectorTest {
 	public void shouldListSetters() {
 		List<Method> setters = new ClassIntrospector().listSetters(TestCA.class);
 		assertThat(setters.size(), is(3));
-		assertThat(setters.get(0).getName(), is("setA"));
-		assertThat(setters.get(1).getName(), is("setB"));
-		assertThat(setters.get(2).getName(), is("setC"));
+		List<String> setterNames = new ArrayList<String>();
+		for (Method method : setters) {
+			setterNames.add(method.getName());
+		}
+		assertThat(setterNames, hasItems("setA", "setB", "setC"));
 	}
 
 	@Test
