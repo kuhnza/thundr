@@ -5,3 +5,5 @@ target/**
 features.txt
 stuff.txt
 peopleGettingTheirArseKicked.txt
+.idea/
+thundr.iml
