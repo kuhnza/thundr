@@ -26,10 +26,10 @@ public class HttpSupportTest {
 
 	@Test
 	public void shouldReturnReasonForStatusCode() {
-		assertThat(HttpSupport.getReasonForHttpStatus(200), is("OK"));
-		assertThat(HttpSupport.getReasonForHttpStatus(400), is("Bad Request"));
-		assertThat(HttpSupport.getReasonForHttpStatus(401), is("Unauthorized"));
-		assertThat(HttpSupport.getReasonForHttpStatus(500), is("Internal Server Error"));
-		assertThat(HttpSupport.getReasonForHttpStatus(418), is("I'm a teapot"));
+		assertThat(HttpSupport.Status.getText(200), is("OK"));
+		assertThat(HttpSupport.Status.getText(400), is("Bad Request"));
+		assertThat(HttpSupport.Status.getText(401), is("Unauthorized"));
+		assertThat(HttpSupport.Status.getText(500), is("Internal Server Error"));
+		assertThat(HttpSupport.Status.getText(418), is("I'm a teapot"));
 	}
 }
