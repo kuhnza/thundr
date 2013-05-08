@@ -65,6 +65,8 @@ public class JspViewResolverTest {
 		resolver.resolve(req, resp, new JspView("view.jsp"));
 		assertThat(req.requestDispatcher().lastPath(), is("/WEB-INF/jsp/view.jsp"));
 		assertThat(req.requestDispatcher().included(), is(true));
+		assertThat(resp.getContentType(), is("text/html"));
+		assertThat(resp.status(), is(200));
 	}
 
 	@Test
@@ -106,6 +108,26 @@ public class JspViewResolverTest {
 		thrown.expectMessage("Failed to resolve JSP view view.jsp (/WEB-INF/jsp/view.jsp) - resource /WEB-INF/jsp/view.jsp does not exist");
 		when(servletContext.getResource(anyString())).thenReturn(null);
 		resolver.resolve(req, resp, new JspView("view.jsp", Expressive.<String, Object> map()));
+	}
+
+	@Test
+	public void shouldIncludeSpecifiedContentTypeOnServletResponse() {
+		resolver.resolve(req, resp, new JspView("view.jsp", Expressive.<String, Object> map(), 200, "application/json"));
+
+		assertThat(resp.getContentType(), is("application/json"));
+		assertThat(resp.status(), is(200));
+	}
+
+	@Test
+	public void shouldIncludeSpecifiedStatusOnServletResponse() {
+		resolver.resolve(req, resp, new JspView("view.jsp", Expressive.<String, Object> map(), 500));
+		assertThat(resp.status(), is(500));
+	}
+
+	@Test
+	public void shouldIncludeSpecifiedStatusOnServletResponseWhenContentTypeSpecified() {
+		resolver.resolve(req, resp, new JspView("view.jsp", Expressive.<String, Object> map(), 506, "text/plain"));
+		assertThat(resp.status(), is(506));
 	}
 
 	@Test

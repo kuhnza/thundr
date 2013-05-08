@@ -32,6 +32,8 @@ public class JspViewTest {
 		assertThat(view.getView(), is("/WEB-INF/jsp/path/view.jsp"));
 		assertThat(view.getModel(), is(notNullValue()));
 		assertThat(view.getModel().isEmpty(), is(true));
+		assertThat(view.getStatus(), is(200));
+		assertThat(view.getContentType(), is("text/html"));
 	}
 
 	@Test
@@ -41,6 +43,37 @@ public class JspViewTest {
 		assertThat(view.getView(), is("/WEB-INF/jsp/path/view.jsp"));
 		assertThat(view.getModel(), is(notNullValue()));
 		assertThat(view.getModel().get("input"), is((Object) 1));
+		assertThat(view.getStatus(), is(200));
+		assertThat(view.getContentType(), is("text/html"));
+	}
+
+	@Test
+	public void shouldSaveViewPathModelAndStatus() {
+		Map<String, Object> model = map("input", 1);
+		JspView view = new JspView("/WEB-INF/jsp/path/view.jsp", model, 404);
+		assertThat(view.getView(), is("/WEB-INF/jsp/path/view.jsp"));
+		assertThat(view.getModel(), is(notNullValue()));
+		assertThat(view.getModel().get("input"), is((Object) 1));
+		assertThat(view.getStatus(), is(404));
+		assertThat(view.getContentType(), is("text/html"));
+	}
+
+	@Test
+	public void shouldSaveViewPathModelStatusAndContentType() {
+		Map<String, Object> model = map("input", 1);
+		JspView view = new JspView("/WEB-INF/jsp/path/view.jsp", model, 404, "text/css");
+		assertThat(view.getView(), is("/WEB-INF/jsp/path/view.jsp"));
+		assertThat(view.getModel(), is(notNullValue()));
+		assertThat(view.getModel().get("input"), is((Object) 1));
+		assertThat(view.getStatus(), is(404));
+		assertThat(view.getContentType(), is("text/css"));
+	}
+	
+	@Test
+	public void shouldSaveViewWithContentTypeWithCharacterEncoding() {
+		Map<String, Object> model = map("input", 1);
+		JspView view = new JspView("/WEB-INF/jsp/path/view.jsp", model, 404, "text/css; utf-8");
+		assertThat(view.getContentType(), is("text/css; utf-8"));
 	}
 
 	@Test

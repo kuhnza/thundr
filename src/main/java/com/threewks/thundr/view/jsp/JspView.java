@@ -20,6 +20,10 @@ package com.threewks.thundr.view.jsp;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import jodd.util.MimeTypes;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.threewks.thundr.view.View;
@@ -27,18 +31,38 @@ import com.threewks.thundr.view.View;
 public class JspView implements View {
 	private String view;
 	private Map<String, Object> model;
+	private int status;
+	private String contentType;
 
 	public JspView(String view) {
 		this(view, new HashMap<String, Object>());
 	}
 
 	public JspView(String view, Map<String, Object> model) {
+		this(view, model, HttpServletResponse.SC_OK);
+	}
+
+	public JspView(String view, Map<String, Object> model, int status) {
+		this(view, model, status, MimeTypes.MIME_TEXT_HTML);
+	}
+
+	public JspView(String view, Map<String, Object> model, int status, String contentType) {
 		this.view = view;
 		this.model = model;
+		this.status = status;
+		this.contentType = contentType;
 	}
 
 	public String getView() {
 		return completeViewName(view);
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public String getContentType() {
+		return contentType;
 	}
 
 	public Map<String, Object> getModel() {

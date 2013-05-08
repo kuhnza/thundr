@@ -56,6 +56,8 @@ public class JspViewResolver implements ViewResolver<JspView> {
 			}
 			RequestDispatcher requestDispatcher = req.getRequestDispatcher(url);
 			requestDispatcher.include(req, resp);
+			resp.setContentType(viewResult.getContentType());
+			resp.setStatus(viewResult.getStatus());
 		} catch (Exception e) {
 			throw new ViewResolutionException(e, "Failed to resolve JSP view %s - %s", viewResult, e.getMessage());
 		}
