@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.threewks.thundr.view.ViewOptions;
 import jodd.util.MimeTypes;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,42 +32,32 @@ import com.threewks.thundr.view.View;
 public class JspView implements View {
 	private String view;
 	private Map<String, Object> model;
-	private int status;
-	private String contentType;
+	private ViewOptions options;
 
 	public JspView(String view) {
 		this(view, new HashMap<String, Object>());
 	}
 
 	public JspView(String view, Map<String, Object> model) {
-		this(view, model, HttpServletResponse.SC_OK);
+		this(view, model, ViewOptions.Default);
 	}
 
-	public JspView(String view, Map<String, Object> model, int status) {
-		this(view, model, status, "text/html; charset=UTF-8");
-	}
-
-	public JspView(String view, Map<String, Object> model, int status, String contentType) {
+	public JspView(String view, Map<String, Object> model, ViewOptions options) {
 		this.view = view;
 		this.model = model;
-		this.status = status;
-		this.contentType = contentType;
+		this.options = options;
 	}
 
 	public String getView() {
 		return completeViewName(view);
 	}
 
-	public int getStatus() {
-		return status;
-	}
-
-	public String getContentType() {
-		return contentType;
-	}
-
 	public Map<String, Object> getModel() {
 		return model;
+	}
+
+	public ViewOptions getOptions() {
+		return options;
 	}
 
 	@Override

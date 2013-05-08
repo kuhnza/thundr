@@ -32,6 +32,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
+import com.threewks.thundr.view.ViewOptions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -65,8 +66,9 @@ public class JspViewResolverTest {
 		resolver.resolve(req, resp, new JspView("view.jsp"));
 		assertThat(req.requestDispatcher().lastPath(), is("/WEB-INF/jsp/view.jsp"));
 		assertThat(req.requestDispatcher().included(), is(true));
-		assertThat(resp.getContentType(), is("text/html; charset=UTF-8"));
+		assertThat(resp.getContentType(), is("text/html"));
 		assertThat(resp.status(), is(200));
+		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
 	}
 
 	@Test
@@ -112,7 +114,7 @@ public class JspViewResolverTest {
 
 	@Test
 	public void shouldIncludeSpecifiedContentTypeOnServletResponse() {
-		resolver.resolve(req, resp, new JspView("view.jsp", Expressive.<String, Object> map(), 200, "application/json"));
+		resolver.resolve(req, resp, new JspView("view.jsp", Expressive.<String, Object> map(), ViewOptions.Default.withContentType("application/json")));
 
 		assertThat(resp.getContentType(), is("application/json"));
 		assertThat(resp.status(), is(200));
@@ -120,13 +122,15 @@ public class JspViewResolverTest {
 
 	@Test
 	public void shouldIncludeSpecifiedStatusOnServletResponse() {
-		resolver.resolve(req, resp, new JspView("view.jsp", Expressive.<String, Object> map(), 500));
+		resolver.resolve(req, resp, new JspView("view.jsp", Expressive.<String, Object> map(), ViewOptions.Default.withStatus(500)));
 		assertThat(resp.status(), is(500));
 	}
 
 	@Test
 	public void shouldIncludeSpecifiedStatusOnServletResponseWhenContentTypeSpecified() {
-		resolver.resolve(req, resp, new JspView("view.jsp", Expressive.<String, Object> map(), 506, "text/plain"));
+		ViewOptions options = ViewOptions.Default.withStatus(506)
+				                                 .withContentType("text/plain");
+		resolver.resolve(req, resp, new JspView("view.jsp", Expressive.<String, Object> map(), options));
 		assertThat(resp.status(), is(506));
 	}
 

@@ -23,7 +23,11 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Map;
 
+import com.threewks.thundr.test.mock.servlet.MockHttpServletResponse;
+import com.threewks.thundr.view.ViewOptions;
 import org.junit.Test;
+
+import javax.servlet.http.HttpServletResponse;
 
 public class JspViewTest {
 	@Test
@@ -32,8 +36,12 @@ public class JspViewTest {
 		assertThat(view.getView(), is("/WEB-INF/jsp/path/view.jsp"));
 		assertThat(view.getModel(), is(notNullValue()));
 		assertThat(view.getModel().isEmpty(), is(true));
-		assertThat(view.getStatus(), is(200));
-		assertThat(view.getContentType(), is("text/html; charset=UTF-8"));
+
+		MockHttpServletResponse resp = new MockHttpServletResponse();
+		view.getOptions().apply(resp);
+		assertThat(resp.status(), is(200));
+		assertThat(resp.getContentType(), is("text/html"));
+		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
 	}
 
 	@Test
@@ -43,37 +51,60 @@ public class JspViewTest {
 		assertThat(view.getView(), is("/WEB-INF/jsp/path/view.jsp"));
 		assertThat(view.getModel(), is(notNullValue()));
 		assertThat(view.getModel().get("input"), is((Object) 1));
-		assertThat(view.getStatus(), is(200));
-		assertThat(view.getContentType(), is("text/html; charset=UTF-8"));
+
+		MockHttpServletResponse resp = new MockHttpServletResponse();
+		view.getOptions().apply(resp);
+		assertThat(resp.status(), is(200));
+		assertThat(resp.getContentType(), is("text/html"));
+		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
 	}
 
 	@Test
 	public void shouldSaveViewPathModelAndStatus() {
 		Map<String, Object> model = map("input", 1);
-		JspView view = new JspView("/WEB-INF/jsp/path/view.jsp", model, 404);
+		JspView view = new JspView("/WEB-INF/jsp/path/view.jsp", model, ViewOptions.Default.withStatus(404));
 		assertThat(view.getView(), is("/WEB-INF/jsp/path/view.jsp"));
 		assertThat(view.getModel(), is(notNullValue()));
 		assertThat(view.getModel().get("input"), is((Object) 1));
-		assertThat(view.getStatus(), is(404));
-		assertThat(view.getContentType(), is("text/html; charset=UTF-8"));
+
+		MockHttpServletResponse resp = new MockHttpServletResponse();
+		view.getOptions().apply(resp);
+		assertThat(resp.status(), is(404));
+		assertThat(resp.getContentType(), is("text/html"));
+		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
 	}
 
 	@Test
 	public void shouldSaveViewPathModelStatusAndContentType() {
 		Map<String, Object> model = map("input", 1);
-		JspView view = new JspView("/WEB-INF/jsp/path/view.jsp", model, 404, "text/css");
+		ViewOptions options = ViewOptions.Default.withStatus(404)
+												 .withContentType("text/css");
+		JspView view = new JspView("/WEB-INF/jsp/path/view.jsp", model, options);
 		assertThat(view.getView(), is("/WEB-INF/jsp/path/view.jsp"));
 		assertThat(view.getModel(), is(notNullValue()));
 		assertThat(view.getModel().get("input"), is((Object) 1));
-		assertThat(view.getStatus(), is(404));
-		assertThat(view.getContentType(), is("text/css"));
+
+		MockHttpServletResponse resp = new MockHttpServletResponse();
+		view.getOptions().apply(resp);
+		assertThat(resp.status(), is(404));
+		assertThat(resp.getContentType(), is("text/css"));
+		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
 	}
 	
 	@Test
 	public void shouldSaveViewWithContentTypeWithCharacterEncoding() {
 		Map<String, Object> model = map("input", 1);
-		JspView view = new JspView("/WEB-INF/jsp/path/view.jsp", model, 404, "text/css; charset=ISO-8859-1");
-		assertThat(view.getContentType(), is("text/css; charset=ISO-8859-1"));
+		ViewOptions options = ViewOptions.Default.withStatus(404)
+				                                 .withContentType("text/css")
+				                                 .withCharacterEncoding("ISO-8859-1");
+		JspView view = new JspView("/WEB-INF/jsp/path/view.jsp", model, options);
+		assertThat(view.getOptions(), is(options));
+
+		MockHttpServletResponse resp = new MockHttpServletResponse();
+		view.getOptions().apply(resp);
+		assertThat(resp.status(), is(404));
+		assertThat(resp.getContentType(), is("text/css"));
+		assertThat(resp.getCharacterEncoding(), is("ISO-8859-1"));
 	}
 
 	@Test
