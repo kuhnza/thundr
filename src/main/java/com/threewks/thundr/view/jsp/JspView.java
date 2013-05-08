@@ -43,7 +43,7 @@ public class JspView implements View {
 	}
 
 	public JspView(String view, Map<String, Object> model, int status) {
-		this(view, model, status, MimeTypes.MIME_TEXT_HTML);
+		this(view, model, status, "text/html; charset=UTF-8");
 	}
 
 	public JspView(String view, Map<String, Object> model, int status, String contentType) {
