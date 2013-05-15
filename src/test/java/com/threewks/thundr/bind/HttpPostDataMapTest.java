@@ -21,6 +21,7 @@ import static com.atomicleopard.expressive.Expressive.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
@@ -72,8 +73,31 @@ public class HttpPostDataMapTest {
 		Map<String, String[]> map = mapKeys("one-One[two-Two-].-three-Three", "one-One[one].two").to(new String[] { "value-value" }, new String[] { "value2" });
 		HttpPostDataMap pathMap = new HttpPostDataMap(map);
 		HttpPostDataMap newPathMap = pathMap.pathMapFor("oneOne");
+		System.out.println(newPathMap.toStringMap().keySet());
 		assertThat(newPathMap.size(), is(2));
-		assertThat(newPathMap.get(list("[twoTwo]", "threeThree")), is(array("value-value")));
+		assertThat(newPathMap.get(list("[twoTwo]", "ThreeThree")), is(array("value-value")));
 		assertThat(newPathMap.get(list("[one]", "two")), is(array("value2")));
+	}
+
+	@Test
+	public void shouldNormalizeParametersToCamelCase() {
+		Map<String, String[]> input = new HashMap<String, String[]>(){{
+			put("Accept", new String[]{ "*/*"});
+			put("Content-Type", new String[]{ "application/xml" });
+			put("X-My-Special-Header", new String[]{ "multiple", "values" });
+			put("alreadylowercase", new String[]{ "application/xml" });
+			put("camel-Case-Already", new String[]{ "ddsdfdsf" });
+			put("UPPERCASE-UPPERCASE", new String[]{ "sdfsdf" });
+			put("lowercase-lowercase", new String[]{ "sdfsdf" });
+		}};
+
+		Map<String, String[]> map = new HttpPostDataMap(input).toStringMap();
+		assertThat(map.containsKey("accept"), is(true));
+		assertThat(map.containsKey("contentType"), is(true));
+		assertThat(map.containsKey("xMySpecialHeader"), is(true));
+		assertThat(map.containsKey("alreadylowercase"), is(true));
+		assertThat(map.containsKey("camelCaseAlready"), is(true));
+		assertThat(map.containsKey("uppercaseUppercase"), is(true));
+		assertThat(map.containsKey("lowercaseLowercase"), is(true));
 	}
 }

@@ -113,7 +113,7 @@ public class MethodActionResolverBindingTest {
 		assertThat(resolver.bindArguments(method, request("argument1[first]", "value1", "argument1[second]", "value2", "argument1[third]", "value3"), null, emptyMap),
 				is(Arrays.<Object> asList(map("first", list("value1"), "second", list("value2"), "third", list("value3")))));
 		assertThat(resolver.bindArguments(method, request("argument1[first]", "", "argument1[second_second]", "value2", "argument1[THIRD]", "value3", "argument1[fourth]", null), null, emptyMap),
-				is(Arrays.<Object> asList(map("first", null, "second_second", list("value2"), "THIRD", list("value3"), "fourth", null))));
+				is(Arrays.<Object> asList(map("first", null, "second_second", list("value2"), "third", list("value3"), "fourth", null))));
 		// TODO - Implicit map - what would an unindexed map posted look like?
 		// assertThat(resolver.bindArguments(method("methodMap"), request("argument1", new String[] { "value1", "value2" }), null, emptyMap), is(asList(map("value1", "value2"))));
 	}

@@ -17,6 +17,9 @@
  */
 package com.threewks.thundr.action.method.bind.http;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,8 +53,8 @@ public class HttpPostDataMap {
 		this();
 		for (Map.Entry<String, String[]> entry : input.entrySet()) {
 			String key = entry.getKey();
-			String removeDashes = key.replaceAll("-", "");
-			String expandedKey = removeDashes.replaceAll("\\.", "\r");
+			String normalized = normalize(key);
+			String expandedKey = normalized.replaceAll("\\.", "\r");
 			expandedKey = expandedKey.replaceAll("\\[([^\\]])", "\r[$1");
 			List<String> path = Collections.unmodifiableList(Arrays.asList(expandedKey.split("\r")));
 			delegate.put(path, entry.getValue());
@@ -189,5 +192,9 @@ public class HttpPostDataMap {
 			}
 		}
 		return stringMap;
+	}
+
+	private String normalize(String str) {
+		return WordUtils.uncapitalize(WordUtils.capitalizeFully(str, '-').replaceAll("-", ""));
 	}
 }
