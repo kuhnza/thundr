@@ -15,17 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.threewks.thundr.view.json;
+package com.threewks.thundr.view.data;
 
-import com.threewks.thundr.view.data.DataView;
+import com.threewks.thundr.http.HttpSupport;
+import com.threewks.thundr.view.View;
 
-public class JsonView extends DataView {
+public class DataView implements View {
+	private Object output;
+	private int status;
 
-	public JsonView(Object output) {
-		super(output);
+	public DataView(Object output) {
+		this(output, HttpSupport.Status.OK);
 	}
 
-	public JsonView(Object output, int status) {
-		super(output, status);
+	public DataView(Object output, int status) {
+		this.output = output;
+		this.status = status;
+	}
+
+	public Object getOutput() {
+		return output;
+	}
+
+	public int getStatus() {
+		return status;
 	}
 }

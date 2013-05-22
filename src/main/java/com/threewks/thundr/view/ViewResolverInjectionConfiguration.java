@@ -21,6 +21,8 @@ import com.threewks.thundr.http.exception.HttpStatusException;
 import com.threewks.thundr.injection.InjectionConfiguration;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.route.RouteNotFoundException;
+import com.threewks.thundr.view.data.DataView;
+import com.threewks.thundr.view.data.DataViewResolver;
 import com.threewks.thundr.view.exception.ExceptionViewResolver;
 import com.threewks.thundr.view.exception.HttpStatusExceptionViewResolver;
 import com.threewks.thundr.view.exception.RouteNotFoundViewResolver;
@@ -34,6 +36,9 @@ import com.threewks.thundr.view.redirect.RedirectView;
 import com.threewks.thundr.view.redirect.RedirectViewResolver;
 import com.threewks.thundr.view.string.StringView;
 import com.threewks.thundr.view.string.StringViewResolver;
+import com.threewks.thundr.view.xml.XmlView;
+import com.threewks.thundr.view.xml.XmlViewResolver;
+import jodd.util.MimeTypes;
 
 public class ViewResolverInjectionConfiguration implements InjectionConfiguration {
 
@@ -56,8 +61,17 @@ public class ViewResolverInjectionConfiguration implements InjectionConfiguratio
 		viewResolverRegistry.addResolver(RouteNotFoundException.class, new RouteNotFoundViewResolver());
 		viewResolverRegistry.addResolver(RedirectView.class, new RedirectViewResolver());
 		viewResolverRegistry.addResolver(JsonView.class, new JsonViewResolver());
+		viewResolverRegistry.addResolver(XmlView.class, new XmlViewResolver());
 		viewResolverRegistry.addResolver(FileView.class, new FileViewResolver());
 		viewResolverRegistry.addResolver(JspView.class, new JspViewResolver());
 		viewResolverRegistry.addResolver(StringView.class, new StringViewResolver());
+
+		// The DataViewResolver is a special meta resolver that delegates to other view resolvers,
+		// hence the reference to the ViewResolverRegistry. For convenience we also set it up with
+		// default mappings to handle both JSON and XML output.
+		DataViewResolver dataViewResolver = new DataViewResolver(viewResolverRegistry);
+		dataViewResolver.addDataViewType(MimeTypes.MIME_APPLICATION_JSON, JsonView.class);
+		dataViewResolver.addDataViewType(MimeTypes.MIME_APPLICATION_XML, XmlView.class);
+		viewResolverRegistry.addResolver(DataView.class, dataViewResolver);
 	}
 }

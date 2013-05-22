@@ -17,15 +17,15 @@
  */
 package com.threewks.thundr.view.json;
 
-import com.threewks.thundr.view.data.DataView;
+public class JsonExceptionWrapper {
 
-public class JsonView extends DataView {
+	private Throwable t;
 
-	public JsonView(Object output) {
-		super(output);
+	public JsonExceptionWrapper(Throwable t) {
+		this.t = t;
 	}
 
-	public JsonView(Object output, int status) {
-		super(output, status);
+	public String getError() {
+		return t.getMessage();
 	}
 }

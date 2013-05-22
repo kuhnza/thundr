@@ -15,17 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.threewks.thundr.view.json;
+package com.threewks.thundr.view.xml;
 
 import com.threewks.thundr.view.data.DataView;
 
-public class JsonView extends DataView {
+public class XmlView extends DataView {
 
-	public JsonView(Object output) {
+	public XmlView(Object output) {
 		super(output);
 	}
 
-	public JsonView(Object output, int status) {
+	public XmlView(Object output, int status) {
 		super(output, status);
 	}
 }

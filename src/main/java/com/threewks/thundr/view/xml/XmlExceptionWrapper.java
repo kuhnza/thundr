@@ -15,17 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.threewks.thundr.view.json;
+package com.threewks.thundr.view.xml;
 
-import com.threewks.thundr.view.data.DataView;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-public class JsonView extends DataView {
+@XmlRootElement(name = "error")
+public class XmlExceptionWrapper {
 
-	public JsonView(Object output) {
-		super(output);
+	private Throwable t;
+
+	private XmlExceptionWrapper() {}
+
+	public XmlExceptionWrapper(Throwable t) {
+		this.t = t;
 	}
 
-	public JsonView(Object output, int status) {
-		super(output, status);
+	@XmlElement
+	public String getMessage() {
+		return t.getMessage();
 	}
 }

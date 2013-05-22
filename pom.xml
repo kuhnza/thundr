@@ -79,6 +79,7 @@
 			<version>2.2.4</version>
 			<scope>provided</scope>
 		</dependency>
+
 		<!-- JSTL - this must be provided to avoid dependency conflicts when deployed to the appengine -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
