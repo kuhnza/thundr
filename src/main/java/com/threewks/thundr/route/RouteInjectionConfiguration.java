@@ -46,6 +46,8 @@ public class RouteInjectionConfiguration implements InjectionConfiguration {
 		String routesSource = Streams.getResourceAsString(routesFile);
 		List<Route> routeMap = Routes.parseJsonRoutes(routesSource);
 		routes.addRoutes(routeMap);
-		Logger.debug("Loaded routes");
+		if (Logger.willDebug()) {
+			Logger.debug("Loaded routes: \n%s", routes.listRoutes());
+		}
 	}
 }

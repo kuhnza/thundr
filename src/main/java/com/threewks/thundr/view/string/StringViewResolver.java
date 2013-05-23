@@ -36,4 +36,9 @@ public class StringViewResolver implements ViewResolver<StringView> {
 			throw new ViewResolutionException(e, "Failed to write String view result: %s", e.getMessage());
 		}
 	}
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
 }

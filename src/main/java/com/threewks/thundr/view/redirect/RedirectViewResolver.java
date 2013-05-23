@@ -35,4 +35,9 @@ public class RedirectViewResolver implements ViewResolver<RedirectView> {
 			throw new ViewResolutionException(e, "Failed to redirect to %s: %s", viewResult.getRedirect(), e.getMessage());
 		}
 	}
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
 }

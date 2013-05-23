@@ -87,7 +87,7 @@ public class Route {
 
 	@Override
 	public String toString() {
-		return String.format("%s %s\t->\t%s", routeType, route, actionName);
+		return String.format("%s\t%s\t->\t%s", routeType, route, actionName);
 	}
 
 	static String convertPathStringToRegex(String route) {

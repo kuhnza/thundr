@@ -52,4 +52,9 @@ public class JsonViewResolver implements ViewResolver<JsonView> {
 			throw new ViewResolutionException(e, "Failed to generate JSON output for object '%s': %s", output.toString(), e.getMessage());
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
 }

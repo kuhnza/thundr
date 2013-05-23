@@ -39,4 +39,9 @@ public class FileViewResolver implements ViewResolver<FileView> {
 			throw new ViewResolutionException(e, "Failed to write FileView result: %s", e.getMessage());
 		}
 	}
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
 }

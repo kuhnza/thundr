@@ -119,4 +119,9 @@ public class JspViewResolverTest {
 
 		resolver.resolve(req, resp, new JspView("view.jsp", Expressive.<String, Object> map()));
 	}
+
+	@Test
+	public void shouldReturnClassNameForToString() {
+		assertThat(new JspViewResolver().toString(), is("JspViewResolver"));
+	}
 }

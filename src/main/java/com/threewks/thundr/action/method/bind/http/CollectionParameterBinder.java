@@ -85,7 +85,7 @@ public class CollectionParameterBinder<T extends Collection<Object>> implements 
 		for (String string : uniqueChildren) {
 			Matcher matcher = indexPattern.matcher(string);
 			if (!matcher.matches()) {
-				throw new IllegalArgumentException(String.format("Cannot bind %s%s - not a valid list index", parameterDescription.name(), string));
+				throw new IllegalArgumentException(String.format("Cannot bind %s %s - not a valid list index", parameterDescription.name(), string));
 			}
 			String indexString = matcher.group(1);
 			int index = Integer.parseInt(indexString);

@@ -62,4 +62,9 @@ public class JsonViewResolverTest {
 		JsonView viewResult = new JsonView("string");
 		resolver.resolve(req, resp, viewResult);
 	}
+
+	@Test
+	public void shouldReturnClassNameForToString() {
+		assertThat(new JsonViewResolver().toString(), is("JsonViewResolver"));
+	}
 }

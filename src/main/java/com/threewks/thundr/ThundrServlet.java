@@ -48,11 +48,13 @@ public class ThundrServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		try {
+			long start = System.currentTimeMillis();
 			ServletContext servletContext = config.getServletContext();
 			injectionContext = new InjectionContextImpl();
 			injectionContext.inject(servletContext).as(ServletContext.class);
 			InjectionConfiguration injectionConfiguration = getInjectionConfigInstance(servletContext);
 			injectionConfiguration.configure(injectionContext);
+			Logger.info("Started up in %dms", System.currentTimeMillis() - start);
 		} catch (RuntimeException e) {
 			throw new ServletException("Failed to initialse thundr: " + e.getMessage(), e);
 		}

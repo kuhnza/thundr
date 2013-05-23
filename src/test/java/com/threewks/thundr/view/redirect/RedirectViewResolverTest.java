@@ -15,48 +15,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.threewks.thundr.view.string;
+package com.threewks.thundr.view.redirect;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import com.threewks.thundr.test.mock.servlet.MockHttpServletRequest;
-import com.threewks.thundr.test.mock.servlet.MockHttpServletResponse;
 import com.threewks.thundr.view.ViewResolutionException;
 
-public class StringViewResolverTest {
+public class RedirectViewResolverTest {
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
-	private StringViewResolver stringViewResolver = new StringViewResolver();
+
+	private RedirectViewResolver resolver = new RedirectViewResolver();
 	private HttpServletRequest req = new MockHttpServletRequest();
-	private MockHttpServletResponse resp = new MockHttpServletResponse();
+	private HttpServletResponse resp = mock(HttpServletResponse.class);
 
 	@Test
-	public void shouldWriteViewToResponse() {
-		stringViewResolver.resolve(req, resp, new StringView("My view result"));
-		assertThat(resp.content(), is("My view result"));
-		assertThat(resp.isCommitted(), is(true));
+	public void shouldRedirectSpecifiedByRedirectView() throws IOException {
+		RedirectView viewResult = new RedirectView("/redirect/to");
+		resolver.resolve(req, resp, viewResult);
+		verify(resp).sendRedirect("/redirect/to");
 	}
 
 	@Test
-	public void shouldThrowViewResolutionExceptionIfWriteFails() throws IOException {
+	public void shouldThrowViewResolutionExceptionWhenRedirectFails() throws IOException {
 		thrown.expect(ViewResolutionException.class);
-		resp = spy(resp);
-		when(resp.getWriter()).thenThrow(new IOException("simulated exception"));
-		stringViewResolver.resolve(req, resp, new StringView("My view result"));
+		thrown.expectMessage("Failed to redirect to /redirect/to: BOOM");
+
+		doThrow(new IOException("BOOM")).when(resp).sendRedirect(anyString());
+
+		RedirectView viewResult = new RedirectView("/redirect/to");
+		resolver.resolve(req, resp, viewResult);
 	}
 
 	@Test
 	public void shouldReturnClassNameForToString() {
-		assertThat(new StringViewResolver().toString(), is("StringViewResolver"));
+		assertThat(new RedirectViewResolver().toString(), is("RedirectViewResolver"));
+
 	}
 }

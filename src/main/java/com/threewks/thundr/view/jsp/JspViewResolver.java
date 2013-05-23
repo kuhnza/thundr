@@ -60,6 +60,11 @@ public class JspViewResolver implements ViewResolver<JspView> {
 			throw new ViewResolutionException(e, "Failed to resolve JSP view %s - %s", viewResult, e.getMessage());
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
+	}
 
 	public Object addToGlobalModel(String key, Object value) {
 		return globalModel.put(key, value);

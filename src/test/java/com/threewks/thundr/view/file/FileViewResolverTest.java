@@ -59,4 +59,9 @@ public class FileViewResolverTest {
 
 		fileViewResolver.resolve(req, resp, fileView);
 	}
+
+	@Test
+	public void shouldReturnClassNameForToString() {
+		assertThat(new FileViewResolver().toString(), is("FileViewResolver"));
+	}
 }

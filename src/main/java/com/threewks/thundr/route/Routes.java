@@ -66,7 +66,6 @@ public class Routes {
 		Action action = createAction(actionName);
 		this.routes.get(routeType).put(path, route);
 		this.actionsForRoutes.put(route, action);
-		Logger.info("Added route %s", route);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -114,7 +113,7 @@ public class Routes {
 	private static final String routeDisplayFormat = "%s\n";
 
 	@SuppressWarnings("unchecked")
-	private String listRoutes() {
+	public String listRoutes() {
 		List<String> allRoutes = flatten(getRoutes.keySet(), postRoutes.keySet(), putRoutes.keySet(), deleteRoutes.keySet());
 		allRoutes = list(new HashSet<String>(allRoutes));
 
@@ -151,7 +150,6 @@ public class Routes {
 		} catch (Exception e) {
 			throw new ActionException(e, "Failed to create an action for the route %s: %s", actionName, e.getMessage());
 		}
-
 	}
 
 	// TODO - This method should probably be externalised from this class, routes should theoretically be buildable however someone wants
@@ -185,6 +183,6 @@ public class Routes {
 
 	public <A extends Action> void addActionResolver(Class<A> actionType, ActionResolver<A> actionResolver) {
 		actionResolvers.put(actionType, actionResolver);
-		Logger.debug("Added action resolver %s for actions of type %s", actionResolver, actionType);
+		Logger.debug("Added action resolver %s for actions of type %s", actionResolver.getClass().getSimpleName(), actionType);
 	}
 }
