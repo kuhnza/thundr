@@ -161,7 +161,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 
 	@Override
 	public String toString() {
-		return String.format("Injection context (%s instances, %s classes)", instances.size() + instances.size(), types.size() + types.size());
+		return String.format("Injection context (%s instances, %s classes)", instances.size(), types.size());
 	}
 
 	@SuppressWarnings("unchecked")
