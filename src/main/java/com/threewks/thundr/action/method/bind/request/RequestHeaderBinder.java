@@ -26,6 +26,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import jodd.util.StringPool;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
 import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.action.method.bind.ActionMethodBinder;
 import com.threewks.thundr.action.method.bind.http.HttpBinder;
@@ -47,13 +52,19 @@ public class RequestHeaderBinder implements ActionMethodBinder {
 				if (headerNames != null) {
 					Map<String, String[]> headerValues = new HashMap<String, String[]>();
 					for (String header : Expressive.<String> iterable(headerNames)) {
-						headerValues.put(header, headerValues(req.getHeaders(header)));
+						headerValues.put(normaliseHeaderName(header), headerValues(req.getHeaders(header)));
 					}
 
 					delegate.bind(bindings, req, resp, headerValues);
 				}
 			}
 		}
+	}
+
+	String normaliseHeaderName(String header) {
+		String capitalised = WordUtils.capitalizeFully(header, '-');
+		String withoutDashes = capitalised.replaceAll(StringPool.DASH, StringPool.EMPTY);
+		return StringUtils.uncapitalize(withoutDashes);
 	}
 
 	private String[] headerValues(Enumeration<String> headers) {
