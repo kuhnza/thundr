@@ -17,18 +17,23 @@
  */
 package com.threewks.thundr.view.data;
 
-import com.threewks.thundr.http.HttpSupport;
-import com.threewks.thundr.http.exception.HttpStatusException;
-import com.threewks.thundr.logger.Logger;
-import com.threewks.thundr.view.*;
-import jodd.util.MimeTypes;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import jodd.util.MimeTypes;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.threewks.thundr.http.HttpSupport;
+import com.threewks.thundr.http.exception.HttpStatusException;
+import com.threewks.thundr.logger.Logger;
+import com.threewks.thundr.view.View;
+import com.threewks.thundr.view.ViewResolver;
+import com.threewks.thundr.view.ViewResolverRegistry;
 
 public class DataViewResolver implements ViewResolver<DataView> {
 	private static final String ContentTypeAny = "*/*";
@@ -76,6 +81,7 @@ public class DataViewResolver implements ViewResolver<DataView> {
 		}
 
 		try {
+			resp.setCharacterEncoding("UTF-8");
 			resolver.resolve(req, resp, view);
 		} catch (HttpStatusException hse) {
 			Logger.error(hse.getMessage() + "\n" + StringUtils.join(hse.getStackTrace(), '\n'));
