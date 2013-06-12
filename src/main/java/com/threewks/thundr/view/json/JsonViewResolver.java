@@ -20,14 +20,13 @@ package com.threewks.thundr.view.json;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.threewks.thundr.view.xml.XmlExceptionWrapper;
 import jodd.util.MimeTypes;
+import jodd.util.StringPool;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.threewks.thundr.view.ViewResolutionException;
 import com.threewks.thundr.view.ViewResolver;
-import jodd.util.StringPool;
 
 public class JsonViewResolver implements ViewResolver<JsonView> {
 	private GsonBuilder gsonBuilder;
