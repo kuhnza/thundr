@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.threewks.thundr.exception.BaseException;
 import com.threewks.thundr.view.ViewResolutionException;
 import com.threewks.thundr.view.ViewResolver;
+import jodd.util.MimeTypes;
+import jodd.util.StringPool;
 
 public class JspViewResolver implements ViewResolver<JspView> {
 	/**
@@ -57,6 +59,8 @@ public class JspViewResolver implements ViewResolver<JspView> {
 			RequestDispatcher requestDispatcher = req.getRequestDispatcher(url);
 			requestDispatcher.include(req, resp);
 
+			resp.setContentType(MimeTypes.MIME_TEXT_HTML);
+			resp.setCharacterEncoding(StringPool.UTF_8);
 			viewResult.getOptions().apply(resp);
 		} catch (Exception e) {
 			throw new ViewResolutionException(e, "Failed to resolve JSP view %s - %s", viewResult, e.getMessage());
