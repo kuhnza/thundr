@@ -50,11 +50,11 @@
 		<connection>scm:git:https://github.com/3wks/thundr</connection>
 		<developerConnection>scm:git:https://github.com/3wks/thundr</developerConnection>
 		<url>https://github.com/3wks/thundr</url>
-		<tag>thundr-0.9.8</tag>
+		<tag>thundr-0.9.9-SNAPSHOT</tag>
 	</scm>
 
 	<properties>
-		<jodd.version>3.4.3</jodd.version>
+		<jodd.version>3.4.4</jodd.version>
 	</properties>
 
 	<dependencies>
@@ -115,7 +115,7 @@
 		<dependency>
 			<groupId>com.atomicleopard</groupId>
 			<artifactId>expressive</artifactId>
-			<version>0.9.3</version>
+			<version>0.9.4</version>
 			<scope>compile</scope>
 		</dependency>
 

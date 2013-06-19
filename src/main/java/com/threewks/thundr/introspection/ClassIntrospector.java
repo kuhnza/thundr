@@ -42,7 +42,7 @@ public class ClassIntrospector {
 	@SuppressWarnings({ "rawtypes" })
 	public <T> List<Constructor<T>> listConstructors(Class<T> type) {
 		ClassDescriptor classDescriptor = new ClassDescriptor(type, true);
-		List<Constructor<T>> ctors = Expressive.Transformers.transformAllUsing(ClassIntrospector.<Constructor, Constructor<T>> castTransformer()).to(classDescriptor.getAllCtors(true));
+		List<Constructor<T>> ctors = Expressive.Transformers.transformAllUsing(ClassIntrospector.<Constructor, Constructor<T>> castTransformer()).from(classDescriptor.getAllCtors(true));
 		Collections.sort(ctors, new Comparator<Constructor<T>>() {
 			@Override
 			public int compare(Constructor<T> o1, Constructor<T> o2) {
