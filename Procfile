@@ -1,1 +1,0 @@
-web: bin/3wks-site
