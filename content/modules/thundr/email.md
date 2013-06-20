@@ -1,9 +1,9 @@
 ---
 layout: layout.hbs
 template: page.hbs
-id: views
-title: views
-nav_position: 4
+id: email
+title: email
+nav_position: 7
 nav_has_overview: false
 
 ---
