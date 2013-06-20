@@ -389,7 +389,8 @@
 <pre><code class="language-java"><span class="keyword">public</span> JspView view(HttpServletRequest req, HttpServletResponse resp){ ... }</code></pre>
 </li>
 <li><p><strong>Request headers</strong> - for example we could get the referer using the following: </p>
-<pre><code class="language-java"><span class="keyword">public</span> JspView method(String Referer){ ... }</code></pre>
+<pre><code class="language-java"><span class="keyword">public</span> JspView method(String referer){ ... }</code></pre>
+<p>Headers are bound using a special transformation - the parameters they bind to must be camel case, split on the dash &#39;-&#39; character.<br>For example, the header X-Http-Something will bind to xHttpSomething. This helps eliminate issues across containers, some of which standarise headers and some of which do not.<br>Some other examples of header names which bind to xHttpSomething are X-HTTP-SOMETHING, x-http-something and X-HTTP-someThing.</p>
 </li>
 </ul>
 <p>When data binding is used, you can generally mix any types of bindings, for example using path variables, request parameters and the <code>HttpServletRequest</code>. This gives you the flexibility to generally consume most types of http integration.</p>
