@@ -204,6 +204,18 @@
 							
 							
 						
+							
+								
+								
+								<li><a href="modules/thundr/controllers.html#actionInterceptors" data-target="#actionInterceptors">
+									ActionInterceptors
+									
+									<span class="label label-info">Advanced</span>
+									
+								</a></li>
+							
+							
+						
 					
 					
 				
@@ -349,7 +361,7 @@
 <p>will bind to</p>
 <pre><code class="language-java"><span class="keyword">public</span> JspView method(<span class="keyword">long</span> path, String variables){ ... }</code></pre>
 </li>
-<li><p><strong>Multipart data</strong> <span class="label label-warning">Verify</span> - we can post files for example like this:</p>
+<li><p><strong>Multipart data</strong> - we can post files for example like this:</p>
 <pre><code class="language-html"><span class="tag">&lt;<span class="title">form</span> <span class="attribute">action</span>=<span class="value">"/page"</span> <span class="attribute">enctype</span>=<span class="value">"multipart/form-data"</span> <span class="attribute">method</span>=<span class="value">"post"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">name</span>=<span class="value">"filename"</span> <span class="attribute">value</span>=<span class="value">""</span>/&gt;</span>
   <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"file"</span> <span class="attribute">name</span>=<span class="value">"fileData"</span> <span class="attribute">value</span>=<span class="value">""</span>/&gt;</span>
@@ -357,7 +369,7 @@
 <p>which would bind to</p>
 <pre><code class="language-java"><span class="keyword">public</span> JspView postFile(String filename, <span class="keyword">byte</span>[] fileData){ ... }</code></pre>
 </li>
-<li><p><strong>Json</strong> <span class="label label-warning">Verify</span> - using <a href="http://code.google.com/p/google-gson/">Gson</a>, json requests will bind data automatically.</p>
+<li><p><strong>Json</strong> - using <a href="http://code.google.com/p/google-gson/">Gson</a>, json requests will bind data automatically.</p>
 <p>For example, if the request posted json like this</p>
 <pre><code class="language-json">{
    "<span class="attribute">id</span>": <span class="value"><span class="number">123</span></span>,
@@ -446,7 +458,7 @@
 			
 				
 				<section id="injection">
-					<h4>Controller Instantiation</h4>
+					<h4>Injection &amp; Controller Instantiation</h4>
 <p>Controller classes are instantiated by the <a href="modules/thundr/injection-context.html#injectionContext">InjectionContext</a>. As such each instance can be shared between multiple, concurrent requests, so implementations should be treated as stateless.<br>Also, there is no guarantee that controllers are singletons and implementations should also take this into account.</p>
 <p>When a controller is instantiated, the injection context will attempt to use the constructor with the most arguments that it can satisfy.<br>The injection context will also invoke javabean setters for any objects it can satisfy.<br>Non-javabean properties can also be set by using the JSR 330 annotation <code>@Inject</code> on the property. Note that the InjectionContext does not currently support the full JSR 330 specification, just the basic @Inject annotation.</p>
 <p>You can read more <a href="modules/thundr/injection-context.html">here</a> about the InjectionContext, dependency injection in thundr and how to write controller and service classes the &#39;right&#39; way. </p>
@@ -464,6 +476,86 @@
     }
     <span class="keyword">public</span> <span class="keyword">void</span> setCounterRepository(CounterRepository counterRepository){
         <span class="keyword">this</span>.counterRepository = counterRepository;
+    }
+...</code></pre>
+
+				</section>
+			
+
+
+		
+
+			
+
+			
+				
+				<section id="actionInterceptors">
+					<h4><code>ActionInterceptor</code> <span class="label label-info">Advanced</span></h4>
+<p>By implementing the <code>ActionInterceptor</code> interface, thundr provides a basic mechanism for adding interceptors to controller methods to perform common operations on different routes/controller methods.</p>
+<p>Quite often there are cross cutting concerns which we want to apply to controller methods before or after they&#39;re invoked. Some examples of this are ensuring state (such as a logged in user), prepopulating some data (such as adding data to the request) or changing the response (in case of successful result or failure).</p>
+<p><em>Action Interceptors</em> are implemented by marking a controller method with a custom annotation and implementing the <code>ActionInterceptor</code> interface.</p>
+<p>The two are registered together during <a href="/modules/thundr/basics.html#injectionConfiguration">configuration</a> in the <code>ActionInterceptorRegistry</code>.</p>
+<p><strong> Example </strong></p>
+<p>In this example, we create an annotation <em>RequireRole</em>, which defines the role a user must have to invoke a route. The logic is implemented in the custom class <em>RequireRoleActionInterceptor</em>.</p>
+<p><strong><em>RequireRole.java</em></strong> - This annotation marks any controller methods we want our interceptor to be invoked on. </p>
+<pre><code class="language-java">...
+<span class="annotation">@Retention</span>(RetentionPolicy.RUNTIME)
+<span class="keyword">public</span> <span class="annotation">@interface</span> RequireRole {
+    Role value() <span class="keyword">default</span> Role.User;
+}
+...</code></pre>
+<p><strong><em>RequireRoleActionInterceptor.java</em></strong> - the interceptor is invoked before and after the controller method is invoked, and also if it throws an exception.<br>If the before, after or exception methods return a non-null value, they override the controller response. If they return null normal execution occurs.</p>
+<pre><code class="language-java">...
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequireRoleActionInterceptor</span> <span class="keyword">implements</span> <span class="title">ActionInterceptor</span>&lt;<span class="title">RequireRole</span>&gt; {</span>
+    <span class="keyword">private</span> UserService userService;
+
+    <span class="keyword">public</span> RequireRoleActionInterceptor(UserService userService) {
+        <span class="keyword">this</span>.userService = userService;
+    }
+
+    <span class="annotation">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> RedirectView before(RequireRole require, HttpServletRequest req, HttpServletResponse resp) {
+        User user = userService.getUserFromRequest(req);
+        <span class="keyword">boolean</span> hasRole = user.hasRole(require.value());
+        <span class="keyword">if</span> (hasRole) {
+            req.setAttribute(<span class="string">"user"</span>, user);
+            <span class="keyword">return</span> <span class="keyword">null</span>;
+        }
+        <span class="keyword">return</span> <span class="keyword">new</span> RedirectView(<span class="string">"/login"</span>);
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> &lt;T&gt; T after(RequireRole require, HttpServletRequest req, HttpServletResponse resp) {
+        <span class="keyword">return</span> <span class="keyword">null</span>;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> &lt;T&gt; T exception(RequireRole require, Exception e, HttpServletRequest req, HttpServletResponse resp) {
+        <span class="keyword">return</span> <span class="keyword">null</span>;
+    }
+}</code></pre>
+<p><strong><em>MyInjectionConfiguration.java</em></strong> - we register the annotation and the action interceptor together in our InjectionConfiguration at startup.</p>
+<pre><code class="language-java">...
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyInjectionConfiguration</span> <span class="keyword">extends</span> <span class="title">BaseInjectionConfiguration</span> {</span>
+...
+
+    <span class="annotation">@Override</span>
+    <span class="keyword">protected</span> <span class="keyword">void</span> addActionInterceptors(ActionInterceptorRegistry actionInterceptorRegistry) {
+        <span class="keyword">super</span>.addActionInterceptors(actionInterceptorRegistry);
+        UserService userService = <span class="keyword">new</span> UserService();
+        RequireRoleActionInterceptor requireRole = <span class="keyword">new</span> RequireRoleActionInterceptor(userService);
+
+        actionInterceptorRegistry.registerInterceptor(RequireRole.class, requireRole);
+    }
+}
+...</code></pre>
+<p><strong><em>Controller.java</em></strong> - When this controller method is invoked, the RequireRoleActionInterceptor executes</p>
+<pre><code class="language-java">...
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> {</span>
+    <span class="annotation">@RequireRole</span>
+    <span class="keyword">public</span> StringView get(){
+        <span class="keyword">return</span> <span class="keyword">new</span> StringView(<span class="string">"OK"</span>);
     }
 ...</code></pre>
 
