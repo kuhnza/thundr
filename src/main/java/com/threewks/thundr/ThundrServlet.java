@@ -18,8 +18,6 @@
 package com.threewks.thundr;
 
 import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -129,10 +127,7 @@ public class ThundrServlet extends HttpServlet {
 				doHead(req, resp);
 			} else {
 				// thundr doesnt deal with these
-				// Note that this means NO servlet supports whatever method was requested, anywhere on this server.
-				String errMsg = lStrings.getString("http.method_not_implemented");
-				errMsg = MessageFormat.format(errMsg, method);
-				resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, errMsg);
+				resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, "Request method '" + method + "' not implemented.");
 			}
 		}
 	}
@@ -199,11 +194,4 @@ public class ThundrServlet extends HttpServlet {
 		}
 		return null;
 	}
-
-	/*
-	 * The below stuff is cribbed directly from the HttpServlet class.
-	 * We use it to report errors consistently
-	 */
-	private static final String LSTRING_FILE = "javax.servlet.http.LocalStrings";
-	private static ResourceBundle lStrings = ResourceBundle.getBundle(LSTRING_FILE);
 }
