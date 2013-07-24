@@ -34,6 +34,8 @@ Now you can *finally* run "gem install jekyll" and it should just work.
 
 To start the preview server cd into the project dir and run:
 
+```bash
 jekyll serve --watch
+```
 
 Simple right? ;-)
