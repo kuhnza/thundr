@@ -18,6 +18,8 @@
 package com.threewks.thundr;
 
 import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -27,7 +29,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.atomicleopard.expressive.Cast;
+import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.action.ActionException;
+import com.threewks.thundr.http.HttpSupport;
 import com.threewks.thundr.injection.DefaultInjectionConfiguration;
 import com.threewks.thundr.injection.InjectionConfiguration;
 import com.threewks.thundr.injection.InjectionContextImpl;
@@ -38,10 +42,13 @@ import com.threewks.thundr.profiler.Profiler;
 import com.threewks.thundr.route.RouteType;
 import com.threewks.thundr.route.Routes;
 import com.threewks.thundr.view.ViewResolver;
+import com.threewks.thundr.view.ViewResolverNotFoundException;
 import com.threewks.thundr.view.ViewResolverRegistry;
 
 public class ThundrServlet extends HttpServlet {
 	private static final long serialVersionUID = -7179293239117252585L;
+	private static final String POST = "POST";
+	private static final String HEAD = "HEAD";
 	private UpdatableInjectionContext injectionContext;
 
 	@Override
@@ -52,6 +59,7 @@ public class ThundrServlet extends HttpServlet {
 			ServletContext servletContext = config.getServletContext();
 			injectionContext = new InjectionContextImpl();
 			injectionContext.inject(servletContext).as(ServletContext.class);
+			servletContext.setAttribute("injectionContext", injectionContext);
 			InjectionConfiguration injectionConfiguration = getInjectionConfigInstance(servletContext);
 			injectionConfiguration.configure(injectionContext);
 			Logger.info("Started up in %dms", System.currentTimeMillis() - start);
@@ -82,6 +90,10 @@ public class ThundrServlet extends HttpServlet {
 				// unwrap ActionException if it is one
 				e = (Exception) Cast.as(e, ActionException.class).getCause();
 			}
+			if (Cast.is(e, ViewResolverNotFoundException.class)) {
+				// if there was an error finding a view resolver, propogate this
+				throw (ViewResolverNotFoundException) e;
+			}
 			if (!resp.isCommitted()) {
 				ViewResolver<Exception> viewResolver = viewResolverRegistry.findViewResolver(e);
 				if (viewResolver != null) {
@@ -96,6 +108,9 @@ public class ThundrServlet extends HttpServlet {
 		profiler.profile(Profiler.CategoryView, viewResult.toString(), new Profilable<Void>() {
 			public Void profile() {
 				ViewResolver<Object> viewResolver = viewResolverRegistry.findViewResolver(viewResult);
+				if (viewResolver == null) {
+					throw new ViewResolverNotFoundException("No %s is registered for the view result %s - %s", ViewResolver.class.getSimpleName(), viewResult.getClass().getSimpleName(), viewResult);
+				}
 				viewResolver.resolve(req, resp, viewResult);
 				return null;
 			}
@@ -103,29 +118,92 @@ public class ThundrServlet extends HttpServlet {
 	}
 
 	@Override
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		boolean handled = customService(req, resp);
+		if (!handled) {
+			String method = determineMethod(req);
+			RouteType routeType = RouteType.from(method);
+			if (routeType != null) {
+				applyRoute(routeType, req, resp);
+			} else if (HEAD.equals(method)) {
+				doHead(req, resp);
+			} else {
+				// thundr doesnt deal with these
+				// Note that this means NO servlet supports whatever method was requested, anywhere on this server.
+				String errMsg = lStrings.getString("http.method_not_implemented");
+				errMsg = MessageFormat.format(errMsg, method);
+				resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, errMsg);
+			}
+		}
+	}
+
+	/**
+	 * Given a request, determines the method (i.e. GET, PUT, POST etc)
+	 * 
+	 * @param req
+	 * @return
+	 */
+	protected String determineMethod(HttpServletRequest req) {
+		String method = req.getMethod();
+		if (POST.equalsIgnoreCase(method)) {
+			String methodOverride = getHeaderCaseInsensitive(req, HttpSupport.Header.XHttpMethodOverride);
+			String methodOverride2 = getParameterCaseInsensitive(req, "_method");
+
+			if (methodOverride != null) {
+				method = methodOverride;
+			}
+			if (methodOverride2 != null) {
+				method = methodOverride2;
+			}
+		}
+		return method;
+	}
+
+	/**
+	 * A custom extensionpoint which allows overriding servlets to handle requests/route types that thundr currently does not.
+	 * 
+	 * @param req
+	 * @param resp
+	 * @return
+	 */
+	protected boolean customService(HttpServletRequest req, HttpServletResponse resp) {
+		return false;
+	}
+
+	/*
+	 * This method is here so that the basic servlet HEAD functionality continues to work;
+	 */
+	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		applyRoute(RouteType.GET, req, resp);
 	}
 
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String method = req.getParameter("_method");
-		RouteType routeType = RouteType.POST;
-		if ("PUT".equalsIgnoreCase(method)) {
-			routeType = RouteType.PUT;
-		} else if ("DELETE".equalsIgnoreCase(method)) {
-			routeType = RouteType.DELETE;
+	@SuppressWarnings("unchecked")
+	protected String getParameterCaseInsensitive(HttpServletRequest req, String parameterName) {
+		Iterable<String> iterable = Expressive.<String> iterable(req.getParameterNames());
+		for (String parameter : iterable) {
+			if (parameterName.equalsIgnoreCase(parameter)) {
+				return req.getParameter(parameter);
+			}
 		}
-		applyRoute(routeType, req, resp);
+		return null;
 	}
 
-	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		applyRoute(RouteType.DELETE, req, resp);
+	@SuppressWarnings("unchecked")
+	protected String getHeaderCaseInsensitive(HttpServletRequest req, String headerName) {
+		Iterable<String> iterable = Expressive.<String> iterable(req.getHeaderNames());
+		for (String header : iterable) {
+			if (headerName.equalsIgnoreCase(header)) {
+				return req.getHeader(header);
+			}
+		}
+		return null;
 	}
 
-	@Override
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		applyRoute(RouteType.PUT, req, resp);
-	}
+	/*
+	 * The below stuff is cribbed directly from the HttpServlet class.
+	 * We use it to report errors consistently
+	 */
+	private static final String LSTRING_FILE = "javax.servlet.http.LocalStrings";
+	private static ResourceBundle lStrings = ResourceBundle.getBundle(LSTRING_FILE);
 }

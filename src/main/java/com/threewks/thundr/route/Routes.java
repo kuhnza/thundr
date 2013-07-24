@@ -17,14 +17,14 @@
  */
 package com.threewks.thundr.route;
 
-import static com.atomicleopard.expressive.Expressive.*;
+import static com.atomicleopard.expressive.Expressive.list;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,14 +40,8 @@ import com.threewks.thundr.profiler.Profilable;
 import com.threewks.thundr.profiler.Profiler;
 
 public class Routes {
-
-	private Map<String, Route> getRoutes = new LinkedHashMap<String, Route>();
-	private Map<String, Route> postRoutes = new LinkedHashMap<String, Route>();
-	private Map<String, Route> putRoutes = new LinkedHashMap<String, Route>();
-	private Map<String, Route> deleteRoutes = new LinkedHashMap<String, Route>();
 	private Map<Route, Action> actionsForRoutes = new HashMap<Route, Action>();
-	@SuppressWarnings("unchecked")
-	private Map<RouteType, Map<String, Route>> routes = mapKeys(RouteType.GET, RouteType.POST, RouteType.PUT, RouteType.DELETE).to(getRoutes, postRoutes, putRoutes, deleteRoutes);
+	private Map<RouteType, Map<String, Route>> routes = createRoutesMap();
 
 	private Map<Class<? extends Action>, ActionResolver<?>> actionResolvers = new LinkedHashMap<Class<? extends Action>, ActionResolver<?>>();
 
@@ -112,25 +106,21 @@ public class Routes {
 
 	private static final String routeDisplayFormat = "%s\n";
 
-	@SuppressWarnings("unchecked")
 	public String listRoutes() {
-		List<String> allRoutes = flatten(getRoutes.keySet(), postRoutes.keySet(), putRoutes.keySet(), deleteRoutes.keySet());
-		allRoutes = list(new HashSet<String>(allRoutes));
-
+		List<String> allRoutes = new LinkedList<String>();
+		for (Map<String, Route> routeEntries : routes.values()) {
+			allRoutes.addAll(routeEntries.keySet());
+		}
+		allRoutes = list(allRoutes);
 		Collections.sort(allRoutes);
+
 		StringBuilder sb = new StringBuilder();
 		for (String route : allRoutes) {
-			if (getRoutes.containsKey(route)) {
-				sb.append(String.format(routeDisplayFormat, getRoutes.get(route)));
-			}
-			if (postRoutes.containsKey(route)) {
-				sb.append(String.format(routeDisplayFormat, postRoutes.get(route)));
-			}
-			if (putRoutes.containsKey(route)) {
-				sb.append(String.format(routeDisplayFormat, putRoutes.get(route)));
-			}
-			if (deleteRoutes.containsKey(route)) {
-				sb.append(String.format(routeDisplayFormat, deleteRoutes.get(route)));
+			for (RouteType routeType : RouteType.all()) {
+				Map<String, Route> routesForType = routes.get(routeType);
+				if (routesForType.containsKey(route)) {
+					sb.append(String.format(routeDisplayFormat, routesForType.get(route)));
+				}
 			}
 		}
 		return sb.toString();
@@ -184,5 +174,13 @@ public class Routes {
 	public <A extends Action> void addActionResolver(Class<A> actionType, ActionResolver<A> actionResolver) {
 		actionResolvers.put(actionType, actionResolver);
 		Logger.debug("Added action resolver %s for actions of type %s", actionResolver.getClass().getSimpleName(), actionType);
+	}
+
+	private Map<RouteType, Map<String, Route>> createRoutesMap() {
+		Map<RouteType, Map<String, Route>> routesMap = new HashMap<RouteType, Map<String, Route>>();
+		for (RouteType type : RouteType.all()) {
+			routesMap.put(type, new LinkedHashMap<String, Route>());
+		}
+		return routesMap;
 	}
 }

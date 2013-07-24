@@ -19,23 +19,36 @@ package com.threewks.thundr.route;
 
 import static com.atomicleopard.expressive.Expressive.list;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
 
 public enum RouteType {
-	GET, POST, PUT, DELETE, HEAD;
+	GET,
+	POST,
+	PUT,
+	PATCH,
+	DELETE;
 
-	private static final List<RouteType> all = list(GET, POST, PUT, DELETE);
+	private static final List<RouteType> all = list(RouteType.values());
+	private static final Map<String, RouteType> lookup = createLookup();
 
 	public static List<RouteType> all() {
 		return all;
 	}
 
-	public static RouteType from(String string) {
-		for (RouteType type : values()) {
-			if (type.name().equalsIgnoreCase(string)) {
-				return type;
-			}
+	private static Map<String, RouteType> createLookup() {
+		Map<String, RouteType> map = new HashMap<String, RouteType>();
+		for (RouteType routeType : all) {
+			map.put(routeType.name(), routeType);
 		}
-		return null;
+
+		return map;
+	}
+
+	public static RouteType from(String routeType) {
+		return lookup.get(StringUtils.trimToEmpty(StringUtils.upperCase(routeType)));
 	}
 }

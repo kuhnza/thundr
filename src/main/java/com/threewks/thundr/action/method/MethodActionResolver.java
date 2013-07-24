@@ -197,7 +197,7 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 		try {
 			return injectionContext.get(type);
 		} catch (Exception e) {
-			throw new BaseException(e, "Failed to create controller %s: %s", type.toString(), e.getMessage());
+			throw new ActionException(e, "Failed to create controller %s: %s", type.toString(), e.getMessage());
 		}
 	}
 

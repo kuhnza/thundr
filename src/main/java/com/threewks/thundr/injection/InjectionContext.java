@@ -26,17 +26,15 @@ public interface InjectionContext {
 	 * @param type
 	 * @param name
 	 * @return
-	 * @throws NullPointerException
 	 */
 	public <T> T get(Class<T> type, String name) throws NullPointerException;
 
 	/**
 	 * Get an instance of the specified type from this {@link InjectionContext}.
-	 * A type exists if either an instance or class type was registered previously into this context.
+	 * A type exists if either an instance or class type was registered previously into this context, with or without a name.
 	 * 
 	 * @param type
 	 * @return
-	 * @throws NullPointerException
 	 */
 	public <T> T get(Class<T> type) throws NullPointerException;
 

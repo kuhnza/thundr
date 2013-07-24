@@ -20,18 +20,29 @@ package com.threewks.thundr.injection;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
+import com.atomicleopard.expressive.Expressive;
+import com.atomicleopard.expressive.collection.Pair;
 import com.atomicleopard.expressive.collection.Triplets;
 import com.threewks.thundr.configuration.Environment;
-import com.threewks.thundr.exception.BaseException;
 import com.threewks.thundr.introspection.ClassIntrospector;
 import com.threewks.thundr.introspection.MethodIntrospector;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class InjectionContextImpl implements UpdatableInjectionContext {
 	private static final String ENVIRONMENT_SEPARATOR = "%";
+	private static final Set<Class<?>> BasicTypes = createBasicTypesList();
+
 	private Triplets<Class<?>, String, Class<?>> types = map();
 	private Triplets<Class<?>, String, Object> instances = map();
 
@@ -48,30 +59,26 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 		return new InjectorBuilder<T>(this, instance);
 	}
 
+	@Override
 	public <T> T get(Class<T> type) {
-		return get(type, null);
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T> T get(Class<T> type, String name) {
-		T instance = getExistingNamedInstance(type, name);
+		T instance = getExistingInstance(type, null);
 		if (instance == null) {
-			T newInstance = instantiate((Class<T>) types.get(type, name));
-			if (newInstance != null) {
-				synchronized (instances) {
-					if (!instances.containsKey(type, name)) {
-						instances.put(type, name, newInstance);
-					}
-				}
-				instance = (T) instances.get(type, name);
-			} else {
-				if (name != null) {
-					instance = get(type, null);
-				}
-			}
+			instance = createAndAddInstance(type, null);
 		}
 		if (instance == null) {
-			throw new NullPointerException(String.format("Could not inject '%s' - no dependency configured for injection", type.getName()));
+			instance = getFirstExistingNamedInstanceForNonBasicType(type);
+		}
+		return instance;
+	}
+
+	@Override
+	public <T> T get(Class<T> type, String name) {
+		T instance = getExistingInstance(type, name);
+		if (instance == null) {
+			instance = createAndAddInstance(type, name);
+		}
+		if (instance == null) {
+			instance = get(type);
 		}
 		return instance;
 	}
@@ -82,6 +89,21 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 
 	protected <T> void addInstance(Class<T> type, String name, T as) {
 		instances.put(type, name, as);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T createAndAddInstance(Class<T> type, String name) {
+		T instance = null;
+		T newInstance = instantiate((Class<T>) types.get(type, name));
+		if (newInstance != null) {
+			synchronized (instances) {
+				if (!instances.containsKey(type, name)) {
+					instances.put(type, name, newInstance);
+				}
+				instance = (T) instances.get(type, name);
+			}
+		}
+		return instance;
 	}
 
 	private <T> T instantiate(Class<T> type) {
@@ -113,7 +135,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 					method.invoke(instance, get(argumentType, name));
 				}
 			} catch (Exception e) {
-				throw new InjectionException(e, "Failed to inject into %s.%s: %s", type.getName(), method.getName(), e.getMessage());
+				throw new InjectionException(e, "Failed to inject into %s.%s: %s", type.getName(), method.getName(), getRootMessage(e));
 			}
 		}
 		return instance;
@@ -131,7 +153,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 				field.set(instance, beanProperty);
 				field.setAccessible(accessible);
 			} catch (Exception e) {
-				throw new InjectionException(e, "Failed to inject into %s.%s: %s", type.getName(), field.getName(), e.getMessage());
+				throw new InjectionException(e, "Failed to inject into %s.%s: %s", type.getName(), field.getName(), getRootMessage(e));
 			}
 		}
 
@@ -154,9 +176,19 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 
 	@Override
 	public <T> boolean contains(Class<T> type, String name) {
-		String envName = environmentSpecificName(name);
-		boolean contains = instances.containsKey(type, envName) || types.containsKey(type, envName) || instances.containsKey(type, name) || types.containsKey(type, name);
-		return contains || (name != null && contains(type));
+		boolean contains = false;
+		if (name != null) {
+			String envName = environmentSpecificName(name);
+			// named or environment named instance
+			contains = contains || instances.containsKey(type, envName) || instances.containsKey(type, name);
+			// named or environment named type
+			contains = contains || types.containsKey(type, envName) || types.containsKey(type, name);
+		}
+		// unnamed instance
+		contains = contains || instances.containsKey(type, null);
+		// unnamed type
+		contains = contains || types.containsKey(type, null);
+		return contains;
 	}
 
 	@Override
@@ -165,7 +197,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T getExistingNamedInstance(Class<T> type, String name) {
+	private <T> T getExistingInstance(Class<T> type, String name) {
 		String environmentSpecificName = environmentSpecificName(name);
 		T instance = (T) instances.get(type, environmentSpecificName);
 		if (instance == null) {
@@ -174,13 +206,26 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 		return instance;
 	}
 
+	@SuppressWarnings("unchecked")
+	private <T> T getFirstExistingNamedInstanceForNonBasicType(Class<T> type) {
+		boolean isBasicType = BasicTypes.contains(type);
+		if (!isBasicType) {
+			for (Entry<Pair<Class<?>, String>, Object> entry : instances.entrySet()) {
+				if (type.equals(entry.getKey().getA())) {
+					return (T) entry.getValue();
+				}
+			}
+		}
+		return null;
+	}
+
 	private String environmentSpecificName(String name) {
 		return name + ENVIRONMENT_SEPARATOR + Environment.get();
 	}
 
 	private boolean canSatisfy(List<ParameterDescription> parameterDescriptions) {
 		for (ParameterDescription parameterDescription : parameterDescriptions) {
-			if (!contains(parameterDescription.classType(), parameterDescription.name())) {
+			if (get(parameterDescription.classType(), parameterDescription.name()) == null) {
 				return false;
 			}
 		}
@@ -191,8 +236,14 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 		try {
 			return constructor.newInstance(args);
 		} catch (Exception e) {
-			throw new BaseException(e, "Failed to create a new instance using the constructor %s: %s", constructor.toString(), e.getMessage());
+			throw new InjectionException(e, "Failed to create a new instance using the constructor %s: %s", constructor.toString(), getRootMessage(e));
 		}
+	}
+
+	private String getRootMessage(Exception e) {
+		Throwable rootCause = ExceptionUtils.getRootCause(e);
+		String message = rootCause == null ? e.getMessage() : rootCause.getMessage();
+		return message;
 	}
 
 	private String getPropertyNameFromSetMethod(Method method) {
@@ -204,4 +255,8 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 		return new Triplets<K1, K2, V>();
 	}
 
+	private static Set<Class<?>> createBasicTypesList() {
+		return Expressive.<Class<?>> set(String.class, byte.class, Byte.class, short.class, Short.class, int.class, Integer.class, long.class, Long.class, float.class, Float.class, double.class,
+				Double.class, char.class, Character.class, boolean.class, Boolean.class, BigDecimal.class, BigInteger.class, List.class, Set.class, Map.class, Collection.class);
+	}
 }

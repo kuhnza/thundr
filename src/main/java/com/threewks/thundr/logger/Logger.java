@@ -23,6 +23,19 @@ public class Logger {
 	public static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger("thundr");
 
 	/**
+	 * Logs the given content at debug level.
+	 * 
+	 * @param content
+	 *            String content to log
+	 * @see #willDebug()
+	 */
+	public static void debug(String content) {
+		if (willDebug()) {
+			logger.fine(content);
+		}
+	}
+
+	/**
 	 * Logs the given arguments formatted using the given string format at debug level.
 	 * 
 	 * @param format
@@ -35,6 +48,19 @@ public class Logger {
 	public static void debug(String format, Object... args) {
 		if (willDebug()) {
 			logger.fine(String.format(format, args));
+		}
+	}
+
+	/**
+	 * Logs the given content at info level
+	 * 
+	 * @param content
+	 *            String content to log
+	 * @see #willInfo()
+	 */
+	public static void info(String content) {
+		if (willInfo()) {
+			logger.info(content);
 		}
 	}
 
@@ -55,6 +81,19 @@ public class Logger {
 	}
 
 	/**
+	 * Logs the content at warn level
+	 * 
+	 * @param content
+	 *            String content to log
+	 * @see #willWarn()
+	 */
+	public static void warn(String content) {
+		if (willWarn()) {
+			logger.warning(content);
+		}
+	}
+
+	/**
 	 * Logs the given arguments formatted using the given string format at warn level
 	 * 
 	 * @param format
@@ -67,6 +106,19 @@ public class Logger {
 	public static void warn(String format, Object... args) {
 		if (willWarn()) {
 			logger.warning(String.format(format, args));
+		}
+	}
+
+	/**
+	 * Logs the content at error level
+	 * 
+	 * @param content
+	 *            String content to log
+	 * @see #willError()
+	 */
+	public static void error(String content) {
+		if (willError()) {
+			logger.severe(content);
 		}
 	}
 

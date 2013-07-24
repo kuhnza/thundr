@@ -21,7 +21,11 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -29,8 +33,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.configuration.Environment;
-import com.threewks.thundr.exception.BaseException;
 
 public class InjectionContextImplTest {
 	@Rule
@@ -120,12 +124,84 @@ public class InjectionContextImplTest {
 		Date date = new Date();
 		context.inject(date).as(Date.class);
 
+		// unnamed instance is preferred over unnamed type
+		context.inject(Date.class).as(Date.class);
+
 		Date firstDate = context.get(Date.class, "date");
 		Date secondDate = context.get(Date.class, "date");
 
 		assertThat(firstDate, is(notNullValue()));
 		assertThat(secondDate, is(notNullValue()));
+		assertThat(firstDate, sameInstance(date));
 		assertThat(firstDate, sameInstance(secondDate));
+	}
+
+	@Test
+	public void shouldReturnNamedTypeIfNamedInstanceNotPresent() {
+		context.inject(Date.class).named("date").as(Date.class);
+		// unnamed instance, should be less preferrable to a named type
+		Date other = new Date();
+		context.inject(other).as(Date.class);
+
+		Date firstDate = context.get(Date.class, "date");
+		Date secondDate = context.get(Date.class, "date");
+
+		assertThat(firstDate, is(notNullValue()));
+		assertThat(secondDate, is(notNullValue()));
+		assertThat(firstDate, not(sameInstance(other)));
+		assertThat(firstDate, sameInstance(secondDate));
+	}
+
+	@Test
+	public void shouldReturnNamedInstanceIfUnnamedInstanceNotPresent() {
+		Date date = new Date();
+		context.inject("someString").named("someString").as(String.class);
+		context.inject(0).named("someInt").as(int.class);
+		
+		context.inject(date).named("first").as(Date.class);
+		// should prefer a named instance over a named type
+		context.inject(Date.class).named("first").as(Date.class);
+
+		Date firstDate = context.get(Date.class);
+
+		assertThat(firstDate, is(notNullValue()));
+		assertThat(firstDate, sameInstance(date));
+	}
+	
+	@Test
+	public void shouldReturnUnnamedInstanceIfUnnamedTypeNotPresent() {
+		Date date = new Date();
+		context.inject(date).as(Date.class);
+
+		Date firstDate = context.get(Date.class);
+
+		assertThat(firstDate, is(notNullValue()));
+		assertThat(firstDate, sameInstance(date));
+	}
+
+	@Test
+	public void shouldReturnNamedInstanceIfUnnamedTypeNotPresent() {
+		Date date = new Date();
+		context.inject(date).named("first").as(Date.class);
+
+		Date firstDate = context.get(Date.class);
+
+		assertThat(firstDate, is(notNullValue()));
+		assertThat(firstDate, sameInstance(date));
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Test
+	public void shouldNotReturnADifferentNamedInstanceForBasicTypes() {
+		List<Class> types = Expressive.<Class> list(String.class, int.class, Integer.class, short.class, Short.class, long.class, Long.class, float.class, Float.class, double.class, Double.class,
+				byte.class, Byte.class, char.class, Character.class, List.class, Set.class, Map.class, Collection.class);
+		for (Class type : types) {
+			String name = type.getSimpleName();
+			context.inject(type).named(name).as(type);
+			assertThat(context.get(type), is(nullValue()));
+			assertThat(context.contains(type), is(false));
+			assertThat(context.contains(type, name), is(true));
+		}
 	}
 
 	@Test
@@ -179,6 +255,19 @@ public class InjectionContextImplTest {
 	}
 
 	@Test
+	public void shouldReturnTrueWhenContainsAValidEnvironmentSpecificNamedInstanceEntry() {
+		Date date = new Date();
+		context.inject(date).named("date%dev").as(Date.class);
+		assertThat(context.contains(Date.class, "date"), is(true));
+	}
+
+	@Test
+	public void shouldReturnTrueWhenContainsAValidEnvironmentNamedTypeEntry() {
+		context.inject(Date.class).named("date%dev").as(Date.class);
+		assertThat(context.contains(Date.class, "date"), is(true));
+	}
+
+	@Test
 	public void shouldReturnTrueWhenRequestingANamedTypeButOnlyAnUnamedTypeExists() {
 		context.inject(Date.class).as(Date.class);
 
@@ -186,9 +275,9 @@ public class InjectionContextImplTest {
 	}
 
 	@Test
-	public void shouldThrowNPEWhenGetNonExistantInstance() {
-		thrown.expect(NullPointerException.class);
-		context.get(BigDecimal.class);
+	public void shouldReturnNullWhenGetNonExistantInstance() {
+		assertThat(context.get(BigDecimal.class), is(nullValue()));
+		assertThat(context.get(BigDecimal.class, "name"), is(nullValue()));
 	}
 
 	@Test
@@ -258,11 +347,38 @@ public class InjectionContextImplTest {
 
 	@Test
 	public void shouldFailedToCreateInstanceWhenUnableToSatisfyCtor() {
-		thrown.expect(BaseException.class);
-		context.inject(TestClass.class).as(TestClass.class);
+		thrown.expect(InjectionException.class);
+		thrown.expectMessage("Could not create a com.threewks.thundr.injection.TestClass2 - cannot match parameters of any available constructors");
 
-		assertThat(context.contains(TestClass.class), is(true));
-		context.get(TestClass.class);
+		context.inject(TestClass2.class).as(TestClass2.class);
+		assertThat(context.contains(TestClass2.class), is(true));
+
+		context.get(TestClass2.class);
+	}
+	
+	@Test
+	public void shouldThrowInjectionExceptionWhenConstructionOfTypeFails() {
+		thrown.expect(InjectionException.class);
+		thrown.expectMessage("Failed to create a new instance using the constructor public com.threewks.thundr.injection.TestClass2(boolean): expected");
+
+		context.inject(true).named("throwsException").as(boolean.class);
+		context.inject(TestClass2.class).as(TestClass2.class);
+		assertThat(context.contains(TestClass2.class), is(true));
+
+		context.get(TestClass2.class);
+	}
+	
+	@Test
+	public void shouldThrowInjectionExceptionWhenSettingFieldOnTypeFails() {
+		thrown.expect(InjectionException.class);
+		thrown.expectMessage("Failed to inject into com.threewks.thundr.injection.TestClass2.setArg2: expected");
+
+		context.inject("arg1").named("arg1").as(String.class);
+		context.inject(true).named("arg2").as(boolean.class);
+		context.inject(TestClass2.class).as(TestClass2.class);
+		assertThat(context.contains(TestClass2.class), is(true));
+
+		context.get(TestClass2.class);
 	}
 
 	@Test
