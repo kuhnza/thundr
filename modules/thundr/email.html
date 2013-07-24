@@ -1,250 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8" lang="en-us"/>
-	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
-	<!--[if lt IE 9]> <script src="scripts/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
-	<title>thundr - email</title>
-	<link rel="shortcut icon" href="./favicon.ico" />
-	<meta name="description" content=""/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
-	<meta name="keywords" content=""/>
-	<base href="../../" />
-	
-	<meta name="google-site-verification" content="V7Os0LLLfRti7XGzTPnlO_FfsjrL6Ldi3IKeq0tVGaY" />
-	<!--
-	<t:style src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css"/>
-	<t:style src="styles/lib/bootstrap/bootstrap.css"/>
-	-->
-	<link rel="stylesheet" href="styles/lib/bootstrap/1a11dd2d.bootstrap.css"></link>
-	<link rel="stylesheet" href="styles/dcca9bf0.main.css"></link>
-	<link rel="stylesheet" href="styles/lib/font/4712f287.font-awesome.css"></link>
-	<!--[if IE 7]>
-	<link rel="stylesheet" href="styles/lib/font/8edda79c.font-awesome-ie7.css">
-	<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<!--
-	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
-	-->
-	<script src="scripts/vendor/bootstrap/41e29a31.bootstrap.min.js"></script>
-</head>
-<body data-spy="scroll" data-target=".module_nav">
-	 <header class="container">
-		<nav class="navbar">
-			<div class="navbar-inner">
-				<div class="navbar-top">
-					<a class="brand" href="./index.html"><img src="images/79eca7d9.logoFullSmall.png"/></a>
+---
+layout: base
+title: Email
+description: Sending emails with thundr
+---
 
-					<ul class="nav" role="navigation">
-						 
-							
-								<li class="dropdown ">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" >thundr <b class="caret"></b></a>
-
-									<ul class="dropdown-menu">
-										 
-										<li class="">
-											<a href="modules/thundr/basics.html">
-												
-													Basics
-												
-											</a>
-										</li>
-										  
-										<li class="">
-											<a href="modules/thundr/controllers.html">
-												
-													Controllers
-												
-											</a>
-										</li>
-										  
-										<li class="">
-											<a href="modules/thundr/views.html">
-												
-													Views
-												
-											</a>
-										</li>
-										  
-										<li class="">
-											<a href="modules/thundr/actions.html">
-												
-													Actions
-												
-											</a>
-										</li>
-										  
-										<li class="">
-											<a href="modules/thundr/injection-context.html">
-												
-													Dependancy injection
-												
-											</a>
-										</li>
-										  
-										<li class="active">
-											<a href="modules/thundr/email.html">
-												
-													Email
-												
-											</a>
-										</li>
-										 
-									</ul>
-
-								</li>
-							
-						  
-							
-								<li class="">
-									<a href="modules/thundr-gae/appengine.html">thundr-gae</a>
-								</li>
-							
-						  
-							
-								<li class="">
-									<a href="modules/thundr-handlebars/index.html">thundr-handlebars</a>
-								</li>
-							
-						  
-							
-								<li class="">
-									<a href="modules/thundr-mailgun/index.html">thundr-mailgun</a>
-								</li>
-							
-						 
-					</ul>
-				</div>
-			</div>
-
-		</nav>
-		
-	</header>
-
-	<div class="container">
-		<div class="row">
+<div class="row">
 	<aside class="module_nav_container span3">
 		<div class="module_nav">
-			
 			<ul class="nav nav-list" role="navigation">
-			 
-					
 				<li class="nav-header ">
-					<a href="modules/thundr/basics.html">
-						
-							Basics
-						
+					<a href="/modules/thundr/basics.html">
+						Basics
 					</a>
 				</li>
 
-				
-			  
-					
 				<li class="nav-header ">
-					<a href="modules/thundr/controllers.html">
-						
-							Controllers
-						
+					<a href="/modules/thundr/controllers.html">
+						Controllers
 					</a>
 				</li>
 
-				
-			  
-					
 				<li class="nav-header ">
-					<a href="modules/thundr/views.html">
-						
-							Views
-						
+					<a href="/modules/thundr/views.html">
+						Views
 					</a>
 				</li>
 
-				
-			  
-					
 				<li class="nav-header ">
-					<a href="modules/thundr/actions.html">
-						
-							Actions
-						
+					<a href="/modules/thundr/actions.html">
+						Actions
 					</a>
 				</li>
 
-				
-			  
-					
 				<li class="nav-header ">
-					<a href="modules/thundr/injection-context.html">
-						
-							Dependancy injection
-						
+					<a href="/modules/thundr/injection-context.html">
+						Dependancy injection
 					</a>
 				</li>
 
-				
-			  
-					
 				<li class="nav-header active">
-					<a href="modules/thundr/email.html">
-						
-							Email
-						
+					<a href="/modules/thundr/email.html">
+						Email
 					</a>
 				</li>
 
-				
-					
-						
+				<li>
+					<a href="/modules/thundr/email.html#email" data-target="#email">
+						Email
+					</a>
+				</li>
 
-						
-							
-								
-								
-								<li><a href="modules/thundr/email.html#email" data-target="#email">
-									Email
-									
-								</a></li>
-							
-							
-						
-							
-								
-								
-								<li><a href="modules/thundr/email.html#example" data-target="#example">
-									Example
-									
-								</a></li>
-							
-							
-						
-							
-								
-								
-								<li><a href="modules/thundr/email.html#settingUp" data-target="#settingUp">
-									Setting Up
-									
-								</a></li>
-							
-							
-						
-							
-								
-								
-								<li><a href="modules/thundr/email.html#limitations" data-target="#limitations">
-									Limitations
-									
-								</a></li>
-							
-							
-						
-					
-					
-				
-			  
+				<li>
+					<a href="/modules/thundr/email.html#example" data-target="#example">
+						Example
+					</a>
+				</li>
+
+				<li>
+					<a href="/modules/thundr/email.html#settingUp" data-target="#settingUp">
+						Setting Up
+					</a>
+				</li>
+
+				<li>
+					<a href="/modules/thundr/email.html#limitations" data-target="#limitations">
+						Limitations
+					</a>
+				</li>
 			</ul>
-
-			
 		</div>
 	</aside>
 
@@ -254,122 +77,69 @@
 		</div>
 
 		<section id="page-overview" class="overview">
-			
 		</section>
 
-		 
 
-			
+		<section id="email">
+			<h4>Email</h4>
 
-			
-				
-				<section id="email">
-					<h4>Email</h4>
-<p>thundr has framework support for sending of emails. To send an email, you use the fluent api returned from the <code>Mailer.mail(HttpServletRequest req)</code> method.</p>
-<p>The <code>MailBuilder</code> returned from this method has a variety of email specific properties you can set. In addition, you specify the body of the email using the standard <code>View</code> framework of thundr. That is, you can provide the body of the email using anything you could render a <a href="/modules/thundr/views.html">view</a> with. </p>
+			<p>thundr has framework support for sending of emails. To send an email, you use the fluent api returned from
+				the <code>Mailer.mail(HttpServletRequest req)</code> method.</p>
 
-				</section>
-			
+			<p>The <code>MailBuilder</code> returned from this method has a variety of email specific properties you can
+				set. In addition, you specify the body of the email using the standard <code>View</code> framework of
+				thundr. That is, you can provide the body of the email using anything you could render a <a
+						href="/modules/thundr/views.html">view</a> with. </p>
+		</section>
 
 
-		
+		<section id="example">
+			<h4>Example</h4>
 
-			
-
-			
-				
-				<section id="example">
-					<h4>Example</h4>
-<pre><code class="language-java"><span class="keyword">public</span> <span class="keyword">void</span> sendEmail(HttpServletRequest req, String recipientEmail, String recipientName){
-    Map&lt;String, Object&gt; model = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();
-    model.put(<span class="string">"message"</span>, <span class="string">"Hello world!"</span>);
-    JspView view = <span class="keyword">new</span> JspView(<span class="string">"emails/test.jsp"</span>, model);
+{% highlight java %}
+public void sendEmail(HttpServletRequest req, String recipientEmail, String recipientName){
+    Map<String, Object> model = new HashMap<String, Object>();
+    model.put("message", "Hello world!");
+    JspView view = new JspView("emails/test.jsp", model);
 
     MailBuilder mail = mailer.mail(req);
     mail.to(recipientEmail, recipientName);
-    mail.from(<span class="string">"no-reply@mydomain.com"</span>, <span class="string">"no-reply"</span>);
-    mail.replyTo(<span class="string">"no-reply@mydomain.com"</span>, <span class="string">"no-reply"</span>);
-    mail.subject(<span class="string">"Test email"</span>);
+    mail.from("no-reply@mydomain.com", "no-reply");
+    mail.replyTo("no-reply@mydomain.com", "no-reply");
+    mail.subject("Test email");
     mail.body(view);
     mail.send();
-}</code></pre>
+}
+{% endhighlight %}
+		</section>
 
-				</section>
-			
 
+		<section id="settingUp">
+			<h4>Setting Up</h4>
 
-		
+			<p>
+				To set up the Mailer, you just need to make it available in the <code>InjectionContext</code> in your 
+				<a href="/modules/thundr/basics.html#injectionConfiguration">InjectionConfiguration</a>.
+			</p>
 
-			
-
-			
-				
-				<section id="settingUp">
-					<h4>Setting Up</h4>
-<p>To set up the Mailer, you just need to make it available in the <code>InjectionContext</code> in your <a href="/modules/thundr/basics.html#injectionConfiguration">InjectionConfiguration</a>.</p>
-<pre><code class="language-java">...
+{% highlight java %}
+...
 injectionContext.inject(Mailer.class).as(Mailer.class);
-...</code></pre>
+...
+{% endhighlight %}
+		</section>
 
-				</section>
-			
+		<section id="limitations">
+			<h4>Limitations</h4>
 
+			<p>thundr mail is build on top of the standard <code>javax.mail</code> api. If your target platform cannot send
+				email using this api, or if it requires additional configuration you will need to configure this yourself.
+			</p>
 
-		
-
-			
-
-			
-				
-				<section id="limitations">
-					<h4>Limitations</h4>
-<p>thundr mail is build on top of the standard <code>javax.mail</code> api. If your target platform cannot send email using this api, or if it requires additional configuration you will need to configure this yourself.</p>
-<p>Currently thundr mail only supports basic html emails. It does not create multipart mails, and does not support embedded content, such as cid references and attachments.</p>
-
-				</section>
-			
-
-
-		 
-
+			<p>Currently thundr mail only supports basic html emails. It does not create multipart mails, and does not
+				support embedded content, such as cid references and attachments.</p>
+		</section>
 	</article>
 </div>
-	</div>
-	
-	<footer class="container">
-		<div class="navbar">
-			<div class="navbar-inner">
-				<span class="navbar-text pull-right">
-					Brought to you by <a href="http://www.3wks.com.au" title="3wks"><img class="threewksLogo" src="http://3wks.com.au/images/3wks_logo_2.png"/></a>
-				</span>
-				<span class="navbar-text">
-					<a href="mailto:nick@3wks.com.au?Subject=thundr">
-						<i class="icon icon-envelope-alt"></i> 
-						Get in touch
-					</a>
-				</span>
-				<span class="navbar-text">
-					<a href="https://groups.google.com/forum/?fromgroups#!forum/thundr-framework">
-						<i class="icon icon-group"></i> 
-						Join us on Google Groups 
-					</a>
-				</span>
-			</div>
-		</div>
-	</footer>
 
-	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	
-	  ga('create', 'UA-33515426-2', 'github.io');
-	  ga('send', 'pageview');
-	
-	</script>
-
-	<script src="scripts/91b88f08.amd-app.js"></script>
-</body>
-</html>
 		

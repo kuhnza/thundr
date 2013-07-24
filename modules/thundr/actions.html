@@ -1,282 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8" lang="en-us"/>
-	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
-	<!--[if lt IE 9]> <script src="scripts/lib/html5shiv.js"></script> <![endif]--><!-- Enable HTML5 in IE8 and below -->
-	<title>thundr - Actions</title>
-	<link rel="shortcut icon" href="./favicon.ico" />
-	<meta name="description" content=""/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Allows website to respond to natural agent size -->
-	<meta name="keywords" content=""/>
-	<base href="../../" />
-	
-	<meta name="google-site-verification" content="V7Os0LLLfRti7XGzTPnlO_FfsjrL6Ldi3IKeq0tVGaY" />
-	<!--
-	<t:style src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css"/>
-	<t:style src="styles/lib/bootstrap/bootstrap.css"/>
-	-->
-	<link rel="stylesheet" href="styles/lib/bootstrap/1a11dd2d.bootstrap.css"></link>
-	<link rel="stylesheet" href="styles/dcca9bf0.main.css"></link>
-	<link rel="stylesheet" href="styles/lib/font/4712f287.font-awesome.css"></link>
-	<!--[if IE 7]>
-	<link rel="stylesheet" href="styles/lib/font/8edda79c.font-awesome-ie7.css">
-	<![endif]-->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<!--
-	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
-	-->
-	<script src="scripts/vendor/bootstrap/41e29a31.bootstrap.min.js"></script>
-</head>
-<body data-spy="scroll" data-target=".module_nav">
-	 <header class="container">
-		<nav class="navbar">
-			<div class="navbar-inner">
-				<div class="navbar-top">
-					<a class="brand" href="./index.html"><img src="images/79eca7d9.logoFullSmall.png"/></a>
+---
+layout: base
+title: Actions
+description: thundr framework actions
+---
 
-					<ul class="nav" role="navigation">
-						 
-							
-								<li class="dropdown ">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" >thundr <b class="caret"></b></a>
-
-									<ul class="dropdown-menu">
-										 
-										<li class="">
-											<a href="modules/thundr/basics.html">
-												
-													Basics
-												
-											</a>
-										</li>
-										  
-										<li class="">
-											<a href="modules/thundr/controllers.html">
-												
-													Controllers
-												
-											</a>
-										</li>
-										  
-										<li class="">
-											<a href="modules/thundr/views.html">
-												
-													Views
-												
-											</a>
-										</li>
-										  
-										<li class="active">
-											<a href="modules/thundr/actions.html">
-												
-													Actions
-												
-											</a>
-										</li>
-										  
-										<li class="">
-											<a href="modules/thundr/injection-context.html">
-												
-													Dependancy injection
-												
-											</a>
-										</li>
-										  
-										<li class="">
-											<a href="modules/thundr/email.html">
-												
-													Email
-												
-											</a>
-										</li>
-										 
-									</ul>
-
-								</li>
-							
-						  
-							
-								<li class="">
-									<a href="modules/thundr-gae/appengine.html">thundr-gae</a>
-								</li>
-							
-						  
-							
-								<li class="">
-									<a href="modules/thundr-handlebars/index.html">thundr-handlebars</a>
-								</li>
-							
-						  
-							
-								<li class="">
-									<a href="modules/thundr-mailgun/index.html">thundr-mailgun</a>
-								</li>
-							
-						 
-					</ul>
-				</div>
-			</div>
-
-		</nav>
-		
-	</header>
-
-	<div class="container">
-		<div class="row">
+<div class="row">
 	<aside class="module_nav_container span3">
-		<div class="module_nav">
-			
+		<div class="module_nav">			
 			<ul class="nav nav-list" role="navigation">
-			 
+				<li class="nav-header ">
+					<a href="/modules/thundr/basics.html">						
+						Basics						
+					</a>
+				</li>
 					
 				<li class="nav-header ">
-					<a href="modules/thundr/basics.html">
-						
-							Basics
-						
+					<a href="/modules/thundr/controllers.html">						
+						Controllers						
 					</a>
 				</li>
 
-				
-			  
-					
 				<li class="nav-header ">
-					<a href="modules/thundr/controllers.html">
-						
-							Controllers
-						
+					<a href="/modules/thundr/views.html">
+						Views
 					</a>
 				</li>
 
-				
-			  
-					
-				<li class="nav-header ">
-					<a href="modules/thundr/views.html">
-						
-							Views
-						
-					</a>
-				</li>
-
-				
-			  
-					
 				<li class="nav-header active">
-					<a href="modules/thundr/actions.html">
-						
-							Actions
-						
+					<a href="/modules/thundr/actions.html">
+						Actions						
 					</a>
 				</li>
 
-				
-					
-						
-
-						
-							
-								
-								
-								<li><a href="modules/thundr/actions.html#routes" data-target="#routes">
-									Routes
-									
-								</a></li>
-							
-							
-						
-							
-								
-								
-								<li><a href="modules/thundr/actions.html#actions" data-target="#actions">
-									Actions
-									
-								</a></li>
-							
-							
-						
-							
-								
-								<li class="divider"></li>
-								<li><a href="modules/thundr/actions.html#methodAction" data-target="#methodAction">
-									MethodAction
-									
-								</a></li>
-							
-							
-						
-							
-								
-								
-								<li><a href="modules/thundr/actions.html#staticResourceAction" data-target="#staticResourceAction">
-									StaticResourceAction
-									
-								</a></li>
-							
-							
-						
-							
-								
-								
-								<li><a href="modules/thundr/actions.html#redirectAction" data-target="#redirectAction">
-									RedirectAction
-									
-								</a></li>
-							
-							
-						
-							
-								
-								
-								<li><a href="modules/thundr/actions.html#rewriteAction" data-target="#rewriteAction">
-									RewriteAction
-									
-								</a></li>
-							
-							
-						
-							
-								
-								<li class="divider"></li>
-								<li><a href="modules/thundr/actions.html#actionResolver" data-target="#actionResolver">
-									ActionResolver
-									
-									<span class="label label-info">Advanced</span>
-									
-								</a></li>
-							
-							
-						
-					
-					
-				
-			  
-					
-				<li class="nav-header ">
-					<a href="modules/thundr/injection-context.html">
-						
-							Dependancy injection
-						
+				<li>
+					<a href="/modules/thundr/actions.html#routes" data-target="#routes">
+						Routes					
 					</a>
 				</li>
-
-				
-			  
-					
-				<li class="nav-header ">
-					<a href="modules/thundr/email.html">
-						
-							Email
-						
-					</a>
-				</li>
-
-				
-			  
-			</ul>
-
 			
+				<li>
+					<a href="/modules/thundr/actions.html#actions" data-target="#actions">
+						Actions
+					</a>
+				</li>
+								
+				<li class="divider"></li>
+
+				<li>
+					<a href="/modules/thundr/actions.html#methodAction" data-target="#methodAction">
+						MethodAction					
+					</a>
+				</li>
+								
+				<li>
+					<a href="/modules/thundr/actions.html#staticResourceAction" data-target="#staticResourceAction">
+						StaticResourceAction					
+					</a>
+				</li>
+		
+				<li>
+					<a href="/modules/thundr/actions.html#redirectAction" data-target="#redirectAction">
+						RedirectAction
+					</a>
+				</li>
+		
+				<li>
+					<a href="/modules/thundr/actions.html#rewriteAction" data-target="#rewriteAction">
+						RewriteAction
+					</a>
+				</li>
+			
+				<li class="divider"></li>
+
+				<li>
+					<a href="/modules/thundr/actions.html#actionResolver" data-target="#actionResolver">
+						ActionResolver <span class="label label-info">Advanced</span>
+					</a>
+				</li>
+					
+				<li class="nav-header ">
+					<a href="/modules/thundr/injection-context.html">
+						Dependancy injection						
+					</a>
+				</li>
+
+				<li class="nav-header ">
+					<a href="/modules/thundr/email.html">						
+						Email						
+					</a>
+				</li>
+			</ul>
 		</div>
 	</aside>
 
@@ -285,257 +98,242 @@
 			<h1>thundr <small>Actions</small></h1>
 		</div>
 
-		<section id="page-overview" class="overview">
-			
+		<section id="page-overview" class="overview">			
 		</section>
 
-		 
+		<section id="routes">
+			<h2>Routes</h2>
 
+			<p>Incoming web requests are handled by thundr using <em>routes</em>.</p>
+
+			<p>
+				A route is a url wildcard pattern which maps to an <em>action</em>. Each route is of a http request 
+				type - <em>GET</em>, <em>PUT</em>, <em>POST</em> or <em>DELETE</em>. 
+			</p>
+
+			<p>
+				By default routes are loaded from the resource file <code>routes.json</code>. Within this file, routes 
+				are defined as a json structure.
+			</p>
+
+{% highlight json %}
+{
+    "/"          : "au.com.threewks.thundrweb.Controller.home",
+    "/form/"     : {
+        "GET"    : "au.com.threewks.thundrweb.Controller.getForm",
+        "POST"   : "au.com.threewks.thundrweb.Controller.postForm"
+    },
+    "/view/{id}" : "au.com.threewks.thundrweb.Controller.view"
+}
+{% endhighlight %}
+
+			<p>
+				Routes can map to different types of actions. The most common action is <code>MethodAction</code>, 
+				which will result in a method being invoked on a 
+				<a href="/modules/thundr/controllers.html">controller</a>. 
+			</p>
+
+			<p>
+				In the above example, requests to the base url &#39;/&#39; will be processed by the <em>home</em> 
+				method defined in the <em>Controller</em> class. GET Requests on &#39;/form/&#39; will be processed 
+				by <em>getForm()</em> and POSTs will be processed by <em>postForm()</em>. Finally, requests matching 
+				the path <code>/view/*</code> will be processed by the method with the name <em>view</em>, with the 
+				addition that the value matching the wildcard can be passed as a parameter with the name &#39;id&#39;, 
+				permitting <em>view(String id)</em>.            
+			</p>
+		</section>
 			
+		<section id="actions">
+			<h4><code>Actions</code></h4>
 
+			<p>
+				Each route maps to a single <code>Action</code>. Actions determine how your application handles a web 
+				request. In general, an action will usually result in some code being invoked, but other types of 
+				actions exist.
+			</p>
+
+			<p>Currently thundr supports the following actions out of the box:</p>
+		</section>
 			
-				
-				<section id="routes">
-					<h2>Routes</h2>
-<p>Incoming web requests are handled by thundr using <em>routes</em>.</p>
-<p>A route is a url wildcard pattern which maps to an <em>action</em>. Each route is of a http request type - <em>GET</em>, <em>PUT</em>, <em>POST</em> or <em>DELETE</em>. </p>
-<p>By default routes are loaded from the resource file <code>routes.json</code>. Within this file, routes are defined as a json structure.</p>
-<pre><code class="language-json">{
-    "<span class="attribute">/</span>"         : <span class="value"><span class="string">"au.com.threewks.thundrweb.Controller.home"</span></span>,
-    "<span class="attribute">/form/</span>"     : <span class="value">{
-        "<span class="attribute">GET</span>"     : <span class="value"><span class="string">"au.com.threewks.thundrweb.Controller.getForm"</span></span>,
-        "<span class="attribute">POST</span>"     : <span class="value"><span class="string">"au.com.threewks.thundrweb.Controller.postForm"</span>
-    }</span></span>,
-    "<span class="attribute">/view/{id}</span>"    : <span class="value"><span class="string">"au.com.threewks.thundrweb.Controller.view"</span>
-}</span></code></pre>
-<p>Routes can map to different types of actions. The most common action is <code>MethodAction</code>, which will result in a method being invoked on a <a href="modules/thundr/controllers.html">controller</a>. </p>
-<p>In the above example, requests to the base url &#39;/&#39; will be processed by the <em>home</em> method defined in the <em>Controller</em> class.<br>GET Requests on &#39;/form/&#39; will be processed by <em>getForm()</em> and POSTs will be processed by <em>postForm()</em>.<br>Finally, requests matching the path <code>/view/*</code> will be processed by the method with the name <em>view</em>, with the addition that the value matching the wildcard can be passed as a parameter with the name &#39;id&#39;, permitting <em>view(String id)</em>.            </p>
+		<div class="accordion">
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse" href="#methodAction">
+						<i class="icon icon-chevron-down"></i> MethodAction
+					</a>
+				</div>
 
-				</section>
-			
+				<section id="methodAction" class="accordion-body collapse">
+					<div class="accordion-inner">
+						<h4>MethodAction</h4>
 
+						<p>
+							This type of action results in a method being invoked on a class. Classes invoked like this 
+							are referred to as <em>controllers</em>, however this is a semantic distinction - any class 
+							can be used as a controller. You can read more about controllers 
+							<a href="/modules/thundr/controllers.html">here</a>.
+						</p>
 
-		
+						<p>For example, the route</p>
 
-			
-
-			
-				
-				<section id="actions">
-					<h4><code>Actions</code></h4>
-<p>Each route maps to a single <code>Action</code>. Actions determine how your application handles a web request. In general, an action will usually result in some code being invoked, but other types of actions exist.</p>
-<p>Currently thundr supports the following actions out of the box:</p>
-
-				</section>
-			
-
-
-		
-
-			
-
-			
-				
-				
-				<div class="accordion">
-	<div class="accordion-group">
-		<div class="accordion-heading">
-			<a class="accordion-toggle" data-toggle="collapse" href="#methodAction">
-				<i class="icon icon-chevron-down"></i>
-				MethodAction
-			</a>
-		</div>
-
-		<section id="methodAction" class="accordion-body collapse">
-			<div class="accordion-inner">
-				<h4>MethodAction</h4>
-<p>This type of action results in a method being invoked on a class.<br>Classes invoked like this are referred to as <em>controllers</em>, however this is a semantic distinction - any class can be used as a controller.<br>You can read more about controllers <a href="modules/thundr/controllers.html">here</a>.</p>
-<p>For example, the route</p>
-<pre><code class="language-java">...
-<span class="string">"/route/{variable}"</span>: <span class="string">"com.threewks.thundr.Controller.actionMethod"</span>
-...</code></pre>
-<p>will invoke the method</p>
-<pre><code class="language-java"><span class="keyword">package</span> com.threewks.thundr;
-<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Controller</span> {</span>
+{% highlight java %}
 ...
-    <span class="keyword">public</span> StringView actionMethod(String variable){
+"/route/{variable}": "com.threewks.thundr.Controller.actionMethod"
+...
+{% endhighlight %}
+
+						<p>will invoke the method</p>
+
+{% highlight java %}
+package com.threewks.thundr;
+
+public class Controller {
+...
+    public StringView actionMethod(String variable){
         doSomething();
-        <span class="keyword">return</span> <span class="keyword">new</span> StringView(<span class="string">"Ok!"</span>);
+        return new StringView("Ok!");
     }
-...</code></pre>
+...
+{% endhighlight %}
 
-			</div>
-		</section>
-	</div>
-</div>
-
-			
-
-
-		
-
-			
-
-			
-				
-				
-				<div class="accordion">
-	<div class="accordion-group">
-		<div class="accordion-heading">
-			<a class="accordion-toggle" data-toggle="collapse" href="#staticResourceAction">
-				<i class="icon icon-chevron-down"></i>
-				StaticResourceAction
-			</a>
-		</div>
-
-		<section id="staticResourceAction" class="accordion-body collapse">
-			<div class="accordion-inner">
-				<h4>StaticResourceAction</h4>
-<p>This type of action results in a resource being served directly. This is useful when serving javascript, css, text files or other resources which don&#39;t require any processing by your application.</p>
-<p>The routes below result in the favicon and all files under the folder &#39;static&#39; being server as static resources. </p>
-<pre><code class="language-java">...
-<span class="string">"/favicon.ico"</span>: <span class="string">"static"</span>,
-<span class="string">"/static/**"</span>: <span class="string">"static"</span>,
-...</code></pre>
-
-			</div>
-		</section>
-	</div>
-</div>
-
-			
-
-
-		
-
-			
-
-			
-				
-				
-				<div class="accordion">
-	<div class="accordion-group">
-		<div class="accordion-heading">
-			<a class="accordion-toggle" data-toggle="collapse" href="#redirectAction">
-				<i class="icon icon-chevron-down"></i>
-				RedirectAction
-			</a>
-		</div>
-
-		<section id="redirectAction" class="accordion-body collapse">
-			<div class="accordion-inner">
-				<h4>RedirectAction</h4>
-<p>This type of action results in a HTTP redirect being sent to the web request client (i.e. the user&#39;s browser). This will result in the browser requesting the resource specified in the redirect route.<br>The redirect is a <em>temporary redirect</em>, or 302.</p>
-<pre><code class="language-java">...
-<span class="string">"/old"</span>: <span class="string">"redirect:/new"</span>,
-<span class="string">"/old/{withParam}"</span>: <span class="string">"redirect:/new/{withParam}"</span>,
-...</code></pre>
-
-			</div>
-		</section>
-	</div>
-</div>
-
-			
-
-
-		
-
-			
-
-			
-				
-				
-				<div class="accordion">
-	<div class="accordion-group">
-		<div class="accordion-heading">
-			<a class="accordion-toggle" data-toggle="collapse" href="#rewriteAction">
-				<i class="icon icon-chevron-down"></i>
-				RewriteAction
-			</a>
-		</div>
-
-		<section id="rewriteAction" class="accordion-body collapse">
-			<div class="accordion-inner">
-				<h4>RewriteAction</h4>
-<p>This type of action is used to cause another route to handle the request. It is similar in concept to the rewrite rules in an Apache config, but could also be considered to act as an alias.</p>
-<p>In the below example, the rewrite rule will cause the rewritten route to be invoked as though the request client invoked it directly, but unlike a redirect will be served with the url it was requested on.</p>
-<pre><code class="language-java">...
-<span class="string">"/requestedPath"</span>    : <span class="string">"rewrite:/rewritten"</span>,
-<span class="string">"/rewritten"</span>        : <span class="string">"com.threewks.thundr.Controller.method"</span>
-...</code></pre>
-
-			</div>
-		</section>
-	</div>
-</div>
-
-			
-
-
-		
-
-			
-
-			
-				
-				<section id="actionResolver">
-					<h4><code>ActionResolver</code> <span class="label label-info">Advanced</span></h4>
-<p>Each type of action is handled by an <code>ActionResolver</code>. ActionResolvers process an Action when a route is requested. You can create and configure custom Action and ActionResolvers to handle routes, although in general this is not necessary. </p>
-<p>An action resolver has two responsibilities:</p>
-<ul>
-<li>creating an <code>Action</code> for a route if it can process that route, and</li>
-<li>resolving an action it created when a route is requested by an http client</li>
-</ul>
-<p>Action resolution usually involves binding data based on route configuration and request parameters, and serving up response content and http response codes. This is done using the standard Java Servlet interfaces, <code>HttpServletRequest</code> and <code>HttpServletResponse</code>.</p>
-<p>If you wish to register a custom Action and ActionResolver, you can invoke the method</p>
-<pre><code class="language-java">Routes.addActionResolver(Class&lt;A&gt; actionType, ActionResolver&lt;A&gt; actionResolver);</code></pre>
-<p>This needs to be done before the routes are loaded. The <code>Routes</code> object is available in the <code>InjectionConfiguration</code> during startup.</p>
-
+					</div>
 				</section>
-			
+			</div>
+		</div>
 
+		<div class="accordion">
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse" href="#staticResourceAction">
+						<i class="icon icon-chevron-down"></i>
+						StaticResourceAction
+					</a>
+				</div>
 
-		 
+				<section id="staticResourceAction" class="accordion-body collapse">
+					<div class="accordion-inner">
+						<h4>StaticResourceAction</h4>
 
+						<p>
+							This type of action results in a resource being served directly. This is useful when 
+							serving javascript, css, text files or other resources which don&#39;t require any 
+							processing by your application.
+						</p>
+
+						<p>
+							The routes below result in the favicon and all files under the folder &#39;static&#39; 
+							being server as static resources. 
+						</p>
+
+{% highlight java %}
+...
+"/favicon.ico": "static",
+"/static/**": "static",
+...
+{% endhighlight %}
+
+					</div>
+				</section>
+			</div>
+		</div>
+
+		<div class="accordion">
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse" href="#redirectAction">
+						<i class="icon icon-chevron-down"></i>
+						RedirectAction
+					</a>
+				</div>
+
+				<section id="redirectAction" class="accordion-body collapse">
+					<div class="accordion-inner">
+						<h4>RedirectAction</h4>
+
+		<p>This type of action results in a HTTP redirect being sent to the web request client (i.e. the user&#39;s browser). This will result in the browser requesting the resource specified in the redirect route.<br>The redirect is a <em>temporary redirect</em>, or 302.</p>
+
+{% highlight java %}
+...
+"/old": "redirect:/new",
+"/old/{withParam}": "redirect:/new/{withParam}",
+...
+{% endhighlight %}
+
+					</div>
+				</section>
+			</div>
+		</div>
+
+		<div class="accordion">
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse" href="#rewriteAction">
+						<i class="icon icon-chevron-down"></i>
+						RewriteAction
+					</a>
+				</div>
+
+				<section id="rewriteAction" class="accordion-body collapse">
+					<div class="accordion-inner">
+						<h4>RewriteAction</h4>
+
+						<p>
+							This type of action is used to cause another route to handle the request. It is similar in 
+							concept to the rewrite rules in an Apache config, but could also be considered to act as an 
+							alias.
+						</p>
+
+						<p>
+							In the below example, the rewrite rule will cause the rewritten route to be invoked as 
+							though the request client invoked it directly, but unlike a redirect will be served with 
+							the url it was requested on.
+						</p>
+
+{% highlight java %}
+...
+"/requestedPath"    : "rewrite:/rewritten",
+"/rewritten"        : "com.threewks.thundr.Controller.method"
+...
+{% endhighlight %}
+
+					</div>
+				</section>
+			</div>
+		</div>
+
+		<section id="actionResolver">
+			<h4><code>ActionResolver</code> <span class="label label-info">Advanced</span></h4>
+
+			<p>
+				Each type of action is handled by an <code>ActionResolver</code>. ActionResolvers process an Action 
+				when a route is requested. You can create and configure custom Action and ActionResolvers to handle 
+				routes, although in general this is not necessary. 
+			</p>
+
+			<p>An action resolver has two responsibilities:</p>
+
+			<ul>
+				<li>creating an <code>Action</code> for a route if it can process that route, and</li>
+				<li>resolving an action it created when a route is requested by an http client</li>
+			</ul>
+
+			<p>
+				Action resolution usually involves binding data based on route configuration and request parameters, 
+				and serving up response content and http response codes. This is done using the standard Java Servlet 
+				interfaces, <code>HttpServletRequest</code> and <code>HttpServletResponse</code>.
+			</p>
+
+			<p>If you wish to register a custom Action and ActionResolver, you can invoke the method</p>
+
+{% highlight java %}			
+Routes.addActionResolver(Class<A> actionType, ActionResolver<A> actionResolver);
+{% endhighlight %}
+
+			<p>
+				This needs to be done before the routes are loaded. The <code>Routes</code> object is available in the 
+				<code>InjectionConfiguration</code> during startup.
+			</p>
+		</section>
 	</article>
 </div>
-	</div>
-	
-	<footer class="container">
-		<div class="navbar">
-			<div class="navbar-inner">
-				<span class="navbar-text pull-right">
-					Brought to you by <a href="http://www.3wks.com.au" title="3wks"><img class="threewksLogo" src="http://3wks.com.au/images/3wks_logo_2.png"/></a>
-				</span>
-				<span class="navbar-text">
-					<a href="mailto:nick@3wks.com.au?Subject=thundr">
-						<i class="icon icon-envelope-alt"></i> 
-						Get in touch
-					</a>
-				</span>
-				<span class="navbar-text">
-					<a href="https://groups.google.com/forum/?fromgroups#!forum/thundr-framework">
-						<i class="icon icon-group"></i> 
-						Join us on Google Groups 
-					</a>
-				</span>
-			</div>
-		</div>
-	</footer>
-
-	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-	
-	  ga('create', 'UA-33515426-2', 'github.io');
-	  ga('send', 'pageview');
-	
-	</script>
-
-	<script src="scripts/91b88f08.amd-app.js"></script>
-</body>
-</html>
 		
