@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>{% if page.title %}{{ page.title }} • {% endif %}thundr</title>
+	<title>{% if page.title %}{{ page.title }} • {% endif %}{{ site.title }}</title>
     
     <meta charset="utf-8" lang="en-us"/>
 	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
@@ -17,16 +17,16 @@
 	<base href="" />
 	
 	<link rel="shortcut icon" href="/favicon.ico" />
-	<link rel="stylesheet" href="/static/lib/bootstrap/css/bootstrap.min.css"></link>
-	<link rel="stylesheet" href="/static/lib/font-awesome/css/font-awesome.min.css"></link>
+	<link rel="stylesheet" href="{{ site.url }}static/lib/bootstrap/css/bootstrap.min.css"></link>
+	<link rel="stylesheet" href="{{ site.url }}static/lib/font-awesome/css/font-awesome.min.css"></link>
 	<!--[if IE 7]>
-	<link rel="stylesheet" href="/static/lib/font-awesome/css/font-awesome-ie7.min.css">
+	<link rel="stylesheet" href="{{ site.url }}static/lib/font-awesome/css/font-awesome-ie7.min.css">
 	<![endif]-->
-	<link rel="stylesheet" href="/static/css/syntax.css"></link>
-	<link rel="stylesheet" href="/static/css/main.css"></link>
+	<link rel="stylesheet" href="{{ site.url }}static/css/syntax.css"></link>
+	<link rel="stylesheet" href="{{ site.url }}static/css/main.css"></link>
 
 	<!--[if lt IE 9]>
-	<script src="/static/lib/html5shiv.js"></script> 
+	<script src="{{ site.url }}static/lib/html5shiv.js"></script> 
 	<![endif]-->
 </head>
 <body data-spy="scroll" data-target=".module_nav">
@@ -34,7 +34,7 @@
 		<nav class="navbar">
 			<div class="navbar-inner">
 				<div class="navbar-top">
-					<a class="brand" href="/index.html"><img src="/static/img/logoFullSmall.png"/></a>
+					<a class="brand" href="{{ site.url }}index.html"><img src="{{ site.url }}static/img/logoFullSmall.png"/></a>
 
 					<ul class="nav" role="navigation">
 						<li class="dropdown ">
@@ -42,37 +42,37 @@
 
 							<ul class="dropdown-menu">								 
 								<li class="">
-									<a href="/modules/thundr/basics.html">
+									<a href="{{ site.url }}modules/thundr/basics.html">
 										Basics
 									</a>
 								</li>
 								  
 								<li class="">
-									<a href="/modules/thundr/controllers.html">
+									<a href="{{ site.url }}modules/thundr/controllers.html">
 										Controllers
 									</a>
 								</li>
 								  
 								<li class="">
-									<a href="/modules/thundr/views.html">
+									<a href="{{ site.url }}modules/thundr/views.html">
 										Views
 									</a>
 								</li>
 								  
 								<li class="">
-									<a href="/modules/thundr/actions.html">
+									<a href="{{ site.url }}modules/thundr/actions.html">
 										Actions
 									</a>
 								</li>
 								  
 								<li class="">
-									<a href="/modules/thundr/injection-context.html">
+									<a href="{{ site.url }}modules/thundr/injection-context.html">
 										Dependancy injection
 									</a>
 								</li>
 								  
 								<li class="">
-									<a href="/modules/thundr/email.html">
+									<a href="{{ site.url }}modules/thundr/email.html">
 										Email
 									</a>
 								</li>								 
@@ -80,15 +80,15 @@
 						</li>
 							
 						<li class="">
-							<a href="/modules/thundr-gae/index.html">thundr-gae</a>
+							<a href="{{ site.url }}modules/thundr-gae/index.html">thundr-gae</a>
 						</li>
 							
 						<li class="">
-							<a href="/modules/thundr-handlebars/index.html">thundr-handlebars</a>
+							<a href="{{ site.url }}modules/thundr-handlebars/index.html">thundr-handlebars</a>
 						</li>
 
 						<li class="">
-							<a href="/modules/thundr-mailgun/index.html">thundr-mailgun</a>
+							<a href="{{ site.url }}modules/thundr-mailgun/index.html">thundr-mailgun</a>
 						</li>
 					</ul>
 				</div>
@@ -122,9 +122,9 @@
 		</div>
 	</footer>
 
-	<script src="/static/lib/jquery.min.js"></script>
-	<script src="/static/lib/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/static/js/app.js"></script>
+	<script src="{{ site.url }}static/lib/jquery.min.js"></script>
+	<script src="{{ site.url }}static/lib/bootstrap/js/bootstrap.min.js"></script>
+	<script src="{{ site.url }}static/js/app.js"></script>
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

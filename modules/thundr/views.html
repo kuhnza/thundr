@@ -9,55 +9,55 @@ description: Using views in thundr
 		<div class="module_nav">
 			<ul class="nav nav-list" role="navigation">
 				<li class="nav-header ">
-					<a href="/modules/thundr/basics.html">
+					<a href="{{ site.url }}modules/thundr/basics.html">
 						Basics
 					</a>
 				</li>
 
 				<li class="nav-header ">
-					<a href="/modules/thundr/controllers.html">
+					<a href="{{ site.url }}modules/thundr/controllers.html">
 						Controllers
 					</a>
 				</li>
 
 				<li class="nav-header active">
-					<a href="/modules/thundr/views.html">
+					<a href="{{ site.url }}modules/thundr/views.html">
 						Views
 					</a>
 				</li>
 
 				<li>
-					<a href="/modules/thundr/views.html#views" data-target="#views">
+					<a href="{{ site.url }}modules/thundr/views.html#views" data-target="#views">
 						Views
 					</a>
 				</li>
 
 				<li>
-					<a href="/modules/thundr/views.html#jspView" data-target="#jspView">
+					<a href="{{ site.url }}modules/thundr/views.html#jspView" data-target="#jspView">
 						JspView
 					</a>
 				</li>
 
 				<li>
-					<a href="/modules/thundr/views.html#redirectView" data-target="#redirectView">
+					<a href="{{ site.url }}modules/thundr/views.html#redirectView" data-target="#redirectView">
 						RedirectView
 					</a>
 				</li>
 
 				<li>
-					<a href="/modules/thundr/views.html#jsonView" data-target="#jsonView">
+					<a href="{{ site.url }}modules/thundr/views.html#jsonView" data-target="#jsonView">
 						JsonView
 					</a>
 				</li>
 
 				<li>
-					<a href="/modules/thundr/views.html#stringView" data-target="#stringView">
+					<a href="{{ site.url }}modules/thundr/views.html#stringView" data-target="#stringView">
 						StringView
 					</a>
 				</li>
 
 				<li>
-					<a href="/modules/thundr/views.html#httpStatusException" data-target="#httpStatusException">
+					<a href="{{ site.url }}modules/thundr/views.html#httpStatusException" data-target="#httpStatusException">
 						HttpStatusException
 					</a>
 				</li>
@@ -65,25 +65,25 @@ description: Using views in thundr
 				<li class="divider"></li>
 
 				<li>
-					<a href="/modules/thundr/views.html#viewResolver" data-target="#viewResolver">
+					<a href="{{ site.url }}modules/thundr/views.html#viewResolver" data-target="#viewResolver">
 						ViewResolver <span class="label label-info">Advanced</span>
 					</a>
 				</li>
 
 				<li class="nav-header ">
-					<a href="/modules/thundr/actions.html">
+					<a href="{{ site.url }}modules/thundr/actions.html">
 						Actions
 					</a>
 				</li>
 
 				<li class="nav-header ">
-					<a href="/modules/thundr/injection-context.html">
+					<a href="{{ site.url }}modules/thundr/injection-context.html">
 						Dependancy injection
 					</a>
 				</li>
 
 				<li class="nav-header ">
-					<a href="/modules/thundr/email.html">
+					<a href="{{ site.url }}modules/thundr/email.html">
 						Email
 					</a>
 				</li>
@@ -102,11 +102,11 @@ description: Using views in thundr
 		<section id="views">
 			<h4>Views</h4>
 
-			<p><a href="/modules/thundr/controllers.html">Controller</a> methods can return a <code>View</code> object, which
+			<p><a href="{{ site.url }}modules/thundr/controllers.html">Controller</a> methods can return a <code>View</code> object, which
 				controls what content is returned to the request client.</p>
 
 			<p>thundr handles views by passing them to registered a <code>ViewResolver</code>. You can read more about
-				registering custom view and view resolvers <a href="/modules/thundr/views.html#viewResolver">here</a>.</p>
+				registering custom view and view resolvers <a href="{{ site.url }}modules/thundr/views.html#viewResolver">here</a>.</p>
 
 			<p>Below are the views that thundr supports out of the box, you can also inspect the ViewResolver hierarchy to see
 				all implementations.</p>
