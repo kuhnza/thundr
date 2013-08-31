@@ -30,6 +30,6 @@ public class InputStreamBinaryParameterBinder implements BinaryParameterBinder<I
 
 	@Override
 	public InputStream bind(ParameterDescription parameterDescription, byte[] data) {
-		return new ByteArrayInputStream(data);
+        return (data != null)?new ByteArrayInputStream(data):null;
 	}
 }
