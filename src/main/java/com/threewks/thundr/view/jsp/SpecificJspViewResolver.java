@@ -37,6 +37,7 @@ public class SpecificJspViewResolver<T> implements ViewResolver<T> {
 			req.setAttribute("value", viewResult);
 			String url = resp.encodeRedirectURL(jspPath());
 			RequestDispatcher requestDispatcher = req.getRequestDispatcher(url);
+			JspViewResolver.includeContentTypeAndEncoding(resp);
 			requestDispatcher.include(req, resp);
 		} catch (Exception e) {
 			throw new ViewResolutionException(e, "Failed to resolve specific JSP view %s", jsp);

@@ -65,6 +65,8 @@ public class JspViewResolverTest {
 		resolver.resolve(req, resp, new JspView("view.jsp"));
 		assertThat(req.requestDispatcher().lastPath(), is("/WEB-INF/jsp/view.jsp"));
 		assertThat(req.requestDispatcher().included(), is(true));
+		assertThat(resp.getContentType(), is("text/html"));
+		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
 	}
 
 	@Test

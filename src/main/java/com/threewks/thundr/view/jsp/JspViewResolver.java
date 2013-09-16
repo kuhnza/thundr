@@ -24,7 +24,10 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import jodd.util.StringPool;
+
 import com.threewks.thundr.exception.BaseException;
+import com.threewks.thundr.http.ContentType;
 import com.threewks.thundr.view.ViewResolutionException;
 import com.threewks.thundr.view.ViewResolver;
 
@@ -47,20 +50,16 @@ public class JspViewResolver implements ViewResolver<JspView> {
 				throw new BaseException("resource %s does not exist", viewResult.getView());
 			}
 			String url = resp.encodeRedirectURL(viewResult.getView());
-			Map<String, Object> model = viewResult.getModel();
-			for (Map.Entry<String, Object> modelEntry : globalModel.entrySet()) {
-				req.setAttribute(modelEntry.getKey(), modelEntry.getValue());
-			}
-			for (Map.Entry<String, Object> modelEntry : model.entrySet()) {
-				req.setAttribute(modelEntry.getKey(), modelEntry.getValue());
-			}
+			includeModelInRequest(req, globalModel);
+			includeModelInRequest(req, viewResult.getModel());
+			includeContentTypeAndEncoding(resp);
 			RequestDispatcher requestDispatcher = req.getRequestDispatcher(url);
 			requestDispatcher.include(req, resp);
 		} catch (Exception e) {
 			throw new ViewResolutionException(e, "Failed to resolve JSP view %s - %s", viewResult, e.getMessage());
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName();
@@ -76,5 +75,18 @@ public class JspViewResolver implements ViewResolver<JspView> {
 
 	public void addAllToGlobalModel(Map<String, Object> entries) {
 		globalModel.putAll(entries);
+	}
+
+	public static void includeContentTypeAndEncoding(HttpServletResponse resp) {
+		// Content type needs to be set on the response because we use include, not forward
+		resp.setContentType(ContentType.TextHtml.value());
+		// Character encoding needs to be set on the response because include does not set the character encoding use the jsp page directive.
+		resp.setCharacterEncoding(StringPool.UTF_8);
+	}
+
+	public static void includeModelInRequest(HttpServletRequest req, Map<String, Object> model) {
+		for (Map.Entry<String, Object> modelEntry : model.entrySet()) {
+			req.setAttribute(modelEntry.getKey(), modelEntry.getValue());
+		}
 	}
 }

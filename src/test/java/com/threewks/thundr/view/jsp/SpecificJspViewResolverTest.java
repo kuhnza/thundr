@@ -48,6 +48,15 @@ public class SpecificJspViewResolverTest {
 	}
 
 	@Test
+	public void shouldSetContentTypeAndEncodingOnResponse() {
+		SpecificJspViewResolver<Object> resolver = new SpecificJspViewResolver<Object>("page.jsp");
+		Object viewResult = new Object();
+		resolver.resolve(mockRequest, mockResponse, viewResult);
+		assertThat(mockResponse.getContentType(), is("text/html"));
+		assertThat(mockResponse.getCharacterEncoding(), is("UTF-8"));
+	}
+
+	@Test
 	public void shouldIncludeTheSpecifiedJsp() {
 		SpecificJspViewResolver<Object> resolver = new SpecificJspViewResolver<Object>("page.jsp");
 		Object viewResult = new Object();
