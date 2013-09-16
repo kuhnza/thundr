@@ -22,6 +22,7 @@ import javax.servlet.ServletContext;
 import com.threewks.thundr.action.method.ActionInterceptorRegistry;
 import com.threewks.thundr.action.method.MethodAction;
 import com.threewks.thundr.action.method.MethodActionResolver;
+import com.threewks.thundr.action.method.bind.ActionMethodBinderRegistry;
 import com.threewks.thundr.action.redirect.RedirectAction;
 import com.threewks.thundr.action.redirect.RedirectActionResolver;
 import com.threewks.thundr.action.rewrite.RewriteAction;
@@ -38,11 +39,11 @@ public class ActionInjectionConfiguration implements InjectionConfiguration {
 	public void configure(UpdatableInjectionContext injectionContext) {
 		Routes routes = injectionContext.get(Routes.class);
 		ServletContext servletContext = injectionContext.get(ServletContext.class);
-
 		MethodActionResolver methodActionResolver = new MethodActionResolver(injectionContext);
 		injectionContext.inject(methodActionResolver).as(MethodActionResolver.class);
 		// The MethodActionResolver is special because we use it to perform controller interception
 		injectionContext.inject(methodActionResolver).as(ActionInterceptorRegistry.class);
+		injectionContext.inject(methodActionResolver.getMethodBinderRegistry()).as(ActionMethodBinderRegistry.class);
 
 		routes.addActionResolver(RedirectAction.class, new RedirectActionResolver());
 		routes.addActionResolver(RewriteAction.class, new RewriteActionResolver(routes));

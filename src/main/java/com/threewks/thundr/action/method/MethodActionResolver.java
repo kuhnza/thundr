@@ -37,15 +37,7 @@ import com.atomicleopard.expressive.Cast;
 import com.threewks.thundr.action.ActionException;
 import com.threewks.thundr.action.ActionResolver;
 import com.threewks.thundr.action.method.bind.ActionMethodBinder;
-import com.threewks.thundr.action.method.bind.http.HttpBinder;
-import com.threewks.thundr.action.method.bind.http.MultipartHttpBinder;
-import com.threewks.thundr.action.method.bind.json.GsonBinder;
-import com.threewks.thundr.action.method.bind.path.PathVariableBinder;
-import com.threewks.thundr.action.method.bind.request.CookieBinder;
-import com.threewks.thundr.action.method.bind.request.RequestAttributeBinder;
-import com.threewks.thundr.action.method.bind.request.RequestClassBinder;
-import com.threewks.thundr.action.method.bind.request.RequestHeaderBinder;
-import com.threewks.thundr.action.method.bind.request.SessionAttributeBinder;
+import com.threewks.thundr.action.method.bind.ActionMethodBinderRegistry;
 import com.threewks.thundr.exception.BaseException;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.introspection.ParameterDescription;
@@ -56,22 +48,12 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 
 	private Map<Class<?>, Object> controllerInstances = new HashMap<Class<?>, Object>();
 	private Map<Class<? extends Annotation>, ActionInterceptor<? extends Annotation>> actionInterceptors = new HashMap<Class<? extends Annotation>, ActionInterceptor<? extends Annotation>>();
-	private List<ActionMethodBinder> methodBinders;
+	private ActionMethodBinderRegistry methodBinderRegistry = new ActionMethodBinderRegistry();
 	private UpdatableInjectionContext injectionContext;
 
 	public MethodActionResolver(UpdatableInjectionContext injectionContext) {
 		this.injectionContext = injectionContext;
-		HttpBinder httpBinder = new HttpBinder();
-		methodBinders = new ArrayList<ActionMethodBinder>();
-		methodBinders.add(new PathVariableBinder());
-		methodBinders.add(new RequestClassBinder());
-		methodBinders.add(new GsonBinder());
-		methodBinders.add(httpBinder);
-		methodBinders.add(new MultipartHttpBinder(httpBinder));
-		methodBinders.add(new RequestAttributeBinder(httpBinder));
-		methodBinders.add(new SessionAttributeBinder(httpBinder));
-		methodBinders.add(new RequestHeaderBinder(httpBinder));
-		methodBinders.add(new CookieBinder(httpBinder));
+		this.methodBinderRegistry.registerDefaultActionMethodBinders();
 	}
 
 	@Override
@@ -137,7 +119,7 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 			boundParameters.put(parameterDescription, null);
 		}
 		if (!boundParameters.isEmpty()) {
-			for (ActionMethodBinder binder : methodBinders) {
+			for (ActionMethodBinder binder : methodBinderRegistry.getRegisteredBinders()) {
 				binder.bindAll(boundParameters, req, resp, pathVars);
 			}
 		}
@@ -223,5 +205,9 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 	@SuppressWarnings("unchecked")
 	public ActionInterceptor<Annotation> interceptor(Class<? extends Annotation> annotationType) {
 		return (ActionInterceptor<Annotation>) actionInterceptors.get(annotationType);
+	}
+
+	public ActionMethodBinderRegistry getMethodBinderRegistry() {
+		return methodBinderRegistry;
 	}
 }
