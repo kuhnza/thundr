@@ -115,7 +115,7 @@
 		<dependency>
 			<groupId>com.atomicleopard</groupId>
 			<artifactId>expressive</artifactId>
-			<version>0.9.4</version>
+			<version>0.9.5</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -150,14 +150,6 @@
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
-			<scope>compile</scope>
-		</dependency>
-
-		<!-- Logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
 			<scope>compile</scope>
 		</dependency>
 
