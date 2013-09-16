@@ -162,9 +162,11 @@ public class StaticResourceActionResolver implements ActionResolver<StaticResour
 	}
 
 	boolean matchesCompressedMimeTypes(String mimeType) {
-		for (String compressedMimeType : compressedMimeTypes) {
-			if (Wildcard.match(mimeType, compressedMimeType)) {
-				return true;
+		if (mimeType != null) {
+			for (String compressedMimeType : compressedMimeTypes) {
+				if (Wildcard.match(mimeType, compressedMimeType)) {
+					return true;
+				}
 			}
 		}
 		return false;

@@ -138,6 +138,7 @@ public class StaticResourceActionResolverTest {
 		assertThat(resolver.matchesCompressedMimeTypes("text/css"), is(true));
 		assertThat(resolver.matchesCompressedMimeTypes("text/anything"), is(true));
 		assertThat(resolver.matchesCompressedMimeTypes("image/png"), is(false));
+		assertThat(resolver.matchesCompressedMimeTypes(null), is(false));
 	}
 
 	@Test
