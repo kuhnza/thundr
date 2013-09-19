@@ -37,6 +37,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 	private Map<String, String> headers = new HashMap<String, String>();
 	private String characterEncoding = "utf-8";
 	private String contentType = null;
+    private String contentTypeOnWrite = null;
 	private StringOutputStream sos;
 	private int contentLength;
 	private boolean committed = false;
@@ -72,12 +73,23 @@ public class MockHttpServletResponse implements HttpServletResponse {
 		return characterEncoding;
 	}
 
+    /**
+     * @deprecated Use #getContentTypeOnWrite() to get the content type at the time data the output stream is created.
+     */
 	@Override
 	public String getContentType() {
 		return contentType;
 	}
 
-	@Override
+    /**
+     * @return The content type at the time of writing the output stream. If you're verifying the content-type of
+     * the output stream. This is the property to verify.
+     */
+    public String getContentTypeOnWrite() {
+        return contentTypeOnWrite;
+    }
+
+    @Override
 	public ServletOutputStream getOutputStream() throws IOException {
 		if (writer != null) {
 			throw new IllegalStateException("This request attempted to get a ServletOutputStream after getting a PrintWriter from the HttpServletRepsonse");
@@ -256,6 +268,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
 	@SuppressWarnings("serial")
 	private StringOutputStream createOutputStream() {
+        contentTypeOnWrite = contentType;
 		sos = new StringOutputStream(characterEncoding) {
 			@Override
 			public void flush() throws IOException {
