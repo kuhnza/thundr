@@ -48,7 +48,6 @@ public class JsonViewResolver implements ViewResolver<JsonView> {
 			resp.setContentLength(json.getBytes().length);
 			resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write(json);
-
 		} catch (Exception e) {
 			throw new ViewResolutionException(e, "Failed to generate JSON output for object '%s': %s", output.toString(), e.getMessage());
 		}
