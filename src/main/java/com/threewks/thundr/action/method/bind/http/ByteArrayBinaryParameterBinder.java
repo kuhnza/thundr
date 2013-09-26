@@ -26,7 +26,7 @@ public class ByteArrayBinaryParameterBinder implements BinaryParameterBinder<byt
 	}
 
 	@Override
-	public byte[] bind(ParameterDescription parameterDescription, byte[] data) {
-		return data;
+	public byte[] bind(ParameterDescription parameterDescription, MultipartFile file) {
+		return file.getData();
 	}
 }

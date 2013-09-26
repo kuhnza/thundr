@@ -29,7 +29,7 @@ public class InputStreamBinaryParameterBinder implements BinaryParameterBinder<I
 	}
 
 	@Override
-	public InputStream bind(ParameterDescription parameterDescription, byte[] data) {
-        return (data != null)?new ByteArrayInputStream(data):null;
+	public InputStream bind(ParameterDescription parameterDescription, MultipartFile file) {
+        return (file != null)?new ByteArrayInputStream(file.getData()):null;
 	}
 }

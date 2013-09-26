@@ -40,7 +40,7 @@ public class InputStreamBinaryParameterBinderTest {
     public void shouldBindByteArrayByReturningInputStream() throws IOException {
         byte[] bytes = new byte[] { 1,  2, 3 };
         byte[] bound = new byte[3];
-        binder.bind(new ParameterDescription("data", InputStream[].class), bytes).read(bound);
+        binder.bind(new ParameterDescription("data", InputStream[].class), new MultipartFile("test", bytes, "none/none")).read(bound);
         assertThat(bound, is(bytes));
     }
 

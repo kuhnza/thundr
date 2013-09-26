@@ -53,7 +53,7 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 	public void bindAll(Map<ParameterDescription, Object> bindings, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {
 		if (ContentType.anyMatch(supportedContentTypes, req.getContentType())) {
 			Map<String, List<String>> formFields = new HashMap<String, List<String>>();
-			Map<String, byte[]> fileFields = new HashMap<String, byte[]>();
+			Map<String, MultipartFile> fileFields = new HashMap<String, MultipartFile>();
 			extractParameters(req, formFields, fileFields);
 			Map<String, String[]> parameterMap = convertListMapToArrayMap(formFields);
 			httpBinder.bind(bindings, req, resp, parameterMap);
@@ -61,7 +61,7 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 		}
 	}
 
-	private void bindBinaryParameters(Map<ParameterDescription, Object> bindings, Map<String, byte[]> fileFields) {
+	private void bindBinaryParameters(Map<ParameterDescription, Object> bindings, Map<String, MultipartFile> fileFields) {
 		for (ParameterDescription parameterDescription : bindings.keySet()) {
 			if (bindings.get(parameterDescription) == null) {
 				Object value = bindParameter(fileFields, parameterDescription);
@@ -70,13 +70,13 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 		}
 	}
 
-	private Object bindParameter(Map<String, byte[]> fileFields, ParameterDescription parameterDescription) {
+	private Object bindParameter(Map<String, MultipartFile> fileFields, ParameterDescription parameterDescription) {
 		Object value = null;
 		BinaryParameterBinder<?> binder = findParamterBinder(parameterDescription);
 		if (binder != null) {
 			String name = parameterDescription.name();
-			byte[] data = fileFields.get(name);
-			value = binder.bind(parameterDescription, data);
+            MultipartFile file= fileFields.get(name);
+			value = binder.bind(parameterDescription, file);
 		}
 		return value;
 	}
@@ -91,14 +91,14 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 		return binder;
 	}
 
-	private void extractParameters(HttpServletRequest req, Map<String, List<String>> formFields, Map<String, byte[]> fileFields) {
+	private void extractParameters(HttpServletRequest req, Map<String, List<String>> formFields, Map<String, MultipartFile> fileFields) {
 		try {
 			FileItemIterator itemIterator = upload.getItemIterator(req);
 			while (itemIterator.hasNext()) {
 				FileItemStream item = itemIterator.next();
 				InputStream stream = item.openStream();
 
-				String fieldName = item.getFieldName();
+                String fieldName = item.getFieldName();
 				if (item.isFormField()) {
 					List<String> existing = formFields.get(fieldName);
 					if (existing == null) {
@@ -107,7 +107,7 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 					}
 					existing.add(Streams.readString(stream));
 				} else {
-					fileFields.put(fieldName, Streams.readBytes(stream));
+					fileFields.put(fieldName, new MultipartFile(item.getName(), Streams.readBytes(stream), item.getContentType()));
 				}
 				stream.close();
 			}
@@ -125,6 +125,6 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 	}
 
 	private static List<BinaryParameterBinder<?>> binders() {
-		return Expressive.<BinaryParameterBinder<?>> list(new ByteArrayBinaryParameterBinder(), new InputStreamBinaryParameterBinder());
+		return Expressive.<BinaryParameterBinder<?>> list(new ByteArrayBinaryParameterBinder(), new InputStreamBinaryParameterBinder(), new MultipartFileParameterBinder());
 	}
 }

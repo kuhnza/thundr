@@ -36,6 +36,6 @@ public class ByteArrayBinaryParameterBinderTest {
 
 	@Test
 	public void shouldBindByteArrayByReturningByteArray() {
-		assertThat(binder.bind(new ParameterDescription("data", byte[].class), new byte[] { 1, 2, 3 }), is(new byte[] { 1, 2, 3 }));
+		assertThat(binder.bind(new ParameterDescription("data", byte[].class), new MultipartFile("test", new byte[] { 1, 2, 3 }, "none/none")), is(new byte[] { 1, 2, 3 }));
 	}
 }

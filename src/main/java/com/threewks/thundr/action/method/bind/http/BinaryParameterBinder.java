@@ -21,5 +21,5 @@ import com.threewks.thundr.introspection.ParameterDescription;
 
 public interface BinaryParameterBinder<T> {
 	public boolean willBind(ParameterDescription parameterDescription);
-	public T bind(ParameterDescription parameterDescription, byte[] data);
+	public T bind(ParameterDescription parameterDescription, MultipartFile file);
 }
