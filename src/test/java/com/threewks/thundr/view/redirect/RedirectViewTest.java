@@ -17,25 +17,24 @@
  */
 package com.threewks.thundr.view.redirect;
 
-import com.threewks.thundr.view.View;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
-public class RedirectView implements View {
-	private String path;
+import org.junit.Test;
 
-	public RedirectView(String path) {
-		this.path = path;
+public class RedirectViewTest {
+
+	@Test
+	public void shouldRetainRedirectDestination() {
+		RedirectView redirectView = new RedirectView("/path/file.ext");
+		assertThat(redirectView.getRedirect(), is("/path/file.ext"));
+		assertThat(redirectView.toString(), is("Redirect to /path/file.ext"));
 	}
 
-	public RedirectView(String format, Object... args) {
-		this.path = String.format(format, args);
-	}
-
-	public String getRedirect() {
-		return path;
-	}
-
-	@Override
-	public String toString() {
-		return "Redirect to " + path;
+	@Test
+	public void shouldFormatAndRetainRedirectDestination() {
+		RedirectView redirectView = new RedirectView("/%s/%s_%d.ext", "path", "file", 2L);
+		assertThat(redirectView.getRedirect(), is("/path/file_2.ext"));
+		assertThat(redirectView.toString(), is("Redirect to /path/file_2.ext"));
 	}
 }
