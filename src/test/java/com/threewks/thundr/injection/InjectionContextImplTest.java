@@ -43,12 +43,12 @@ public class InjectionContextImplTest {
 
 	@Before
 	public void before() {
-		Environment.set("dev");
+		Environment.set(Environment.DEV);
 	}
 
 	@After
 	public void after() {
-		Environment.set("dev");
+		Environment.set(null);
 	}
 
 	@Test
