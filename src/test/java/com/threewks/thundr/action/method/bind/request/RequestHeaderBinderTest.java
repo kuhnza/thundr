@@ -34,14 +34,13 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.threewks.thundr.action.method.bind.http.HttpBinder;
 import com.threewks.thundr.introspection.ParameterDescription;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletRequest;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletResponse;
 
 public class RequestHeaderBinderTest {
 
-	private RequestHeaderBinder binder;
+	private RequestHeaderBinder binder = new RequestHeaderBinder();
 	private Map<ParameterDescription, Object> parameterDescriptions;
 	private HashMap<String, String> pathVariables;
 	private MockHttpServletRequest request = new MockHttpServletRequest();
@@ -49,7 +48,6 @@ public class RequestHeaderBinderTest {
 
 	@Before
 	public void before() {
-		binder = new RequestHeaderBinder(new HttpBinder());
 		parameterDescriptions = new LinkedHashMap<ParameterDescription, Object>();
 		pathVariables = new HashMap<String, String>();
 	}

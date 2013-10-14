@@ -40,24 +40,8 @@ public class HttpBinder implements ActionMethodBinder {
 	public void bindAll(Map<ParameterDescription, Object> bindings, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {
 		if (ContentType.anyMatch(supportedContentTypes, req.getContentType())) {
 			Map<String, String[]> parameterMap = req.getParameterMap();
-			bind(bindings, req, resp, parameterMap);
+			ParameterBinderSet binders = new ParameterBinderSet();
+			binders.bind(bindings, parameterMap, null);
 		}
-	}
-
-	public void bind(Map<ParameterDescription, Object> bindings, HttpServletRequest req, HttpServletResponse resp, Map<String, String[]> parameterMap) {
-		HttpPostDataMap pathMap = new HttpPostDataMap(parameterMap);
-		ParameterBinderSet binders = binders(req, resp);
-		for (ParameterDescription parameterDescription : bindings.keySet()) {
-			if (bindings.get(parameterDescription) == null) {
-				Object value = binders.createFor(parameterDescription, pathMap);
-				bindings.put(parameterDescription, value);
-			}
-		}
-	}
-
-	private ParameterBinderSet binders(HttpServletRequest req, HttpServletResponse resp) {
-		ParameterBinderSet binders = new ParameterBinderSet();
-		binders.addDefaultBinders();
-		return binders;
 	}
 }

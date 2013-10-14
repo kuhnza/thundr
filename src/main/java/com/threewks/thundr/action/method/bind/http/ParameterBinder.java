@@ -17,9 +17,20 @@
  */
 package com.threewks.thundr.action.method.bind.http;
 
+import com.threewks.thundr.action.method.bind.ActionMethodBinder;
 import com.threewks.thundr.introspection.ParameterDescription;
 
+/**
+ * A parameter binder is used to bind a specific group of data to a specific argument.
+ * That is, it can convert a set of data to one object.
+ * 
+ * This is distinct from the {@link ActionMethodBinder} which knows how to bind potentially more
+ * than one argument.
+ * 
+ * @param <T>
+ */
 public interface ParameterBinder<T> {
 	public boolean willBind(ParameterDescription parameterDescription);
+
 	public T bind(ParameterBinderSet binders, ParameterDescription parameterDescription, HttpPostDataMap pathMap);
 }

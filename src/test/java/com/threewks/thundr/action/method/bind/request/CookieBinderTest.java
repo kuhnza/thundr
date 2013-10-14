@@ -36,7 +36,7 @@ import com.threewks.thundr.test.mock.servlet.MockHttpServletRequest;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletResponse;
 
 public class CookieBinderTest {
-	private CookieBinder binder = new CookieBinder(new HttpBinder());
+	private CookieBinder binder = new CookieBinder();
 	private MockHttpServletRequest req = new MockHttpServletRequest();
 	private HttpServletResponse resp = new MockHttpServletResponse();
 	private Map<String, String> pathVariables = map();
@@ -127,7 +127,7 @@ public class CookieBinderTest {
 		assertThat(bindings.get(varParam1), is(nullValue()));
 		assertThat(bindings.get(varParam2), is(nullValue()));
 	}
-	
+
 	@Test
 	public void shouldHandleCoreTypeParamBindings() {
 		ParameterDescription param1 = new ParameterDescription("param1", String.class);

@@ -119,7 +119,7 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 			boundParameters.put(parameterDescription, null);
 		}
 		if (!boundParameters.isEmpty()) {
-			for (ActionMethodBinder binder : methodBinderRegistry.getRegisteredBinders()) {
+			for (ActionMethodBinder binder : methodBinderRegistry.getRegisteredActionMethodBinders()) {
 				binder.bindAll(boundParameters, req, resp, pathVars);
 			}
 		}

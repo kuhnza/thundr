@@ -44,7 +44,7 @@ public class ParameterBinderSetTest {
 		ParameterBinderSet parameterBinderSet = new ParameterBinderSet();
 
 		Map<String, String[]> map = map("string", new String[] { "value" });
-		assertThat(parameterBinderSet.createFor(new ParameterDescription("string", String.class), new HttpPostDataMap(map)), is(nullValue()));
+		assertThat(parameterBinderSet.createFor(new ParameterDescription("string", Void.class), new HttpPostDataMap(map)), is(nullValue()));
 	}
 
 	@Test
@@ -52,10 +52,12 @@ public class ParameterBinderSetTest {
 		ParameterBinderSet parameterBinderSet = new ParameterBinderSet();
 
 		Map<String, String[]> map = map("string", new String[] { "value" });
-		assertThat(parameterBinderSet.createFor(new ParameterDescription("string", String.class), new HttpPostDataMap(map)), is(nullValue()));
+		assertThat(parameterBinderSet.createFor(new ParameterDescription("string", TestBindable.class), new HttpPostDataMap(map)), is(nullValue()));
 
-		parameterBinderSet.addBinder(new StringParameterBinder());
-		assertThat(parameterBinderSet.createFor(new ParameterDescription("string", String.class), new HttpPostDataMap(map)), is((Object) "value"));
+		parameterBinderSet.addBinder(new TestParameterBinder());
+		Object bindo = parameterBinderSet.createFor(new ParameterDescription("string", TestBindable.class), new HttpPostDataMap(map));
+		assertThat(bindo instanceof TestBindable, is(true));
+		assertThat(bindo, is((Object) new TestBindable("value")));
 	}
 
 	@Test
@@ -64,15 +66,12 @@ public class ParameterBinderSetTest {
 		Map<String, String[]> map = map("bind", new String[] { "bound!" });
 		{
 			ParameterBinderSet parameterBinderSet = new ParameterBinderSet();
-			parameterBinderSet.addDefaultBinders();
 			assertThat(parameterBinderSet.createFor(new ParameterDescription("bind", TestBindable.class), new HttpPostDataMap(map)), is(nullValue()));
 		}
 
 		ParameterBinderSet.registerGlobalBinder(registeredBinder);
 		{
 			ParameterBinderSet parameterBinderSet = new ParameterBinderSet();
-			parameterBinderSet.addDefaultBinders();
-			parameterBinderSet.addDefaultBinders();
 			assertThat(parameterBinderSet.createFor(new ParameterDescription("bind", TestBindable.class), new HttpPostDataMap(map)), is((Object) new TestBindable("bound!")));
 		}
 	}
@@ -84,7 +83,6 @@ public class ParameterBinderSetTest {
 		ParameterBinderSet.unregisterGlobalBinder(registeredBinder);
 		Map<String, String[]> map = map("bind", new String[] { "bound!" });
 		ParameterBinderSet parameterBinderSet = new ParameterBinderSet();
-		parameterBinderSet.addDefaultBinders();
 		assertThat(parameterBinderSet.createFor(new ParameterDescription("bind", TestBindable.class), new HttpPostDataMap(map)), is(nullValue()));
 	}
 
@@ -100,7 +98,7 @@ public class ParameterBinderSetTest {
 	public void shouldNotFailOnUnregisterOfNonRegisteredParameterBinder() {
 		registeredBinder = new TestParameterBinder();
 		ParameterBinderSet.unregisterGlobalBinder(registeredBinder);
-		ParameterBinderSet.unregisterGlobalBinder(null);
+		ParameterBinderSet.unregisterGlobalBinder((ParameterBinder<?>) null);
 	}
 
 	private static class TestBindable {
@@ -153,5 +151,4 @@ public class ParameterBinderSetTest {
 			return obj == null ? false : this.getClass() == obj.getClass();
 		}
 	}
-
 }

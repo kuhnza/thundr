@@ -30,13 +30,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
 
-import com.threewks.thundr.action.method.bind.http.HttpBinder;
 import com.threewks.thundr.introspection.ParameterDescription;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletRequest;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletResponse;
 
 public class RequestAttributeBinderTest {
-	private RequestAttributeBinder binder = new RequestAttributeBinder(new HttpBinder());
+	private RequestAttributeBinder binder = new RequestAttributeBinder();
 	private MockHttpServletRequest req = new MockHttpServletRequest();
 	private HttpServletResponse resp = new MockHttpServletResponse();
 	private Map<String, String> pathVariables = map();

@@ -39,7 +39,7 @@ import com.threewks.thundr.test.mock.servlet.MockHttpServletResponse;
 import com.threewks.thundr.test.mock.servlet.MockHttpSession;
 
 public class SessionAttributeBinderTest {
-	private SessionAttributeBinder binder = new SessionAttributeBinder(new HttpBinder());
+	private SessionAttributeBinder binder = new SessionAttributeBinder();
 	private MockHttpServletRequest req = new MockHttpServletRequest();
 	private HttpSession session = new MockHttpSession();
 	private HttpServletResponse resp = new MockHttpServletResponse();

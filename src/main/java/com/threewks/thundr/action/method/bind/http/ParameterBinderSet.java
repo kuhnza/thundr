@@ -38,8 +38,12 @@ import com.threewks.thundr.collection.factory.SimpleMapFactory;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class ParameterBinderSet {
+	private static final String[] emptyStringArray = new String[0];
+
 	private static List<ParameterBinder<?>> intrinsicBinders = binderMap();
 	private static List<ParameterBinder<?>> registeredBinders = new ArrayList<ParameterBinder<?>>();
+	private static List<BinaryParameterBinder<?>> intrinsicBinaryBinders = binaryBinders();
+	private static List<BinaryParameterBinder<?>> registeredBinaryBinders = new ArrayList<BinaryParameterBinder<?>>();
 
 	/**
 	 * Allows consumer code to introduce binding for defined/user types
@@ -48,6 +52,25 @@ public class ParameterBinderSet {
 	 */
 	public static <T> void registerGlobalBinder(ParameterBinder<T> binder) {
 		registeredBinders.add(binder);
+	}
+
+	/**
+	 * Allows consumer code to introduce binding for defined/user types
+	 * 
+	 * @param binder
+	 */
+	public static void registerGlobalBinder(BinaryParameterBinder<?> binder) {
+		registeredBinaryBinders.add(binder);
+	}
+
+	/**
+	 * Removes the given binder which was previously registered. Requires the given object to be equal to the previously registered
+	 * binder, so either the same instance or you need to implement equality
+	 * 
+	 * @param binder
+	 */
+	public static void unregisterGlobalBinder(BinaryParameterBinder<?> binder) {
+		registeredBinaryBinders.remove(binder);
 	}
 
 	/**
@@ -61,15 +84,22 @@ public class ParameterBinderSet {
 	}
 
 	private List<ParameterBinder<?>> binders = new ArrayList<ParameterBinder<?>>();
+	private List<BinaryParameterBinder<?>> binaryBinders = new ArrayList<BinaryParameterBinder<?>>();
+
+	public ParameterBinderSet() {
+		binders.addAll(registeredBinders);
+		binders.addAll(intrinsicBinders);
+		binaryBinders.addAll(registeredBinaryBinders);
+		binaryBinders.addAll(intrinsicBinaryBinders);
+	}
 
 	public ParameterBinderSet addBinder(ParameterBinder<?> binder) {
 		binders.add(binder);
 		return this;
 	}
 
-	public ParameterBinderSet addDefaultBinders() {
-		binders.addAll(registeredBinders);
-		binders.addAll(intrinsicBinders);
+	public ParameterBinderSet addBinder(BinaryParameterBinder<?> binder) {
+		binaryBinders.add(binder);
 		return this;
 	}
 
@@ -86,6 +116,19 @@ public class ParameterBinderSet {
 			if (binder.willBind(parameterDescription)) {
 				// return the first non-null object
 				Object result = binder.bind(this, parameterDescription, pathMap);
+				if (result != null) {
+					return result;
+				}
+			}
+		}
+		return null;
+	}
+
+	public Object createFor(ParameterDescription parameterDescription, byte[] data) {
+		for (BinaryParameterBinder<?> binder : binaryBinders) {
+			if (binder.willBind(parameterDescription)) {
+				// return the first non-null object
+				Object result = binder.bind(parameterDescription, data);
 				if (result != null) {
 					return result;
 				}
@@ -120,5 +163,41 @@ public class ParameterBinderSet {
 		list.add(new EnumParameterBinder());
 		list.add(new ObjectParameterBinder());
 		return list;
+	}
+
+	private static List<BinaryParameterBinder<?>> binaryBinders() {
+		List<BinaryParameterBinder<?>> results = new ArrayList<BinaryParameterBinder<?>>();
+		results.add(new ByteArrayBinaryParameterBinder());
+		results.add(new InputStreamBinaryParameterBinder());
+		return results;
+	}
+
+	public void bind(Map<ParameterDescription, Object> bindings, Map<String, String[]> parameterMap, Map<String, byte[]> binaryParameters) {
+		HttpPostDataMap pathMap = new HttpPostDataMap(parameterMap);
+		for (ParameterDescription parameterDescription : bindings.keySet()) {
+			if (bindings.get(parameterDescription) == null) {
+				String name = parameterDescription.name();
+				byte[] binaryData = binaryParameters == null ? null : binaryParameters.get(name);
+
+				Object value = null;
+				if (binaryData != null) {
+					value = createFor(parameterDescription, binaryData);
+				}
+				if (value == null) {
+					value = createFor(parameterDescription, pathMap);
+				}
+				if (value != null) {
+					bindings.put(parameterDescription, value);
+				}
+			}
+		}
+	}
+
+	public static Map<String, String[]> convertListMapToArrayMap(Map<String, List<String>> formFields) {
+		Map<String, String[]> parameterMap = new HashMap<String, String[]>();
+		for (Map.Entry<String, List<String>> formFieldEntry : formFields.entrySet()) {
+			parameterMap.put(formFieldEntry.getKey(), formFieldEntry.getValue().toArray(emptyStringArray));
+		}
+		return parameterMap;
 	}
 }

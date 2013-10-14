@@ -33,32 +33,32 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.action.method.bind.ActionMethodBinder;
-import com.threewks.thundr.action.method.bind.http.HttpBinder;
+import com.threewks.thundr.action.method.bind.http.ParameterBinderSet;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class RequestHeaderBinder implements ActionMethodBinder {
-	private HttpBinder delegate;
+	public RequestHeaderBinder() {
 
-	public RequestHeaderBinder(HttpBinder delegate) {
-		this.delegate = delegate;
+	}
+
+	@Override
+	public void bindAll(Map<ParameterDescription, Object> bindings, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {
+		ParameterBinderSet parameterBinderSet = new ParameterBinderSet();
+		Map<String, String[]> parameterMap = createNormalisedHeaderMap(req);
+		parameterBinderSet.bind(bindings, parameterMap, null);
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public void bindAll(Map<ParameterDescription, Object> bindings, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {
-		for (ParameterDescription parameterDescription : bindings.keySet()) {
-			if (bindings.get(parameterDescription) == null) {
-				Enumeration<String> headerNames = req.getHeaderNames();
-				if (headerNames != null) {
-					Map<String, String[]> headerValues = new HashMap<String, String[]>();
-					for (String header : Expressive.<String> iterable(headerNames)) {
-						headerValues.put(normaliseHeaderName(header), headerValues(req.getHeaders(header)));
-					}
-
-					delegate.bind(bindings, req, resp, headerValues);
-				}
+	private Map<String, String[]> createNormalisedHeaderMap(HttpServletRequest req) {
+		Map<String, String[]> results = new HashMap<String, String[]>();
+		Enumeration<String> headerNames = req.getHeaderNames();
+		if (headerNames != null) {
+			for (String name : Expressive.iterable(headerNames)) {
+				String[] values = headerValues(req.getHeaders(name));
+				results.put(normaliseHeaderName(name), values);
 			}
 		}
+		return results;
 	}
 
 	String normaliseHeaderName(String header) {

@@ -37,16 +37,15 @@ public class ActionMethodBinderRegistry {
 	}
 
 	public void registerDefaultActionMethodBinders() {
-		HttpBinder httpBinder = new HttpBinder();
 		registerActionMethodBinder(new PathVariableBinder());
 		registerActionMethodBinder(new RequestClassBinder());
 		registerActionMethodBinder(new GsonBinder());
-		registerActionMethodBinder(httpBinder);
-		registerActionMethodBinder(new MultipartHttpBinder(httpBinder));
-		registerActionMethodBinder(new RequestAttributeBinder(httpBinder));
-		registerActionMethodBinder(new SessionAttributeBinder(httpBinder));
-		registerActionMethodBinder(new RequestHeaderBinder(httpBinder));
-		registerActionMethodBinder(new CookieBinder(httpBinder));
+		registerActionMethodBinder(new HttpBinder());
+		registerActionMethodBinder(new MultipartHttpBinder());
+		registerActionMethodBinder(new RequestAttributeBinder());
+		registerActionMethodBinder(new SessionAttributeBinder());
+		registerActionMethodBinder(new RequestHeaderBinder());
+		registerActionMethodBinder(new CookieBinder());
 	}
 
 	public void registerActionMethodBinder(ActionMethodBinder binder) {
@@ -57,7 +56,8 @@ public class ActionMethodBinderRegistry {
 		methodBinders.remove(type);
 	}
 
-	public Iterable<ActionMethodBinder> getRegisteredBinders() {
+	public Iterable<ActionMethodBinder> getRegisteredActionMethodBinders() {
 		return methodBinders.values();
 	}
+
 }

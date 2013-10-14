@@ -17,9 +17,8 @@
  */
 package com.threewks.thundr.action.method.bind.http;
 
-import static com.atomicleopard.expressive.Expressive.*;
+import static com.atomicleopard.expressive.Expressive.list;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -47,10 +46,10 @@ import com.threewks.thundr.introspection.ParameterDescription;
 import com.threewks.thundr.test.TestSupport;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletRequest;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletResponse;
+import com.threewks.thundr.util.Streams;
 
 public class MultipartHttpBinderTest {
-	private HttpBinder httpBinder = new HttpBinder();
-	private MultipartHttpBinder binder = new MultipartHttpBinder(httpBinder);
+	private MultipartHttpBinder binder = new MultipartHttpBinder();
 	private MockHttpServletRequest request = new MockHttpServletRequest().contentType(ContentType.MultipartFormData);
 	private MockHttpServletResponse response = new MockHttpServletResponse();
 	private Map<String, String> pathVariables;
@@ -141,6 +140,30 @@ public class MultipartHttpBinderTest {
 		assertThat(parameterDescriptions.get(field1), is((Object) "value1"));
 		assertThat(parameterDescriptions.get(field2), is((Object) "value2"));
 		assertThat(parameterDescriptions.get(data), is((Object) new byte[] { 1, 2, 3 }));
+		assertThat(parameterDescriptions.size(), is(3));
+	}
+
+	@Test
+	public void shouldBindInputStreamFromFileData() {
+		ParameterDescription field1 = new ParameterDescription("field1", String.class);
+		ParameterDescription field2 = new ParameterDescription("field2", String.class);
+		ParameterDescription data = new ParameterDescription("data", InputStream.class);
+		addFormField("field1", "value1");
+		addFormField("field2", "value2");
+		addFileField("data", new byte[] { 1, 2, 3 });
+		parameterDescriptions.put(field1, null);
+		parameterDescriptions.put(field2, null);
+		parameterDescriptions.put(data, null);
+
+		binder.bindAll(parameterDescriptions, request, response, pathVariables);
+
+		assertThat(parameterDescriptions.get(field1), is((Object) "value1"));
+		assertThat(parameterDescriptions.get(field2), is((Object) "value2"));
+		Object actualData = parameterDescriptions.get(data);
+		assertThat(actualData, is(notNullValue()));
+		assertThat(actualData instanceof InputStream, is(true));
+		byte[] underlyingData = Streams.readBytes((InputStream) actualData);
+		assertThat(underlyingData, is(new byte[] { 1, 2, 3 }));
 		assertThat(parameterDescriptions.size(), is(3));
 	}
 
