@@ -67,4 +67,11 @@ public class JsonViewResolverTest {
 	public void shouldReturnClassNameForToString() {
 		assertThat(new JsonViewResolver().toString(), is("JsonViewResolver"));
 	}
+
+    @Test
+    public void shouldSetJsonContentType() {
+        JsonView viewResult = new JsonView(map("key", "value"));
+        resolver.resolve(req, resp, viewResult);
+        assertThat(resp.getContentTypeOnWrite(), is("application/json"));
+    }
 }
