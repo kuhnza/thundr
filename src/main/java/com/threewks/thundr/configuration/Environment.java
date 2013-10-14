@@ -18,14 +18,43 @@
 package com.threewks.thundr.configuration;
 
 public class Environment {
-	private static String environment;
+	/**
+	 * 'dev' is the conventional local development environment for thundr apps.
+	 * i.e. when running on localhost.
+	 */
+	public static final String DEV = "dev";
 
+	private static String environment = null;
+
+	/**
+	 * Gets the current environment name.
+	 * 
+	 * @return
+	 */
 	public static String get() {
 		return environment;
 	}
 
+	/**
+	 * Sets the current environment name. thundr expects this value to
+	 * be well established at application start up time, and not to change
+	 * during application running. This method is primarily available for test code,
+	 * but is also used to specify the environment at startup.
+	 * 
+	 * @param environment
+	 */
 	public static void set(String environment) {
 		Environment.environment = environment;
+	}
+
+	/**
+	 * Returns true if the current environment matches the given value
+	 * 
+	 * @param environment
+	 * @return
+	 */
+	public static boolean is(String environment) {
+		return Environment.environment == null ? environment == null : Environment.environment.equals(environment);
 	}
 
 }

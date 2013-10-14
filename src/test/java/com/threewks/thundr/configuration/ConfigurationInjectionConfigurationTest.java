@@ -46,7 +46,7 @@ public class ConfigurationInjectionConfigurationTest {
 
 	@After
 	public void after() {
-		Environment.set("dev");
+		Environment.set(null);
 	}
 
 	@Test
