@@ -17,7 +17,7 @@
  */
 package com.threewks.thundr.view.string;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
@@ -31,7 +31,18 @@ public class StringViewTest {
 	@Test
 	public void shouldHaveContentMatchingFormattedArguments() {
 		assertThat(new StringView("Format %s %d", "value", 15).content().toString(), is("Format value 15"));
+	}
 
+	@Test
+	public void shouldHaveNoDefaultContentType() {
+		assertThat(new StringView("").contentType(), is(nullValue()));
+	}
+
+	@Test
+	public void shouldHaveSpecifiedContentType() {
+		StringView view = new StringView("content").contentType("application/json");
+		assertThat(view.content(), is((CharSequence) "content"));
+		assertThat(view.contentType(), is("application/json"));
 	}
 
 	@Test

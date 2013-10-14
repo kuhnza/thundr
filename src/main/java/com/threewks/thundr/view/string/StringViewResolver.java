@@ -17,21 +17,38 @@
  */
 package com.threewks.thundr.view.string;
 
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import jodd.util.StringPool;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.threewks.thundr.view.ViewResolutionException;
 import com.threewks.thundr.view.ViewResolver;
 
 public class StringViewResolver implements ViewResolver<StringView> {
+	private String encoding;
+
+	public StringViewResolver() {
+		this(StringPool.UTF_8);
+	}
+
+	public StringViewResolver(String characterEncoding) {
+		this.encoding = characterEncoding;
+	}
+
 	@Override
 	public void resolve(HttpServletRequest req, HttpServletResponse resp, StringView viewResult) {
 		try {
-			PrintWriter writer = resp.getWriter();
-			writer.print(viewResult.content());
-			writer.flush();
+			if (StringUtils.isNotBlank(viewResult.contentType())) {
+				resp.setContentType(viewResult.contentType());
+			}
+			String content = viewResult.content().toString();
+			byte[] bytes = content.getBytes(this.encoding);
+			resp.setCharacterEncoding(this.encoding);
+			resp.getOutputStream().write(bytes);
+			resp.flushBuffer();
 		} catch (Exception e) {
 			throw new ViewResolutionException(e, "Failed to write String view result: %s", e.getMessage());
 		}

@@ -17,8 +17,11 @@
  */
 package com.threewks.thundr.view.string;
 
-public class StringView {
+import com.threewks.thundr.view.View;
+
+public class StringView implements View {
 	private CharSequence content;
+	private String contentType = null;
 
 	public StringView(String content) {
 		this.content = content;
@@ -32,7 +35,15 @@ public class StringView {
 		return content;
 	}
 
-	@Override
+	public String contentType() {
+		return contentType;
+	}
+
+	public StringView contentType(String contentType) {
+		this.contentType = contentType;
+		return this;
+	}
+
 	public String toString() {
 		return content.toString();
 	}

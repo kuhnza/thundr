@@ -17,11 +17,12 @@
  */
 package com.threewks.thundr.view.string;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -45,6 +46,8 @@ public class StringViewResolverTest {
 		stringViewResolver.resolve(req, resp, new StringView("My view result"));
 		assertThat(resp.content(), is("My view result"));
 		assertThat(resp.isCommitted(), is(true));
+		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
+		assertThat(resp.getContentType(), is(nullValue()));
 	}
 
 	@Test
@@ -58,5 +61,24 @@ public class StringViewResolverTest {
 	@Test
 	public void shouldReturnClassNameForToString() {
 		assertThat(new StringViewResolver().toString(), is("StringViewResolver"));
+	}
+
+	@Test
+	public void shouldApplySpecifiedContentType() {
+		stringViewResolver.resolve(req, resp, new StringView("My view result").contentType("text/html"));
+		assertThat(resp.content(), is("My view result"));
+		assertThat(resp.isCommitted(), is(true));
+		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
+		assertThat(resp.getContentType(), is("text/html"));
+	}
+	
+	@Test
+	public void shouldUseDifferentCharacterEncodingWhenSpecified() throws UnsupportedEncodingException {
+		stringViewResolver = new StringViewResolver("UTF-16");
+		stringViewResolver.resolve(req, resp, new StringView("My view result").contentType("text/html"));
+		assertThat(resp.getCharacterEncoding(), is("UTF-16"));
+		assertThat(resp.isCommitted(), is(true));
+		assertThat(resp.getContentType(), is("text/html"));
+		assertThat(resp.content(), is("My view result"));
 	}
 }
