@@ -89,6 +89,14 @@ public class MockHttpServletResponse implements HttpServletResponse {
 				public void write(int arg0) throws IOException {
 					sos.write(arg0);
 				}
+				@Override
+				public void write(byte[] b) throws IOException {
+					sos.write(b);
+				}
+				@Override
+				public void write(byte[] b, int off, int len) throws IOException {
+					sos.write(b, off, len);
+				}
 			};
 		}
 		return servletOutputStream;
