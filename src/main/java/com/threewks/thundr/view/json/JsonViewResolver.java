@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jodd.util.MimeTypes;
+import jodd.util.StringPool;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -42,17 +43,18 @@ public class JsonViewResolver implements ViewResolver<JsonView> {
 	public void resolve(HttpServletRequest req, HttpServletResponse resp, JsonView viewResult) {
 		Object output = viewResult.getOutput();
 		try {
-            Gson create = gsonBuilder.create();
+			Gson create = gsonBuilder.create();
 			String json = create.toJson(output);
 			resp.setContentType(MimeTypes.MIME_APPLICATION_JSON);
-			resp.setContentLength(json.getBytes().length);
+			resp.setCharacterEncoding(StringPool.UTF_8);
+			resp.setContentLength(json.getBytes(StringPool.UTF_8).length);
 			resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write(json);
+			resp.getWriter().write(json);
 		} catch (Exception e) {
 			throw new ViewResolutionException(e, "Failed to generate JSON output for object '%s': %s", output.toString(), e.getMessage());
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName();

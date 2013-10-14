@@ -37,7 +37,6 @@ public class MockHttpServletResponse implements HttpServletResponse {
 	private Map<String, String> headers = new HashMap<String, String>();
 	private String characterEncoding = "utf-8";
 	private String contentType = null;
-    private String contentTypeOnWrite = null;
 	private StringOutputStream sos;
 	private int contentLength;
 	private boolean committed = false;
@@ -73,23 +72,12 @@ public class MockHttpServletResponse implements HttpServletResponse {
 		return characterEncoding;
 	}
 
-    /**
-     * @deprecated Use #getContentTypeOnWrite() to get the content type at the time data the output stream is created.
-     */
 	@Override
 	public String getContentType() {
 		return contentType;
 	}
 
-    /**
-     * @return The content type at the time of writing the output stream. If you're verifying the content-type of
-     * the output stream. This is the property to verify.
-     */
-    public String getContentTypeOnWrite() {
-        return contentTypeOnWrite;
-    }
-
-    @Override
+	@Override
 	public ServletOutputStream getOutputStream() throws IOException {
 		if (writer != null) {
 			throw new IllegalStateException("This request attempted to get a ServletOutputStream after getting a PrintWriter from the HttpServletRepsonse");
@@ -97,16 +85,25 @@ public class MockHttpServletResponse implements HttpServletResponse {
 		if (servletOutputStream == null) {
 			sos = createOutputStream();
 			servletOutputStream = new ServletOutputStream() {
+
 				@Override
 				public void write(int arg0) throws IOException {
+					// in practice, for the purposes of headers the response is committed to when you start writing to it - the container can flush at any time
+					committed = true;
 					sos.write(arg0);
 				}
+
 				@Override
 				public void write(byte[] b) throws IOException {
+					// in practice, for the purposes of headers the response is committed to when you start writing to it - the container can flush at any time
+					committed = true;
 					sos.write(b);
 				}
+
 				@Override
 				public void write(byte[] b, int off, int len) throws IOException {
+					// in practice, for the purposes of headers the response is committed to when you start writing to it - the container can flush at any time
+					committed = true;
 					sos.write(b, off, len);
 				}
 			};
@@ -128,17 +125,23 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
 	@Override
 	public void setCharacterEncoding(String charset) {
-		this.characterEncoding = charset;
+		if (!committed) {
+			this.characterEncoding = charset;
+		}
 	}
 
 	@Override
 	public void setContentLength(int len) {
-		this.contentLength = len;
+		if (!committed) {
+			this.contentLength = len;
+		}
 	}
 
 	@Override
 	public void setContentType(String type) {
-		this.contentType = type;
+		if (!committed) {
+			this.contentType = type;
+		}
 	}
 
 	@Override
@@ -276,7 +279,6 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
 	@SuppressWarnings("serial")
 	private StringOutputStream createOutputStream() {
-        contentTypeOnWrite = contentType;
 		sos = new StringOutputStream(characterEncoding) {
 			@Override
 			public void flush() throws IOException {
@@ -286,6 +288,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
 			@Override
 			public void close() {
+				committed = true;
 			}
 		};
 		return sos;

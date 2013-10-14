@@ -36,8 +36,7 @@ import com.threewks.thundr.view.ViewResolutionException;
 
 public class JsonViewResolverTest {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+	@Rule public ExpectedException thrown = ExpectedException.none();
 
 	private MockHttpServletRequest req = new MockHttpServletRequest();
 	private MockHttpServletResponse resp = new MockHttpServletResponse();
@@ -49,6 +48,7 @@ public class JsonViewResolverTest {
 		resolver.resolve(req, resp, viewResult);
 		assertThat(resp.status(), is(HttpServletResponse.SC_OK));
 		assertThat(resp.content(), is("{\"key\":\"value\"}"));
+		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
 		assertThat(resp.getContentLength(), is(15));
 	}
 
@@ -68,10 +68,10 @@ public class JsonViewResolverTest {
 		assertThat(new JsonViewResolver().toString(), is("JsonViewResolver"));
 	}
 
-    @Test
-    public void shouldSetJsonContentType() {
-        JsonView viewResult = new JsonView(map("key", "value"));
-        resolver.resolve(req, resp, viewResult);
-        assertThat(resp.getContentTypeOnWrite(), is("application/json"));
-    }
+	@Test
+	public void shouldSetJsonContentType() {
+		JsonView viewResult = new JsonView(map("key", "value"));
+		resolver.resolve(req, resp, viewResult);
+		assertThat(resp.getContentType(), is("application/json"));
+	}
 }
