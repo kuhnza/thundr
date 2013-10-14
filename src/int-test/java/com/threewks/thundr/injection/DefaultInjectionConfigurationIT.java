@@ -17,11 +17,8 @@
  */
 package com.threewks.thundr.injection;
 
-import static com.atomicleopard.expressive.Expressive.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
 
 import org.junit.Test;
 
@@ -42,26 +39,26 @@ public class DefaultInjectionConfigurationIT {
 		assertThat(injectionContext.get(Modules.class), is(notNullValue()));
 		assertThat(injectionContext.get(Routes.class), is(notNullValue()));
 	}
-	
+
 	@Test
 	public void shouldHaveRunConfigurationInjectionConfiguration() {
 		config.configure(injectionContext);
-		
+
 		assertThat(injectionContext.get(String.class, "expectedValue"), is("present"));
 	}
-	
+
 	@Test
 	public void shouldHaveRunRouteInjectionConfiguration() {
 		config.configure(injectionContext);
 		Routes routes = injectionContext.get(Routes.class);
 		assertThat(routes.findMatchingRoute("/something", RouteType.GET), is(notNullValue()));
 	}
-	
+
 	@Test
 	public void shouldHaveRunViewResolverInjectionConfiguration() {
 		config.configure(injectionContext);
 		ViewResolverRegistry registry = injectionContext.get(ViewResolverRegistry.class);
-		
+
 		assertThat(registry, is(notNullValue()));
 		assertThat(registry.findViewResolver(new StringView("")), is(notNullValue()));
 	}

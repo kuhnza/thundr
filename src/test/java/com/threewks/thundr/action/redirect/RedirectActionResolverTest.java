@@ -17,10 +17,8 @@
  */
 package com.threewks.thundr.action.redirect;
 
-import static com.atomicleopard.expressive.Expressive.*;
 import static com.atomicleopard.expressive.Expressive.map;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
@@ -39,8 +37,7 @@ import com.threewks.thundr.action.ActionException;
 import com.threewks.thundr.route.RouteType;
 
 public class RedirectActionResolverTest {
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+	@Rule public ExpectedException thrown = ExpectedException.none();
 
 	private RedirectActionResolver resolver = new RedirectActionResolver();
 	private Map<String, String> emptyMap = map();

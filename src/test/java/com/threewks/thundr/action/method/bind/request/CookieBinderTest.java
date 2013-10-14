@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
 
-import com.threewks.thundr.action.method.bind.http.HttpBinder;
 import com.threewks.thundr.introspection.ParameterDescription;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletRequest;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletResponse;

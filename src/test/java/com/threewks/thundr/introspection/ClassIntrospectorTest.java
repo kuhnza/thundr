@@ -18,7 +18,6 @@
 package com.threewks.thundr.introspection;
 
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.lang.reflect.Constructor;
@@ -30,7 +29,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 public class ClassIntrospectorTest {
@@ -97,8 +95,8 @@ public class ClassIntrospectorTest {
 	}
 
 	static class TestC implements TestAA {
-		@Inject
-		private String fieldA;
+		@Inject private String fieldA;
+		@SuppressWarnings("unused")
 		private String fieldB;
 
 		public TestC() {
@@ -118,8 +116,8 @@ public class ClassIntrospectorTest {
 	}
 
 	static class TestCA extends TestC implements TestBA {
-		@Inject
-		private String fieldC;
+		@Inject private String fieldC;
+		@SuppressWarnings("unused")
 		private String fieldD;
 
 		public void setA(String a) {

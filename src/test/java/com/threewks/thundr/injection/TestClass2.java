@@ -19,16 +19,16 @@ package com.threewks.thundr.injection;
 
 public class TestClass2 {
 	private String arg1;
-	private String arg2;
+	@SuppressWarnings("unused") private String arg2;
 
 	public TestClass2(String arg1) {
 		super();
 		this.arg1 = arg1;
 	}
-	
+
 	public TestClass2(boolean throwsException) {
 		super();
-		if(throwsException){
+		if (throwsException) {
 			throw new RuntimeException("expected");
 		}
 	}
@@ -37,8 +37,8 @@ public class TestClass2 {
 		return arg1;
 	}
 
-	public void setArg2(boolean arg2){
-		if(arg2){
+	public void setArg2(boolean arg2) {
+		if (arg2) {
 			throw new RuntimeException("expected");
 		}
 	}
