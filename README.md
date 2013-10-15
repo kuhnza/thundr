@@ -7,7 +7,7 @@ It is designed to be quick to pick up, and easily but powerfully extended by the
 
 ## Documentation
 
-You can read more about [thundr here](http://3wks.github.io/thundr/modules/thundr/basics.html).
+You can read more about [thundr here](http://3wks.github.io/thundr/).
 
 ## Features
 
