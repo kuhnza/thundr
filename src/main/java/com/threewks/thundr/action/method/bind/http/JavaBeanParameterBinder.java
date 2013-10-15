@@ -17,19 +17,15 @@
  */
 package com.threewks.thundr.action.method.bind.http;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import jodd.bean.BeanLoaderManager;
 
-import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.action.method.bind.BindException;
+import com.threewks.thundr.introspection.ClassIntrospector;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class JavaBeanParameterBinder implements ParameterBinder<Object> {
-	private static Set<Class<?>> classesToSkip = createClassesToSkip();
-
 	public Object bind(ParameterBinderSet binders, ParameterDescription parameterDescription, HttpPostDataMap pathMap) {
 		Map<String, Object> stringMap = pathMap.toStringMap(parameterDescription.name());
 		if (!stringMap.isEmpty()) {
@@ -44,23 +40,9 @@ public class JavaBeanParameterBinder implements ParameterBinder<Object> {
 		return null;
 	}
 
-	private boolean shouldProcess(Class<?> type) {
-		return !classesToSkip.contains(type);
-	}
-
 	@Override
 	public boolean willBind(ParameterDescription parameterDescription) {
-		try {
-			Class<?> type = parameterDescription.classType();
-			return shouldProcess(type) && type.getConstructor(new Class[0]) != null;
-		} catch (Exception e) {
-			return false;
-		}
+		Class<?> type = parameterDescription.classType();
+		return ClassIntrospector.isAJavabean(type);
 	}
-
-	private static Set<Class<?>> createClassesToSkip() {
-		return new HashSet<Class<?>>(Expressive.<Class<?>> list(String.class, int.class, byte.class, short.class, float.class, double.class, long.class, void.class, Integer.class, Byte.class,
-				Short.class, Float.class, Double.class, Long.class, Void.class));
-	}
-
 }

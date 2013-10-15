@@ -30,12 +30,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import jodd.io.StringOutputStream;
+import jodd.util.StringPool;
 
 import com.threewks.thundr.exception.BaseException;
 
 public class MockHttpServletResponse implements HttpServletResponse {
 	private Map<String, String> headers = new HashMap<String, String>();
-	private String characterEncoding = "utf-8";
+	private String characterEncoding = StringPool.UTF_8;
 	private String contentType = null;
 	private StringOutputStream sos;
 	private int contentLength;

@@ -55,6 +55,19 @@ public class SpecificJspViewResolverTest {
 		assertThat(mockResponse.getContentType(), is("text/html"));
 		assertThat(mockResponse.getCharacterEncoding(), is("UTF-8"));
 	}
+	
+	@Test
+	public void shouldOnlySetContentTypeAndEncodingOnResponseIfNotAlreadySet() {
+		mockResponse.setContentType("made/up");
+		mockResponse.setCharacterEncoding("utf-1");
+		
+		SpecificJspViewResolver<Object> resolver = new SpecificJspViewResolver<Object>("page.jsp");
+		Object viewResult = new Object();
+		resolver.resolve(mockRequest, mockResponse, viewResult);
+		assertThat(mockResponse.getContentType(), is("made/up"));
+		assertThat(mockResponse.getCharacterEncoding(), is("utf-1"));
+	}
+
 
 	@Test
 	public void shouldIncludeTheSpecifiedJsp() {

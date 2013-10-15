@@ -24,13 +24,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.ClassUtils;
-
 import jodd.introspector.ClassDescriptor;
 import jodd.util.ReflectUtil;
+
+import org.apache.commons.lang3.ClassUtils;
 
 import com.atomicleopard.expressive.EList;
 import com.atomicleopard.expressive.ETransformer;
@@ -38,6 +39,8 @@ import com.atomicleopard.expressive.Expressive;
 
 public class ClassIntrospector {
 	public static final boolean supportsInjection = classExists("javax.inject.Inject");
+	private static Set<Class<?>> NonJavabeanBasicClasses = Expressive.<Class<?>> set(Object.class, String.class, boolean.class, int.class, byte.class, short.class, float.class, double.class,
+			long.class, void.class, Boolean.class, Integer.class, Byte.class, Short.class, Float.class, Double.class, Long.class, Void.class);
 
 	@SuppressWarnings({ "rawtypes" })
 	public <T> List<Constructor<T>> listConstructors(Class<T> type) {
@@ -87,7 +90,7 @@ public class ClassIntrospector {
 	}
 
 	public List<Class<?>> listImplementedTypes(Class<?> type) {
-		EList<Class<?>> types = Expressive.<Class<?>>list(type);
+		EList<Class<?>> types = Expressive.<Class<?>> list(type);
 		types.addItems(ClassUtils.getAllSuperclasses(type));
 		types.addItems(ClassUtils.getAllInterfaces(type));
 		return types;
@@ -102,9 +105,16 @@ public class ClassIntrospector {
 		}
 	}
 
+	public static boolean isAJavabean(Class<?> type) {
+		try {
+			return type != null && !NonJavabeanBasicClasses.contains(type) && (type.newInstance() != null);
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	private static <A, B> ETransformer<A, B> castTransformer() {
-		// TODO - This should be migrated to the Expressive library - it looks pretty useful!
 		return new ETransformer<A, B>() {
 			@Override
 			public B from(A from) {

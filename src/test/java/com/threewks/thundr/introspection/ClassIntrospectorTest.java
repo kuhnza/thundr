@@ -25,11 +25,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.junit.Test;
+
+import com.threewks.thundr.route.RouteType;
 
 public class ClassIntrospectorTest {
 
@@ -78,6 +81,25 @@ public class ClassIntrospectorTest {
 		assertThat(types, is(Arrays.asList(TestCA.class, TestC.class, Object.class, TestBA.class, TestB.class, TestAA.class, TestA.class)));
 	}
 
+	@Test
+	public void shouldReturnTrueForIsAJavabeanIfIsANormalObjectWithANoArgsCtor() {
+		assertThat(ClassIntrospector.isAJavabean(null), is(false));
+		assertThat(ClassIntrospector.isAJavabean(Object.class), is(false));
+		assertThat(ClassIntrospector.isAJavabean(Void.class), is(false));
+		assertThat(ClassIntrospector.isAJavabean(int.class), is(false));
+		assertThat(ClassIntrospector.isAJavabean(Integer.class), is(false));
+		assertThat(ClassIntrospector.isAJavabean(String[].class), is(false));
+		assertThat(ClassIntrospector.isAJavabean(String.class), is(false));
+		assertThat(ClassIntrospector.isAJavabean(NoDefaultCtor.class), is(false));
+		assertThat(ClassIntrospector.isAJavabean(PrivateCtor.class), is(false));
+		assertThat(ClassIntrospector.isAJavabean(RouteType.class), is(false));
+		assertThat(ClassIntrospector.isAJavabean(NoDefaultCtor.class), is(false));
+
+		assertThat(ClassIntrospector.isAJavabean(Date.class), is(true));
+		assertThat(ClassIntrospector.isAJavabean(TestC.class), is(true));
+		assertThat(ClassIntrospector.isAJavabean(TestCA.class), is(true));
+	}
+
 	static interface TestA {
 
 	}
@@ -96,8 +118,7 @@ public class ClassIntrospectorTest {
 
 	static class TestC implements TestAA {
 		@Inject private String fieldA;
-		@SuppressWarnings("unused")
-		private String fieldB;
+		@SuppressWarnings("unused") private String fieldB;
 
 		public TestC() {
 		}
@@ -117,14 +138,27 @@ public class ClassIntrospectorTest {
 
 	static class TestCA extends TestC implements TestBA {
 		@Inject private String fieldC;
-		@SuppressWarnings("unused")
-		private String fieldD;
+		@SuppressWarnings("unused") private String fieldD;
 
 		public void setA(String a) {
 
 		}
 
 		public void setB(int b) {
+
+		}
+	}
+
+	public static class DefaultCtor {
+	}
+
+	public static class NoDefaultCtor {
+		public NoDefaultCtor(String something) {
+		}
+	}
+
+	public static class PrivateCtor {
+		private PrivateCtor() {
 
 		}
 	}

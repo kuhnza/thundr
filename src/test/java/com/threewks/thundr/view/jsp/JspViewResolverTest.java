@@ -19,6 +19,7 @@ package com.threewks.thundr.view.jsp;
 
 import static com.atomicleopard.expressive.Expressive.*;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
@@ -58,6 +59,7 @@ public class JspViewResolverTest {
 		URL url = new URL("file://file.jsp");
 		when(servletContext.getResource(anyString())).thenReturn(url);
 		req.session(session);
+		resp.setCharacterEncoding(null);
 	}
 
 	@Test
@@ -69,6 +71,16 @@ public class JspViewResolverTest {
 		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
 	}
 
+	@Test
+	public void shouldOnlySetContentTypeAndCharacterEncodingIfNotAlreadyPresentOnResponse() {
+		resp.setContentType("made/up");
+		resp.setCharacterEncoding("utf-1");
+		resolver.resolve(req, resp, new JspView("view.jsp"));
+		assertThat(req.requestDispatcher().lastPath(), is("/WEB-INF/jsp/view.jsp"));
+		assertThat(req.requestDispatcher().included(), is(true));
+		assertThat(resp.getContentType(), is("made/up"));
+		assertThat(resp.getCharacterEncoding(), is("utf-1"));
+	}
 	@Test
 	public void shouldAddAllModelAttributesAsRequestAttributes() {
 		Map<String, Object> model = mapKeys("attribute1", "attribute2").to("String val", list("Other", "Stuff"));

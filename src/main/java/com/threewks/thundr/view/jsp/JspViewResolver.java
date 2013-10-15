@@ -79,9 +79,13 @@ public class JspViewResolver implements ViewResolver<JspView> {
 
 	public static void includeContentTypeAndEncoding(HttpServletResponse resp) {
 		// Content type needs to be set on the response because we use include, not forward
-		resp.setContentType(ContentType.TextHtml.value());
-		// Character encoding needs to be set on the response because include does not set the character encoding use the jsp page directive.
-		resp.setCharacterEncoding(StringPool.UTF_8);
+		if (resp.getContentType() == null) {
+			resp.setContentType(ContentType.TextHtml.value());
+		}
+		if (resp.getCharacterEncoding() == null) {
+			// Character encoding needs to be set on the response because include does not set the character encoding use the jsp page directive.
+			resp.setCharacterEncoding(StringPool.UTF_8);
+		}
 	}
 
 	public static void includeModelInRequest(HttpServletRequest req, Map<String, Object> model) {
