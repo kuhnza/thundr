@@ -72,12 +72,6 @@
 		<path>/META-INF/tags/controls/select.tag</path>
 	</tag-file>
 
-	<!-- Widget Tags -->
-	<tag-file>
-		<name>profile</name>
-		<path>/META-INF/tags/widget/profile.tag</path>
-	</tag-file>
-	
 	<!-- Functions -->
 	<!-- path and url manipulation -->
 	<function>

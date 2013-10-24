@@ -35,8 +35,6 @@ import com.threewks.thundr.injection.InjectionConfiguration;
 import com.threewks.thundr.injection.InjectionContextImpl;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.logger.Logger;
-import com.threewks.thundr.profiler.Profilable;
-import com.threewks.thundr.profiler.Profiler;
 import com.threewks.thundr.route.RouteType;
 import com.threewks.thundr.route.Routes;
 import com.threewks.thundr.view.ViewResolver;
@@ -73,15 +71,12 @@ public class ThundrServlet extends HttpServlet {
 	protected void applyRoute(final RouteType routeType, final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
 		final ViewResolverRegistry viewResolverRegistry = injectionContext.get(ViewResolverRegistry.class);
 		String requestPath = req.getRequestURI();
-		Profiler profiler = injectionContext.get(Profiler.class);
-		profiler.beginProfileSession(routeType.name() + " " + requestPath);
-		req.setAttribute("com.threewks.thundr.profiler.Profiler", profiler);
 		try {
 			Logger.debug("Invoking path %s", requestPath);
 			Routes routes = injectionContext.get(Routes.class);
 			final Object viewResult = routes.invoke(requestPath, routeType, req, resp);
 			if (viewResult != null) {
-				resolveView(req, resp, viewResolverRegistry, viewResult, profiler);
+				resolveView(req, resp, viewResolverRegistry, viewResult);
 			}
 		} catch (Exception e) {
 			if (Cast.is(e, ActionException.class)) {
@@ -99,20 +94,14 @@ public class ThundrServlet extends HttpServlet {
 				}
 			}
 		}
-		profiler.endProfileSession();
 	}
 
-	private void resolveView(final HttpServletRequest req, final HttpServletResponse resp, final ViewResolverRegistry viewResolverRegistry, final Object viewResult, Profiler profiler) {
-		profiler.profile(Profiler.CategoryView, viewResult.toString(), new Profilable<Void>() {
-			public Void profile() {
-				ViewResolver<Object> viewResolver = viewResolverRegistry.findViewResolver(viewResult);
-				if (viewResolver == null) {
-					throw new ViewResolverNotFoundException("No %s is registered for the view result %s - %s", ViewResolver.class.getSimpleName(), viewResult.getClass().getSimpleName(), viewResult);
-				}
-				viewResolver.resolve(req, resp, viewResult);
-				return null;
-			}
-		});
+	private void resolveView(final HttpServletRequest req, final HttpServletResponse resp, final ViewResolverRegistry viewResolverRegistry, final Object viewResult) {
+		ViewResolver<Object> viewResolver = viewResolverRegistry.findViewResolver(viewResult);
+		if (viewResolver == null) {
+			throw new ViewResolverNotFoundException("No %s is registered for the view result %s - %s", ViewResolver.class.getSimpleName(), viewResult.getClass().getSimpleName(), viewResult);
+		}
+		viewResolver.resolve(req, resp, viewResult);
 	}
 
 	@Override

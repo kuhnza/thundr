@@ -46,6 +46,6 @@ public class StringFunctions {
 	}
 	
 	public static List<String> split(Object arg, String regex) {
-		return arg == null ? Collections.<String>emptyList() : Arrays.asList(arg.toString().split(regex == null ? "\\s" : regex));
+		return arg == null ? Collections.<String>emptyList() : Arrays.asList(arg.toString().split(regex == null ? "\\s+" : regex));
 	}
 }

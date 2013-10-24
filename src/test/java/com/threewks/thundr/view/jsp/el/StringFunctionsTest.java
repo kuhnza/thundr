@@ -93,6 +93,8 @@ public class StringFunctionsTest {
 	@Test
 	public void shouldSplitInputUsingRegex() {
 		assertThat(StringFunctions.split("text first", "\\s"), is(Arrays.asList("text", "first")));
+		assertThat(StringFunctions.split("text first", null), is(Arrays.asList("text", "first")));
+		assertThat(StringFunctions.split("text \t first", null), is(Arrays.asList("text", "first")));
 		assertThat(StringFunctions.split("text", "\\s"), is(Arrays.asList("text")));
 		assertThat(StringFunctions.split("", "\\s"), is(Arrays.asList("")));
 		assertThat(StringFunctions.split(null, "\\s"), is(Collections.<String>emptyList()));

@@ -15,43 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.threewks.thundr.profiler;
+package com.threewks.thundr.action;
 
-import java.util.UUID;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
-public class NoProfiler implements Profiler {
+import org.junit.Test;
 
-	public NoProfiler() {
+public class ActionExceptionTest {
+
+	@Test
+	public void shouldRetainMessage() {
+		ActionException actionException = new ActionException("Format %s", "message");
+		assertThat(actionException.getMessage(), is("Format message"));
+		assertThat(actionException.getCause(), is(nullValue()));
 	}
 
-	@Override
-	public void beginProfileSession(String data) {
-	}
-
-	@Override
-	public void endProfileSession() {
-	}
-
-	@Override
-	public UUID start(String category, String data) {
-		return null;
-	}
-
-	@Override
-	public void end(UUID eventKey) {
-	}
-
-	@Override
-	public void end(UUID eventKey, ProfileEventStatus status) {
-	}
-
-	@Override
-	public ProfileSession getCurrent() {
-		return new ProfileSession("");
-	}
-
-	@Override
-	public <T> T profile(String category, String data, Profilable<T> profilable) {
-		return profilable.profile();
+	@Test
+	public void shouldRetainMessageAndCause() {
+		Throwable cause = new RuntimeException();
+		ActionException actionException = new ActionException(cause, "Format %s", "message");
+		assertThat(actionException.getMessage(), is("Format message"));
+		assertThat(actionException.getCause(), is(cause));
 	}
 }

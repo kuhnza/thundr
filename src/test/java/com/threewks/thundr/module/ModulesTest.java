@@ -18,7 +18,7 @@
 package com.threewks.thundr.module;
 
 import static com.atomicleopard.expressive.Expressive.list;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
@@ -31,10 +31,10 @@ import org.junit.rules.ExpectedException;
 import com.threewks.thundr.injection.InjectionConfiguration;
 import com.threewks.thundr.injection.InjectionContextImpl;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
+import com.threewks.thundr.module.test.TestInjectionConfiguration;
 
 public class ModulesTest {
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+	@Rule public ExpectedException thrown = ExpectedException.none();
 
 	private Modules modules = new Modules();
 	private Module testModule1 = Module.from(new TestModule1());
@@ -78,6 +78,30 @@ public class ModulesTest {
 		thrown.expectMessage("exceeded the maximum number of allowed modules");
 		modules.addModule(Module.from(new TestModule4()));
 		modules.loadModules(injectionContext);
+	}
+
+	@Test
+	public void shouldThrowModuleLoadingExceptionWhenGivenModuleIsNotAnInjectionConfiguration() {
+		thrown.expect(ModuleLoadingException.class);
+		thrown.expectMessage("Failed to load module 'com.threewks.thundr.module.test.invalid' - the configuration class com.threewks.thundr.module.test.invalid.InvalidInjectionConfiguration does not implement 'com.threewks.thundr.injection.InjectionConfiguration'");
+
+		Module.createModule("com.threewks.thundr.module.test.invalid");
+	}
+
+	@Test
+	public void shouldThrowModuleLoadingExceptionWhenGivenModuleDoesNotExist() {
+		thrown.expect(ModuleLoadingException.class);
+		thrown.expectMessage("Failed to load module 'com.threewks.thundr.module.test.non-existant' - the configuration class com.threewks.thundr.module.test.non-existant.Non-existantInjectionConfiguration does not exist");
+
+		Module.createModule("com.threewks.thundr.module.test.non-existant");
+	}
+
+	@Test
+	public void shouldCreateModule() {
+		Module module = Module.createModule("com.threewks.thundr.module.test");
+		assertThat(module, is(notNullValue()));
+		assertThat(module.getName(), is("Test"));
+		assertThat(module.getConfiguration() instanceof TestInjectionConfiguration, is(true));
 	}
 
 	private class TestModule1 implements InjectionConfiguration {

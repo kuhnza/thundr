@@ -15,8 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.threewks.thundr.profiler;
+package com.threewks.thundr.module.test.invalid;
 
-public interface Profilable<T> {
-	public T profile();
+public class InvalidInjectionConfiguration {
 }

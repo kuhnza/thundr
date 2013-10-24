@@ -41,8 +41,6 @@ import com.threewks.thundr.injection.DefaultInjectionConfiguration;
 import com.threewks.thundr.injection.InjectionConfiguration;
 import com.threewks.thundr.injection.InjectionContextImpl;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
-import com.threewks.thundr.profiler.NoProfiler;
-import com.threewks.thundr.profiler.Profiler;
 import com.threewks.thundr.route.RouteType;
 import com.threewks.thundr.route.Routes;
 import com.threewks.thundr.test.TestSupport;
@@ -55,8 +53,7 @@ import com.threewks.thundr.view.ViewResolverNotFoundException;
 import com.threewks.thundr.view.ViewResolverRegistry;
 
 public class ThundrServletTest {
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+	@Rule public ExpectedException thrown = ExpectedException.none();
 
 	private ThundrServlet servlet = new ThundrServlet();
 	private UpdatableInjectionContext injectionContext;
@@ -71,7 +68,6 @@ public class ThundrServletTest {
 
 		when(routes.invoke(anyString(), Mockito.any(RouteType.class), Mockito.any(HttpServletRequest.class), Mockito.any(HttpServletResponse.class))).thenReturn("View Name");
 		injectionContext.inject(routes).as(Routes.class);
-		injectionContext.inject(new NoProfiler()).as(Profiler.class);
 
 		viewResolverRegistry = new ViewResolverRegistry();
 		viewResolverRegistry.addResolver(String.class, new ViewResolver<String>() {
