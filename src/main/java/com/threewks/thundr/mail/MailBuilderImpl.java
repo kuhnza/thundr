@@ -17,61 +17,43 @@
  */
 package com.threewks.thundr.mail;
 
-import static com.atomicleopard.expressive.Expressive.*;
-
-import java.util.Enumeration;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import javax.mail.Message.RecipientType;
 import javax.servlet.http.HttpServletRequest;
 
-import com.atomicleopard.expressive.collection.Triplets;
-import com.threewks.thundr.view.ViewResolver;
-
 public class MailBuilderImpl implements MailBuilder {
-	private Mailer mail;
+	private Mailer mailer;
 	private HttpServletRequest request;
-	private String content;
 	private String subject;
 	private Map<String, String> from = new HashMap<String, String>();
 	private Map<String, String> replyTo = new HashMap<String, String>();
-	private Triplets<RecipientType, String, String> recipients = new Triplets<RecipientType, String, String>();
+	private Map<String, String> to = new HashMap<String, String>();
+	private Map<String, String> cc = new HashMap<String, String>();
+	private Map<String, String> bcc = new HashMap<String, String>();
+	private Object body;
 
-	public MailBuilderImpl(Mailer mail, HttpServletRequest request) {
-		this.mail = mail;
-		from.put("", null);
+	public MailBuilderImpl(Mailer mailer, HttpServletRequest request) {
+		this.mailer = mailer;
 		this.request = request;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T> MailBuilderImpl body(T view) {
-		/*
-		 * Wrapping the request is highly sensitive to the app server implementation.
-		 * For example, while the Servlet include interface specifies we can pass in a {@link ServletRequestWrapper},
-		 * Jetty is having none of it. To avoid ramifications across different application servers, we just reuse the
-		 * originating request. To help avoid issues, we restore all attributes after the response is rendered.
-		 */
-		HttpServletRequest req = request;
-		Map<String, Object> attributes = getAttributes(req); // save the current set of request attributes
-		try {
-			ViewResolver<T> viewResolver = mail.viewResolverRegistry().findViewResolver(view);
-			MailHttpServletResponse resp = new MailHttpServletResponse();
-			viewResolver.resolve(req, resp, view);
-			content = resp.getResponseContent();
-		} catch (Exception e) {
-			throw new MailException(e, "Failed to render email body: %s", e.getMessage());
-		} finally {
-			setAttributes(req, attributes); // reapply the attributes, removing any new ones
-		}
+	public <T> T body() {
+		return (T) body;
+	}
+
+	@Override
+	public <T> MailBuilder body(T view) {
+		this.body = view;
 		return this;
 	}
 
 	@Override
 	public void send() {
-		mail.send(this);
+		mailer.send(this);
 	}
 
 	@Override
@@ -82,107 +64,105 @@ public class MailBuilderImpl implements MailBuilder {
 
 	@Override
 	public MailBuilder from(String emailAddress) {
-		this.from.clear();
-		this.from.put(emailAddress, null);
-		return this;
+		return from(emailAddress, null);
 	}
 
 	@Override
 	public MailBuilder from(String emailAddress, String name) {
-		this.from.clear();
-		this.from.put(emailAddress, name);
+		this.from = Collections.singletonMap(emailAddress, name);
 		return this;
 	}
 
 	@Override
 	public MailBuilder to(String emailAddress) {
-		recipients.put(RecipientType.TO, emailAddress, null);
-		return this;
+		return to(emailAddress, null);
 	}
 
 	@Override
 	public MailBuilder to(String emailAddress, String name) {
-		recipients.put(RecipientType.TO, emailAddress, name);
-		return this;
+		return to(Collections.singletonMap(emailAddress, name));
 	}
 
 	@Override
 	public MailBuilder to(Map<String, String> to) {
-		for (Map.Entry<String, String> entry : to.entrySet()) {
-			recipients.put(RecipientType.TO, entry.getKey(), entry.getValue());
-		}
+		this.to.putAll(to);
 		return this;
+	}
+
+	@Override
+	public MailBuilder cc(String emailAddress) {
+		return cc(emailAddress, null);
 	}
 
 	@Override
 	public MailBuilder cc(String emailAddress, String name) {
-		recipients.put(RecipientType.CC, emailAddress, name);
-		return this;
+		return cc(Collections.singletonMap(emailAddress, name));
 	}
 
 	@Override
 	public MailBuilder cc(Map<String, String> cc) {
-		for (Map.Entry<String, String> entry : cc.entrySet()) {
-			recipients.put(RecipientType.CC, entry.getKey(), entry.getValue());
-		}
+		this.cc.putAll(cc);
 		return this;
+	}
+
+	@Override
+	public MailBuilder bcc(String emailAddress) {
+		return bcc(emailAddress, null);
 	}
 
 	@Override
 	public MailBuilder bcc(String emailAddress, String name) {
-		recipients.put(RecipientType.BCC, emailAddress, name);
-		return this;
+		return bcc(Collections.singletonMap(emailAddress, name));
 	}
 
 	@Override
 	public MailBuilder bcc(Map<String, String> bcc) {
-		for (Map.Entry<String, String> entry : bcc.entrySet()) {
-			recipients.put(RecipientType.BCC, entry.getKey(), entry.getValue());
-		}
+		this.bcc.putAll(bcc);
 		return this;
 	}
 
 	@Override
+	public MailBuilder replyTo(String email) {
+		return replyTo(email, null);
+	}
+
+	@Override
 	public MailBuilder replyTo(String email, String name) {
-		this.replyTo.clear();
-		this.replyTo.put(email, name);
+		this.replyTo = Collections.singletonMap(email, name);
 		return this;
 	}
 
-	Map.Entry<String, String> from() {
-		return from.entrySet().iterator().next();
+	@Override
+	public Map.Entry<String, String> from() {
+		return from.isEmpty() ? null : from.entrySet().iterator().next();
 	}
 
-	Triplets<RecipientType, String, String> recipients() {
-		return recipients;
+	@Override
+	public Map<String, String> to() {
+		return new HashMap<String, String>(this.to);
 	}
 
-	String subject() {
+	@Override
+	public Map<String, String> cc() {
+		return new HashMap<String, String>(this.cc);
+	}
+
+	@Override
+	public Map<String, String> bcc() {
+		return new HashMap<String, String>(bcc);
+	}
+
+	@Override
+	public String subject() {
 		return subject;
 	}
 
-	String content() {
-		return content;
-	}
-
-	Entry<String, String> replyTo() {
+	@Override
+	public Map.Entry<String, String> replyTo() {
 		return replyTo.isEmpty() ? null : replyTo.entrySet().iterator().next();
 	}
 
-	@SuppressWarnings("unchecked")
-	private Map<String, Object> getAttributes(HttpServletRequest request) {
-		Map<String, Object> attributes = new HashMap<String, Object>();
-		for (String name : iterable((Enumeration<String>) request.getAttributeNames())) {
-			attributes.put(name, request.getAttribute(name));
-		}
-		return attributes;
-	}
-
-	@SuppressWarnings("unchecked")
-	private void setAttributes(HttpServletRequest request, Map<String, Object> attributes) {
-		List<String> allNames = list(iterable(request.getAttributeNames())).addItems(attributes.keySet());
-		for (String name : allNames) {
-			request.setAttribute(name, attributes.get(name));
-		}
+	public HttpServletRequest request() {
+		return request;
 	}
 }

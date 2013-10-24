@@ -22,13 +22,21 @@ import java.util.Map;
 public interface MailBuilder {
 	public void send() throws MailException;
 
+	public <T> T body();
+
 	public <T> MailBuilder body(T view) throws MailException;
 
+	public String subject();
+
 	public MailBuilder subject(String subject);
+
+	public Map.Entry<String, String> from();
 
 	public MailBuilder from(String emailAddress);
 
 	public MailBuilder from(String emailAddress, String name);
+
+	public Map<String, String> to();
 
 	public MailBuilder to(String emailAddress);
 
@@ -36,13 +44,26 @@ public interface MailBuilder {
 
 	public MailBuilder to(Map<String, String> to);
 
+	public Map<String, String> cc();
+
+	public MailBuilder cc(String emailAddress);
+
 	public MailBuilder cc(String emailAddress, String name);
 
 	public MailBuilder cc(Map<String, String> cc);
+
+	public Map<String, String> bcc();
+
+	public MailBuilder bcc(String emailAddress);
 
 	public MailBuilder bcc(String emailAddress, String name);
 
 	public MailBuilder bcc(Map<String, String> bcc);
 
+	public Map.Entry<String, String> replyTo();
+
+	public MailBuilder replyTo(String email);
+
 	public MailBuilder replyTo(String email, String name);
+
 }

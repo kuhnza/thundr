@@ -50,4 +50,11 @@ public class BaseExceptionTest {
 		assertThat(new BaseException(cause).getCause(), is(cause));
 		assertThat(new BaseException(cause).getMessage(), is("java.lang.Throwable"));
 	}
+
+	@Test
+	public void shouldNotFailedtoConstructWhenMessageIsAFormatStringWithNoArgs() {
+		assertThat(new BaseException("Message with % in it").getMessage(), is("Message with % in it"));
+		Throwable cause = new Throwable();
+		assertThat(new BaseException(cause, "Message with % in it").getMessage(), is("Message with % in it"));
+	}
 }

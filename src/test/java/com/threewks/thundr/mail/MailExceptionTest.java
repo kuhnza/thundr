@@ -15,34 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.threewks.thundr.test.mock.mailer;
+package com.threewks.thundr.mail;
 
-import static com.atomicleopard.expressive.Expressive.list;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
-import javax.servlet.http.HttpServletRequest;
+import org.junit.Test;
 
-import com.atomicleopard.expressive.EList;
-import com.threewks.thundr.mail.MailBuilder;
-import com.threewks.thundr.mail.MailException;
-import com.threewks.thundr.mail.Mailer;
+public class MailExceptionTest {
+	private Throwable cause = new RuntimeException("cause");
 
-public class MockMailer implements Mailer {
-	private EList<MailBuilder> sent = list();
-
-	public MockMailer() {
+	@Test
+	public void shouldRetainCauseAndFormattedMessage() {
+		MailException e = new MailException(cause, "Message: %s", "expected");
+		assertThat(e.getCause(), is(cause));
+		assertThat(e.getMessage(), is("Message: expected"));
 	}
 
-	@Override
-	public MailBuilder mail(HttpServletRequest request) {
-		return new MockMailBuilder(this);
-	}
-
-	@Override
-	public void send(MailBuilder mailBuilder) throws MailException {
-		sent.add(mailBuilder);
-	}
-
-	public EList<MailBuilder> getSent() {
-		return sent;
+	@Test
+	public void shouldRetainFormattedMessage() {
+		MailException e = new MailException("Message: %s", "expected");
+		assertThat(e.getMessage(), is("Message: expected"));
+		assertThat(e.getCause(), is(nullValue()));
 	}
 }

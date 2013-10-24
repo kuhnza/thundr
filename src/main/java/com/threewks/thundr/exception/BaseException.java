@@ -25,11 +25,11 @@ public class BaseException extends RuntimeException {
 	}
 
 	public BaseException(Throwable cause, String format, Object... formatArgs) {
-		super(String.format(format, formatArgs), cause);
+		super(formatArgs.length == 0 ? format : String.format(format, formatArgs), cause);
 	}
 
 	public BaseException(String format, Object... formatArgs) {
-		super(String.format(format, formatArgs));
+		super(formatArgs.length == 0 ? format : String.format(format, formatArgs));
 	}
 
 	public BaseException(Throwable cause) {

@@ -49,7 +49,7 @@ public class ContentTypeTest {
 		assertThat(ContentType.cleanContentType("multipart/form-data;"), is("multipart/form-data"));
 		assertThat(ContentType.cleanContentType("multipart/form-data; charset=UTF-8"), is("multipart/form-data"));
 		assertThat(ContentType.cleanContentType("multipart/form-data ; charset=UTF-8"), is("multipart/form-data"));
-		
+
 		for (ContentType contentType : allContentTypesExceptNull) {
 			assertThat(ContentType.cleanContentType(contentType.value()), is(contentType.value()));
 			assertThat(ContentType.cleanContentType(contentType.value().toUpperCase()), is(contentType.value()));
@@ -77,5 +77,25 @@ public class ContentTypeTest {
 			assertThat(ContentType.from("a" + contentType.value() + "; charset=UTF-8"), is(nullValue()));
 		}
 		assertThat(ContentType.from(null), is(ContentType.Null));
+	}
+
+	@Test
+	public void shouldReturnTrueIfAnyMatch() {
+		assertThat(ContentType.anyMatch(list(ContentType.TextHtml, ContentType.TextCsv), "text/html"), is(true));
+		assertThat(ContentType.anyMatch(list(ContentType.TextHtml, ContentType.TextCsv), "text/csv"), is(true));
+		assertThat(ContentType.anyMatch(list(ContentType.TextHtml, ContentType.TextCsv), "text/plain"), is(false));
+		assertThat(ContentType.anyMatch(list(ContentType.TextHtml, ContentType.TextCsv), ""), is(false));
+		assertThat(ContentType.anyMatch(list(ContentType.TextHtml, ContentType.TextCsv), null), is(false));
+		assertThat(ContentType.anyMatch(list(ContentType.TextHtml, ContentType.TextCsv), "text/html; charset=UTF-8"), is(true));
+		assertThat(ContentType.anyMatch(list(ContentType.TextHtml, ContentType.TextCsv), "text/csv; charset=UTF-8"), is(true));
+		assertThat(ContentType.anyMatch(list(ContentType.TextHtml, ContentType.TextCsv), "text/plain; charset=UTF-8"), is(false));
+		assertThat(ContentType.anyMatch(list(ContentType.TextHtml, ContentType.TextCsv), ""), is(false));
+		assertThat(ContentType.anyMatch(list(ContentType.TextHtml, ContentType.TextCsv), null), is(false));
+	}
+
+	@Test
+	public void shouldReturnValueAsToString() {
+		assertThat(ContentType.ApplicationJson.toString(), is("application/json"));
+		assertThat(ContentType.TextCsv.toString(), is("text/csv"));
 	}
 }
