@@ -111,7 +111,7 @@ public class MethodActionResolverTest {
 		assertThat(registeredInterceptor.beforeInvoked, is(false));
 		assertThat((String) resolver.resolve(action, RouteType.GET, req, resp, pathVars), is("Expected Before"));
 		assertThat(registeredInterceptor.beforeInvoked, is(true));
-		assertThat(registeredInterceptor.afterInvoked, is(true));
+		assertThat(registeredInterceptor.afterInvoked, is(false));
 		assertThat(registeredInterceptor.exceptionInvoked, is(false));
 	}
 
@@ -126,7 +126,7 @@ public class MethodActionResolverTest {
 			}
 
 			@Override
-			public String after(TestAnnotation annotation, HttpServletRequest req, HttpServletResponse resp) {
+			public String after(TestAnnotation annotation, Object result, HttpServletRequest req, HttpServletResponse resp) {
 				return null;
 			}
 
@@ -264,7 +264,7 @@ public class MethodActionResolverTest {
 		}
 
 		@Override
-		public String after(TestAnnotation annotation, HttpServletRequest req, HttpServletResponse resp) {
+		public String after(TestAnnotation annotation, Object result, HttpServletRequest req, HttpServletResponse resp) {
 			afterInvoked = true;
 			return onAfter;
 		}

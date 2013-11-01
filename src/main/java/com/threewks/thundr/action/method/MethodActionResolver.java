@@ -91,9 +91,11 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 		Exception exception = null;
 		try {
 			result = beforeInterceptors(interceptors, req, resp);
-			List<?> arguments = bindArguments(action, req, resp, pathVars);
-			result = result != null ? result : action.invoke(controller, arguments);
-			result = afterInterceptors(result, interceptors, req, resp);
+			if (result == null) {
+				List<?> arguments = bindArguments(action, req, resp, pathVars);
+				result = action.invoke(controller, arguments);
+				result = afterInterceptors(result, interceptors, req, resp);
+			}
 		} catch (InvocationTargetException e) {
 			// we need to unwrap InvocationTargetExceptions to get at the real exception
 			exception = Cast.as(e.getTargetException(), Exception.class);
@@ -128,7 +130,7 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 
 	private Object afterInterceptors(Object result, Map<Annotation, ActionInterceptor<Annotation>> interceptors, HttpServletRequest req, HttpServletResponse resp) {
 		for (Map.Entry<Annotation, ActionInterceptor<Annotation>> interceptorEntry : interceptors.entrySet()) {
-			Object interceptorResult = interceptorEntry.getValue().after(interceptorEntry.getKey(), req, resp);
+			Object interceptorResult = interceptorEntry.getValue().after(interceptorEntry.getKey(), result, req, resp);
 			if (interceptorResult != null) {
 				return interceptorResult;
 			}
