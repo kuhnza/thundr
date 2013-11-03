@@ -39,8 +39,9 @@ import com.atomicleopard.expressive.Expressive;
 
 public class ClassIntrospector {
 	public static final boolean supportsInjection = classExists("javax.inject.Inject");
-	private static Set<Class<?>> NonJavabeanBasicClasses = Expressive.<Class<?>> set(Object.class, String.class, boolean.class, int.class, byte.class, short.class, float.class, double.class,
-			long.class, void.class, Boolean.class, Integer.class, Byte.class, Short.class, Float.class, Double.class, Long.class, Void.class);
+	private static final Set<Class<?>> BasicTypes = Expressive.<Class<?>> set(boolean.class, byte.class, char.class, double.class, float.class, int.class, long.class, short.class, void.class);
+	private static Set<Class<?>> NonJavabeanBasicClasses = Expressive.<Class<?>> set(Object.class, String.class, boolean.class, byte.class, char.class, double.class, float.class, int.class,
+			long.class, short.class, void.class, Boolean.class, Byte.class, Character.class, Double.class, Float.class, Integer.class, Long.class, Short.class, Void.class);
 
 	@SuppressWarnings({ "rawtypes" })
 	public <T> List<Constructor<T>> listConstructors(Class<T> type) {
@@ -111,6 +112,10 @@ public class ClassIntrospector {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	public static boolean isABasicType(Class<?> type) {
+		return BasicTypes.contains(type);
 	}
 
 	@SuppressWarnings("unchecked")
