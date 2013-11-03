@@ -21,10 +21,15 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.junit.After;
@@ -37,8 +42,7 @@ import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.configuration.Environment;
 
 public class InjectionContextImplTest {
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+	@Rule public ExpectedException thrown = ExpectedException.none();
 	private InjectionContextImpl context = new InjectionContextImpl();
 
 	@Before
@@ -90,6 +94,20 @@ public class InjectionContextImplTest {
 		assertThat(context.get(String.class, "secondString"), is("second string"));
 		assertThat(context.get(Date.class, "firstDate"), sameInstance(firstDate));
 		assertThat(context.get(Date.class, "secondDate"), sameInstance(secondDate));
+	}
+
+	@Test
+	public void shouldNotAllowInjectionOfInterfaces() {
+		thrown.expect(InjectionException.class);
+		thrown.expectMessage("Unable to inject the type 'com.threewks.thundr.injection.InjectionContext' - you cannot inject interfaces or abstract classes");
+		context.inject(InjectionContext.class).as(InjectionContext.class);
+	}
+
+	@Test
+	public void shouldNotAllowInjectionOfAbstractClasses() {
+		thrown.expect(InjectionException.class);
+		thrown.expectMessage("Unable to inject the type 'com.threewks.thundr.injection.AbstractTestClass' - you cannot inject interfaces or abstract classes");
+		context.inject(AbstractTestClass.class).as(AbstractTestClass.class);
 	}
 
 	@Test
@@ -157,7 +175,7 @@ public class InjectionContextImplTest {
 		Date date = new Date();
 		context.inject("someString").named("someString").as(String.class);
 		context.inject(0).named("someInt").as(int.class);
-		
+
 		context.inject(date).named("first").as(Date.class);
 		// should prefer a named instance over a named type
 		context.inject(Date.class).named("first").as(Date.class);
@@ -167,7 +185,7 @@ public class InjectionContextImplTest {
 		assertThat(firstDate, is(notNullValue()));
 		assertThat(firstDate, sameInstance(date));
 	}
-	
+
 	@Test
 	public void shouldReturnUnnamedInstanceIfUnnamedTypeNotPresent() {
 		Date date = new Date();
@@ -194,10 +212,21 @@ public class InjectionContextImplTest {
 	@Test
 	public void shouldNotReturnADifferentNamedInstanceForBasicTypes() {
 		List<Class> types = Expressive.<Class> list(String.class, int.class, Integer.class, short.class, Short.class, long.class, Long.class, float.class, Float.class, double.class, Double.class,
-				byte.class, Byte.class, char.class, Character.class, List.class, Set.class, Map.class, Collection.class);
+				byte.class, Byte.class, char.class, Character.class);
 		for (Class type : types) {
 			String name = type.getSimpleName();
 			context.inject(type).named(name).as(type);
+			assertThat(context.get(type), is(nullValue()));
+			assertThat(context.contains(type), is(false));
+			assertThat(context.contains(type, name), is(true));
+		}
+
+		Map<Class, Class> collectionTypes = Expressive.map(List.class, ArrayList.class, Set.class, HashSet.class, Map.class, HashMap.class, Collection.class, LinkedList.class);
+		for (Entry<Class, Class> interfaceAndImpl : collectionTypes.entrySet()) {
+			Class type = interfaceAndImpl.getKey();
+			Class implementingType = interfaceAndImpl.getValue();
+			String name = type.getSimpleName();
+			context.inject(implementingType).named(name).as(type);
 			assertThat(context.get(type), is(nullValue()));
 			assertThat(context.contains(type), is(false));
 			assertThat(context.contains(type, name), is(true));
@@ -355,7 +384,7 @@ public class InjectionContextImplTest {
 
 		context.get(TestClass2.class);
 	}
-	
+
 	@Test
 	public void shouldThrowInjectionExceptionWhenConstructionOfTypeFails() {
 		thrown.expect(InjectionException.class);
@@ -367,7 +396,7 @@ public class InjectionContextImplTest {
 
 		context.get(TestClass2.class);
 	}
-	
+
 	@Test
 	public void shouldThrowInjectionExceptionWhenSettingFieldOnTypeFails() {
 		thrown.expect(InjectionException.class);

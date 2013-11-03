@@ -20,6 +20,7 @@ package com.threewks.thundr.injection;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ import com.threewks.thundr.introspection.ParameterDescription;
 
 public class InjectionContextImpl implements UpdatableInjectionContext {
 	private static final String ENVIRONMENT_SEPARATOR = "%";
-	private static final Set<Class<?>> BasicTypes = createBasicTypesList();
+	private static final Set<Class<?>> TypesRequiringAName = createListOfTypesRequiringAName();
 
 	private Triplets<Class<?>, String, Class<?>> types = map();
 	private Triplets<Class<?>, String, Object> instances = map();
@@ -51,6 +52,11 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 
 	@Override
 	public <T> InjectorBuilder<T> inject(Class<T> type) {
+		
+		if (!ClassIntrospector.isABasicType(type) && (type.isInterface() || Modifier.isAbstract(type.getModifiers()))) {
+			throw new InjectionException("Unable to inject the type '%s' - you cannot inject interfaces or abstract classes", type.getName());
+		}
+
 		return new InjectorBuilder<T>(this, type);
 	}
 
@@ -208,7 +214,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 
 	@SuppressWarnings("unchecked")
 	private <T> T getFirstExistingNamedInstanceForNonBasicType(Class<T> type) {
-		boolean isBasicType = BasicTypes.contains(type);
+		boolean isBasicType = TypesRequiringAName.contains(type);
 		if (!isBasicType) {
 			for (Entry<Pair<Class<?>, String>, Object> entry : instances.entrySet()) {
 				if (type.equals(entry.getKey().getA())) {
@@ -255,7 +261,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 		return new Triplets<K1, K2, V>();
 	}
 
-	private static Set<Class<?>> createBasicTypesList() {
+	private static Set<Class<?>> createListOfTypesRequiringAName() {
 		return Expressive.<Class<?>> set(String.class, byte.class, Byte.class, short.class, Short.class, int.class, Integer.class, long.class, Long.class, float.class, Float.class, double.class,
 				Double.class, char.class, Character.class, boolean.class, Boolean.class, BigDecimal.class, BigInteger.class, List.class, Set.class, Map.class, Collection.class);
 	}

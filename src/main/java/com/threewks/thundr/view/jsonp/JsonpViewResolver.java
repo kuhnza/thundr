@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.threewks.thundr.view.json;
+package com.threewks.thundr.view.jsonp;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,20 +23,22 @@ import javax.servlet.http.HttpServletResponse;
 import jodd.util.MimeTypes;
 import jodd.util.StringPool;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.threewks.thundr.json.GsonSupport;
 import com.threewks.thundr.view.ViewResolutionException;
 import com.threewks.thundr.view.ViewResolver;
 
-public class JsonViewResolver implements ViewResolver<JsonView> {
+public class JsonpViewResolver implements ViewResolver<JsonpView> {
 	private GsonBuilder gsonBuilder;
 
-	public JsonViewResolver() {
+	public JsonpViewResolver() {
 		this(GsonSupport.createBasicGsonBuilder());
 	}
 
-	public JsonViewResolver(GsonBuilder gsonBuilder) {
+	public JsonpViewResolver(GsonBuilder gsonBuilder) {
 		this.gsonBuilder = gsonBuilder;
 	}
 
@@ -50,19 +52,27 @@ public class JsonViewResolver implements ViewResolver<JsonView> {
 	}
 
 	@Override
-	public void resolve(HttpServletRequest req, HttpServletResponse resp, JsonView viewResult) {
+	public void resolve(HttpServletRequest req, HttpServletResponse resp, JsonpView viewResult) {
 		Object output = viewResult.getOutput();
 		try {
 			Gson create = gsonBuilder.create();
 			String json = create.toJson(output);
-			resp.setContentType(MimeTypes.MIME_APPLICATION_JSON);
+			String jsonp = getCallback(req) + "(" + json + ")";
+			resp.setContentType(MimeTypes.MIME_APPLICATION_JAVASCRIPT);
 			resp.setCharacterEncoding(StringPool.UTF_8);
 			resp.setContentLength(json.getBytes(StringPool.UTF_8).length);
 			resp.setStatus(HttpServletResponse.SC_OK);
-			resp.getWriter().write(json);
+			resp.getWriter().write(jsonp);
 		} catch (Exception e) {
-			throw new ViewResolutionException(e, "Failed to generate JSON output for object '%s': %s", output.toString(), e.getMessage());
+			throw new ViewResolutionException(e, "Failed to generate JSONP output for object '%s': %s", output.toString(), e.getMessage());
 		}
+	}
+
+	protected String getCallback(HttpServletRequest req) {
+		Object callback = req.getParameter("callback");
+		String callbackStr = callback == null ? null : StringUtils.trimToNull(callback.toString());
+		callbackStr = callbackStr == null ? "callback" : callbackStr;
+		return callbackStr;
 	}
 
 	@Override

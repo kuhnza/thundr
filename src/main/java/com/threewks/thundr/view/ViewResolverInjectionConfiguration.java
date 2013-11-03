@@ -28,6 +28,8 @@ import com.threewks.thundr.view.file.FileView;
 import com.threewks.thundr.view.file.FileViewResolver;
 import com.threewks.thundr.view.json.JsonView;
 import com.threewks.thundr.view.json.JsonViewResolver;
+import com.threewks.thundr.view.jsonp.JsonpView;
+import com.threewks.thundr.view.jsonp.JsonpViewResolver;
 import com.threewks.thundr.view.jsp.JspView;
 import com.threewks.thundr.view.jsp.JspViewResolver;
 import com.threewks.thundr.view.redirect.RedirectView;
@@ -56,6 +58,7 @@ public class ViewResolverInjectionConfiguration implements InjectionConfiguratio
 		viewResolverRegistry.addResolver(RouteNotFoundException.class, new RouteNotFoundViewResolver());
 		viewResolverRegistry.addResolver(RedirectView.class, new RedirectViewResolver());
 		viewResolverRegistry.addResolver(JsonView.class, new JsonViewResolver());
+		viewResolverRegistry.addResolver(JsonpView.class, new JsonpViewResolver());
 		viewResolverRegistry.addResolver(FileView.class, new FileViewResolver());
 		viewResolverRegistry.addResolver(JspView.class, new JspViewResolver());
 		viewResolverRegistry.addResolver(StringView.class, new StringViewResolver());

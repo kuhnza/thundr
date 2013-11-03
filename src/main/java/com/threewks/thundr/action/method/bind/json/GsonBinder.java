@@ -24,15 +24,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.threewks.thundr.action.method.bind.ActionMethodBinder;
 import com.threewks.thundr.action.method.bind.BindException;
 import com.threewks.thundr.action.method.bind.path.PathVariableBinder;
 import com.threewks.thundr.http.ContentType;
 import com.threewks.thundr.introspection.ParameterDescription;
+import com.threewks.thundr.json.GsonSupport;
 
 public class GsonBinder implements ActionMethodBinder {
+	private GsonBuilder gsonBuilder;
 
 	public GsonBinder() {
+		this(GsonSupport.createBasicGsonBuilder());
+	}
+
+	public GsonBinder(GsonBuilder gsonBuilder) {
+		this.gsonBuilder = gsonBuilder;
+	}
+
+	/**
+	 * Exposes the underlying builder, allowing the modification of how Json is bound.
+	 * 
+	 * @return
+	 */
+	public GsonBuilder getGsonBuilder() {
+		return gsonBuilder;
 	}
 
 	public boolean canBind(String contentType) {
@@ -47,7 +64,8 @@ public class GsonBinder implements ActionMethodBinder {
 				ParameterDescription jsonParameterDescription = findParameterDescriptionForJsonParameter(bindings);
 				if (jsonParameterDescription != null) {
 					try {
-						Object converted = new Gson().fromJson(req.getReader(), jsonParameterDescription.type());
+						Gson gson = gsonBuilder.create();
+						Object converted = gson.fromJson(req.getReader(), jsonParameterDescription.type());
 						bindings.put(jsonParameterDescription, converted);
 					} catch (IOException e) {
 						throw new BindException(e, "Failed to bind %s %s using JSON - can only bind the first object parameter", jsonParameterDescription.type(), jsonParameterDescription.name());
