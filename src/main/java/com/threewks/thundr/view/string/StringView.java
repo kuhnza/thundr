@@ -17,11 +17,12 @@
  */
 package com.threewks.thundr.view.string;
 
+import com.threewks.thundr.http.ContentType;
 import com.threewks.thundr.view.View;
 
 public class StringView implements View {
 	private CharSequence content;
-	private String contentType = null;
+	private String contentType = ContentType.TextPlain.value();
 
 	public StringView(String content) {
 		this.content = content;

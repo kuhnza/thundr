@@ -34,8 +34,8 @@ public class StringViewTest {
 	}
 
 	@Test
-	public void shouldHaveNoDefaultContentType() {
-		assertThat(new StringView("").contentType(), is(nullValue()));
+	public void shouldHaveDefaultContentTypeOfTextPlain() {
+		assertThat(new StringView("").contentType(), is("text/plain"));
 	}
 
 	@Test

@@ -47,6 +47,15 @@ public class StringViewResolverTest {
 		assertThat(resp.content(), is("My view result"));
 		assertThat(resp.isCommitted(), is(true));
 		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
+		assertThat(resp.getContentType(), is("text/plain"));
+	}
+
+	@Test
+	public void shouldWriteNoContentTypeIfNotSet() {
+		stringViewResolver.resolve(req, resp, new StringView("My view result").contentType(null));
+		assertThat(resp.content(), is("My view result"));
+		assertThat(resp.isCommitted(), is(true));
+		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
 		assertThat(resp.getContentType(), is(nullValue()));
 	}
 
