@@ -23,10 +23,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -99,15 +100,15 @@ public class Routes {
 	private static final String routeDisplayFormat = "%s\n";
 
 	public String listRoutes() {
-		List<String> allRoutes = new LinkedList<String>();
+		Set<String> allRoutes = new HashSet<String>();
 		for (Map<String, Route> routeEntries : routes.values()) {
 			allRoutes.addAll(routeEntries.keySet());
 		}
-		allRoutes = list(allRoutes);
-		Collections.sort(allRoutes);
+		List<String> allRouteNames = list(allRoutes);
+		Collections.sort(allRouteNames);
 
 		StringBuilder sb = new StringBuilder();
-		for (String route : allRoutes) {
+		for (String route : allRouteNames) {
 			for (RouteType routeType : RouteType.all()) {
 				Map<String, Route> routesForType = routes.get(routeType);
 				if (routesForType.containsKey(route)) {
