@@ -45,13 +45,19 @@ public class Routes {
 
 	private boolean debug = true;
 
+	public void addRoutes(Route... routes) {
+		for (Route route : routes) {
+			addRoute(route);
+		}
+	}
+
 	public void addRoutes(Collection<Route> routes) {
 		for (Route route : routes) {
 			addRoute(route);
 		}
 	}
 
-	private void addRoute(Route route) {
+	public void addRoute(Route route) {
 		String path = route.getRouteMatchRegex();
 		String actionName = route.getActionName();
 		RouteType routeType = route.getRouteType();

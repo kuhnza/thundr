@@ -18,13 +18,37 @@
 package com.threewks.thundr.module.test;
 
 import com.threewks.thundr.injection.InjectionConfiguration;
+import com.threewks.thundr.injection.InjectionContext;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
+import com.threewks.thundr.module.DependencyRegistry;
 
 public class TestInjectionConfiguration implements InjectionConfiguration {
-	public boolean loaded = false;
+	public boolean configured = false;
+	public boolean stopped = false;
+	public boolean initialised = false;
+	public boolean started = false;
+
+	@Override
+	public void requires(DependencyRegistry dependencyRegistry) {
+	}
+
+	@Override
+	public void initialise(UpdatableInjectionContext injectionContext) {
+		initialised = true;
+	}
 
 	@Override
 	public void configure(UpdatableInjectionContext injectionContext) {
-		loaded = true;
+		configured = true;
+	}
+
+	@Override
+	public void start(UpdatableInjectionContext injectionContext) {
+		started = true;
+	}
+
+	@Override
+	public void stop(InjectionContext injectionContext) {
+		stopped = true;
 	}
 }

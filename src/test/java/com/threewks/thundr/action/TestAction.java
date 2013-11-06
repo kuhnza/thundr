@@ -15,20 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.threewks.thundr.module;
+package com.threewks.thundr.action;
 
-import com.atomicleopard.expressive.Expressive;
-import com.threewks.thundr.exception.BaseException;
+public class TestAction implements Action {
+	private String name;
 
-public class ModuleLoadingException extends BaseException {
-
-	private static final long serialVersionUID = -2383234783452550560L;
-
-	public ModuleLoadingException(String modulePackage, String format, Object... formatArgs) {
-		super("Failed to load module '%s' - " + format, Expressive.<Object> list(modulePackage).addItems(formatArgs).toArray());
+	public TestAction(String actionName) {
+		this.name = actionName;
 	}
 
-	public ModuleLoadingException(Throwable cause, String modulePackage, String format, Object... formatArgs) {
-		super(cause, "Failed to load module '%s' - " + format, Expressive.<Object> list(modulePackage).addItems(formatArgs).toArray());
+	public String getName() {
+		return name;
 	}
 }

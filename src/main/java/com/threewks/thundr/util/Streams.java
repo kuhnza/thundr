@@ -73,6 +73,8 @@ public class Streams {
 		try {
 			InputStream resourceAsStream = getResourceAsStream(resource);
 			return readString(resourceAsStream);
+		} catch (BaseException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new BaseException(e, "Could not load resource %s: %s", resource, e.getMessage());
 		}
@@ -85,6 +87,8 @@ public class Streams {
 				throw new BaseException("Could not load resource %s: resource not found", resource);
 			}
 			return new BufferedInputStream(resourceAsStream);
+		} catch (BaseException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new BaseException(e, "Could not load resource %s: %s", resource, e.getMessage());
 		}

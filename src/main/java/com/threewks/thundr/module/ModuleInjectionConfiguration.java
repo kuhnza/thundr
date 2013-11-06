@@ -17,45 +17,65 @@
  */
 package com.threewks.thundr.module;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
-import com.atomicleopard.expressive.EList;
 import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.configuration.PropertiesLoader;
-import com.threewks.thundr.injection.InjectionConfiguration;
+import com.threewks.thundr.injection.BaseInjectionConfiguration;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
-import com.threewks.thundr.logger.Logger;
 
-public class ModuleInjectionConfiguration implements InjectionConfiguration {
+public class ModuleInjectionConfiguration extends BaseInjectionConfiguration {
+	public static final String FilenameModulesProperties = "modules.properties";
+	public static final String PropertyNameModules = "thundrModules";
+
 	private PropertiesLoader propertiesLoader = new PropertiesLoader();
-	private String filename;
+	private String filename = FilenameModulesProperties;
+	private String propertyName = PropertyNameModules;
 
 	public ModuleInjectionConfiguration() {
-		this("modules.properties");
-	}
-
-	public ModuleInjectionConfiguration(String filename) {
-		this.filename = filename;
 	}
 
 	@Override
-	public void configure(UpdatableInjectionContext injectionContext) {
+	public void initialise(UpdatableInjectionContext injectionContext) {
 		Modules modules = injectionContext.get(Modules.class);
-		loadModules(modules, injectionContext, filename);
+		List<String> moduleNames = loadModules(injectionContext);
+		for (String moduleName : moduleNames) {
+			modules.addModule(moduleName);
+		}
 	}
 
-	protected void loadModules(Modules modules, UpdatableInjectionContext injectionContext, String filename) {
-		Logger.info("Loading modules from %s", filename);
-		Map<String, String> properties = propertiesLoader.load(filename);
-		if (properties.isEmpty()) {
-			throw new ModuleLoadingException("", "you must have an entry for your application configuration in %s", filename);
+	protected List<String> loadModules(UpdatableInjectionContext injectionContext) {
+		List<String> moduleNames = new ArrayList<String>();
+		List<String> modulesFromInjectionContext = attemptToLoadModuleFromInjectionContext(injectionContext);
+		List<String> modulesFromPropertiesFile = attemptToLoadModulesFromModulesProperties();
+		moduleNames.addAll(modulesFromInjectionContext);
+		moduleNames.addAll(modulesFromPropertiesFile);
+
+		if (moduleNames.isEmpty()) {
+			throw new ModuleLoadingException("", "No modules have been specified - you must minimally specify your application module in either your application configuration property '%s' or the file '%s'", propertyName, filename);
 		}
-		EList<String> reverseOrder = Expressive.list(properties.keySet());
-		Collections.reverse(reverseOrder);
-		for (String key : reverseOrder) {
-			Module module = Module.createModule(key);
-			modules.addModule(module);
+		return moduleNames;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<String> attemptToLoadModuleFromInjectionContext(UpdatableInjectionContext injectionContext) {
+		List<String> results = new ArrayList<String>();
+		if (injectionContext.contains(String.class, propertyName)) {
+			String stringProperty = injectionContext.get(String.class, propertyName);
+			results.addAll(Arrays.asList(stringProperty.split("[;:,]")));
 		}
+		if (injectionContext.contains(List.class, propertyName)) {
+			results.addAll(injectionContext.get(List.class, propertyName));
+		}
+		return results;
+	}
+
+	private List<String> attemptToLoadModulesFromModulesProperties() {
+		Map<String, String> properties = propertiesLoader.loadSafe(filename);
+		return properties == null ? Collections.<String> emptyList() : Expressive.list(properties.keySet());
 	}
 }

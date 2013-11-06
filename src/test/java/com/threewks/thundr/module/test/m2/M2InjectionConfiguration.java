@@ -18,13 +18,34 @@
 package com.threewks.thundr.module.test.m2;
 
 import com.threewks.thundr.injection.InjectionConfiguration;
+import com.threewks.thundr.injection.InjectionContext;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
+import com.threewks.thundr.module.DependencyRegistry;
 
 public class M2InjectionConfiguration implements InjectionConfiguration {
 	public boolean loaded = false;
 
 	@Override
+	public void requires(DependencyRegistry dependencyRegistry) {
+	}
+
+	@Override
+	public void initialise(UpdatableInjectionContext injectionContext) {
+
+	}
+
+	@Override
 	public void configure(UpdatableInjectionContext injectionContext) {
 		loaded = true;
+	}
+
+	@Override
+	public void start(UpdatableInjectionContext injectionContext) {
+
+	}
+
+	@Override
+	public void stop(InjectionContext injectionContext) {
+
 	}
 }

@@ -18,6 +18,8 @@
 package com.threewks.thundr;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -29,12 +31,15 @@ import javax.servlet.http.HttpServletResponse;
 import com.atomicleopard.expressive.Cast;
 import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.action.ActionException;
+import com.threewks.thundr.configuration.ConfigurationInjectionConfiguration;
 import com.threewks.thundr.http.HttpSupport;
-import com.threewks.thundr.injection.DefaultInjectionConfiguration;
 import com.threewks.thundr.injection.InjectionConfiguration;
 import com.threewks.thundr.injection.InjectionContextImpl;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.logger.Logger;
+import com.threewks.thundr.module.ModuleInjectionConfiguration;
+import com.threewks.thundr.module.Modules;
+import com.threewks.thundr.route.RouteInjectionConfiguration;
 import com.threewks.thundr.route.RouteType;
 import com.threewks.thundr.route.Routes;
 import com.threewks.thundr.view.ViewResolver;
@@ -46,6 +51,7 @@ public class ThundrServlet extends HttpServlet {
 	private static final String POST = "POST";
 	private static final String HEAD = "HEAD";
 	private UpdatableInjectionContext injectionContext;
+	private Modules modules;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -53,19 +59,45 @@ public class ThundrServlet extends HttpServlet {
 		try {
 			long start = System.currentTimeMillis();
 			ServletContext servletContext = config.getServletContext();
-			injectionContext = new InjectionContextImpl();
-			injectionContext.inject(servletContext).as(ServletContext.class);
-			servletContext.setAttribute("injectionContext", injectionContext);
-			InjectionConfiguration injectionConfiguration = getInjectionConfigInstance(servletContext);
-			injectionConfiguration.configure(injectionContext);
+			injectionContext = initInjectionContext(servletContext);
+			modules = initModules(injectionContext);
 			Logger.info("Started up in %dms", System.currentTimeMillis() - start);
 		} catch (RuntimeException e) {
 			throw new ServletException("Failed to initialse thundr: " + e.getMessage(), e);
 		}
 	}
 
-	protected InjectionConfiguration getInjectionConfigInstance(ServletContext servletContext) {
-		return new DefaultInjectionConfiguration();
+	protected Modules initModules(UpdatableInjectionContext injectionContext) {
+		Modules modules = new Modules();
+		injectionContext.inject(modules).as(Modules.class);
+
+		for (Class<? extends InjectionConfiguration> module : getBaseModules()) {
+			modules.addModule(module);
+		}
+		modules.runStartupLifecycle(injectionContext);
+		return modules;
+	}
+
+	protected List<Class<? extends InjectionConfiguration>> getBaseModules() {
+		List<Class<? extends InjectionConfiguration>> baseModules = new ArrayList<Class<? extends InjectionConfiguration>>();
+		baseModules.add(ConfigurationInjectionConfiguration.class);
+		baseModules.add(ModuleInjectionConfiguration.class);
+		baseModules.add(RouteInjectionConfiguration.class);
+		return baseModules;
+	}
+
+	/**
+	 * This extension point allows overriding servlets to change the basic configuration of a thundr application.
+	 * Generally this involves bootstrapping a configuration solution, loading modules and adding any routes.
+	 * 
+	 * @param servletContext
+	 * @return
+	 */
+	protected UpdatableInjectionContext initInjectionContext(ServletContext servletContext) {
+		UpdatableInjectionContext injectionContext = new InjectionContextImpl();
+		injectionContext.inject(servletContext).as(ServletContext.class);
+		servletContext.setAttribute("injectionContext", injectionContext);
+		return injectionContext;
 	}
 
 	protected void applyRoute(final RouteType routeType, final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
@@ -182,5 +214,11 @@ public class ThundrServlet extends HttpServlet {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void destroy() {
+		modules.runStopLifecycle(injectionContext);
+		super.destroy();
 	}
 }

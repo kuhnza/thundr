@@ -17,18 +17,23 @@
  */
 package com.threewks.thundr.module;
 
-import com.atomicleopard.expressive.Expressive;
-import com.threewks.thundr.exception.BaseException;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 
-public class ModuleLoadingException extends BaseException {
+import com.threewks.thundr.injection.InjectionConfiguration;
 
-	private static final long serialVersionUID = -2383234783452550560L;
+public class DependencyRegistry {
+	private Collection<Class<? extends InjectionConfiguration>> dependencies = new LinkedHashSet<Class<? extends InjectionConfiguration>>();
 
-	public ModuleLoadingException(String modulePackage, String format, Object... formatArgs) {
-		super("Failed to load module '%s' - " + format, Expressive.<Object> list(modulePackage).addItems(formatArgs).toArray());
+	public void addDependency(Class<? extends InjectionConfiguration> dependency) {
+		this.dependencies.add(dependency);
 	}
 
-	public ModuleLoadingException(Throwable cause, String modulePackage, String format, Object... formatArgs) {
-		super(cause, "Failed to load module '%s' - " + format, Expressive.<Object> list(modulePackage).addItems(formatArgs).toArray());
+	public Collection<Class<? extends InjectionConfiguration>> getDependencies() {
+		return dependencies;
+	}
+
+	public boolean hasDependency(Class<? extends InjectionConfiguration> dependency) {
+		return dependencies.contains(dependency);
 	}
 }

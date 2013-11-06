@@ -18,9 +18,18 @@
 package com.threewks.thundr.injection;
 
 import com.threewks.thundr.action.method.ActionInterceptorRegistry;
+import com.threewks.thundr.module.DependencyRegistry;
 import com.threewks.thundr.view.ViewResolverRegistry;
 
 public class BaseInjectionConfiguration implements InjectionConfiguration {
+
+	@Override
+	public void requires(DependencyRegistry dependencyRegistry) {
+	}
+
+	@Override
+	public void initialise(UpdatableInjectionContext injectionContext) {
+	}
 
 	@Override
 	public void configure(UpdatableInjectionContext injectionContext) {
@@ -31,7 +40,6 @@ public class BaseInjectionConfiguration implements InjectionConfiguration {
 
 		ViewResolverRegistry viewResolverRegistry = injectionContext.get(ViewResolverRegistry.class);
 		addViewResolvers(viewResolverRegistry, injectionContext);
-
 	}
 
 	protected void addServices(UpdatableInjectionContext injectionContext) {
@@ -41,5 +49,13 @@ public class BaseInjectionConfiguration implements InjectionConfiguration {
 	}
 
 	protected void addActionInterceptors(ActionInterceptorRegistry actionInterceptorRegistry) {
+	}
+
+	@Override
+	public void start(UpdatableInjectionContext injectionContext) {
+	}
+
+	@Override
+	public void stop(InjectionContext injectionContext) {
 	}
 }

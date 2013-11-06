@@ -19,7 +19,6 @@ package com.threewks.thundr.view.jsp;
 
 import static com.atomicleopard.expressive.Expressive.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
@@ -45,8 +44,7 @@ import com.threewks.thundr.test.mock.servlet.MockHttpSession;
 import com.threewks.thundr.view.ViewResolutionException;
 
 public class JspViewResolverTest {
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+	@Rule public ExpectedException thrown = ExpectedException.none();
 
 	private JspViewResolver resolver = new JspViewResolver();
 	private MockHttpServletRequest req = new MockHttpServletRequest();
@@ -81,6 +79,7 @@ public class JspViewResolverTest {
 		assertThat(resp.getContentType(), is("made/up"));
 		assertThat(resp.getCharacterEncoding(), is("utf-1"));
 	}
+
 	@Test
 	public void shouldAddAllModelAttributesAsRequestAttributes() {
 		Map<String, Object> model = mapKeys("attribute1", "attribute2").to("String val", list("Other", "Stuff"));

@@ -17,13 +17,14 @@
  */
 package com.threewks.thundr.module;
 
-import static com.atomicleopard.expressive.Expressive.*;
+import static com.atomicleopard.expressive.Expressive.mapKeys;
 import static com.threewks.thundr.test.TestSupport.setField;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,13 +35,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.atomicleopard.expressive.Cast;
-import com.atomicleopard.expressive.EList;
 import com.threewks.thundr.configuration.PropertiesLoader;
-import com.threewks.thundr.injection.InjectionConfiguration;
 import com.threewks.thundr.injection.InjectionContextImpl;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.module.test.TestInjectionConfiguration;
+import com.threewks.thundr.module.test.m1.M1InjectionConfiguration;
+import com.threewks.thundr.module.test.m2.M2InjectionConfiguration;
 
 public class ModuleInjectionConfigurationTest {
 
@@ -55,15 +55,17 @@ public class ModuleInjectionConfigurationTest {
 	public void before() {
 		injectionContext.inject(modules).as(Modules.class);
 		propertyLoader = mock(PropertiesLoader.class);
-		when(propertyLoader.load(anyString())).thenReturn(mapKeys("com.threewks.thundr.module.test").to(""));
+		when(propertyLoader.loadSafe(anyString())).thenReturn(mapKeys("com.threewks.thundr.module.test").to(""));
 		setField(config, "propertiesLoader", propertyLoader);
 	}
 
 	@Test
 	public void shouldAddModuleForEntryInProperties() {
-		config.configure(injectionContext);
+		config.initialise(injectionContext);
 		assertThat(modules.listModules().size(), is(1));
-		assertThat(Cast.is(modules.listModules().get(0).getConfiguration(), TestInjectionConfiguration.class), is(true));
+		assertThat(modules.listModules().get(0) instanceof TestInjectionConfiguration, is(true));
+
+		assertThat(modules.hasModule(TestInjectionConfiguration.class), is(true));
 	}
 
 	@Test
@@ -71,49 +73,70 @@ public class ModuleInjectionConfigurationTest {
 		Map<String, String> properties = new LinkedHashMap<String, String>();
 		properties.put("com.threewks.thundr.module.test.m2", "");
 		properties.put("com.threewks.thundr.module.test.m1", "");
-		when(propertyLoader.load(anyString())).thenReturn(properties);
+		when(propertyLoader.loadSafe(anyString())).thenReturn(properties);
 		setField(config, "propertiesLoader", propertyLoader);
 
-		config.configure(injectionContext);
-		List<Module> listModules = modules.listModules();
-		assertThat(listModules.get(0).getName(), is("M1"));
-		assertThat(listModules.get(1).getName(), is("M2"));
+		config.initialise(injectionContext);
+		assertThat(modules.listModules().size(), is(2));
+
+		assertThat(modules.hasModule(M1InjectionConfiguration.class), is(true));
+		assertThat(modules.hasModule(M2InjectionConfiguration.class), is(true));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void shouldAddAModuleForEachEntryInProperties() {
 		Map<String, String> properties = mapKeys("com.threewks.thundr.module", "com.threewks.thundr.module.test").to("", "");
-		when(propertyLoader.load(anyString())).thenReturn(properties);
+		when(propertyLoader.loadSafe(anyString())).thenReturn(properties);
 
-		config.configure(injectionContext);
+		config.initialise(injectionContext);
 		assertThat(modules.listModules().size(), is(2));
-		EList<Class<? extends InjectionConfiguration>> classes = list();
-		classes.add(modules.listModules().get(0).getConfiguration().getClass());
-		classes.add(modules.listModules().get(1).getConfiguration().getClass());
-		assertThat(classes, hasItems(ModuleInjectionConfiguration.class, TestInjectionConfiguration.class));
+
+		assertThat(modules.hasModule(TestInjectionConfiguration.class), is(true));
+		assertThat(modules.hasModule(ModuleInjectionConfiguration.class), is(true));
 	}
 
 	@Test
-	public void shouldOnlyLoadModulesOnce() {
-		config.configure(injectionContext);
+	public void shouldLoadModuleFromInjectionContext() {
+		when(propertyLoader.loadSafe(anyString())).thenReturn(null);
+		injectionContext.inject("com.threewks.thundr.module.test.m1").named(ModuleInjectionConfiguration.PropertyNameModules).as(String.class);
+
+		config.initialise(injectionContext);
 		assertThat(modules.listModules().size(), is(1));
-		InjectionConfiguration configuration = modules.listModules().get(0).getConfiguration();
-		TestInjectionConfiguration testConfig = (TestInjectionConfiguration) configuration;
-		assertThat(testConfig.loaded, is(false));
-		modules.loadModules(injectionContext);
-		assertThat(testConfig.loaded, is(true));
-		testConfig.loaded = false;
-		modules.loadModules(injectionContext);
-		assertThat(testConfig.loaded, is(false));
+		assertThat(modules.hasModule(M1InjectionConfiguration.class), is(true));
+	}
+
+	@Test
+	public void shouldLoadModulesFromInjectionContextAsConcategnatedStrings() {
+		when(propertyLoader.loadSafe(anyString())).thenReturn(null);
+		String concatenatedModuleNames = "com.threewks.thundr.module.test.m1;com.threewks.thundr.module.test.m2,com.threewks.thundr.module.test:com.threewks.thundr.module";
+		injectionContext.inject(concatenatedModuleNames).named(ModuleInjectionConfiguration.PropertyNameModules).as(String.class);
+
+		config.initialise(injectionContext);
+		assertThat(modules.listModules().size(), is(4));
+		assertThat(modules.hasModule(M1InjectionConfiguration.class), is(true));
+		assertThat(modules.hasModule(M2InjectionConfiguration.class), is(true));
+		assertThat(modules.hasModule(TestInjectionConfiguration.class), is(true));
+		assertThat(modules.hasModule(ModuleInjectionConfiguration.class), is(true));
+	}
+
+	@Test
+	public void shouldLoadModulesFromInjectionContextAsListOfStrings() {
+		when(propertyLoader.loadSafe(anyString())).thenReturn(null);
+		List<String> moduleNames = Arrays.asList("com.threewks.thundr.module.test.m1", "com.threewks.thundr.module.test.m2");
+		injectionContext.inject(moduleNames).named(ModuleInjectionConfiguration.PropertyNameModules).as(List.class);
+
+		config.initialise(injectionContext);
+		assertThat(modules.listModules().size(), is(2));
+		assertThat(modules.hasModule(M1InjectionConfiguration.class), is(true));
+		assertThat(modules.hasModule(M2InjectionConfiguration.class), is(true));
 	}
 
 	@Test
 	public void shouldThrowAnExceptionIfNoModulesConfigured() {
 		thrown.expect(ModuleLoadingException.class);
-		thrown.expectMessage("you must have an entry for your application configuration in modules.properties");
-		when(propertyLoader.load(anyString())).thenReturn(Collections.<String, String> emptyMap());
-		config.configure(injectionContext);
+		thrown.expectMessage("No modules have been specified - you must minimally specify your application module in either your application configuration property 'thundrModules' or the file 'modules.properties'");
+		when(propertyLoader.loadSafe(anyString())).thenReturn(Collections.<String, String> emptyMap());
+		config.initialise(injectionContext);
 	}
 
 }

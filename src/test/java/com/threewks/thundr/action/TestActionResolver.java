@@ -15,20 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.threewks.thundr.module;
+package com.threewks.thundr.action;
 
-import com.atomicleopard.expressive.Expressive;
-import com.threewks.thundr.exception.BaseException;
+import java.util.Map;
 
-public class ModuleLoadingException extends BaseException {
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-	private static final long serialVersionUID = -2383234783452550560L;
+import com.threewks.thundr.route.RouteType;
 
-	public ModuleLoadingException(String modulePackage, String format, Object... formatArgs) {
-		super("Failed to load module '%s' - " + format, Expressive.<Object> list(modulePackage).addItems(formatArgs).toArray());
+public class TestActionResolver implements ActionResolver<TestAction> {
+	@Override
+	public Object resolve(TestAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) throws ActionException {
+		return null;
 	}
 
-	public ModuleLoadingException(Throwable cause, String modulePackage, String format, Object... formatArgs) {
-		super(cause, "Failed to load module '%s' - " + format, Expressive.<Object> list(modulePackage).addItems(formatArgs).toArray());
+	@Override
+	public TestAction createActionIfPossible(String actionName) {
+		return actionName.startsWith("test:") ? new TestAction(actionName.replaceAll("test:", "")) : null;
 	}
+
 }

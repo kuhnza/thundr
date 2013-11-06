@@ -29,16 +29,17 @@ import com.threewks.thundr.action.rewrite.RewriteAction;
 import com.threewks.thundr.action.rewrite.RewriteActionResolver;
 import com.threewks.thundr.action.staticResource.StaticResourceAction;
 import com.threewks.thundr.action.staticResource.StaticResourceActionResolver;
-import com.threewks.thundr.injection.InjectionConfiguration;
+import com.threewks.thundr.injection.BaseInjectionConfiguration;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.route.Routes;
 
-public class ActionInjectionConfiguration implements InjectionConfiguration {
+public class ActionInjectionConfiguration extends BaseInjectionConfiguration {
 
 	@Override
 	public void configure(UpdatableInjectionContext injectionContext) {
 		Routes routes = injectionContext.get(Routes.class);
 		ServletContext servletContext = injectionContext.get(ServletContext.class);
+		
 		MethodActionResolver methodActionResolver = new MethodActionResolver(injectionContext);
 		injectionContext.inject(methodActionResolver).as(MethodActionResolver.class);
 		// The MethodActionResolver is special because we use it to perform controller interception

@@ -23,6 +23,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -30,6 +31,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,10 +39,12 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import com.threewks.thundr.action.ActionException;
-import com.threewks.thundr.injection.DefaultInjectionConfiguration;
+import com.threewks.thundr.configuration.ConfigurationInjectionConfiguration;
 import com.threewks.thundr.injection.InjectionConfiguration;
 import com.threewks.thundr.injection.InjectionContextImpl;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
+import com.threewks.thundr.module.ModuleInjectionConfiguration;
+import com.threewks.thundr.route.RouteInjectionConfiguration;
 import com.threewks.thundr.route.RouteType;
 import com.threewks.thundr.route.Routes;
 import com.threewks.thundr.test.TestSupport;
@@ -78,24 +82,21 @@ public class ThundrServletTest {
 		injectionContext.inject(viewResolverRegistry).as(ViewResolverRegistry.class);
 	}
 
-	@SuppressWarnings("serial")
 	@Test
 	public void shouldInitializeInjectionContextOnServletInit() throws ServletException {
 		ServletContext servletContext = new MockServletContext();
 		ServletConfig config = new MockServletConfig(servletContext);
-		final InjectionConfiguration injectionConfiguration = mock(InjectionConfiguration.class);
-		ThundrServlet servlet = new ThundrServlet() {
-			protected InjectionConfiguration getInjectionConfigInstance(ServletContext servletContext) {
-				return injectionConfiguration;
-			};
-		};
+		ThundrServlet servlet = new ThundrServlet();
+		servlet = spy(servlet);
+		when(servlet.getBaseModules()).thenReturn(Collections.<Class<? extends InjectionConfiguration>> emptyList());
 		servlet.init(config);
 		UpdatableInjectionContext injectionContext = getInjectionContextFromServlet(servlet);
 		assertThat(injectionContext, is(notNullValue()));
 		assertThat(injectionContext.get(ServletContext.class), is(servletContext));
 		assertThat(servletContext.getAttribute("injectionContext"), is((Object) injectionContext));
 
-		verify(injectionConfiguration).configure(injectionContext);
+		verify(servlet).initInjectionContext(servletContext);
+		verify(servlet).initModules(injectionContext);
 	}
 
 	@SuppressWarnings("serial")
@@ -106,17 +107,18 @@ public class ThundrServletTest {
 		ServletContext servletContext = new MockServletContext();
 		ServletConfig config = new MockServletConfig(servletContext);
 		ThundrServlet servlet = new ThundrServlet() {
-			protected InjectionConfiguration getInjectionConfigInstance(ServletContext servletContext) {
+			@Override
+			protected java.util.List<java.lang.Class<? extends InjectionConfiguration>> getBaseModules() {
 				throw new RuntimeException("Expected");
 			};
 		};
 		servlet.init(config);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
-	public void shouldUseApplicationDefaultConfiguration() {
-		ServletContext servletContext = new MockServletContext();
-		assertThat(servlet.getInjectionConfigInstance(servletContext), instanceOf(DefaultInjectionConfiguration.class));
+	public void shouldUseBasicSetOfInjectionConfiguraitons() {
+		assertThat(servlet.getBaseModules(), Matchers.<Class<? extends InjectionConfiguration>> hasItems(ConfigurationInjectionConfiguration.class, ModuleInjectionConfiguration.class, RouteInjectionConfiguration.class));
 	}
 
 	@Test

@@ -19,24 +19,35 @@ package com.threewks.thundr.route;
 
 import java.util.List;
 
-import com.threewks.thundr.injection.InjectionConfiguration;
+import com.threewks.thundr.action.ActionInjectionConfiguration;
+import com.threewks.thundr.injection.BaseInjectionConfiguration;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.logger.Logger;
+import com.threewks.thundr.module.DependencyRegistry;
 import com.threewks.thundr.util.Streams;
+import com.threewks.thundr.view.ViewResolverInjectionConfiguration;
 
-public class RouteInjectionConfiguration implements InjectionConfiguration {
-	private String filename;
+public class RouteInjectionConfiguration extends BaseInjectionConfiguration {
+	private static final String RoutesJsonFilename = "routes.json";
+	private String filename = RoutesJsonFilename;
 
 	public RouteInjectionConfiguration() {
-		this("routes.json");
-	}
-
-	public RouteInjectionConfiguration(String filename) {
-		this.filename = filename;
 	}
 
 	@Override
-	public void configure(UpdatableInjectionContext injectionContext) {
+	public void requires(DependencyRegistry dependencyRegistry) {
+		dependencyRegistry.addDependency(ActionInjectionConfiguration.class);
+		dependencyRegistry.addDependency(ViewResolverInjectionConfiguration.class);
+	}
+
+	@Override
+	public void initialise(UpdatableInjectionContext injectionContext) {
+		super.initialise(injectionContext);
+		injectionContext.inject(new Routes()).as(Routes.class);
+	}
+
+	@Override
+	public void start(UpdatableInjectionContext injectionContext) {
 		Routes routes = injectionContext.get(Routes.class);
 		addRoutes(routes, injectionContext, filename);
 	}

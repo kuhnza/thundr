@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -117,9 +118,11 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 			return null;
 		}
 		List<Constructor<T>> ctors = classIntrospector.listConstructors(type);
+		List<ParameterDescription> minimalParameters = Collections.emptyList();
 		for (int i = ctors.size() - 1; i >= 0; i--) {
 			Constructor<T> constructor = ctors.get(i);
 			List<ParameterDescription> parameterDescriptions = methodIntrospector.getParameterDescriptions(constructor);
+			minimalParameters = parameterDescriptions;
 			if (canSatisfy(parameterDescriptions)) {
 				Object[] args = getAll(parameterDescriptions);
 				T instance = invokeConstructor(constructor, args);
@@ -128,7 +131,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 			}
 		}
 
-		throw new InjectionException("Could not create a %s - cannot match parameters of any available constructors", type.getName());
+		throw new InjectionException("Could not create a %s - cannot match parameters of any available constructors. The minimal set of parameters required is %s", type.getName(), minimalParameters);
 	}
 
 	private <T> T invokeSetters(Class<T> type, T instance) {

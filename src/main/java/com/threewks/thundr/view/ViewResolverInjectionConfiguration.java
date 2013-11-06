@@ -18,7 +18,7 @@
 package com.threewks.thundr.view;
 
 import com.threewks.thundr.http.exception.HttpStatusException;
-import com.threewks.thundr.injection.InjectionConfiguration;
+import com.threewks.thundr.injection.BaseInjectionConfiguration;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.route.RouteNotFoundException;
 import com.threewks.thundr.view.exception.ExceptionViewResolver;
@@ -37,12 +37,17 @@ import com.threewks.thundr.view.redirect.RedirectViewResolver;
 import com.threewks.thundr.view.string.StringView;
 import com.threewks.thundr.view.string.StringViewResolver;
 
-public class ViewResolverInjectionConfiguration implements InjectionConfiguration {
+public class ViewResolverInjectionConfiguration extends BaseInjectionConfiguration {
+
+	@Override
+	public void initialise(UpdatableInjectionContext injectionContext) {
+		ViewResolverRegistry viewResolverRegistry = new ViewResolverRegistry();
+		injectionContext.inject(viewResolverRegistry).as(ViewResolverRegistry.class);
+	}
 
 	@Override
 	public void configure(UpdatableInjectionContext injectionContext) {
-		ViewResolverRegistry viewResolverRegistry = new ViewResolverRegistry();
-		injectionContext.inject(viewResolverRegistry).as(ViewResolverRegistry.class);
+		ViewResolverRegistry viewResolverRegistry = injectionContext.get(ViewResolverRegistry.class);
 		addViewResolvers(viewResolverRegistry, injectionContext);
 	}
 

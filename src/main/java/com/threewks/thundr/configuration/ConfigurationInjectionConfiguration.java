@@ -22,11 +22,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.threewks.thundr.injection.InjectionConfiguration;
+import com.threewks.thundr.injection.BaseInjectionConfiguration;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.logger.Logger;
 
-public class ConfigurationInjectionConfiguration implements InjectionConfiguration {
+public class ConfigurationInjectionConfiguration extends BaseInjectionConfiguration {
 
 	private PropertiesLoader propertiesLoader = new PropertiesLoader();
 	private String filename;
@@ -40,7 +40,7 @@ public class ConfigurationInjectionConfiguration implements InjectionConfigurati
 	}
 
 	@Override
-	public void configure(UpdatableInjectionContext injectionContext) {
+	public void initialise(UpdatableInjectionContext injectionContext) {
 		Logger.info("Loading application properties from %s", filename);
 		Map<String, String> properties = loadProperties();
 

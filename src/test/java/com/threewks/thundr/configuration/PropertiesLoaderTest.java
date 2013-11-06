@@ -18,16 +18,20 @@
 package com.threewks.thundr.configuration;
 
 import static com.atomicleopard.expressive.Expressive.list;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class PropertiesLoaderTest {
+
+	@Rule public ExpectedException thrown = ExpectedException.none();
 	private PropertiesLoader propertiesLoader = new PropertiesLoader();
 
 	@Test
@@ -52,6 +56,27 @@ public class PropertiesLoaderTest {
 		assertKeysInOrder(properties, "key", "key2");
 		assertThat(properties.get("key"), is("last value"));
 		assertThat(properties.get("key2"), is("last value again"));
+	}
+
+	@Test
+	public void shouldReturnNullIfPropertiesFileDoesntExist() {
+		Map<String, String> properties = propertiesLoader.loadSafe("doesntexist.properties");
+		assertThat(properties, is(nullValue()));
+	}
+
+	@Test
+	public void shouldLoadPropertiesWithCommentsWhenLoadSafe() {
+		Map<String, String> properties = propertiesLoader.loadSafe("commented.properties");
+		assertKeysInOrder(properties, "key", "key2");
+		assertThat(properties.get("key"), is("value"));
+		assertThat(properties.get("key2"), is("value2"));
+	}
+
+	@Test
+	public void shouldThrowConfigurationExceptionIfPropertiesFileDoesntExist() {
+		thrown.expect(ConfigurationException.class);
+		Map<String, String> properties = propertiesLoader.load("doesntexist.properties");
+		assertThat(properties, is(nullValue()));
 	}
 
 	private void assertKeysInOrder(Map<String, String> properties, String... keys) {

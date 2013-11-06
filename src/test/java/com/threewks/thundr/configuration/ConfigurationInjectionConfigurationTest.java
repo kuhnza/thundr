@@ -53,7 +53,7 @@ public class ConfigurationInjectionConfigurationTest {
 	public void shouldInjectPropertiesIntoInjectionContext() {
 		Map<String, String> properties = map("property1", "property 1 value", "property2", "property 2 value");
 		setUpProperties(properties);
-		configuration.configure(injectionContext);
+		configuration.initialise(injectionContext);
 		assertThat(injectionContext.get(String.class, "property1"), is("property 1 value"));
 		assertThat(injectionContext.get(String.class, "property2"), is("property 2 value"));
 	}
@@ -63,7 +63,7 @@ public class ConfigurationInjectionConfigurationTest {
 		Environment.set("dev");
 		Map<String, String> properties = map("property1%my-application-id", "property 1 value", "property2%dev", "property 2 value");
 		setUpProperties(properties);
-		configuration.configure(injectionContext);
+		configuration.initialise(injectionContext);
 		assertThat(injectionContext.get(String.class, "property2"), is("property 2 value"));
 		assertThat(injectionContext.contains(String.class, "property1"), is(false));
 		assertThat(injectionContext.contains(String.class, "property1%my-application-id"), is(true));
@@ -74,7 +74,7 @@ public class ConfigurationInjectionConfigurationTest {
 		Environment.set("dev");
 		Map<String, String> properties = map("property1%dev", "property 1 development value", "property1", "property 1 base value");
 		setUpProperties(properties);
-		configuration.configure(injectionContext);
+		configuration.initialise(injectionContext);
 		assertThat(injectionContext.get(String.class, "property1"), is("property 1 development value"));
 	}
 
