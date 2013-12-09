@@ -20,15 +20,20 @@ package com.threewks.thundr.route;
 import static com.atomicleopard.expressive.Expressive.list;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.atomicleopard.expressive.EList;
+import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.http.URLEncoder;
 
 public class Route {
-	public static final Pattern PathParameterToken = Pattern.compile("\\{(.*?)\\}");
+	public static final String PathParameterToken = "\\{(.*?)\\}";
+	public static final Pattern PathParameterPattern = Pattern.compile(PathParameterToken);
 	// from -> http://www.ietf.org/rfc/rfc1738.txt: "Thus, only alphanumerics, the special characters "$-_.+!*'()," ... may be used unencoded within a URL."
 	static final String AcceptablePathCharacters = "\\w%:@&=+$,!~*'()\\.\\-";
 	static final String AcceptableMultiPathCharacters = AcceptablePathCharacters + "/";
@@ -41,19 +46,29 @@ public class Route {
 	// http://www.skorks.com/2010/05/what-every-developer-should-know-about-urls/
 	static final String SemiColonDelimitedRequestParameters = "(?:;.*?)*";
 
+	private String name;
 	private String route;
 	private Pattern routeMatchRegex;
 	private String actionName;
 	private RouteType routeType;
 	private EList<String> pathParameters;
 
-	public Route(String route, String actionName, RouteType routeType) {
+	public Route(String name, String route, String actionName, RouteType routeType) {
 		super();
+		this.name = name;
 		this.route = route;
 		this.actionName = actionName;
 		this.routeType = routeType;
 		this.pathParameters = extractPathParametersFromRoute(route);
 		this.routeMatchRegex = Pattern.compile(convertPathStringToRegex(route));
+	}
+
+	public Route(String route, String actionName, RouteType routeType) {
+		this(null, route, actionName, routeType);
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public String getRouteMatchRegex() {
@@ -72,6 +87,22 @@ public class Route {
 		return routeMatchRegex.matcher(routePath).matches();
 	}
 
+	public String getReverseRoute(Object... pathVars) {
+		if (pathVars.length != pathParameters.size()) {
+			throw new ReverseRouteException("Cannot generate a reverse route for %s - require %d parameters but received %d", route, pathParameters.size(), pathVars.length);
+		}
+		List<String> values = Expressive.Transformers.transformAllUsing(Expressive.Transformers.stringify()).from(pathVars);
+		if (values.contains(null)) {
+			throw new ReverseRouteException("Cannot generate a reverse route for %s - one or more parameters were null", route);
+		}
+		String reverse = route;
+		for (String value : values) {
+			reverse = reverse.replaceFirst(PathParameterToken, value);
+		}
+		reverse = reverse.replaceAll(PathParameterToken, "");
+		return reverse;
+	}
+
 	public Map<String, String> getPathVars(String routePath) {
 		Matcher matcher = routeMatchRegex.matcher(routePath);
 		matcher.find();
@@ -87,20 +118,21 @@ public class Route {
 
 	@Override
 	public String toString() {
-		return String.format("%s\t%s\t->\t%s", routeType, route, actionName);
+		String nameString = StringUtils.isBlank(name) ? "" : " (" + name + ")";
+		return String.format("%-8s%-50s%16s: %s", routeType, route, nameString, actionName);
 	}
 
 	static String convertPathStringToRegex(String route) {
 		String wildCardPlaceholder = "____placeholder____";
 		route = route.replaceAll("\\*\\*", wildCardPlaceholder);
 		route = route.replaceAll("\\*", Matcher.quoteReplacement("[" + AcceptablePathCharacters + "]*?"));
-		route = PathParameterToken.matcher(route).replaceAll(Matcher.quoteReplacement("([" + AcceptablePathCharacters + "]+)"));
+		route = PathParameterPattern.matcher(route).replaceAll(Matcher.quoteReplacement("([" + AcceptablePathCharacters + "]+)"));
 		route = route.replaceAll(wildCardPlaceholder, Matcher.quoteReplacement("[" + AcceptableMultiPathCharacters + "]*?"));
 		return route + SemiColonDelimitedRequestParameters;
 	}
 
 	static EList<String> extractPathParametersFromRoute(String route) {
-		Matcher matcher = PathParameterToken.matcher(route);
+		Matcher matcher = PathParameterPattern.matcher(route);
 		EList<String> results = list();
 		while (matcher.find()) {
 			String parameter = matcher.group(1);

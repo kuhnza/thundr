@@ -17,7 +17,12 @@
  */
 package com.threewks.thundr.view.jsp.el;
 
+import com.atomicleopard.expressive.Cast;
+import com.atomicleopard.expressive.EList;
+import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.http.URLEncoder;
+import com.threewks.thundr.route.Route;
+import com.threewks.thundr.route.Routes;
 
 public class UrlFunctions {
 	/**
@@ -59,5 +64,13 @@ public class UrlFunctions {
 	 */
 	public static String param(String param) {
 		return URLEncoder.encodeQueryComponent(param);
+	}
+
+	/**
+	 * Outputs a url for the given named route.
+	 */
+	public static String route(Routes routes, String routeName, Object...params) {
+		Route route = routes.getRoute(routeName);
+		return route.getReverseRoute(params);
 	}
 }

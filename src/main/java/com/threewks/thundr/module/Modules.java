@@ -87,6 +87,7 @@ public class Modules {
 
 	public void runStartupLifecycle(UpdatableInjectionContext injectionContext) {
 		Logger.debug("Loading modules...");
+		List<InjectionConfiguration> startupOrder = new ArrayList<InjectionConfiguration>();
 		while (!allModulesStarted()) {
 			if (status.values().contains(ModuleStatus.Added)) {
 				resolveDependencies();
@@ -98,11 +99,23 @@ public class Modules {
 					allConfigured = configureNext(injectionContext);
 				}
 				if (allConfigured) {
-					startNext(injectionContext);
+					InjectionConfiguration started = startNext(injectionContext);
+					if (started != null) {
+						startupOrder.add(started);
+					}
 				}
 			}
 		}
 		Logger.info("Modules loaded");
+		if (Logger.willDebug()) {
+			StringBuilder sb = new StringBuilder();
+			for (InjectionConfiguration injectionConfiguration : startupOrder) {
+				sb.append("\n\t");
+				sb.append(injectionConfiguration.getClass().getSimpleName());
+			}
+			Logger.debug("Modules started in this order:%s", sb.toString());
+
+		}
 	}
 
 	/**
@@ -131,13 +144,13 @@ public class Modules {
 		return configure == null;
 	}
 
-	private boolean startNext(UpdatableInjectionContext injectionContext) {
+	private InjectionConfiguration startNext(UpdatableInjectionContext injectionContext) {
 		InjectionConfiguration start = getFirstModuleWithStatus(ModuleStatus.Configured);
 		if (start != null) {
 			start.start(injectionContext);
 			status.put(start, ModuleStatus.Started);
 		}
-		return start == null;
+		return start;
 	}
 
 	private InjectionConfiguration getFirstModuleWithStatus(ModuleStatus status) {

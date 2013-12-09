@@ -21,6 +21,7 @@ import com.threewks.thundr.http.exception.HttpStatusException;
 import com.threewks.thundr.injection.BaseInjectionConfiguration;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.route.RouteNotFoundException;
+import com.threewks.thundr.route.Routes;
 import com.threewks.thundr.view.exception.ExceptionViewResolver;
 import com.threewks.thundr.view.exception.HttpStatusExceptionViewResolver;
 import com.threewks.thundr.view.exception.RouteNotFoundViewResolver;
@@ -43,20 +44,26 @@ public class ViewResolverInjectionConfiguration extends BaseInjectionConfigurati
 	public void initialise(UpdatableInjectionContext injectionContext) {
 		ViewResolverRegistry viewResolverRegistry = new ViewResolverRegistry();
 		injectionContext.inject(viewResolverRegistry).as(ViewResolverRegistry.class);
+		GlobalModel globalModel = new GlobalModel();
+		injectionContext.inject(globalModel).as(GlobalModel.class);
 	}
 
 	@Override
 	public void configure(UpdatableInjectionContext injectionContext) {
+		GlobalModel globalModel = injectionContext.get(GlobalModel.class);
 		ViewResolverRegistry viewResolverRegistry = injectionContext.get(ViewResolverRegistry.class);
-		addViewResolvers(viewResolverRegistry, injectionContext);
+		addViewResolvers(viewResolverRegistry, injectionContext, globalModel);
+		globalModel.put("routes", injectionContext.get(Routes.class));
 	}
 
-	protected void addViewResolvers(ViewResolverRegistry viewResolverRegistry, UpdatableInjectionContext injectionContext) {
+	protected void addViewResolvers(ViewResolverRegistry viewResolverRegistry, UpdatableInjectionContext injectionContext, GlobalModel globalModel) {
 		ExceptionViewResolver exceptionViewResolver = new ExceptionViewResolver();
 		HttpStatusExceptionViewResolver statusViewResolver = new HttpStatusExceptionViewResolver();
 
 		injectionContext.inject(exceptionViewResolver).as(ExceptionViewResolver.class);
 		injectionContext.inject(statusViewResolver).as(HttpStatusExceptionViewResolver.class);
+
+		JspViewResolver jspViewResolver = new JspViewResolver(globalModel);
 
 		viewResolverRegistry.addResolver(Throwable.class, exceptionViewResolver);
 		viewResolverRegistry.addResolver(HttpStatusException.class, statusViewResolver);
@@ -65,7 +72,7 @@ public class ViewResolverInjectionConfiguration extends BaseInjectionConfigurati
 		viewResolverRegistry.addResolver(JsonView.class, new JsonViewResolver());
 		viewResolverRegistry.addResolver(JsonpView.class, new JsonpViewResolver());
 		viewResolverRegistry.addResolver(FileView.class, new FileViewResolver());
-		viewResolverRegistry.addResolver(JspView.class, new JspViewResolver());
+		viewResolverRegistry.addResolver(JspView.class, jspViewResolver);
 		viewResolverRegistry.addResolver(StringView.class, new StringViewResolver());
 	}
 }

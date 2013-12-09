@@ -32,6 +32,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.threewks.thundr.action.Action;
 import com.threewks.thundr.action.ActionException;
 import com.threewks.thundr.action.ActionResolver;
@@ -41,6 +43,7 @@ import com.threewks.thundr.logger.Logger;
 public class Routes {
 	private Map<Route, Action> actionsForRoutes = new HashMap<Route, Action>();
 	private Map<RouteType, Map<String, Route>> routes = createRoutesMap();
+	private Map<String, Route> namedRoutes = new HashMap<String, Route>();
 
 	private Map<Class<? extends Action>, ActionResolver<?>> actionResolvers = new LinkedHashMap<Class<? extends Action>, ActionResolver<?>>();
 
@@ -59,12 +62,20 @@ public class Routes {
 	}
 
 	public void addRoute(Route route) {
+		String name = route.getName();
 		String path = route.getRouteMatchRegex();
 		String actionName = route.getActionName();
 		RouteType routeType = route.getRouteType();
 		Action action = createAction(actionName);
 		this.routes.get(routeType).put(path, route);
 		this.actionsForRoutes.put(route, action);
+		if (StringUtils.isNotBlank(name)) {
+			this.namedRoutes.put(name, route);
+		}
+	}
+
+	public Route getRoute(String name) {
+		return namedRoutes.get(name);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -95,6 +106,10 @@ public class Routes {
 		ActionResolver<T> actionResolver = (ActionResolver<T>) actionResolvers.get(action.getClass());
 		Object resolve = actionResolver.resolve(action, routeType, req, resp, pathVars);
 		return resolve;
+	}
+
+	public boolean isEmpty() {
+		return actionsForRoutes.isEmpty();
 	}
 
 	private static final String routeDisplayFormat = "%s\n";
@@ -176,4 +191,5 @@ public class Routes {
 		}
 		return routesMap;
 	}
+
 }

@@ -36,7 +36,7 @@ public class RedirectAction implements Action {
 	public String getRedirectTo(Map<String, String> pathVars) {
 		String finalRedirect = redirectTo;
 
-		Matcher matcher = Route.PathParameterToken.matcher(redirectTo);
+		Matcher matcher = Route.PathParameterPattern.matcher(redirectTo);
 		while (matcher.find()) {
 			String token = matcher.group(1);
 			finalRedirect = finalRedirect.replaceAll(Pattern.quote("{" + token + "}"), Matcher.quoteReplacement(StringUtils.trimToEmpty(pathVars.get(token))));

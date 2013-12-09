@@ -17,7 +17,6 @@
  */
 package com.threewks.thundr.view.jsp;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -28,6 +27,7 @@ import jodd.util.StringPool;
 
 import com.threewks.thundr.exception.BaseException;
 import com.threewks.thundr.http.ContentType;
+import com.threewks.thundr.view.GlobalModel;
 import com.threewks.thundr.view.ViewResolutionException;
 import com.threewks.thundr.view.ViewResolver;
 
@@ -39,7 +39,11 @@ public class JspViewResolver implements ViewResolver<JspView> {
 	 * This can be useful for setting values that apply to every page, or are extremely common. For example,
 	 * application environment, domain or version number.
 	 */
-	private Map<String, Object> globalModel = new HashMap<String, Object>();
+	private GlobalModel globalModel;
+
+	public JspViewResolver(GlobalModel globalModel) {
+		this.globalModel = globalModel;
+	}
 
 	@Override
 	public void resolve(HttpServletRequest req, HttpServletResponse resp, JspView viewResult) {
@@ -63,18 +67,6 @@ public class JspViewResolver implements ViewResolver<JspView> {
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName();
-	}
-
-	public Object addToGlobalModel(String key, Object value) {
-		return globalModel.put(key, value);
-	}
-
-	public Object removeFromGlobalModel(String key) {
-		return globalModel.remove(key);
-	}
-
-	public void addAllToGlobalModel(Map<String, Object> entries) {
-		globalModel.putAll(entries);
 	}
 
 	public static void includeContentTypeAndEncoding(HttpServletResponse resp) {

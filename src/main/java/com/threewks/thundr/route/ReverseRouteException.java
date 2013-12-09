@@ -15,25 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.threewks.thundr.action.method.bind.http;
+package com.threewks.thundr.route;
 
-import java.util.Map;
+import com.threewks.thundr.http.exception.NotFoundException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+public class ReverseRouteException extends NotFoundException {
+	private static final long serialVersionUID = 1L;
 
-import com.threewks.thundr.action.method.bind.ActionMethodBinder;
-import com.threewks.thundr.introspection.ParameterDescription;
-
-public class HttpBinder implements ActionMethodBinder {
-	public HttpBinder() {
+	public ReverseRouteException(String format, Object... formatArgs) {
+		super(format, formatArgs);
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void bindAll(Map<ParameterDescription, Object> bindings, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {
-		Map<String, String[]> parameterMap = req.getParameterMap();
-		ParameterBinderSet binders = new ParameterBinderSet();
-		binders.bind(bindings, parameterMap, null);
+	public ReverseRouteException(Throwable cause, String format, Object... formatArgs) {
+		super(cause, format, formatArgs);
 	}
 }

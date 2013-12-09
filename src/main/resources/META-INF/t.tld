@@ -89,6 +89,13 @@
 		<function-class>com.threewks.thundr.view.jsp.el.UrlFunctions</function-class>
 		<function-signature>java.lang.String param(java.lang.String)</function-signature>
 	</function>
+	<!-- Requires var-args to function - still unable to get a JUEL version working
+	<function>
+		<name>route</name>
+		<function-class>com.threewks.thundr.view.jsp.el.UrlFunctions</function-class>
+		<function-signature>java.lang.String route(com.threewks.thundr.route.Routes, java.lang.String, java.lang.Object ...)</function-signature>
+	</function>
+	 -->
 	<!-- Formatting -->
 	<function>
 		<name>uppercase</name>

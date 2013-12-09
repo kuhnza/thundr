@@ -30,6 +30,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletRequest;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletResponse;
 import com.threewks.thundr.view.ViewResolutionException;
@@ -47,7 +50,18 @@ public class JsonpViewResolverTest {
 		JsonpView viewResult = new JsonpView(map("key", "value"));
 		resolver.resolve(req, resp, viewResult);
 		assertThat(resp.status(), is(HttpServletResponse.SC_OK));
-		assertThat(resp.content(), is("callback({\"key\":\"value\"})"));
+		assertThat(resp.content(), is("callback({\"key\":\"value\"});"));
+		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
+		assertThat(resp.getContentLength(), is(15));
+	}
+
+	@Test
+	public void shouldResolveJsonElementByWritingJsonToOutputStreamAsJsonElement() throws IOException {
+		JsonElement jsonEl = createJsonElement();
+		JsonpView viewResult = new JsonpView(jsonEl);
+		resolver.resolve(req, resp, viewResult);
+		assertThat(resp.status(), is(HttpServletResponse.SC_OK));
+		assertThat(resp.content(), is("callback({\"key\":\"value\"});"));
 		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
 		assertThat(resp.getContentLength(), is(15));
 	}
@@ -58,7 +72,7 @@ public class JsonpViewResolverTest {
 		JsonpView viewResult = new JsonpView(map("key", "value"));
 		resolver.resolve(req, resp, viewResult);
 		assertThat(resp.status(), is(HttpServletResponse.SC_OK));
-		assertThat(resp.content(), is("abcdef({\"key\":\"value\"})"));
+		assertThat(resp.content(), is("abcdef({\"key\":\"value\"});"));
 		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
 		assertThat(resp.getContentLength(), is(15));
 	}
@@ -85,4 +99,10 @@ public class JsonpViewResolverTest {
 		resolver.resolve(req, resp, viewResult);
 		assertThat(resp.getContentType(), is("application/javascript"));
 	}
+
+	private JsonElement createJsonElement() {
+		Gson gson = new GsonBuilder().create();
+		return gson.fromJson("{\"key\":\"value\"}", JsonElement.class);
+	}
+
 }

@@ -36,7 +36,7 @@ public class RewriteAction implements Action {
 	public String getRewriteTo(Map<String, String> pathVars) {
 		String finalRewrite = rewriteTo;
 
-		Matcher matcher = Route.PathParameterToken.matcher(rewriteTo);
+		Matcher matcher = Route.PathParameterPattern.matcher(rewriteTo);
 		while (matcher.find()) {
 			String token = matcher.group(1);
 			finalRewrite = finalRewrite.replaceAll(Pattern.quote("{" + token + "}"), Matcher.quoteReplacement(StringUtils.trimToEmpty(pathVars.get(token))));

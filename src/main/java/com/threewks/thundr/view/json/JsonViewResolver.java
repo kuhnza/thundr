@@ -23,8 +23,10 @@ import javax.servlet.http.HttpServletResponse;
 import jodd.util.MimeTypes;
 import jodd.util.StringPool;
 
+import com.atomicleopard.expressive.Cast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.threewks.thundr.json.GsonSupport;
 import com.threewks.thundr.view.ViewResolutionException;
 import com.threewks.thundr.view.ViewResolver;
@@ -54,7 +56,8 @@ public class JsonViewResolver implements ViewResolver<JsonView> {
 		Object output = viewResult.getOutput();
 		try {
 			Gson create = gsonBuilder.create();
-			String json = create.toJson(output);
+			JsonElement jsonElement = Cast.as(output, JsonElement.class);
+			String json = jsonElement == null ? create.toJson(output) : create.toJson(jsonElement); 
 			resp.setContentType(MimeTypes.MIME_APPLICATION_JSON);
 			resp.setCharacterEncoding(StringPool.UTF_8);
 			resp.setContentLength(json.getBytes(StringPool.UTF_8).length);

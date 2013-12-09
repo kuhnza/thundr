@@ -53,7 +53,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 
 	@Override
 	public <T> InjectorBuilder<T> inject(Class<T> type) {
-		
+
 		if (!ClassIntrospector.isABasicType(type) && (type.isInterface() || Modifier.isAbstract(type.getModifiers()))) {
 			throw new InjectionException("Unable to inject the type '%s' - you cannot inject interfaces or abstract classes", type.getName());
 		}

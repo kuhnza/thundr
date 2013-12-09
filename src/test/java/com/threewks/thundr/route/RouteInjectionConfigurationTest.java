@@ -27,7 +27,6 @@ import org.junit.rules.ExpectedException;
 import com.threewks.thundr.action.ActionInjectionConfiguration;
 import com.threewks.thundr.action.TestAction;
 import com.threewks.thundr.action.TestActionResolver;
-import com.threewks.thundr.exception.BaseException;
 import com.threewks.thundr.injection.InjectionContextImpl;
 import com.threewks.thundr.injection.UpdatableInjectionContext;
 import com.threewks.thundr.module.DependencyRegistry;
@@ -66,12 +65,9 @@ public class RouteInjectionConfigurationTest {
 	}
 
 	@Test
-	public void shouldThrowExceptionWhenUnableToLoadRoutesFile() {
-		thrown.expect(BaseException.class);
-		thrown.expectMessage("Could not load resource non-existant.json: resource not found");
-		
+	public void shouldNotThrowExceptionWhenUnableToLoadRoutesFile() {
 		TestSupport.setField(routeInjectionConfiguration, "filename", "non-existant.json");
-		
+
 		injectionContext.inject(new Routes()).as(Routes.class);
 		routeInjectionConfiguration.start(injectionContext);
 	}

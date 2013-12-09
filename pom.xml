@@ -79,7 +79,7 @@
 			<version>2.2.4</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- JSTL - this must be provided to avoid dependency conflicts when deployed to the appengine -->
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
@@ -102,8 +102,8 @@
 			<version>1.4.4</version>
 			<scope>provided</scope>
 		</dependency>
-		
-		<!--  Joda time is included in thundr to help direct best practice for data/time manipulation -->
+
+		<!-- Joda time is included in thundr to help direct best practice for data/time manipulation -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>

@@ -30,6 +30,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletRequest;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletResponse;
 import com.threewks.thundr.view.ViewResolutionException;
@@ -45,6 +48,17 @@ public class JsonViewResolverTest {
 	@Test
 	public void shouldResolveByWritingJsonToOutputStream() throws IOException {
 		JsonView viewResult = new JsonView(map("key", "value"));
+		resolver.resolve(req, resp, viewResult);
+		assertThat(resp.status(), is(HttpServletResponse.SC_OK));
+		assertThat(resp.content(), is("{\"key\":\"value\"}"));
+		assertThat(resp.getCharacterEncoding(), is("UTF-8"));
+		assertThat(resp.getContentLength(), is(15));
+	}
+
+	@Test
+	public void shouldResolveJsonElementByWritingJsonToOutputStreamAsJsonElement() throws IOException {
+		JsonElement jsonEl = createJsonElement();
+		JsonView viewResult = new JsonView(jsonEl);
 		resolver.resolve(req, resp, viewResult);
 		assertThat(resp.status(), is(HttpServletResponse.SC_OK));
 		assertThat(resp.content(), is("{\"key\":\"value\"}"));
@@ -74,4 +88,10 @@ public class JsonViewResolverTest {
 		resolver.resolve(req, resp, viewResult);
 		assertThat(resp.getContentType(), is("application/json"));
 	}
+
+	private JsonElement createJsonElement() {
+		Gson gson = new GsonBuilder().create();
+		return gson.fromJson("{\"key\":\"value\"}", JsonElement.class);
+	}
+
 }

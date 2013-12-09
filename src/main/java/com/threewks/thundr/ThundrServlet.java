@@ -61,9 +61,20 @@ public class ThundrServlet extends HttpServlet {
 			ServletContext servletContext = config.getServletContext();
 			injectionContext = initInjectionContext(servletContext);
 			modules = initModules(injectionContext);
+			debugRoutes(injectionContext);
 			Logger.info("Started up in %dms", System.currentTimeMillis() - start);
 		} catch (RuntimeException e) {
 			throw new ServletException("Failed to initialse thundr: " + e.getMessage(), e);
+		}
+	}
+
+	private void debugRoutes(UpdatableInjectionContext injectionContext) {
+		Routes routes = injectionContext.get(Routes.class);
+		if (routes == null || routes.isEmpty()) {
+			Logger.warn("No routes are configured for this application.");
+		}
+		if (Logger.willDebug()) {
+			Logger.debug("Loaded routes: \n%s", routes.listRoutes());
 		}
 	}
 

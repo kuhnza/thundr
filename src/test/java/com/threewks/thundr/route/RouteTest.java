@@ -23,11 +23,17 @@ import static org.junit.Assert.assertThat;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import com.atomicleopard.expressive.Expressive;
 
 public class RouteTest {
+	@Rule public ExpectedException thrown = ExpectedException.none();
+
 	@Test
 	public void shouldCorrectlyReplaceSingleAndDoubleAsteriskInPathString() {
 		assertThat(Route.convertPathStringToRegex("/route/**"), isPath("/route/[%s]*?(?:;.*?)*", Route.AcceptableMultiPathCharacters));
@@ -146,6 +152,44 @@ public class RouteTest {
 		assertThat(new Route("/path/{var}/{var2}", null, null).getPathVars("/path/result1/result2"), is(Expressive.<String, String> map("var", "result1", "var2", "result2")));
 		assertThat(new Route("/something/{var}/more/{var2}", null, null).getPathVars("/something/123/more/1234"), is(Expressive.<String, String> map("var", "123", "var2", "1234")));
 		assertThat(new Route("/something/{var}/more/{var2}", null, null).getPathVars("/something/123/more/1234/5678"), is(Expressive.<String, String> map("var", "123", "var2", "1234")));
+	}
+
+	@Test
+	public void shouldReturnReverseRoute() {
+		Route route = new Route("/path/{var}/split/{var2}", null, null);
+		assertThat(route.getReverseRoute("value", 1), is("/path/value/split/1"));
+		assertThat(route.getReverseRoute(RouteType.DELETE, new DateTime(2000, 1, 1, 0, 0).withZoneRetainFields(DateTimeZone.UTC)), is("/path/DELETE/split/2000-01-01T00:00:00.000Z"));
+	}
+
+	@Test
+	public void shouldReturnReverseRouteWhenNoParametersRequired() {
+		Route route = new Route("/path/to/resource.html", null, null);
+		assertThat(route.getReverseRoute(), is("/path/to/resource.html"));
+	}
+
+	@Test
+	public void shouldThrowReverseRouteExceptionIfTooFewArgumentsSupplied() {
+		thrown.expect(ReverseRouteException.class);
+		thrown.expectMessage("Cannot generate a reverse route for /path/{var}/split/{var2} - require 2 parameters but received 1");
+		Route route = new Route("/path/{var}/split/{var2}", null, null);
+		assertThat(route.getReverseRoute("value"), is("/path/value/split/"));
+	}
+
+	@Test
+	public void shouldThrowReverseRouteExceptionIfTooManyArgumentsSupplied() {
+		thrown.expect(ReverseRouteException.class);
+		thrown.expectMessage("Cannot generate a reverse route for /path/{var}/split/{var2} - require 2 parameters but received 3");
+		Route route = new Route("/path/{var}/split/{var2}", null, null);
+		assertThat(route.getReverseRoute("value", 1, 2), is("/path/value/split/"));
+	}
+
+	@Test
+	public void shouldThrowReverseRouteExceptionIfContainsNullArgumentsSupplied() {
+		thrown.expect(ReverseRouteException.class);
+		thrown.expectMessage("Cannot generate a reverse route for /path/{var}/split/{var2} - one or more parameters were null");
+		Route route = new Route("/path/{var}/split/{var2}", null, null);
+		assertThat(route.getReverseRoute("value", null), is("/path/value/split/"));
+
 	}
 
 	private Matcher<String> isPath(String format, Object... args) {

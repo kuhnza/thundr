@@ -66,23 +66,17 @@ public class HttpBinderTest {
 	}
 
 	@Test
-	public void shouldBindValidContentTypes() {
+	public void shouldBindAnyContentType() {
 		request.contentType(ContentType.Null);
 		request.parameter("param1", "1");
 
 		ParameterDescription param1 = new ParameterDescription("param1", int.class);
 
-		for (ContentType contentType : HttpBinder.supportedContentTypes) {
+		for (ContentType contentType : ContentType.values()) {
 			request.contentType(contentType);
 			parameterDescriptions = map(param1, null);
 			binder.bindAll(parameterDescriptions, request, response, pathVariables);
 			assertThat(parameterDescriptions.get(param1), is((Object) 1));
-		}
-		for (ContentType contentType : list(ContentType.values()).removeItems(HttpBinder.supportedContentTypes)) {
-			request.contentType(contentType);
-			parameterDescriptions = map(param1, null);
-			binder.bindAll(parameterDescriptions, request, response, pathVariables);
-			assertThat(parameterDescriptions.get(param1), is(nullValue()));
 		}
 	}
 

@@ -41,12 +41,14 @@ import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletRequest;
 import com.threewks.thundr.test.mock.servlet.MockHttpServletResponse;
 import com.threewks.thundr.test.mock.servlet.MockHttpSession;
+import com.threewks.thundr.view.GlobalModel;
 import com.threewks.thundr.view.ViewResolutionException;
 
 public class JspViewResolverTest {
 	@Rule public ExpectedException thrown = ExpectedException.none();
 
-	private JspViewResolver resolver = new JspViewResolver();
+	private GlobalModel globalModel = new GlobalModel();
+	private JspViewResolver resolver = new JspViewResolver(globalModel);
 	private MockHttpServletRequest req = new MockHttpServletRequest();
 	private MockHttpServletResponse resp = new MockHttpServletResponse();
 	private ServletContext servletContext = mock(ServletContext.class);
@@ -90,8 +92,8 @@ public class JspViewResolverTest {
 
 	@Test
 	public void shouldAddAllGlobalModelAttributesAsRequestAttributes() {
-		resolver.addToGlobalModel("key 1", "value 1");
-		resolver.addAllToGlobalModel(Expressive.<String, Object> map("key 2", "value 2", "key 3", "value 3"));
+		globalModel.put("key 1", "value 1");
+		globalModel.putAll(Expressive.<String, Object> map("key 2", "value 2", "key 3", "value 3"));
 		resolver.resolve(req, resp, new JspView("view.jsp", Expressive.<String, Object> map()));
 		assertThat(req.getAttribute("key 1"), is((Object) "value 1"));
 		assertThat(req.getAttribute("key 2"), is((Object) "value 2"));
@@ -100,15 +102,15 @@ public class JspViewResolverTest {
 
 	@Test
 	public void shouldAllowModelAttributesToOverrideGlobalModelAttributes() {
-		resolver.addToGlobalModel("key 1", "value 1");
+		globalModel.put("key 1", "value 1");
 		resolver.resolve(req, resp, new JspView("view.jsp", Expressive.<String, Object> map("key 1", "some other value")));
 		assertThat(req.getAttribute("key 1"), is((Object) "some other value"));
 	}
 
 	@Test
 	public void shouldAllowRemovalOfGlobalModelAttributes() {
-		resolver.addToGlobalModel("key 1", "value 1");
-		resolver.removeFromGlobalModel("key 1");
+		globalModel.put("key 1", "value 1");
+		globalModel.remove("key 1");
 		resolver.resolve(req, resp, new JspView("view.jsp", Expressive.<String, Object> map()));
 		assertThat(req.getAttribute("key 1"), is(nullValue()));
 	}
@@ -135,6 +137,6 @@ public class JspViewResolverTest {
 
 	@Test
 	public void shouldReturnClassNameForToString() {
-		assertThat(new JspViewResolver().toString(), is("JspViewResolver"));
+		assertThat(new JspViewResolver(globalModel).toString(), is("JspViewResolver"));
 	}
 }
