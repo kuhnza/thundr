@@ -25,11 +25,10 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import jodd.util.ReflectUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -50,10 +49,22 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 	private Map<Class<? extends Annotation>, ActionInterceptor<? extends Annotation>> actionInterceptors = new HashMap<Class<? extends Annotation>, ActionInterceptor<? extends Annotation>>();
 	private ActionMethodBinderRegistry methodBinderRegistry = new ActionMethodBinderRegistry();
 	private UpdatableInjectionContext injectionContext;
+	private Map<Method, Map<Annotation, ActionInterceptor<Annotation>>> interceptorCache = new WeakHashMap<Method, Map<Annotation, ActionInterceptor<Annotation>>>();
 
 	public MethodActionResolver(UpdatableInjectionContext injectionContext) {
 		this.injectionContext = injectionContext;
 		this.methodBinderRegistry.registerDefaultActionMethodBinders();
+	}
+
+	@Override
+	public void initialise(MethodAction methodAction) {
+		// force instantiation of controller - this allows controllers to be injected into eachother
+		// and also flushes out instantiation issues at startup
+		Object controller = createController(methodAction);
+		Class<Object> key = methodAction.type();
+		if (!controllerInstances.containsKey(key)) {
+			controllerInstances.put(key, controller);
+		}
 	}
 
 	@Override
@@ -66,16 +77,10 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 		}
 		try {
 			Class<?> clazz = Class.forName(className); // TODO - Restricted in GAE - why is this better? ClassLoaderUtil.loadClass(className);
-			Method method = ReflectUtil.findMethod(clazz, methodName);
-			if (method == null) {
-				return null;
-			}
-			MethodAction methodAction = new MethodAction(clazz, method, findInterceptors(method));
-			// force instantiation of controller - this allows controllers to be injected into eachother
-			// and also flushes out instantiation issues at startup
-			Object controller = createController(methodAction);
-			controllerInstances.put(methodAction.type(), controller);
+			MethodAction methodAction = new MethodAction(clazz, methodName);
 			return methodAction;
+		} catch (ActionException e) {
+			return null;
 		} catch (BaseException e) {
 			throw e;
 		} catch (Exception e) {
@@ -86,7 +91,7 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 	@Override
 	public Object resolve(MethodAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) throws ActionException {
 		Object controller = getOrCreateController(action);
-		Map<Annotation, ActionInterceptor<Annotation>> interceptors = action.interceptors();
+		Map<Annotation, ActionInterceptor<Annotation>> interceptors = getInterceptors(action);
 		Object result = null;
 		Exception exception = null;
 		try {
@@ -113,6 +118,16 @@ public class MethodActionResolver implements ActionResolver<MethodAction>, Actio
 		}
 		Logger.debug("%s -> %s resolved", req.getRequestURI(), action);
 		return result;
+	}
+
+	private Map<Annotation, ActionInterceptor<Annotation>> getInterceptors(MethodAction action) {
+		Method method = action.method();
+		Map<Annotation, ActionInterceptor<Annotation>> results = interceptorCache.get(method);
+		if (results == null) {
+			results = findInterceptors(method);
+			interceptorCache.put(method, results);
+		}
+		return results;
 	}
 
 	List<Object> bindArguments(MethodAction action, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) {

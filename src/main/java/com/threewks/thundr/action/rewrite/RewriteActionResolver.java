@@ -52,4 +52,10 @@ public class RewriteActionResolver implements ActionResolver<RewriteAction> {
 		String rewriteTo = action.getRewriteTo(pathVars);
 		return routes.invoke(rewriteTo, routeType, req, resp);
 	}
+
+	@Override
+	public void initialise(RewriteAction action) {
+
+	}
+
 }

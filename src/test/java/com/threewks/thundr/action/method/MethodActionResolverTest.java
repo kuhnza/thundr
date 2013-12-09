@@ -212,9 +212,10 @@ public class MethodActionResolverTest {
 	}
 
 	@Test
-	public void shouldCreateActionMethodClassAtCreationTime() {
+	public void shouldCreateActionMethodClassAtInitialise() {
 		resolver = spy(resolver);
-		resolver.createActionIfPossible(MethodActionResolverTest.class.getName() + ".intercept");
+		MethodAction methodAction = new MethodAction(MethodActionResolverTest.class, "intercept");
+		resolver.initialise(methodAction);
 		verify(resolver).createController(Mockito.any(MethodAction.class));
 	}
 

@@ -21,9 +21,7 @@ import static com.atomicleopard.expressive.Expressive.list;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.List;
 
 import jodd.util.ReflectUtil;
@@ -35,13 +33,11 @@ import org.junit.rules.ExpectedException;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class MethodActionTest {
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+	@Rule public ExpectedException thrown = ExpectedException.none();
 
 	@Test
 	public void shouldFindClassAndMethod() {
-		MethodAction methodAction = new MethodAction(FakeController.class, ReflectUtil.findMethod(FakeController.class, "methodOne"),
-				Collections.<Annotation, ActionInterceptor<Annotation>> emptyMap());
+		MethodAction methodAction = new MethodAction(FakeController.class, "methodOne");
 		assertThat(methodAction.type().equals(FakeController.class), is(true));
 		Method expectedMethod = ReflectUtil.findMethod(FakeController.class, "methodOne");
 		assertThat(methodAction.method(), is(expectedMethod));
@@ -49,8 +45,7 @@ public class MethodActionTest {
 
 	@Test
 	public void shouldInvokeControllerMethod() throws Exception {
-		MethodAction methodAction = new MethodAction(FakeController.class, ReflectUtil.findMethod(FakeController.class, "methodOne"),
-				Collections.<Annotation, ActionInterceptor<Annotation>> emptyMap());
+		MethodAction methodAction = new MethodAction(FakeController.class, "methodOne");
 
 		FakeController controller = new FakeController();
 		Object result = methodAction.invoke(controller, list("Arg 1"));
@@ -75,8 +70,7 @@ public class MethodActionTest {
 
 	@Test
 	public void shouldFindMethodParameters() {
-		MethodAction methodAction = new MethodAction(FakeController.class, ReflectUtil.findMethod(FakeController.class, "methodOne"),
-				Collections.<Annotation, ActionInterceptor<Annotation>> emptyMap());
+		MethodAction methodAction = new MethodAction(FakeController.class, "methodOne");
 		List<ParameterDescription> parameters = methodAction.parameters();
 		assertThat(parameters.size(), is(1));
 		assertThat(parameters.get(0).name(), is("argument1"));

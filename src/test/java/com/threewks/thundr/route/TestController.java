@@ -15,27 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.threewks.thundr.action;
+package com.threewks.thundr.route;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.threewks.thundr.route.RouteType;
-
-public class TestActionResolver implements ActionResolver<TestAction> {
-	@Override
-	public Object resolve(TestAction action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) throws ActionException {
-		return null;
+public class TestController {
+	public void method1() {
 	}
-
-	@Override
-	public TestAction createActionIfPossible(String actionName) {
-		return actionName.startsWith("test:") ? new TestAction(actionName.replaceAll("test:", "")) : null;
+	public void method2() {
 	}
-
-	@Override
-	public void initialise(TestAction action) {
+	public void method3() {
 	}
 }

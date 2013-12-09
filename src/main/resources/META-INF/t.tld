@@ -1,31 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!--
-
-    This file is a component of thundr, a software library from 3wks.
-    Read more: http://www.3wks.com.au/thundr
-    Copyright (C) 2013 3wks, <thundr@3wks.com.au>
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-            http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<taglib
-	xmlns="http://java.sun.com/xml/ns/javaee"
-	version="2.1">
+<!-- This file is a component of thundr, a software library from 3wks. Read more: http://www.3wks.com.au/thundr Copyright (C) 2013 3wks, <thundr@3wks.com.au> Licensed under the Apache License, Version 
+	2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law 
+	or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+<taglib xmlns="http://java.sun.com/xml/ns/javaee" version="2.1">
 	<description>Thundr Framework JSP Tag Library</description>
 	<tlib-version>1.0</tlib-version>
 	<short-name>thundr</short-name>
 	<uri>http://threewks.com/thundr/tags</uri>
 
+	<!-- Url/Route tags -->
+	<tag-file>
+		<name>route</name>
+		<path>/META-INF/tags/url/route.tag</path>
+		<example>Generates the url for a route given a name and the parameters in the path</example>
+	</tag-file>
 	<!-- Logic Tags -->
 	<tag-file>
 		<name>if</name>
@@ -39,12 +28,12 @@
 		<name>else</name>
 		<path>/META-INF/tags/logic/else.tag</path>
 	</tag-file>
-	<!-- This bad boy isn't ready for prime time yet --> 
-	<tag-file> 
-		<name>set</name> 
+	<!-- This bad boy isn't ready for prime time yet -->
+	<tag-file>
+		<name>set</name>
 		<path>/META-INF/tags/logic/set.tag</path>
 	</tag-file>
-	
+
 	<!-- Element tags -->
 	<tag-file>
 		<name>script</name>
@@ -89,13 +78,6 @@
 		<function-class>com.threewks.thundr.view.jsp.el.UrlFunctions</function-class>
 		<function-signature>java.lang.String param(java.lang.String)</function-signature>
 	</function>
-	<!-- Requires var-args to function - still unable to get a JUEL version working
-	<function>
-		<name>route</name>
-		<function-class>com.threewks.thundr.view.jsp.el.UrlFunctions</function-class>
-		<function-signature>java.lang.String route(com.threewks.thundr.route.Routes, java.lang.String, java.lang.Object ...)</function-signature>
-	</function>
-	 -->
 	<!-- Formatting -->
 	<function>
 		<name>uppercase</name>
@@ -148,12 +130,6 @@
 		<function-class>com.threewks.thundr.view.jsp.el.CollectionFunctions</function-class>
 		<function-signature>java.lang.boolean containsAny(java.lang.Object, java.lang.Object)</function-signature>
 	</function>
-	<!-- 
-	Again - not ready for prime time - requires JUEL, which is hard to integrate into GAE/J 
-	<function>
-		<name>list</name>
-		<function-class>com.threewks.thundr.view.jsp.el.CollectionFunctions</function-class>
-		<function-signature>java.util.List list(java.lang.Object[])</function-signature>
-	</function>
-	-->
+	<!-- Again - not ready for prime time - requires JUEL, which is hard to integrate into GAE/J <function> <name>list</name> <function-class>com.threewks.thundr.view.jsp.el.CollectionFunctions</function-class> 
+		<function-signature>java.util.List list(java.lang.Object[])</function-signature> </function> -->
 </taglib>

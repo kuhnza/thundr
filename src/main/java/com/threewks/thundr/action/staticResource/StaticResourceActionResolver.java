@@ -102,6 +102,10 @@ public class StaticResourceActionResolver implements ActionResolver<StaticResour
 		}
 	}
 
+	@Override
+	public void initialise(StaticResourceAction action) {
+	}
+
 	protected void serve(StaticResourceAction action, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String resource = request.getRequestURI();
@@ -175,4 +179,5 @@ public class StaticResourceActionResolver implements ActionResolver<StaticResour
 	boolean isAllowed(String resourcePath) {
 		return !resourcePath.matches(protectedPath);
 	}
+
 }

@@ -25,7 +25,15 @@ import javax.servlet.http.HttpServletResponse;
 import com.threewks.thundr.route.RouteType;
 
 public interface ActionResolver<T extends Action> {
+	/**
+	 * Initialise/cache/validate that an action is valid at startup before first use.
+	 * 
+	 * @param action
+	 */
+	public void initialise(T action);
+
 	public Object resolve(T action, RouteType routeType, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVars) throws ActionException;
 
 	public T createActionIfPossible(String actionName);
+
 }

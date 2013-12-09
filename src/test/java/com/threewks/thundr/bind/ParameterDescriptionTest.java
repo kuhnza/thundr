@@ -20,24 +20,19 @@ package com.threewks.thundr.bind;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import jodd.util.ReflectUtil;
-
 import org.junit.Test;
 
-import com.threewks.thundr.action.method.ActionInterceptor;
 import com.threewks.thundr.action.method.MethodAction;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class ParameterDescriptionTest {
 	@Test
 	public void shouldReadComplexGenericTypeCorrectly() throws ClassNotFoundException {
-		List<ParameterDescription> parameterDescriptions = new MethodAction(TestBindTo.class, ReflectUtil.findMethod(TestBindTo.class, "methodMap"), noInterceptors()).parameters();
+		List<ParameterDescription> parameterDescriptions = new MethodAction(TestBindTo.class, "methodMap").parameters();
 		ParameterDescription first = parameterDescriptions.get(0);
 		assertThat(first.isGeneric(), is(true));
 		assertThat(first.isA(Map.class), is(true));
@@ -49,14 +44,9 @@ public class ParameterDescriptionTest {
 
 	@Test
 	public void shouldReadSimpleType() throws ClassNotFoundException {
-		List<ParameterDescription> parameterDescriptions = new MethodAction(TestBindTo.class, ReflectUtil.findMethod(TestBindTo.class, "methodSingleString"), noInterceptors()).parameters();
+		List<ParameterDescription> parameterDescriptions = new MethodAction(TestBindTo.class, "methodSingleString").parameters();
 		ParameterDescription first = parameterDescriptions.get(0);
 		assertThat(first.isGeneric(), is(false));
 		assertThat(first.isA(String.class), is(true));
 	}
-
-	private Map<Annotation, ActionInterceptor<Annotation>> noInterceptors() {
-		return Collections.<Annotation, ActionInterceptor<Annotation>> emptyMap();
-	}
-
 }

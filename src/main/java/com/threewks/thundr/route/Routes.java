@@ -19,8 +19,6 @@ package com.threewks.thundr.route;
 
 import static com.atomicleopard.expressive.Expressive.list;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,28 +47,28 @@ public class Routes {
 
 	private boolean debug = true;
 
-	public void addRoutes(Route... routes) {
-		for (Route route : routes) {
-			addRoute(route);
-		}
+	public <T extends Action> void addRoute(RouteType routeType, String route, String name, T action) {
+		this.addRoute(new Route(routeType, route, name), action);
+		initialiseAction(action);
 	}
 
-	public void addRoutes(Collection<Route> routes) {
-		for (Route route : routes) {
-			addRoute(route);
-		}
-	}
-
-	public void addRoute(Route route) {
+	public void addRoute(Route route, Action action) {
 		String name = route.getName();
 		String path = route.getRouteMatchRegex();
-		String actionName = route.getActionName();
 		RouteType routeType = route.getRouteType();
-		Action action = createAction(actionName);
 		this.routes.get(routeType).put(path, route);
 		this.actionsForRoutes.put(route, action);
 		if (StringUtils.isNotBlank(name)) {
 			this.namedRoutes.put(name, route);
+		}
+	}
+
+	public void addRoutes(Map<Route, Action> routes) {
+		for (Map.Entry<Route, Action> entry : routes.entrySet()) {
+			addRoute(entry.getKey(), entry.getValue());
+		}
+		for (Map.Entry<Route, Action> entry : routes.entrySet()) {
+			initialiseAction(entry.getValue());
 		}
 	}
 
@@ -112,7 +110,7 @@ public class Routes {
 		return actionsForRoutes.isEmpty();
 	}
 
-	private static final String routeDisplayFormat = "%s\n";
+	private static final String routeDisplayFormat = "%s: %s\n";
 
 	public String listRoutes() {
 		Set<String> allRoutes = new HashSet<String>();
@@ -127,7 +125,9 @@ public class Routes {
 			for (RouteType routeType : RouteType.all()) {
 				Map<String, Route> routesForType = routes.get(routeType);
 				if (routesForType.containsKey(route)) {
-					sb.append(String.format(routeDisplayFormat, routesForType.get(route)));
+					Route actualRoute = routesForType.get(route);
+					Action action = this.actionsForRoutes.get(actualRoute);
+					sb.append(String.format(routeDisplayFormat, actualRoute, action));
 				}
 			}
 		}
@@ -151,15 +151,16 @@ public class Routes {
 	}
 
 	// TODO - This method should probably be externalised from this class, routes should theoretically be buildable however someone wants
-	public static List<Route> parseJsonRoutes(String source) {
+	public Map<Route, Action> parseJsonRoutes(String source) {
 		try {
-			List<Route> routes = new ArrayList<Route>();
+			Map<Route, Action> routes = new LinkedHashMap<Route, Action>();
 			JsonProperties properties = new JsonProperties(source);
 			for (String route : properties.getKeys()) {
 				if (properties.is(route, String.class)) {
 					// simple route
 					String actionName = properties.getString(route);
-					routes.add(new Route(route, actionName, RouteType.GET));
+					Action action = createAction(actionName);
+					routes.put(new Route(RouteType.GET, route, null), action);
 				} else if (properties.is(route, Map.class)) {
 					// complex route
 					Map<String, String> map = properties.getMap(route);
@@ -168,7 +169,9 @@ public class Routes {
 						if (routeType == null) {
 							throw new RouteNotFoundException("Unknown route type %s", routeEntry.getKey());
 						}
-						routes.add(new Route(route, routeEntry.getValue(), routeType));
+						String actionName = routeEntry.getValue();
+						Action action = createAction(actionName);
+						routes.put(new Route(routeType, route, null), action);
 					}
 				}
 			}
@@ -182,6 +185,12 @@ public class Routes {
 	public <A extends Action> void addActionResolver(Class<A> actionType, ActionResolver<A> actionResolver) {
 		actionResolvers.put(actionType, actionResolver);
 		Logger.debug("Added action resolver %s for actions of type %s", actionResolver.getClass().getSimpleName(), actionType);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T extends Action> void initialiseAction(T action) {
+		ActionResolver<T> actionResolver = (ActionResolver<T>) actionResolvers.get(action.getClass());
+		actionResolver.initialise(action);
 	}
 
 	private Map<RouteType, Map<String, Route>> createRoutesMap() {

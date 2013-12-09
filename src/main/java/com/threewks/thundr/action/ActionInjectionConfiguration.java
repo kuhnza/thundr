@@ -39,7 +39,7 @@ public class ActionInjectionConfiguration extends BaseInjectionConfiguration {
 	public void configure(UpdatableInjectionContext injectionContext) {
 		Routes routes = injectionContext.get(Routes.class);
 		ServletContext servletContext = injectionContext.get(ServletContext.class);
-		
+
 		MethodActionResolver methodActionResolver = new MethodActionResolver(injectionContext);
 		injectionContext.inject(methodActionResolver).as(MethodActionResolver.class);
 		// The MethodActionResolver is special because we use it to perform controller interception

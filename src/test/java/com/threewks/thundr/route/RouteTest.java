@@ -21,6 +21,8 @@ import static com.threewks.thundr.route.Route.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.Map;
+
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
@@ -63,136 +65,144 @@ public class RouteTest {
 
 	@Test
 	public void shouldMatchGivenPaths() {
-		assertThat(new Route("/path/{var}/{var2}", null, null).matches("/path/result1/result2"), is(true));
-		assertThat(new Route("/something/{var}/more/{var2}", null, null).matches("/something/123/more/1234"), is(true));
-		assertThat(new Route("/something/{var}/more/{var2}.jpg", null, null).matches("/something/123/more/1234.jpg"), is(true));
-		assertThat(new Route("/something/file.{ext}", null, null).matches("/something/file.gif"), is(true));
+		assertThat(new Route(null, "/path/{var}/{var2}", null).matches("/path/result1/result2"), is(true));
+		assertThat(new Route(null, "/something/{var}/more/{var2}", null).matches("/something/123/more/1234"), is(true));
+		assertThat(new Route(null, "/something/{var}/more/{var2}.jpg", null).matches("/something/123/more/1234.jpg"), is(true));
+		assertThat(new Route(null, "/something/file.{ext}", null).matches("/something/file.gif"), is(true));
 		// appending query parameters using semi-colon is within the http rfc spec, although weird
 		// some versions of jetty and tomcat do this on redirects, for example
-		assertThat(new Route("/path/{var}/{var2}", null, null).matches("/path/result1/result2;jsessionid=ASD123-123DAFa"), is(true));
-		assertThat(new Route("/path/{var}/{var2}", null, null).matches("/path/result1/result2;jsessionid=ASD123-123DAFa;other=some%20value"), is(true));
+		assertThat(new Route(null, "/path/{var}/{var2}", null).matches("/path/result1/result2;jsessionid=ASD123-123DAFa"), is(true));
+		assertThat(new Route(null, "/path/{var}/{var2}", null).matches("/path/result1/result2;jsessionid=ASD123-123DAFa;other=some%20value"), is(true));
 	}
 
 	@Test
 	public void shouldMatchPathsWithEscapedCharacters() {
-		assertThat(new Route("/something/{var}/{var2}", null, null).matches("/something/Here%2C%20be%20/dragons%20"), is(true));
-		assertThat(new Route("/something/{var}/{var2}", null, null).matches("/something/Here-be/dragons"), is(true));
-		assertThat(new Route("/something/{var}/{var2}/", null, null).matches("/something/Here%2C%20be%20/dragons/"), is(true));
-		assertThat(new Route("/something/{var}/{var2}/", null, null).matches("/something/Here-be/dragons/"), is(true));
+		assertThat(new Route(null, "/something/{var}/{var2}", null).matches("/something/Here%2C%20be%20/dragons%20"), is(true));
+		assertThat(new Route(null, "/something/{var}/{var2}", null).matches("/something/Here-be/dragons"), is(true));
+		assertThat(new Route(null, "/something/{var}/{var2}/", null).matches("/something/Here%2C%20be%20/dragons/"), is(true));
+		assertThat(new Route(null, "/something/{var}/{var2}/", null).matches("/something/Here-be/dragons/"), is(true));
 
-		assertThat(new Route("/browse/{category}/", null, null).matches("/browse/Beauty%2C%20Health%20%26%20Wellbeing/"), is(true));
-		assertThat(new Route("/browse/{category}/", null, null).matches("/browse/Beauty,%20Health%20%26%20Wellbeing/"), is(true));
+		assertThat(new Route(null, "/browse/{category}/", null).matches("/browse/Beauty%2C%20Health%20%26%20Wellbeing/"), is(true));
+		assertThat(new Route(null, "/browse/{category}/", null).matches("/browse/Beauty,%20Health%20%26%20Wellbeing/"), is(true));
 	}
 
 	@Test
 	public void shouldMatchGivenWildcardPaths() {
-		assertThat(new Route("/path/", null, null).matches("/path/"), is(true));
-		assertThat(new Route("/path/", null, null).matches("/path/more"), is(false));
-		assertThat(new Route("/path/", null, null).matches("/path"), is(false));
-		assertThat(new Route("/path/", null, null).matches("path/"), is(false));
-		assertThat(new Route("/path/", null, null).matches("/things/path/"), is(false));
+		assertThat(new Route(null, "/path/", null).matches("/path/"), is(true));
+		assertThat(new Route(null, "/path/", null).matches("/path/more"), is(false));
+		assertThat(new Route(null, "/path/", null).matches("/path"), is(false));
+		assertThat(new Route(null, "/path/", null).matches("path/"), is(false));
+		assertThat(new Route(null, "/path/", null).matches("/things/path/"), is(false));
 
-		assertThat(new Route("/file.ext", null, null).matches("/file.ext"), is(true));
-		assertThat(new Route("/path/file.ext", null, null).matches("/path/file.ext"), is(true));
+		assertThat(new Route(null, "/file.ext", null).matches("/file.ext"), is(true));
+		assertThat(new Route(null, "/path/file.ext", null).matches("/path/file.ext"), is(true));
 
-		assertThat(new Route("/path/*", null, null).matches("/path/"), is(true));
-		assertThat(new Route("/path/*", null, null).matches("/path/more"), is(true));
-		assertThat(new Route("/path/*", null, null).matches("/path/more/"), is(false));
-		assertThat(new Route("/path/*", null, null).matches("/path"), is(false));
-		assertThat(new Route("/path/*", null, null).matches("/path/resource/1/is/here"), is(false));
-		assertThat(new Route("/path/*", null, null).matches("/path/file.ext"), is(true));
-		assertThat(new Route("/path/file.*", null, null).matches("/path/file.ext"), is(true));
-		assertThat(new Route("/path/file.*", null, null).matches("/path/file."), is(true));
-		assertThat(new Route("/path/file*", null, null).matches("/path/file"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/more"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/more/"), is(false));
+		assertThat(new Route(null, "/path/*", null).matches("/path"), is(false));
+		assertThat(new Route(null, "/path/*", null).matches("/path/resource/1/is/here"), is(false));
+		assertThat(new Route(null, "/path/*", null).matches("/path/file.ext"), is(true));
+		assertThat(new Route(null, "/path/file.*", null).matches("/path/file.ext"), is(true));
+		assertThat(new Route(null, "/path/file.*", null).matches("/path/file."), is(true));
+		assertThat(new Route(null, "/path/file*", null).matches("/path/file"), is(true));
 
-		assertThat(new Route("/path/**", null, null).matches("/path/resource/1/is/here"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path/resource/1/is/here/"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path/"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path"), is(false));
-		assertThat(new Route("/path/**", null, null).matches("/path/file.ext"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path/1/2/3/more/file.ext"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path/1/2/3/more/file."), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/resource/1/is/here"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/resource/1/is/here/"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path"), is(false));
+		assertThat(new Route(null, "/path/**", null).matches("/path/file.ext"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/1/2/3/more/file.ext"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/1/2/3/more/file."), is(true));
 	}
 
 	@Test
 	public void shouldMatchGivenWildcardPathsWithEscapedUrls() {
-		assertThat(new Route("/path/*", null, null).matches("/path/"), is(true));
-		assertThat(new Route("/path/*", null, null).matches("/path/more+val"), is(true));
-		assertThat(new Route("/path/*", null, null).matches("/path/more%20val"), is(true));
-		assertThat(new Route("/path/*", null, null).matches("/path/more_val"), is(true));
-		assertThat(new Route("/path/*", null, null).matches("/path/more!val"), is(true));
-		assertThat(new Route("/path/*", null, null).matches("/path/more$val"), is(true));
-		assertThat(new Route("/path/*", null, null).matches("/path/more,val"), is(true));
-		assertThat(new Route("/path/*", null, null).matches("/path/more'val"), is(true));
-		assertThat(new Route("/path/*", null, null).matches("/path/more.val"), is(true));
-		assertThat(new Route("/path/*", null, null).matches("/path/more(val"), is(true));
-		assertThat(new Route("/path/*", null, null).matches("/path/more)val"), is(true));
-		assertThat(new Route("/path/*", null, null).matches("/path/more*val"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/more+val"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/more%20val"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/more_val"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/more!val"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/more$val"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/more,val"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/more'val"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/more.val"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/more(val"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/more)val"), is(true));
+		assertThat(new Route(null, "/path/*", null).matches("/path/more*val"), is(true));
 
-		assertThat(new Route("/path/**", null, null).matches("/path/more+val/a"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path/more%20val/a"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path/more_val/a"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path/more!val/a"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path/more$val/a"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path/more,val/a"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path/more'val/a"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path/more.val/a"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path/more(val/a"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path/more)val/a"), is(true));
-		assertThat(new Route("/path/**", null, null).matches("/path/more*val/a"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/more+val/a"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/more%20val/a"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/more_val/a"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/more!val/a"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/more$val/a"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/more,val/a"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/more'val/a"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/more.val/a"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/more(val/a"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/more)val/a"), is(true));
+		assertThat(new Route(null, "/path/**", null).matches("/path/more*val/a"), is(true));
 	}
 
 	@Test
 	public void shouldNotMatchPathWhereTheVariableWouldCoverTwoValues() {
-		assertThat(new Route("/something/{var}/more/{var2}", null, null).matches("/something/123/more/1234/5678"), is(false));
+		assertThat(new Route(null, "/something/{var}/more/{var2}", null).matches("/something/123/more/1234/5678"), is(false));
 	}
 
 	@Test
 	public void shouldExtractPathVariablesFromRoute() {
-		assertThat(new Route("/path/{var}/{var2}", null, null).getPathVars("/path/result1/result2"), is(Expressive.<String, String> map("var", "result1", "var2", "result2")));
-		assertThat(new Route("/something/{var}/more/{var2}", null, null).getPathVars("/something/123/more/1234"), is(Expressive.<String, String> map("var", "123", "var2", "1234")));
-		assertThat(new Route("/something/{var}/more/{var2}", null, null).getPathVars("/something/123/more/1234/5678"), is(Expressive.<String, String> map("var", "123", "var2", "1234")));
+		assertThat(new Route(null, "/path/{var}/{var2}", null).getPathVars("/path/result1/result2"), is(Expressive.<String, String> map("var", "result1", "var2", "result2")));
+		assertThat(new Route(null, "/something/{var}/more/{var2}", null).getPathVars("/something/123/more/1234"), is(Expressive.<String, String> map("var", "123", "var2", "1234")));
+		assertThat(new Route(null, "/something/{var}/more/{var2}", null).getPathVars("/something/123/more/1234/5678"), is(Expressive.<String, String> map("var", "123", "var2", "1234")));
 	}
 
 	@Test
 	public void shouldReturnReverseRoute() {
-		Route route = new Route("/path/{var}/split/{var2}", null, null);
-		assertThat(route.getReverseRoute("value", 1), is("/path/value/split/1"));
-		assertThat(route.getReverseRoute(RouteType.DELETE, new DateTime(2000, 1, 1, 0, 0).withZoneRetainFields(DateTimeZone.UTC)), is("/path/DELETE/split/2000-01-01T00:00:00.000Z"));
+		Route route = new Route(null, "/path/{var}/split/{var2}", null);
+		assertThat(route.getReverseRoute(map("var", "value", "var2", 1)), is("/path/value/split/1"));
+		assertThat(route.getReverseRoute(map("var", "key", "var2", new DateTime(2000, 1, 1, 0, 0).withZoneRetainFields(DateTimeZone.UTC))), is("/path/key/split/2000-01-01T00%3A00%3A00.000Z"));
+	}
+
+	@Test
+	public void shouldReturnReverseRouteEncodingStringAsPathComponent() {
+		Route route = new Route(null, "/path/{var}/split/{var2}", null);
+		assertThat(route.getReverseRoute(map("var", "path=string", "var2", "another value")), is("/path/path%3Dstring/split/another%20value"));
 	}
 
 	@Test
 	public void shouldReturnReverseRouteWhenNoParametersRequired() {
-		Route route = new Route("/path/to/resource.html", null, null);
-		assertThat(route.getReverseRoute(), is("/path/to/resource.html"));
+		Route route = new Route(null, "/path/to/resource.html", null);
+		assertThat(route.getReverseRoute(map()), is("/path/to/resource.html"));
 	}
 
 	@Test
 	public void shouldThrowReverseRouteExceptionIfTooFewArgumentsSupplied() {
 		thrown.expect(ReverseRouteException.class);
-		thrown.expectMessage("Cannot generate a reverse route for /path/{var}/split/{var2} - require 2 parameters but received 1");
-		Route route = new Route("/path/{var}/split/{var2}", null, null);
-		assertThat(route.getReverseRoute("value"), is("/path/value/split/"));
+		thrown.expectMessage("Cannot generate a reverse route for /path/{var}/split/{var2} - no value(s) supplied for the path variables var2");
+		Route route = new Route(null, "/path/{var}/split/{var2}", null);
+		assertThat(route.getReverseRoute(map("var", "value")), is("/path/value/split/"));
 	}
 
 	@Test
-	public void shouldThrowReverseRouteExceptionIfTooManyArgumentsSupplied() {
-		thrown.expect(ReverseRouteException.class);
-		thrown.expectMessage("Cannot generate a reverse route for /path/{var}/split/{var2} - require 2 parameters but received 3");
-		Route route = new Route("/path/{var}/split/{var2}", null, null);
-		assertThat(route.getReverseRoute("value", 1, 2), is("/path/value/split/"));
+	public void shouldGenerateReverseRouteIgnoringExtraParameters() {
+		Route route = new Route(null, "/path/{var}/split/{var2}", null);
+		assertThat(route.getReverseRoute(map("var", "value", "var2", 1, "var3", 2)), is("/path/value/split/1"));
 	}
 
 	@Test
 	public void shouldThrowReverseRouteExceptionIfContainsNullArgumentsSupplied() {
 		thrown.expect(ReverseRouteException.class);
 		thrown.expectMessage("Cannot generate a reverse route for /path/{var}/split/{var2} - one or more parameters were null");
-		Route route = new Route("/path/{var}/split/{var2}", null, null);
-		assertThat(route.getReverseRoute("value", null), is("/path/value/split/"));
+		Route route = new Route(null, "/path/{var}/split/{var2}", null);
+		assertThat(route.getReverseRoute(map("var", "value", "var2", null)), is("/path/value/split/"));
 
 	}
 
 	private Matcher<String> isPath(String format, Object... args) {
 		return Matchers.is(String.format(format, args));
+	}
+
+	private Map<String, Object> map(Object... args) {
+		return Expressive.map(args);
 	}
 }

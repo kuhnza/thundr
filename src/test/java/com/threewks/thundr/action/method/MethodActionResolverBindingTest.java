@@ -23,7 +23,6 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
-import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,8 +30,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
-import jodd.util.ReflectUtil;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -63,7 +60,7 @@ public class MethodActionResolverBindingTest {
 	}
 
 	private MethodAction method(String method) throws ClassNotFoundException {
-		MethodAction actionMethod = new MethodAction(TestBindTo.class, ReflectUtil.findMethod(TestBindTo.class, method), noInterceptors());
+		MethodAction actionMethod = new MethodAction(TestBindTo.class, method);
 		return actionMethod;
 	}
 
@@ -198,9 +195,5 @@ public class MethodActionResolverBindingTest {
 		map.put(name, values);
 		when(request.getParameterMap()).thenReturn(map);
 		return request;
-	}
-
-	private Map<Annotation, ActionInterceptor<Annotation>> noInterceptors() {
-		return Collections.<Annotation, ActionInterceptor<Annotation>> emptyMap();
 	}
 }

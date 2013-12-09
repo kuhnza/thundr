@@ -26,7 +26,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="t" uri="http://threewks.com/thundr/tags" %>
 <t:if condition="${empty condition or condition}">
-	<c:set var="${var}" value="${value}" scope="${scope}"/>
+	<c:set var="${var}" value="${value}" scope="${scope}" />
 </t:if>
 <t:elseif condition="${not empty falseValue}">
 	<c:set var="${var}" value="${falseValue}" scope="${scope}"/>

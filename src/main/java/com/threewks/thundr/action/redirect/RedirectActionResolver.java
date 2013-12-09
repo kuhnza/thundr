@@ -50,4 +50,8 @@ public class RedirectActionResolver implements ActionResolver<RedirectAction> {
 			throw new ActionException(e, "Failed to redirect %s to %s: %s", req.getRequestURI(), redirectTo, e.getMessage());
 		}
 	}
+
+	@Override
+	public void initialise(RedirectAction action) {
+	}
 }

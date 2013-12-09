@@ -17,32 +17,33 @@
  */
 package com.threewks.thundr.action.method;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import jodd.paramo.MethodParameter;
 import jodd.paramo.Paramo;
+import jodd.util.ReflectUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.threewks.thundr.action.Action;
+import com.threewks.thundr.action.ActionException;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class MethodAction implements Action {
 	private Class<?> class1;
 	private Method method;
-	private Map<Annotation, ActionInterceptor<Annotation>> interceptors;
 
 	private List<ParameterDescription> parameters = new ArrayList<ParameterDescription>();
 
-	public MethodAction(Class<?> class1, Method method, Map<Annotation, ActionInterceptor<Annotation>> interceptors) {
+	public MethodAction(Class<?> class1, String methodName) {
 		this.class1 = class1;
-		this.method = method;
-		this.interceptors = interceptors;
+		this.method = ReflectUtil.findMethod(class1, methodName);
+		if (this.method == null) {
+			throw new ActionException("Unable to create %s - the method %s.%s does not exist", getClass().getSimpleName(), class1.getName(), methodName);
+		}
 		Type[] genericParameters = method.getGenericParameterTypes();
 		MethodParameter[] parameterNames = Paramo.resolveParameters(method);
 		for (int i = 0; i < genericParameters.length; i++) {
@@ -61,7 +62,7 @@ public class MethodAction implements Action {
 
 	@Override
 	public String toString() {
-		return method.toString();
+		return class1.getSimpleName() + "." + method.getName();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -71,10 +72,6 @@ public class MethodAction implements Action {
 
 	public Method method() {
 		return method;
-	}
-
-	public Map<Annotation, ActionInterceptor<Annotation>> interceptors() {
-		return interceptors;
 	}
 
 	static final String classNameForAction(String actionName) {

@@ -28,7 +28,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
 import com.atomicleopard.expressive.EList;
-import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.http.URLEncoder;
 
 public class Route {
@@ -49,22 +48,16 @@ public class Route {
 	private String name;
 	private String route;
 	private Pattern routeMatchRegex;
-	private String actionName;
 	private RouteType routeType;
 	private EList<String> pathParameters;
 
-	public Route(String name, String route, String actionName, RouteType routeType) {
+	public Route(RouteType routeType, String route, String nameOrNull) {
 		super();
-		this.name = name;
+		this.name = nameOrNull;
 		this.route = route;
-		this.actionName = actionName;
 		this.routeType = routeType;
 		this.pathParameters = extractPathParametersFromRoute(route);
 		this.routeMatchRegex = Pattern.compile(convertPathStringToRegex(route));
-	}
-
-	public Route(String route, String actionName, RouteType routeType) {
-		this(null, route, actionName, routeType);
 	}
 
 	public String getName() {
@@ -75,10 +68,6 @@ public class Route {
 		return routeMatchRegex.pattern();
 	}
 
-	public String getActionName() {
-		return actionName;
-	}
-
 	public RouteType getRouteType() {
 		return routeType;
 	}
@@ -87,19 +76,18 @@ public class Route {
 		return routeMatchRegex.matcher(routePath).matches();
 	}
 
-	public String getReverseRoute(Object... pathVars) {
-		if (pathVars.length != pathParameters.size()) {
-			throw new ReverseRouteException("Cannot generate a reverse route for %s - require %d parameters but received %d", route, pathParameters.size(), pathVars.length);
+	public String getReverseRoute(Map<String, Object> pathVars) {
+		List<String> missing = list(pathParameters).removeItems(pathVars.keySet());
+		if (!missing.isEmpty()) {
+			throw new ReverseRouteException("Cannot generate a reverse route for %s - no value(s) supplied for the path variables %s", route, StringUtils.join(missing, ", "));
 		}
-		List<String> values = Expressive.Transformers.transformAllUsing(Expressive.Transformers.stringify()).from(pathVars);
-		if (values.contains(null)) {
+		if (pathVars.values().contains(null)) {
 			throw new ReverseRouteException("Cannot generate a reverse route for %s - one or more parameters were null", route);
 		}
 		String reverse = route;
-		for (String value : values) {
-			reverse = reverse.replaceFirst(PathParameterToken, value);
+		for (Map.Entry<String, Object> entry : pathVars.entrySet()) {
+			reverse = reverse.replace("{" + entry.getKey() + "}", URLEncoder.encodePathComponent(entry.getValue().toString()));
 		}
-		reverse = reverse.replaceAll(PathParameterToken, "");
 		return reverse;
 	}
 
@@ -119,7 +107,7 @@ public class Route {
 	@Override
 	public String toString() {
 		String nameString = StringUtils.isBlank(name) ? "" : " (" + name + ")";
-		return String.format("%-8s%-50s%16s: %s", routeType, route, nameString, actionName);
+		return String.format("%-8s%-50s%16s", routeType, route, nameString);
 	}
 
 	static String convertPathStringToRegex(String route) {
