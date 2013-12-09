@@ -15,6 +15,11 @@
 		<path>/META-INF/tags/url/route.tag</path>
 		<example>Generates the url for a route given a name and the parameters in the path</example>
 	</tag-file>
+	<tag-file>
+		<name>absolute</name>
+		<path>/META-INF/tags/url/absolute.tag</path>
+		<example>Converts the given path to an absolute URL. If protocol is ommitted, it is protocol relative, otherwise the given protocal is used</example>
+	</tag-file>
 	<!-- Logic Tags -->
 	<tag-file>
 		<name>if</name>

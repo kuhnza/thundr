@@ -17,16 +17,15 @@
     limitations under the License.
 
 --%>
-<%@tag import="java.util.Enumeration"%>
-<%@tag import="java.util.Map"%>
-<%@tag import="com.threewks.thundr.route.Routes"%>
-<%@tag import="com.threewks.thundr.route.Route"%>
-<%@ tag dynamic-attributes="pathVars" trimDirectiveWhitespaces="true" %>
-<%@ attribute name="name" required="true"%>
-<%
-	Map<String, Object> pathVars =  (Map<String, Object>)getJspContext().getAttribute("pathVars", PageContext.PAGE_SCOPE);
-	Routes routes = (Routes)request.getAttribute("routes");
-	Route route = routes.getRoute(name);
-	String reverse = route.getReverseRoute(pathVars);
-	out.print(reverse);
-%>
+<%@ tag trimDirectiveWhitespaces="true" %>
+<%@ attribute name="path" required="false"%>
+<%@ attribute name="protocol" required="false" %>
+<%@ taglib prefix="t" uri="http://threewks.com/thundr/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<c:set var="prefix" value="//"/>
+<c:set var="prefix" value="${protocol}${empty protocol ? '' : ':'}${prefix}"/>
+<c:set var="port" value="${pageContext.request.serverPort}"/>
+<c:set var="port" value="${protocol == 'http' && port == 80 || protocol == 'https' && port == 443 ? '' : port}"/>
+<c:set var="port" value="${empty port ? '' : ':'}${port}"/>
+${prefix}${pageContext.request.serverName}${port}${path}
