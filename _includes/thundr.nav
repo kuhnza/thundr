@@ -2,37 +2,37 @@
 	<div class="module_nav">			
 		<ul class="nav nav-list" role="navigation">
 			<li class="nav-header ">
-				<a href="/thundr/basics.html">						
+				<a href="{{ site.url }}/thundr/basics.html">						
 					Basics						
 				</a>
 			</li>
 				
 			<li class="nav-header ">
-				<a href="/thundr/controllers.html">						
+				<a href="{{ site.url }}/thundr/controllers.html">						
 					Controllers						
 				</a>
 			</li>
 
 			<li class="nav-header ">
-				<a href="/thundr/views.html">
+				<a href="{{ site.url }}/thundr/views.html">
 					Views
 				</a>
 			</li>
 
 			<li class="nav-header active">
-				<a href="/thundr/actions.html">
+				<a href="{{ site.url }}/thundr/actions.html">
 					Actions						
 				</a>
 			</li>
 
 			<li>
-				<a href="/thundr/actions.html#routes" data-target="#routes">
+				<a href="{{ site.url }}/thundr/actions.html#routes" data-target="#routes">
 					Routes					
 				</a>
 			</li>
 		
 			<li>
-				<a href="/thundr/actions.html#actions" data-target="#actions">
+				<a href="{{ site.url }}/thundr/actions.html#actions" data-target="#actions">
 					Actions
 				</a>
 			</li>
@@ -40,25 +40,25 @@
 			<li class="divider"></li>
 
 			<li>
-				<a href="/thundr/actions.html#methodAction" data-target="#methodAction">
+				<a href="{{ site.url }}/thundr/actions.html#methodAction" data-target="#methodAction">
 					MethodAction					
 				</a>
 			</li>
 							
 			<li>
-				<a href="/thundr/actions.html#staticResourceAction" data-target="#staticResourceAction">
+				<a href="{{ site.url }}/thundr/actions.html#staticResourceAction" data-target="#staticResourceAction">
 					StaticResourceAction					
 				</a>
 			</li>
 	
 			<li>
-				<a href="/thundr/actions.html#redirectAction" data-target="#redirectAction">
+				<a href="{{ site.url }}/thundr/actions.html#redirectAction" data-target="#redirectAction">
 					RedirectAction
 				</a>
 			</li>
 	
 			<li>
-				<a href="/thundr/actions.html#rewriteAction" data-target="#rewriteAction">
+				<a href="{{ site.url }}/thundr/actions.html#rewriteAction" data-target="#rewriteAction">
 					RewriteAction
 				</a>
 			</li>
@@ -66,19 +66,19 @@
 			<li class="divider"></li>
 
 			<li>
-				<a href="/thundr/actions.html#actionResolver" data-target="#actionResolver">
+				<a href="{{ site.url }}/thundr/actions.html#actionResolver" data-target="#actionResolver">
 					ActionResolver <span class="label label-info">Advanced</span>
 				</a>
 			</li>
 				
 			<li class="nav-header ">
-				<a href="/thundr/injection-context.html">
+				<a href="{{ site.url }}/thundr/injection-context.html">
 					Dependancy injection						
 				</a>
 			</li>
 
 			<li class="nav-header ">
-				<a href="/thundr/email.html">						
+				<a href="{{ site.url }}/thundr/email.html">						
 					Email						
 				</a>
 			</li>

@@ -9,13 +9,13 @@ description: thundr framework basics
 	<div class="module_nav">
 		<ul class="nav nav-list" role="navigation">
 			<li class="nav-header active">
-				<a href="/thundr/basics.html">
+				<a href="{{ site.url }}/thundr/basics.html">
 					Basics
 				</a>
 			</li>
 
 			<li>
-				<a href="/thundr/basics.html#page-overview" data-target="#page-overview">
+				<a href="{{ site.url }}/thundr/basics.html#page-overview" data-target="#page-overview">
 					Overview
 				</a>
 			</li>
@@ -23,14 +23,14 @@ description: thundr framework basics
 			<li class="divider"></li>
 
 			<li>
-				<a href="/thundr/basics.html#basicExample" data-target="#basicExample">
+				<a href="{{ site.url }}/thundr/basics.html#basicExample" data-target="#basicExample">
 					Basic Example
 				</a>
 			</li>
 
 
 			<li>
-				<a href="/thundr/basics.html#applicationConfiguration" data-target="#applicationConfiguration">
+				<a href="{{ site.url }}/thundr/basics.html#applicationConfiguration" data-target="#applicationConfiguration">
 					Configuration
 				</a>
 			</li>
@@ -38,56 +38,56 @@ description: thundr framework basics
 			<li class="divider"></li>
 
 			<li>
-				<a href="/thundr/basics.html#webXml" data-target="#webXml">
+				<a href="{{ site.url }}/thundr/basics.html#webXml" data-target="#webXml">
 					web.xml
 				</a>
 			</li>
 
 			<li>
-				<a href="/thundr/basics.html#modulesProperties" data-target="#modulesProperties">
+				<a href="{{ site.url }}/thundr/basics.html#modulesProperties" data-target="#modulesProperties">
 					modules.properties
 				</a>
 			</li>
 
 
 			<li>
-				<a href="/thundr/basics.html#injectionConfiguration" data-target="#injectionConfiguration">
+				<a href="{{ site.url }}/thundr/basics.html#injectionConfiguration" data-target="#injectionConfiguration">
 					InjectionConfiguration
 				</a>
 			</li>
 
 			<li>
-				<a href="/thundr/basics.html#applicationProperties" data-target="#applicationProperties">
+				<a href="{{ site.url }}/thundr/basics.html#applicationProperties" data-target="#applicationProperties">
 					application.properties
 				</a>
 			</li>
 
 			<li class="nav-header ">
-				<a href="/thundr/controllers.html">
+				<a href="{{ site.url }}/thundr/controllers.html">
 					Controllers
 				</a>
 			</li>
 
 			<li class="nav-header ">
-				<a href="/thundr/views.html">
+				<a href="{{ site.url }}/thundr/views.html">
 					Views
 				</a>
 			</li>
 
 			<li class="nav-header ">
-				<a href="/thundr/actions.html">
+				<a href="{{ site.url }}/thundr/actions.html">
 					Actions
 				</a>
 			</li>
 
 			<li class="nav-header ">
-				<a href="/thundr/injection-context.html">
+				<a href="{{ site.url }}/thundr/injection-context.html">
 					Dependancy injection
 				</a>
 			</li>
 
 			<li class="nav-header ">
-				<a href="/thundr/email.html">
+				<a href="{{ site.url }}/thundr/email.html">
 					Email
 				</a>
 			</li>
@@ -117,9 +117,9 @@ description: thundr framework basics
 
 		<p>
 			In thundr, this control is enacted by the method invoked inside your controller class. 
-			<a href="/thundr/controllers.html">more</a><br/>
+			<a href="{{ site.url }}/thundr/controllers.html">more</a><br/>
 			The view is represented by a <code>View</code> object, which is the return type of the controller method. 
-			<a href="/thundr/views.html">more</a><br>
+			<a href="{{ site.url }}/thundr/views.html">more</a><br>
 			The model is provided to the view by the controller method, but the requirements of this depend on the type 
 			of view.
 		</p>
@@ -128,7 +128,7 @@ description: thundr framework basics
 	<section id="basicExample">
 		<h4>Basic Example</h4>
 
-		<p>Routes file - routes.json <a href="/thundr/actions.html">more</a></p>
+		<p>Routes file - routes.json <a href="{{ site.url }}/thundr/actions.html">more</a></p>
 
 {% highlight json %}
 {
@@ -136,7 +136,7 @@ description: thundr framework basics
 }
 {% endhighlight %}
 
-		<p>Controller - Controller.java <a href="/thundr/controllers.html">more</a></p>
+		<p>Controller - Controller.java <a href="{{ site.url }}/thundr/controllers.html">more</a></p>
 
 {% highlight java %}
 package com.threewks.web;
@@ -154,7 +154,7 @@ public class Controller {
 }
 {% endhighlight %}
 
-		<p>Jsp - /WEB-INF/jsp/home.jsp <a href="/thundr/views.html#jspView">more</a></p>
+		<p>Jsp - /WEB-INF/jsp/home.jsp <a href="{{ site.url }}/thundr/views.html#jspView">more</a></p>
 
 {% highlight jsp %}
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
@@ -175,11 +175,11 @@ public class Controller {
 		<p>We can see the basics of thundr and the three elements of the MVC interacting here:</p>
 		<ul>
 			<li>an incoming request is mapped to a controller using a <a
-					href="/thundr/actions.html#routes">route</a></li>
-			<li>Our <a href="/thundr/controllers.html">controller</a> method populates the <strong>model</strong>
+					href="{{ site.url }}/thundr/actions.html#routes">route</a></li>
+			<li>Our <a href="{{ site.url }}/thundr/controllers.html">controller</a> method populates the <strong>model</strong>
 				map with our message,
 			</li>
-			<li>which is then provided to our <a href="/thundr/views.html">view</a>, a JspView.</li>
+			<li>which is then provided to our <a href="{{ site.url }}/thundr/views.html">view</a>, a JspView.</li>
 			<li>thundr takes care of the rest, serving up our jsp as html, substituting the el variable \${message} with
 				the text &#39;Hello World!&#39;.
 			</li>
