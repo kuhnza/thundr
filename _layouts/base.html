@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>{% if page.title %}{{ page.title }} • {% endif %}{{ site.title }}</title>
+    
+    <meta charset="utf-8" lang="en-us"/>
+	<meta http-equiv="X-UA-Compatible" content="chrome=1"/><!-- Use Chrome Frame if installed -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">	
+	<meta name="google-site-verification" content="V7Os0LLLfRti7XGzTPnlO_FfsjrL6Ldi3IKeq0tVGaY" />
+	{% if page.description %}
+    <meta name="description" content="{{ page.description }}" />
+    {% endif %}
+	{% if page.keywords %}
+	<meta name="keywords" content="{{ page.keywords }}"/>
+	{% endif %}
+
+	<base href="" />
+	
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link rel="stylesheet" href="{{ site.url }}static/lib/bootstrap/css/bootstrap.min.css"></link>
+	<link rel="stylesheet" href="{{ site.url }}static/lib/font-awesome/css/font-awesome.min.css"></link>
+	<!--[if IE 7]>
+	<link rel="stylesheet" href="{{ site.url }}static/lib/font-awesome/css/font-awesome-ie7.min.css">
+	<![endif]-->
+	<link rel="stylesheet" href="{{ site.url }}static/css/syntax.css"></link>
+	<link rel="stylesheet" href="{{ site.url }}static/css/main.css"></link>
+
+	<!--[if lt IE 9]>
+	<script src="{{ site.url }}static/lib/html5shiv.js"></script> 
+	<![endif]-->
+</head>
+<body data-spy="scroll" data-target=".module_nav">
+	 <header class="container">
+		<nav class="navbar">
+			<div class="navbar-inner">
+				<div class="navbar-top">
+					<a class="brand" href="{{ site.url }}index.html"><img src="{{ site.url }}static/img/logoFullSmall.png"/></a>
+
+					<ul class="nav" role="navigation">
+						<li class="dropdown ">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" >thundr <b class="caret"></b></a>
+
+							<ul class="dropdown-menu">								 
+								<li class="">
+									<a href="{{ site.url }}modules/thundr/basics.html">
+										Basics
+									</a>
+								</li>
+								  
+								<li class="">
+									<a href="{{ site.url }}modules/thundr/controllers.html">
+										Controllers
+									</a>
+								</li>
+								  
+								<li class="">
+									<a href="{{ site.url }}modules/thundr/views.html">
+										Views
+									</a>
+								</li>
+								  
+								<li class="">
+									<a href="{{ site.url }}modules/thundr/actions.html">
+										Actions
+									</a>
+								</li>
+								  
+								<li class="">
+									<a href="{{ site.url }}modules/thundr/injection-context.html">
+										Dependancy injection
+									</a>
+								</li>
+								  
+								<li class="">
+									<a href="{{ site.url }}modules/thundr/email.html">
+										Email
+									</a>
+								</li>								 
+							</ul>
+						</li>
+							
+						<li class="">
+							<a href="{{ site.url }}modules/thundr-gae/index.html">thundr-gae</a>
+						</li>
+							
+						<li class="">
+							<a href="{{ site.url }}modules/thundr-handlebars/index.html">thundr-handlebars</a>
+						</li>
+
+						<li class="">
+							<a href="{{ site.url }}modules/thundr-mailgun/index.html">thundr-mailgun</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>		
+	</header>
+
+	<div class="container">
+		{{ content }}
+	</div>
+
+	<footer class="container">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<span class="navbar-text pull-right">
+					Brought to you by <a href="http://www.3wks.com.au" title="3wks"><img class="threewksLogo" src="http://3wks.com.au/images/3wks_logo_2.png"/></a>
+				</span>
+				<span class="navbar-text">
+					<a href="mailto:nick@3wks.com.au?Subject=thundr">
+						<i class="icon icon-envelope-alt"></i> 
+						Get in touch
+					</a>
+				</span>
+				<span class="navbar-text">
+					<a href="https://groups.google.com/forum/?fromgroups#!forum/thundr-framework">
+						<i class="icon icon-group"></i> 
+						Join us on Google Groups 
+					</a>
+				</span>
+			</div>
+		</div>
+	</footer>
+
+	<script src="{{ site.url }}static/lib/jquery.min.js"></script>
+	<script src="{{ site.url }}static/lib/bootstrap/js/bootstrap.min.js"></script>
+	<script src="{{ site.url }}static/js/app.js"></script>
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-33515426-2', 'github.io');
+		ga('send', 'pageview');	
+	</script>
+</body>
+</html>

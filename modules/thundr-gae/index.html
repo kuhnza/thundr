@@ -1,0 +1,194 @@
+---
+layout: base
+title: App Engine
+description: Using the Google App Engine module
+---
+
+<div class="row">
+	<aside class="module_nav_container span3">
+		<div class="module_nav">			
+			<ul class="nav nav-list" role="navigation">			 					
+				<li class="nav-header active">
+					<a href="{{ site.url }}modules/thundr-gae/index.html">
+						GAE
+					</a>
+				</li>
+
+				<li>
+					<a href="{{ site.url }}modules/thundr-gae/index.html#page-overview" data-target="#page-overview">
+						Overview
+					</a>
+				</li>
+
+				<li class="divider"></li>
+						
+				<li>
+					<a href="{{ site.url }}modules/thundr-gae/index.html#settingUp" data-target="#settingUp">
+						Setting Up
+					</a>
+				</li>
+							
+				<li>
+					<a href="{{ site.url }}modules/thundr-gae/index.html#moduleFeatures" data-target="#moduleFeatures">
+						Module Features					
+					</a>
+				</li>  
+			</ul>
+		</div>
+	</aside>
+
+	<article id="appengine" class="span9">
+		<div class="page-header">
+			<h1>thundr <small>on Google Appengine</small></h1>
+		</div>
+
+		<section id="page-overview" class="overview">
+			<h2>Overview</h2>
+
+			<p>
+				Google Appengine (GAE) is a PaaS provided and run by Google. You can read more about it 
+				<a href="https://developers.google.com/appengine/docs/">here</a>
+			</p>
+
+			<p>
+				<em>thundr-gae</em> is a thundr module which enables thundr to run in this environment 
+				adding abstractions around some common functions.
+			</p>
+		</section>
+
+		<section id="settingUp">
+			<h4>Setting Up</h4>
+
+			<p>
+				Beyond <a href="{{ site.url }}modules/thundr/basics.html#applicationConfiguration">normal thundr setup</a> 
+				(i.e. <code>web.xml</code>, <code>application.properties</code>, <code>modules.properties</code> 
+				and an <code>InjectionConfiguration</code>), you will need to pull in the <em>thundr-gae</em> module 
+				and configure it.
+			</p>
+
+			<p>
+				This is accomplished by adding the <em>thundr-gae</em> library to your project (or adding the 
+				dependency to your maven or similar config). You then need to load the <em>thundr-gae</em> module by 
+				adding it to your <code>modules.properties</code> file.
+			</p>
+
+			<p>pom.xml</p>
+
+{% highlight xml %}
+...
+<dependency>
+    <groupId>com.threewks.thundr</groupId>
+    <artifactId>thundr-gae</artifactId>
+    <version>0.9.9</version>
+    <scope>compile</scope>
+</dependency>
+...
+{% endhighlight %}
+
+			<p>modules.properties</p>
+
+{% highlight java %}
+com.mycompany.myapp=
+com.threewks.thundr.gae=
+{% endhighlight %}
+
+			<blockquote>
+				Remember order is important in modules.properties - include the <em>thundr-gae</em> module 
+				<strong>after</strong> you application.				
+			</blockquote>
+		</section>
+				
+		<section id="moduleFeatures">
+			<h4>Module Features</h4>
+
+			<ul>
+				<li>
+					<h5>SearchService</h5>
+
+					<p>
+						The module provides an abstraction on top of the native 
+						<a href="https://developers.google.com/appengine/docs/java/search/">AppEngine search service</a>. 
+						This abstraction allows you to interact with the search service using your<br>
+						java object model (i.e. pojos and javabeans), rather than the low level api. The search service 
+						is implemented by the <em>class com.threewks.thundr.search.google.GoogleSearchService</em>.
+					</p>
+
+{% highlight java %}
+...
+private SearchService searchService;
+
+public MyController(SearchService searchService){
+   this.searchService = searchService;
+}
+
+public DomainModel search(String query, long time){
+SearchRequest<DomainModel> query = searchService.search(DomainModel.class);
+   // to perform a general query across all fields
+   query = query.query("search terms");
+
+   // to perform a query on a specific field
+   query = query.field("timestamp").greaterThan(time);
+}
+...
+{% endhighlight %}
+
+					<p>
+						As you can see from this simple example, the SearchService provides a fluent api for querying 
+						specific fields.<br>It also provides facilities for limits, orders and offsets.    
+					</p>
+				</li>
+
+				<li>
+					<h5>HttpService</h5>
+
+					<p>
+						The module provides an implementation of the HttpService defined in the thundr-http module 
+						<span class="label label-warning">Undocumented</span>. This is required because of the need to 
+						use the <a href="https://developers.google.com/appengine/docs/java/urlfetch/">UrlFetchService</a>. 
+						You can then inject it into your controllers and services like this:
+					</p>
+
+{% highlight java %}
+...
+private HttpService httpService;
+
+public MyController(HttpService httpService){
+   this.httpService = httpService;
+}
+...
+{% endhighlight %}
+
+				</li>
+
+				<li>
+					<h5>CounterRepository</h5>
+					
+					<p>
+						Atomic incrementing counters can be a little tricky in distributed environment. 
+						<em>thundr-gae</em> provides an implementation for sharding counters based on the discussion 
+						<a href="https://developers.google.com/appengine/articles/sharding_counters">here</a>.
+					</p>
+
+					<p>You can use this in your project by adding it to your injection configuration like this:</p>
+
+{% highlight java %}
+...
+MemcacheService cacheService = MemcacheServiceFactory.getMemcacheService();
+DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+CounterRepository counterRepository = new DatastoreCounterRepository(cacheService, datastoreService);
+injectionContext.inject(counterRepository).as(CounterRepository.class);
+...
+{% endhighlight %}
+
+					<p>You can later use this in code like this:</p>
+
+{% highlight java %}					
+long currentCount = counterRepository.incrementCount("CounterType", entityId);
+{% endhighlight %}
+				</li>
+			</ul>
+		</section>
+	</article>
+</div>
+
+		
