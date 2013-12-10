@@ -179,6 +179,14 @@
 					<connectionType>connection</connectionType>
 				</configuration>
 			</plugin>
+			<plugin> <!-- Generate javadoc -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<maxmemory>512m</maxmemory>
+				</configuration>
+			</plugin>
 		</plugins>
 		<extensions>
 			<extension>
