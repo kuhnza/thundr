@@ -13,7 +13,7 @@ jekyll serve --watch
 ```
 
 If that works for you, great! Head off for an early lunch. Sadly I found that the default Ruby environment 
-setup on Mountain Lion is somewhat lacking. If you're like me and don't have an up to date ruby install then 
+setup on Mavericks is somewhat lacking. If you're like me and don't have an up to date ruby install then 
 do this first:
 
 ```bash
@@ -24,10 +24,12 @@ Also you'll need a C++ compiler so Gem can compile native extensions. Install
 [Homebrew](https://github.com/mxcl/homebrew/wiki/Installation) if you haven't already then run:
 
 ```bash
+brew update
 brew install automake
-# Fix broken xcrun as described here http://stackoverflow.com/questions/13041525/osx-10-8-xcrun-no-such-file-or-directory
-mv /usr/bin/xcrun /usr/bin/xcrun.old
-sudo echo "#!/bin/bash\n$@" >> /usr/bin/xcrun 
+# install the XCode command line tools 
+xcode-select --install
+# agree to the XCode license
+sudo xcodebuild -license 
 ```
 
 Now you can *finally* run "gem install jekyll" and it should just work.

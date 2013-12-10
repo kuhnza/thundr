@@ -1,0 +1,494 @@
+---
+layout: base
+title: Controllers
+description: Using controllers in thundr
+---
+
+<div class="row">
+	<aside class="module_nav_container span3">
+		<div class="module_nav">
+			<ul class="nav nav-list" role="navigation">
+				<li class="nav-header ">
+					<a href="/thundr/basics.html">
+						Basics
+					</a>
+				</li>
+
+				<li class="nav-header active">
+					<a href="/thundr/controllers.html">
+						Controllers
+					</a>
+				</li>
+
+				<li>
+					<a href="/thundr/controllers.html#controllers" data-target="#controllers">
+						Controllers
+					</a>
+				</li>
+
+				<li>
+					<a href="/thundr/controllers.html#views" data-target="#views">
+						Views
+					</a>
+				</li>
+
+				<li>
+					<a href="/thundr/controllers.html#dataBinding" data-target="#dataBinding">
+						Data binding
+					</a>
+				</li>
+
+				<li>
+					<a href="/thundr/controllers.html#separationOfConcerns" data-target="#separationOfConcerns">
+						Seperation of concerns
+					</a>
+				</li>
+
+				<li>
+					<a href="/thundr/controllers.html#injection" data-target="#injection">
+						Injection
+					</a>
+				</li>
+
+				<li>
+					<a href="/thundr/controllers.html#actionInterceptors" data-target="#actionInterceptors">
+						ActionInterceptors <span class="label label-info">Advanced</span>
+					</a>
+				</li>
+
+				<li class="nav-header ">
+					<a href="/thundr/views.html">
+						Views
+					</a>
+				</li>
+
+				<li class="nav-header ">
+					<a href="/thundr/actions.html">
+						Actions
+					</a>
+				</li>
+
+				<li class="nav-header ">
+					<a href="/thundr/injection-context.html">
+						Dependancy injection
+					</a>
+				</li>
+
+				<li class="nav-header ">
+					<a href="/thundr/email.html">
+						Email
+					</a>
+				</li>
+			</ul>
+		</div>
+	</aside>
+
+	<article id="controllers" class="span9">
+		<div class="page-header">
+			<h1>thundr <small>controllers</small></h1>
+		</div>
+
+		<section id="page-overview" class="overview">
+		</section>
+
+		<section id="controllers">
+			<p>We refer to the classes invoked when using the typical <a href="/thundr/actions.html#routes">route</a> as
+				<em>controllers</em>.</p>
+
+			<p>When a http client makes a request, the appropriate method inside a controller is invoked. The method can perform
+				processing and gather data for the response, then return a <code>View</code> object. The view controls the
+				content and http response codes that are returned to the client. </p>
+
+			<p>Controller classes are ordinary classes, they don&#39;t require implementing any interfaces or annotations to
+				function. Having one or more routes directing to a method inside a class is enough for thundr to <a
+						href="/thundr/controllers.html#injection">create</a> and invoke your controller class when a
+				request is made.</p>
+			<h4>Basic Example</h4>
+
+			<p>In the very basic example below, the controller renders the home.jsp for its view, to which it provides a simple
+				model with the message &#39;Hello World!&#39;</p>
+
+			<p>Controller - Controller.java</p>
+
+{% highlight java %}
+package com.threewks.web;
+
+import java.util.HashMap;
+import java.util.Map;
+import com.threewks.thundr.view.jsp.JspView;
+
+public class Controller {
+    public JspView home() {
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("message", "Hello World!");
+        return new JspView("home.jsp", model);
+    }
+}
+{% endhighlight %}
+		</section>
+
+		<section id="views">
+			<h4>Views</h4>
+
+			<p>In the above example, we see the <code>JspView</code> being returned from our controller. This resulted in a Jsp
+				being processed and sent back to the user.<br>thundr supports different views, which control the content and
+				http response returned to the user.</p>
+			<ul>
+				<li>JspView - renders a jsp - <a href="/thundr/views.html#jspView">more</a></li>
+				<li>RedirectView - redirects the client to a new url - <a
+						href="/thundr/views.html#redirectView">more</a></li>
+				<li>JsonView - uses the <a href="http://code.google.com/p/google-gson/">Gson library</a> to return json to the
+					client - <a href="/thundr/views.html#jsonView">more</a></li>
+				<li>StringView - returns a string to the client - <a href="/thundr/views.html#stringView">more</a></li>
+				<li>HttpStatusException - when thrown, this exception results in an error code being sent to the request client
+					- <a href="/thundr/views.html#httpStatusException">more</a></li>
+				<li>StringView - returns a string to the client - <a href="/thundr/views.html#stringView">more</a></li>
+			</ul>
+		</section>
+
+		<section id="dataBinding">
+			<h4>Data binding</h4>
+
+			<p>When a controller method is invoked, data from the request is bound and passed in using the method
+				parameters.</p>
+
+			<p>thundr binds data using the names of the variables and automatically converts to the target types.</p>
+
+			<p>Data is bound from the following locations:</p>
+			<ul>
+				<li>
+
+					<p>
+						<strong>Request parameters</strong> - request parameters include request parameters for 
+						GET/DELETE request and form parameters for POST/PUT requests.
+					</p>
+
+					<p><code>http://localhost:8080/page?param1=parameter%20value&amp;param2=2</code> will bind to </p>
+
+{% highlight java %}
+public JspView method(String param1, Long param2){ ... }
+{% endhighlight %}
+
+					<p>likewise,</p>
+
+{% highlight html %}
+<form action="/page" method="post">
+   <input type="text" name="param1" value="parameter value"/>
+   <input type="text" name="param2" value="2"/>
+</form>
+{% endhighlight %}
+
+					<p>will bind to</p>
+
+{% highlight java %}
+public JspView method(String param1, Long param2){ ... }
+{% endhighlight %}
+
+					<p>thundr is capable of binding all basic java types, collection classes and javabeans. <span
+							class="label label-warning">Link to more about binding</span></p>
+				</li>
+
+				<li>
+					<p><strong>Path variables</strong> - that is named variables as portion of the route. e.g.</p>
+
+{% highlight java %}
+"/{path}/{variables}" : "com.threewks.web.Controller.method"
+{% endhighlight %}
+	
+					<p>will bind to</p>
+
+{% highlight java %}
+public JspView method(long path, String variables){ ... }
+{% endhighlight %}
+				</li>
+
+				<li>		
+					<p><strong>Multipart data</strong> - we can post files for example like this:</p>
+
+{% highlight html %}
+<form action="/page" enctype="multipart/form-data" method="post">
+	<input type="text" name="filename" value=""/>
+	<input type="file" name="fileData" value=""/>
+</form>
+{% endhighlight %}
+
+					<p>which would bind to</p>
+
+{% highlight java %}
+public JspView postFile(String filename, byte[] fileData){ ... }
+{% endhighlight %}
+				</li>
+
+				<li>
+					<p><strong>Json</strong> - using <a href="http://code.google.com/p/google-gson/">Gson</a>, json requests
+					will bind data automatically.</p>
+
+					<p>For example, if the request posted json like this</p>
+
+{% highlight json %}
+{
+	"id": 123,
+	"names": ["first", "last"]
+}
+{% endhighlight %}
+
+					<p>and we have a class like this:</p>
+
+{% highlight java %}
+package com.mycompany;
+
+public class MyDTO {
+   private int id;
+   private List<String> names;
+
+   public void setId(int id){
+       this.id = id;
+   }
+   public void setNames(List<String> names){
+       this.names = names;
+   }
+   public List<String> getNames(){
+       return names;
+   }
+   public int getId(){
+       return id;
+   }
+}
+{% endhighlight %}
+
+					<p>it can automatically bind onto</p>
+
+{% highlight java %}
+public JspView method(MyDTO dto){ ... }
+{% endhighlight %}
+				</li>
+
+				<li>
+					<p>
+						<strong>Servlet classes</strong> - thundr will pass in a <code>HttpServletRequest</code>, 
+						<code>HttpServletResponse</code> and an <code>HttpSession</code> object. For example:
+					</p>
+
+{% highlight java %}
+public JspView view(HttpServletRequest req, HttpServletResponse resp){ ... }
+{% endhighlight %}
+				</li>
+
+				<li>
+					<p><strong>Request headers</strong> - for example we could get the referer using the following: </p>
+
+{% highlight java %}
+public JspView method(String referer){ ... }
+{% endhighlight %}
+
+					<p>Headers are bound using a special transformation - the parameters they bind to must be camel case, split
+						on the dash &#39;-&#39; character.<br>For example, the header X-Http-Something will bind to
+						xHttpSomething. This helps eliminate issues across containers, some of which standarise headers and some
+						of which do not.<br>Some other examples of header names which bind to xHttpSomething are
+						X-HTTP-SOMETHING, x-http-something and X-HTTP-someThing.</p>
+				</li>
+			</ul>
+
+			<p>When data binding is used, you can generally mix any types of bindings, for example using path variables, request
+				parameters and the <code>HttpServletRequest</code>. This gives you the flexibility to generally consume most
+				types of http integration.</p>
+
+			<blockquote>
+				Remember, if you can&#39;t automatically bind the data in your request, you can always just bind the
+				HttpServletRequest and HttpServletResponse.<br>This is equivalent to writing a servlet, so you&#39;ll have
+				to do the heavy lifting yourself, but it means that as long as a servlet could handle the input, your thundr
+				controller can as well.
+			</blockquote>
+		</section>
+
+
+		<section id="separationOfConcerns">
+			<h4>Separation of concerns</h4>
+
+			<p>The job of a controller is to service a request by performing any behaviour and marshalling response data into
+				the form that is required by the resulting view. </p>
+
+			<p>In order to write maintainable, testable applications you should be sure to make sure your application leverages
+				the concept of <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">&#39;separation of
+					concerns&#39;</a>.<br>In this case, what we mean by that is that while the controller is designed for
+				invoking behaviour, in general it should not actually contain behavioural logic as much as possible.</p>
+
+			<p>To help you achieve this aim, controllers can have other instances passed into them at creation time.<br>This
+				allows you to inject dependencies, such as business process, service and repository code.</p>
+
+			<p>In the example below, two services are injected using the constructor at creation time, and then invoked on page
+				requests:</p>
+
+			<p>Controller - Controller.java</p>
+
+{% highlight java %}
+...
+public class Controller {
+    private DocumentService documentService;
+    private CounterRepository counterRepository;
+
+    public Controller(DocumentService documentService, CounterRepository counterRepository){
+        this.documentService = documentService;
+        this.counterRepository = counterRepository;
+    }
+    public JspView home() {
+        counterRepository.incrementHomeViews();
+
+        List<Document> recentlyViewed = documentService.getRecentlyViewedDocuments()
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("recentlyViewed", recentlyViewed);
+        return new JspView("home.jsp", model);
+    }
+}
+{% endhighlight %}
+		</section>
+
+		<section id="injection">
+			<h4>Injection &amp; Controller Instantiation</h4>
+
+			<p>Controller classes are instantiated by the <a href="/thundr/injection-context.html#injectionContext">InjectionContext</a>.
+				As such each instance can be shared between multiple, concurrent requests, so implementations should be treated
+				as stateless.<br>Also, there is no guarantee that controllers are singletons and implementations should also
+				take this into account.</p>
+
+			<p>When a controller is instantiated, the injection context will attempt to use the constructor with the most
+				arguments that it can satisfy.<br>The injection context will also invoke javabean setters for any objects it can
+				satisfy.<br>Non-javabean properties can also be set by using the JSR 330 annotation <code>@Inject</code> on the
+				property. Note that the InjectionContext does not currently support the full JSR 330 specification, just the
+				basic @Inject annotation.</p>
+
+			<p>You can read more <a href="/thundr/injection-context.html">here</a> about the InjectionContext,
+				dependency injection in thundr and how to write controller and service classes the &#39;right&#39; way. </p>
+
+			<p>The below example demonstrates the different ways dependencies can be injected into controllers.</p>
+
+			<p>Controller - Controller.java</p>
+
+{% highlight java %}
+...
+public class Controller {
+    private DocumentService documentService;
+    private CounterRepository counterRepository;
+    @Inject
+    private CategoryService categoryService;
+
+    public Controller(DocumentService documentService){
+        this.documentService = documentService;
+    }
+
+    public void setCounterRepository(CounterRepository counterRepository) {
+        this.counterRepository = counterRepository;
+    }
+...
+{% endhighlight %}
+		</section>
+
+
+		<section id="actionInterceptors">
+			<h4><code>ActionInterceptor</code> <span class="label label-info">Advanced</span></h4>
+
+			<p>By implementing the <code>ActionInterceptor</code> interface, thundr provides a basic mechanism for adding
+				interceptors to controller methods to perform common operations on different routes/controller methods.</p>
+
+			<p>Quite often there are cross cutting concerns which we want to apply to controller methods before or after they&#39;re
+				invoked. Some examples of this are ensuring state (such as a logged in user), prepopulating some data (such as
+				adding data to the request) or changing the response (in case of successful result or failure).</p>
+
+			<p><em>Action Interceptors</em> are implemented by marking a controller method with a custom annotation and
+				implementing the <code>ActionInterceptor</code> interface.</p>
+
+			<p>The two are registered together during <a
+					href="/thundr/basics.html#injectionConfiguration">configuration</a> in the <code>ActionInterceptorRegistry</code>.
+			</p>
+
+			<p><strong> Example </strong></p>
+
+			<p>In this example, we create an annotation <em>RequireRole</em>, which defines the role a user must have to invoke
+				a route. The logic is implemented in the custom class <em>RequireRoleActionInterceptor</em>.</p>
+
+			<p><strong><em>RequireRole.java</em></strong> - This annotation marks any controller methods we want our interceptor
+				to be invoked on. </p>
+
+{% highlight java %}
+...
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequireRole {
+    Role value() default Role.User;
+}
+...
+{% endhighlight %}
+
+			<p><strong><em>RequireRoleActionInterceptor.java</em></strong> - the interceptor is invoked before and after the
+				controller method is invoked, and also if it throws an exception.<br>If the before, after or exception methods
+				return a non-null value, they override the controller response. If they return null normal execution occurs.</p>
+
+{% highlight java %}
+...
+public class RequireRoleActionInterceptor implements ActionInterceptor<RequireRole> {
+    private UserService userService;
+
+    public RequireRoleActionInterceptor(UserService userService) {
+        this.userService = userService;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public RedirectView before(RequireRole require, HttpServletRequest req, HttpServletResponse resp) {
+        User user = userService.getUserFromRequest(req);
+        boolean hasRole = user.hasRole(require.value());
+        if (hasRole) {
+            req.setAttribute("user", user);
+            return null;
+        }
+        return new RedirectView("/login");
+    }
+
+    @Override
+    public <T> T after(RequireRole require, HttpServletRequest req, HttpServletResponse resp) {
+        return null;
+    }
+
+    @Override
+    public <T> T exception(RequireRole require, Exception e, HttpServletRequest req, HttpServletResponse resp) {
+        return null;
+    }
+}
+{% endhighlight %}
+
+			<p><strong><em>MyInjectionConfiguration.java</em></strong> - we register the annotation and the action interceptor
+				together in our InjectionConfiguration at startup.</p>
+
+{% highlight java %}
+...
+public class MyInjectionConfiguration extends BaseInjectionConfiguration {
+...
+
+    @Override
+    protected void addActionInterceptors(ActionInterceptorRegistry actionInterceptorRegistry) {
+        super.addActionInterceptors(actionInterceptorRegistry);
+        UserService userService = new UserService();
+        RequireRoleActionInterceptor requireRole = new RequireRoleActionInterceptor(userService);
+
+        actionInterceptorRegistry.registerInterceptor(RequireRole.class, requireRole);
+    }
+}
+...
+{% endhighlight %}
+
+			<p><strong><em>Controller.java</em></strong> - When this controller method is invoked, the
+				RequireRoleActionInterceptor executes</p>
+
+{% highlight java %}
+...
+public class Controller {
+    @RequireRole
+    public StringView get(){
+        return new StringView("OK");
+    }
+...
+{% endhighlight %}
+		</section>
+	</article>
+</div>
+		

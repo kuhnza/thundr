@@ -1,0 +1,117 @@
+---
+layout: base
+title: Handlebars
+description: Using the Handlebars templating module
+---
+
+<div class="row">
+	<aside class="module_nav_container span3">
+		<div class="module_nav">
+			<ul class="nav nav-list" role="navigation">
+				<li class="nav-header active">
+					<a href="/thundr-handlebars/index.html">
+						Handlebars
+					</a>
+				</li>
+
+				<li><a href="/thundr-handlebars/index.html#page-overview" data-target="#page-overview">Overview</a></li>
+				
+				<li class="divider"></li>
+
+				<li>
+					<a href="/thundr-handlebars/index.html#settingUp" data-target="#settingUp">
+						Setting Up
+					</a>
+				</li>
+
+				<li>
+					<a href="/thundr-handlebars/index.html#moduleFeatures" data-target="#moduleFeatures">
+						Module Features
+					</a>
+				</li>
+			</ul>			
+		</div>
+	</aside>
+
+	<article id="index" class="span9">
+		<div class="page-header">
+			<h1>thundr <small>with Handlebars</small></h1>
+		</div>
+
+		<section id="page-overview" class="overview">
+			<h2>Overview</h2>
+
+			<p>
+				Handlebars is a templating language based on the popular Mustache templating language.<br>
+				You can read about Handlebars in general <a href="http://handlebarsjs.com/">here</a>.
+			</p>
+
+			<p>
+				thundr-handlebars provides the HandlebarsView and HandlebarsViewResolver implementations 
+				that allow you to use handlebars templates with thundr.
+			</p>
+
+			<p>
+				The handlebars implementation is provided by <a href="https://github.com/jknack/handlebars.java">jknack</a>.
+			</p>
+		</section>
+				
+		<section id="settingUp">
+			<h4>Setting Up</h4>
+
+			<p>Including the thundr-handlebars module will automatically register the HandlebarsViewResovler.</p>
+
+			<p>
+				This is accomplished by adding the <em>thundr-handlebars</em> library to your project (or adding the 
+				dependency to your maven or similar config). You then need to load the <em>thundr-handlebars</em> 
+				module by adding it to your <code>modules.properties</code> file.
+			</p>
+
+			<p>pom.xml</p>
+
+{% highlight xml %}
+...
+<dependency>
+    <groupId>com.threewks.thundr</groupId>
+    <artifactId>thundr-handlebars</artifactId>
+    <version>0.9.9</version>
+    <scope>compile</scope>
+</dependency>
+...
+{% endhighlight %}
+
+			<p>modules.properties</p>
+
+{% highlight java %}
+com.mycompany.myapp=
+com.threewks.thundr.handlebars=
+{% endhighlight %}
+		</section>
+			
+		<section id="moduleFeatures">
+			<h4>Module Features</h4>
+
+			<ul>
+				<li>
+					<h5>HandlebarsView and HandlebarsViewResolver</h5>
+
+					<p>
+						Once you have included the module, you can return a HandlebarsView from any controller 
+						method (or provide it for emails) like the following example:
+					</p>
+
+{% highlight java %}
+...
+public HandlebarsView view() {
+   Map<String, Object> model = model();
+   populateReferenceData(model);
+   return new HandlebarsView("view.hbs", model);
+}
+...
+{% endhighlight %}
+				</li>
+			</ul>
+		</section>
+	</article>
+</div>
+		

@@ -17,16 +17,12 @@
 	<base href="" />
 	
 	<link rel="shortcut icon" href="/favicon.ico" />
-	<link rel="stylesheet" href="{{ site.url }}static/lib/bootstrap/css/bootstrap.min.css"></link>
-	<link rel="stylesheet" href="{{ site.url }}static/lib/font-awesome/css/font-awesome.min.css"></link>
-	<!--[if IE 7]>
-	<link rel="stylesheet" href="{{ site.url }}static/lib/font-awesome/css/font-awesome-ie7.min.css">
-	<![endif]-->
-	<link rel="stylesheet" href="{{ site.url }}static/css/syntax.css"></link>
-	<link rel="stylesheet" href="{{ site.url }}static/css/main.css"></link>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css"></link>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.0.2/css/font-awesome.min.css"></link>
+	<link rel="stylesheet" href="/static/css/style.css"></link>
 
 	<!--[if lt IE 9]>
-	<script src="{{ site.url }}static/lib/html5shiv.js"></script> 
+	<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script> 
 	<![endif]-->
 </head>
 <body data-spy="scroll" data-target=".module_nav">
@@ -34,7 +30,7 @@
 		<nav class="navbar">
 			<div class="navbar-inner">
 				<div class="navbar-top">
-					<a class="brand" href="{{ site.url }}index.html"><img src="{{ site.url }}static/img/logoFullSmall.png"/></a>
+					<a class="brand" href="/index.html"><img src="/static/img/logoFullSmall.png"/></a>
 
 					<ul class="nav" role="navigation">
 						<li class="dropdown ">
@@ -42,37 +38,37 @@
 
 							<ul class="dropdown-menu">								 
 								<li class="">
-									<a href="{{ site.url }}modules/thundr/basics.html">
+									<a href="/thundr/basics.html">
 										Basics
 									</a>
 								</li>
 								  
 								<li class="">
-									<a href="{{ site.url }}modules/thundr/controllers.html">
+									<a href="/thundr/controllers.html">
 										Controllers
 									</a>
 								</li>
 								  
 								<li class="">
-									<a href="{{ site.url }}modules/thundr/views.html">
+									<a href="/thundr/views.html">
 										Views
 									</a>
 								</li>
 								  
 								<li class="">
-									<a href="{{ site.url }}modules/thundr/actions.html">
+									<a href="/thundr/actions.html">
 										Actions
 									</a>
 								</li>
 								  
 								<li class="">
-									<a href="{{ site.url }}modules/thundr/injection-context.html">
+									<a href="/thundr/injection-context.html">
 										Dependancy injection
 									</a>
 								</li>
 								  
 								<li class="">
-									<a href="{{ site.url }}modules/thundr/email.html">
+									<a href="/thundr/email.html">
 										Email
 									</a>
 								</li>								 
@@ -80,15 +76,15 @@
 						</li>
 							
 						<li class="">
-							<a href="{{ site.url }}modules/thundr-gae/index.html">thundr-gae</a>
+							<a href="/thundr-gae/index.html">thundr-gae</a>
 						</li>
 							
 						<li class="">
-							<a href="{{ site.url }}modules/thundr-handlebars/index.html">thundr-handlebars</a>
+							<a href="/thundr-handlebars/index.html">thundr-handlebars</a>
 						</li>
 
 						<li class="">
-							<a href="{{ site.url }}modules/thundr-mailgun/index.html">thundr-mailgun</a>
+							<a href="/thundr-mailgun/index.html">thundr-mailgun</a>
 						</li>
 					</ul>
 				</div>
@@ -104,7 +100,7 @@
 		<div class="navbar">
 			<div class="navbar-inner">
 				<span class="navbar-text pull-right">
-					Brought to you by <a href="http://www.3wks.com.au" title="3wks"><img class="threewksLogo" src="http://3wks.com.au/images/3wks_logo_2.png"/></a>
+					Brought to you by <a href="http://www.3wks.com.au" title="3wks"><img class="threewksLogo" src="/images/3wks_icon.png"/></a>
 				</span>
 				<span class="navbar-text">
 					<a href="mailto:nick@3wks.com.au?Subject=thundr">
@@ -122,9 +118,10 @@
 		</div>
 	</footer>
 
-	<script src="{{ site.url }}static/lib/jquery.min.js"></script>
-	<script src="{{ site.url }}static/lib/bootstrap/js/bootstrap.min.js"></script>
-	<script src="{{ site.url }}static/js/app.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+	<script src="/static/js/app.js"></script>
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

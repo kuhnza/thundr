@@ -12,13 +12,10 @@ $(document).ready(function() {
 
 	// with timeout, just like Bootstraps own docs
 	setTimeout(function() {
-		$('.module_nav').affix({
-			offset: {
-				top: function() {
-					return $('.module_nav_container').offset().top;
-				}
-			}
-		});
+		var $nav = $('.module_nav');
+			$nav
+				.affix()
+				.width($nav.width());
 	}, 100);
 
 	$('.collapse').collapse();

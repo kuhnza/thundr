@@ -1,0 +1,145 @@
+---
+layout: base
+title: Email
+description: Sending emails with thundr
+---
+
+<div class="row">
+	<aside class="module_nav_container span3">
+		<div class="module_nav">
+			<ul class="nav nav-list" role="navigation">
+				<li class="nav-header ">
+					<a href="/thundr/basics.html">
+						Basics
+					</a>
+				</li>
+
+				<li class="nav-header ">
+					<a href="/thundr/controllers.html">
+						Controllers
+					</a>
+				</li>
+
+				<li class="nav-header ">
+					<a href="/thundr/views.html">
+						Views
+					</a>
+				</li>
+
+				<li class="nav-header ">
+					<a href="/thundr/actions.html">
+						Actions
+					</a>
+				</li>
+
+				<li class="nav-header ">
+					<a href="/thundr/injection-context.html">
+						Dependancy injection
+					</a>
+				</li>
+
+				<li class="nav-header active">
+					<a href="/thundr/email.html">
+						Email
+					</a>
+				</li>
+
+				<li>
+					<a href="/thundr/email.html#email" data-target="#email">
+						Email
+					</a>
+				</li>
+
+				<li>
+					<a href="/thundr/email.html#example" data-target="#example">
+						Example
+					</a>
+				</li>
+
+				<li>
+					<a href="/thundr/email.html#settingUp" data-target="#settingUp">
+						Setting Up
+					</a>
+				</li>
+
+				<li>
+					<a href="/thundr/email.html#limitations" data-target="#limitations">
+						Limitations
+					</a>
+				</li>
+			</ul>
+		</div>
+	</aside>
+
+	<article id="email" class="span9">
+		<div class="page-header">
+			<h1>thundr <small>email</small></h1>
+		</div>
+
+		<section id="page-overview" class="overview">
+		</section>
+
+
+		<section id="email">
+			<h4>Email</h4>
+
+			<p>thundr has framework support for sending of emails. To send an email, you use the fluent api returned from
+				the <code>Mailer.mail(HttpServletRequest req)</code> method.</p>
+
+			<p>The <code>MailBuilder</code> returned from this method has a variety of email specific properties you can
+				set. In addition, you specify the body of the email using the standard <code>View</code> framework of
+				thundr. That is, you can provide the body of the email using anything you could render a <a
+						href="/thundr/views.html">view</a> with. </p>
+		</section>
+
+
+		<section id="example">
+			<h4>Example</h4>
+
+{% highlight java %}
+public void sendEmail(HttpServletRequest req, String recipientEmail, String recipientName){
+    Map<String, Object> model = new HashMap<String, Object>();
+    model.put("message", "Hello world!");
+    JspView view = new JspView("emails/test.jsp", model);
+
+    MailBuilder mail = mailer.mail(req);
+    mail.to(recipientEmail, recipientName);
+    mail.from("no-reply@mydomain.com", "no-reply");
+    mail.replyTo("no-reply@mydomain.com", "no-reply");
+    mail.subject("Test email");
+    mail.body(view);
+    mail.send();
+}
+{% endhighlight %}
+		</section>
+
+
+		<section id="settingUp">
+			<h4>Setting Up</h4>
+
+			<p>
+				To set up the Mailer, you just need to make it available in the <code>InjectionContext</code> in your 
+				<a href="/thundr/basics.html#injectionConfiguration">InjectionConfiguration</a>.
+			</p>
+
+{% highlight java %}
+...
+injectionContext.inject(Mailer.class).as(Mailer.class);
+...
+{% endhighlight %}
+		</section>
+
+		<section id="limitations">
+			<h4>Limitations</h4>
+
+			<p>thundr mail is build on top of the standard <code>javax.mail</code> api. If your target platform cannot send
+				email using this api, or if it requires additional configuration you will need to configure this yourself.
+			</p>
+
+			<p>Currently thundr mail only supports basic html emails. It does not create multipart mails, and does not
+				support embedded content, such as cid references and attachments.</p>
+		</section>
+	</article>
+</div>
+
+		

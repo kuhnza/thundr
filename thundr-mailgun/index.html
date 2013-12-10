@@ -1,0 +1,135 @@
+---
+layout: base
+title: Mailgun
+description: Using the Mailgun module
+---
+
+<div class="row">
+	<aside class="module_nav_container span3">
+		<div class="module_nav">
+			<ul class="nav nav-list" role="navigation">
+				<li class="nav-header active">
+					<a href="/thundr-mailgun/index.html">
+						Mailgun
+					</a>
+				</li>
+
+				<li>
+					<a href="/thundr-mailgun/index.html#page-overview" data-target="#page-overview">
+						Overview
+					</a>
+				</li>
+
+				<li class="divider"></li>
+
+				<li>
+					<a href="/thundr-mailgun/index.html#settingUp" data-target="#settingUp">
+						Setting Up
+					</a>
+				</li>
+
+				<li>
+					<a href="/thundr-mailgun/index.html#moduleFeatures" data-target="#moduleFeatures">
+						Module Features
+					</a>
+				</li>
+			</ul>
+		</div>
+	</aside>
+
+	<article id="index" class="span9">
+		<div class="page-header">
+			<h1>thundr
+				<small>and Mailgun</small>
+			</h1>
+		</div>
+
+		<section id="page-overview" class="overview">
+			<h2>Overview</h2>
+
+			<p>
+				<a href="http://www.mailgun.com/">Mailgun</a> is a set of powerful APIs that allow you to send, receive
+				and track email effortlessly. 
+			</p>
+
+			<p>thundr-mailgun provides the API integration for services exposed by mailgun</p>
+		</section>
+
+		<section id="settingUp">
+			<h4>Setting Up</h4>
+
+			<p>Including the <em>thundr-mailgun</em> jar in your project will enable you to instantiate a MailgunImpl,
+				which provides access to Mailgun APIs through the Mailgun interface.<br>Mailgun depends on an
+				implementation of the thundr-http module. </p>
+
+			<p>pom.xml</p>
+
+{% highlight xml %}
+...
+<dependency>
+    <groupId>com.threewks.thundr</groupId>
+    <artifactId>thundr-mailgun</artifactId>
+    <version>0.9.9</version>
+    <scope>compile</scope>
+</dependency>
+<!-- thundr-http-ning or thundr-gae -->
+<dependency>
+    <groupId>com.threewks.thundr</groupId>
+    <artifactId>thundr-http-ning</artifactId>
+    <version>0.9.9</version>
+    <scope>compile</scope>
+</dependency>
+...
+{% endhighlight %}
+
+{% highlight java stripall %}
+...
+HttpService httpService;
+Mailgun mailgun = new MailgunImpl(httpService, "mydomain.mailgun.org", "key_myApiKey");
+mailgun.sendEmail("sender@domain.com", "to@domain.com", null, "Subject", "<html><body>Content</body></html>");
+...
+{% endhighlight %}
+		</section>
+
+		<section id="moduleFeatures">
+			<h4>Module Features</h4>
+			<ul>
+				<li>
+					<h5>Mailgun.sendEmail</h5>
+
+					<p>
+						Email can be sent through the mailgun 
+						<a href="http://documentation.mailgun.com/api-sending.html#api-sending-messages">messages</a> 
+						service using the sendEmail method.
+					</p>
+
+{% highlight java %}
+...
+MessageSend sendResult = mailgun.sendEmail("sender@domain.com", "to@domain.com",
+null, "Subject", "<html><body>Content</body></html>");
+...
+{% endhighlight %}
+				</li>
+
+				<li>
+					<h5>Mailgun.log</h5>
+
+					<p>
+						Logs of recent email sends can be retrieved using the mailgun 
+						<a href="http://documentation.mailgun.com/user_manual.html#logs">log</a> 
+						service using the log method.<br>It returns a Log object, which contains 
+						a count and zero or more LogItem objects.
+					</p>
+{% highlight java %}
+...
+int offset = 0;
+int limit = 100;
+Log log = mailgun.log(offset, limit);
+...
+{% endhighlight %}
+				</li>
+			</ul>
+		</section>
+	</article>
+</div>
+		
