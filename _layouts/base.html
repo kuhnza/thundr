@@ -17,8 +17,9 @@
 	<base href="" />
 	
 	<link rel="shortcut icon" href="{{ site.url }}/favicon.ico" />
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css"></link>
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.0.2/css/font-awesome.min.css"></link>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"></link>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css"></link>
+	<link rel="stylesheet" href="{{ site.url }}/static/css/bootstrap.min.css"></link>
 	<link rel="stylesheet" href="{{ site.url }}/static/css/style.css"></link>
 
 	<!--[if lt IE 9]>
@@ -27,68 +28,62 @@
 </head>
 <body data-spy="scroll" data-target=".module_nav">
 	 <header class="container">
-		<nav class="navbar">
-			<div class="navbar-inner">
-				<div class="navbar-top">
-					<a class="brand" href="{{ site.url }}/index.html"><img src="{{ site.url }}/static/img/logoFullSmall.png"/></a>
-
-					<ul class="nav" role="navigation">
-						<li class="dropdown ">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" >thundr <b class="caret"></b></a>
-
-							<ul class="dropdown-menu">								 
-								<li class="">
-									<a href="{{ site.url }}/thundr/basics.html">
-										Basics
-									</a>
-								</li>
-								  
-								<li class="">
-									<a href="{{ site.url }}/thundr/controllers.html">
-										Controllers
-									</a>
-								</li>
-								  
-								<li class="">
-									<a href="{{ site.url }}/thundr/views.html">
-										Views
-									</a>
-								</li>
-								  
-								<li class="">
-									<a href="{{ site.url }}/thundr/actions.html">
-										Actions
-									</a>
-								</li>
-								  
-								<li class="">
-									<a href="{{ site.url }}/thundr/injection-context.html">
-										Dependancy injection
-									</a>
-								</li>
-								  
-								<li class="">
-									<a href="{{ site.url }}/thundr/email.html">
-										Email
-									</a>
-								</li>								 
-							</ul>
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="navbar-header">
+		    	<a class="navbar-brand" href="{{ site.url }}/index.html">
+		    		<img src="{{ site.url }}/static/img/logoFullSmall.png"/>
+				</a>
+  			</div>
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+					<a href="{{ site.url }}/thundr/basics.html" class="dropdown-toggle"data-toggle="dropdown">
+						thundr <b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">								 
+						<li>
+							<a href="{{ site.url }}/thundr/basics.html">
+								Basics
+							</a>
 						</li>
-							
-						<li class="">
-							<a href="{{ site.url }}/thundr-gae/index.html">thundr-gae</a>
+						<li>
+							<a href="{{ site.url }}/thundr/controllers.html">
+								Controllers
+							</a>
 						</li>
-							
-						<li class="">
-							<a href="{{ site.url }}/thundr-handlebars/index.html">thundr-handlebars</a>
+						<li>
+							<a href="{{ site.url }}/thundr/views.html">
+								Views
+							</a>
 						</li>
-
-						<li class="">
-							<a href="{{ site.url }}/thundr-mailgun/index.html">thundr-mailgun</a>
+						<li>
+							<a href="{{ site.url }}/thundr/actions.html">
+								Actions
+							</a>
 						</li>
+						<li>
+							<a href="{{ site.url }}/thundr/injection-context.html">
+								Dependancy injection
+							</a>
+						</li>
+						<li>
+							<a href="{{ site.url }}/thundr/email.html">
+								Email
+							</a>
+						</li>								 
 					</ul>
-				</div>
-			</div>
+				</li>
+				<li>
+					<a href="{{ site.url }}/thundr-gae/index.html">thundr-gae</a>
+				</li>
+					
+				<li>
+					<a href="{{ site.url }}/thundr-handlebars/index.html">thundr-handlebars</a>
+				</li>
+
+				<li>
+					<a href="{{ site.url }}/thundr-mailgun/index.html">thundr-mailgun</a>
+				</li>
+			</ul>
 		</nav>		
 	</header>
 
@@ -100,17 +95,17 @@
 		<div class="navbar">
 			<div class="navbar-inner">
 				<span class="navbar-text pull-right">
-					Brought to you by <a href="http://www.3wks.com.au" title="3wks"><img class="threewksLogo" src="{{ site.baseurl }}/static/img/3wks_icon.png"/></a>
+					Brought to you by <a href="http://www.3wks.com.au" title="3wks"><img class="threewksLogo" src="{{ site.url }}/static/img/3wks_icon.png"/></a>
 				</span>
 				<span class="navbar-text">
 					<a href="mailto:nick@3wks.com.au?Subject=thundr">
-						<i class="icon icon-envelope-alt"></i> 
+						<i class="fa fa-envelope-o"></i> 
 						Get in touch
 					</a>
 				</span>
 				<span class="navbar-text">
 					<a href="https://groups.google.com/forum/?fromgroups#!forum/thundr-framework">
-						<i class="icon icon-group"></i> 
+						<i class="fa fa-group"></i> 
 						Join us on Google Groups 
 					</a>
 				</span>
@@ -118,8 +113,8 @@
 		</div>
 	</footer>
 
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
 	<script src="{{ site.url }}/static/js/app.js"></script>
 	<script>

@@ -18,7 +18,6 @@ $(document).ready(function() {
 				.width($nav.width());
 	}, 100);
 
-	$('.collapse').collapse();
 	$('.collapse').on('shown hidden', function() {
 		$('.module_nav').scroll('refresh');
 	});	

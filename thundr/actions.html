@@ -5,22 +5,22 @@ description: thundr framework actions
 ---
 
 <div class="row">
-	<aside class="module_nav_container span3">
+	<aside class="module_nav_container col-md-3">
 		<div class="module_nav">			
-			<ul class="nav nav-list" role="navigation">
-				<li class="nav-header ">
+			<ul class="nav nav-pills nav-stacked" role="navigation">
+				<li class="nav-header">
 					<a href="{{ site.url }}/thundr/basics.html">						
 						Basics						
 					</a>
 				</li>
 					
-				<li class="nav-header ">
+				<li class="nav-header">
 					<a href="{{ site.url }}/thundr/controllers.html">						
 						Controllers						
 					</a>
 				</li>
 
-				<li class="nav-header ">
+				<li class="nav-header">
 					<a href="{{ site.url }}/thundr/views.html">
 						Views
 					</a>
@@ -39,12 +39,14 @@ description: thundr framework actions
 				</li>
 			
 				<li>
-					<a href="{{ site.url }}/thundr/actions.html#actions" data-target="#actions">
+					<a href="{{ site.url }}/thundr/actions.html#actionsSummary" data-target="#actionsSummary">
 						Actions
 					</a>
 				</li>
 								
-				<li class="divider"></li>
+				<li>
+					<hr/>
+				</li>
 
 				<li>
 					<a href="{{ site.url }}/thundr/actions.html#methodAction" data-target="#methodAction">
@@ -70,7 +72,9 @@ description: thundr framework actions
 					</a>
 				</li>
 			
-				<li class="divider"></li>
+				<li>
+					<hr/>
+				</li>
 
 				<li>
 					<a href="{{ site.url }}/thundr/actions.html#actionResolver" data-target="#actionResolver">
@@ -93,7 +97,7 @@ description: thundr framework actions
 		</div>
 	</aside>
 
-	<article id="actions" class="span9">
+	<article id="actions" class="col-md-9">
 		<div class="page-header">
 			<h1>thundr <small>Actions</small></h1>
 		</div>
@@ -143,7 +147,7 @@ description: thundr framework actions
 			</p>
 		</section>
 			
-		<section id="actions">
+		<section id="actionsSummary">
 			<h4><code>Actions</code></h4>
 
 			<p>
@@ -155,26 +159,25 @@ description: thundr framework actions
 			<p>Currently thundr supports the following actions out of the box:</p>
 		</section>
 			
-		<div class="accordion">
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" href="#methodAction">
-						<i class="icon icon-chevron-down"></i> MethodAction
-					</a>
-				</div>
+		<section id="methodAction" class="panel panel-default">
+  			<div class="panel-heading">
+    			<h4 class="panel-title">
+    				<a data-toggle="collapse" href="#methodActionInner">
+    					MethodAction
+    					<i class="fa fa-minus-circle pull-right"></i> 
+    				</a>
+    			</h4>
+ 			 </div>
+ 			 <div id="methodActionInner" class="panel-collapse collapse in">
+     		 	<div class="panel-body">
+					<p>
+						This type of action results in a method being invoked on a class. Classes invoked like this 
+						are referred to as <em>controllers</em>, however this is a semantic distinction - any class 
+						can be used as a controller. You can read more about controllers 
+						<a href="{{ site.url }}/thundr/controllers.html">here</a>.
+					</p>
 
-				<section id="methodAction" class="accordion-body collapse">
-					<div class="accordion-inner">
-						<h4>MethodAction</h4>
-
-						<p>
-							This type of action results in a method being invoked on a class. Classes invoked like this 
-							are referred to as <em>controllers</em>, however this is a semantic distinction - any class 
-							can be used as a controller. You can read more about controllers 
-							<a href="{{ site.url }}/thundr/controllers.html">here</a>.
-						</p>
-
-						<p>For example, the route</p>
+					<p>For example, the route</p>
 
 {% highlight java %}
 ...
@@ -195,35 +198,32 @@ public class Controller {
     }
 ...
 {% endhighlight %}
-
-					</div>
-				</section>
-			</div>
-		</div>
-
-		<div class="accordion">
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" href="#staticResourceAction">
-						<i class="icon icon-chevron-down"></i>
-						StaticResourceAction
-					</a>
+			
 				</div>
+			</div>
+		</section>
 
-				<section id="staticResourceAction" class="accordion-body collapse">
-					<div class="accordion-inner">
-						<h4>StaticResourceAction</h4>
+		<section id="staticResourceAction" class="panel panel-default">
+  			<div class="panel-heading">
+    			<h4 class="panel-title">
+    				<a data-toggle="collapse" href="#staticResourceActionInner">
+    					StaticResourceAction
+    					<i class="fa fa-minus-circle pull-right"></i>
+    				</a>
+    			</h4>
+ 			 </div>
+ 			 <div id="staticResourceActionInner" class="panel-collapse collapse in">
+     		 	<div class="panel-body">
+					<p>
+						This type of action results in a resource being served directly. This is useful when 
+						serving javascript, css, text files or other resources which don&#39;t require any 
+						processing by your application.
+					</p>
 
-						<p>
-							This type of action results in a resource being served directly. This is useful when 
-							serving javascript, css, text files or other resources which don&#39;t require any 
-							processing by your application.
-						</p>
-
-						<p>
-							The routes below result in the favicon and all files under the folder &#39;static&#39; 
-							being server as static resources. 
-						</p>
+					<p>
+						The routes below result in the favicon and all files under the folder &#39;static&#39; 
+						being server as static resources. 
+					</p>
 
 {% highlight java %}
 ...
@@ -232,25 +232,23 @@ public class Controller {
 ...
 {% endhighlight %}
 
-					</div>
-				</section>
-			</div>
-		</div>
-
-		<div class="accordion">
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" href="#redirectAction">
-						<i class="icon icon-chevron-down"></i>
-						RedirectAction
-					</a>
 				</div>
+			</div>
+		</section>
 
-				<section id="redirectAction" class="accordion-body collapse">
-					<div class="accordion-inner">
-						<h4>RedirectAction</h4>
-
-		<p>This type of action results in a HTTP redirect being sent to the web request client (i.e. the user&#39;s browser). This will result in the browser requesting the resource specified in the redirect route.<br>The redirect is a <em>temporary redirect</em>, or 302.</p>
+		<section id="redirectAction" class="panel panel-default">
+  			<div class="panel-heading">
+    			<h4 class="panel-title">
+    				<a data-toggle="collapse" href="#redirectActionInner">
+    					RedirectAction
+    					<i class="fa fa-minus-circle pull-right"></i>
+    				</a>
+    			</h4>
+ 			 </div>
+ 			 <div id="redirectActionInner" class="panel-collapse collapse in">
+     		 	<div class="panel-body">
+			
+				<p>This type of action results in a HTTP redirect being sent to the web request client (i.e. the user&#39;s browser). This will result in the browser requesting the resource specified in the redirect route.<br>The redirect is a <em>temporary redirect</em>, or 302.</p>
 
 {% highlight java %}
 ...
@@ -259,35 +257,32 @@ public class Controller {
 ...
 {% endhighlight %}
 
-					</div>
-				</section>
-			</div>
-		</div>
-
-		<div class="accordion">
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" href="#rewriteAction">
-						<i class="icon icon-chevron-down"></i>
-						RewriteAction
-					</a>
 				</div>
+			</div>
+		</section>
 
-				<section id="rewriteAction" class="accordion-body collapse">
-					<div class="accordion-inner">
-						<h4>RewriteAction</h4>
+		<section id="rewriteAction" class="panel panel-default">
+  			<div class="panel-heading">
+    			<h4 class="panel-title">
+    				<a data-toggle="collapse" href="#rewriteActionInner">
+    					RewriteAction
+    					<i class="fa fa-minus-circle pull-right"></i>
+    				</a>
+    			</h4>
+ 			 </div>
+ 			 <div id="rewriteActionInner" class="panel-collapse collapse in">
+     		 	<div class="panel-body">
+					<p>
+						This type of action is used to cause another route to handle the request. It is similar in 
+						concept to the rewrite rules in an Apache config, but could also be considered to act as an 
+						alias.
+					</p>
 
-						<p>
-							This type of action is used to cause another route to handle the request. It is similar in 
-							concept to the rewrite rules in an Apache config, but could also be considered to act as an 
-							alias.
-						</p>
-
-						<p>
-							In the below example, the rewrite rule will cause the rewritten route to be invoked as 
-							though the request client invoked it directly, but unlike a redirect will be served with 
-							the url it was requested on.
-						</p>
+					<p>
+						In the below example, the rewrite rule will cause the rewritten route to be invoked as 
+						though the request client invoked it directly, but unlike a redirect will be served with 
+						the url it was requested on.
+					</p>
 
 {% highlight java %}
 ...
@@ -296,10 +291,9 @@ public class Controller {
 ...
 {% endhighlight %}
 
-					</div>
-				</section>
+				</div>
 			</div>
-		</div>
+		</section>
 
 		<section id="actionResolver">
 			<h4><code>ActionResolver</code> <span class="label label-info">Advanced</span></h4>

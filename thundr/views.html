@@ -5,9 +5,9 @@ description: Using views in thundr
 ---
 
 <div class="row">
-	<aside class="module_nav_container span3">
+	<aside class="module_nav_container col-md-3">
 		<div class="module_nav">
-			<ul class="nav nav-list" role="navigation">
+			<ul class="nav nav-pills nav-stacked" role="navigation">
 				<li class="nav-header ">
 					<a href="{{ site.url }}/thundr/basics.html">
 						Basics
@@ -91,7 +91,7 @@ description: Using views in thundr
 		</div>
 	</aside>
 
-	<article id="views" class="span9">
+	<article id="views" class="col-md-9">
 		<div class="page-header">
 			<h1>thundr <small>views</small></h1>
 		</div>
@@ -112,24 +112,24 @@ description: Using views in thundr
 				all implementations.</p>
 		</section>
 
-		<div class="accordion">
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" href="#jspView">
-						<i class="icon icon-chevron-down"></i> JspView
+		<section id="jspView" class="panel panel-default">
+  			<div class="panel-heading">
+    			<h4 class="panel-title">
+    				<a data-toggle="collapse"  href="#jspViewInner">
+						JspView
+						<i class="fa fa-minus-circle pull-right"></i>
 					</a>
-				</div>
+				</h4>
+			</div>
 
-				<section id="jspView" class="accordion-body collapse">
-					<div class="accordion-inner">
-						<h4>JspView</h4>
+			<div id="jspViewInner" class="panel-collapse collapse in">
+     		 	<div class="panel-body">
+					<p><code>JspView</code> results in a jsp being processed and served from the Servlet engine. You specify
+						the jsp file location, and optionally provide a data model to back it. Unless the jsp rendering
+						fails, an Html file and a 200 OK will be sent back to the user. </p>
 
-						<p><code>JspView</code> results in a jsp being processed and served from the Servlet engine. You specify
-							the jsp file location, and optionally provide a data model to back it. Unless the jsp rendering
-							fails, an Html file and a 200 OK will be sent back to the user. </p>
-
-						<p>The jsp file is considered to be relative to the path /WEB-INF/jsp/, unless it is given as an
-							absolute path (i.e. starts with a forward slash, /)</p>
+					<p>The jsp file is considered to be relative to the path /WEB-INF/jsp/, unless it is given as an
+						absolute path (i.e. starts with a forward slash, /)</p>
 
 {% highlight java %}
 ...
@@ -138,50 +138,46 @@ return new JspView("path/to/my.jsp", model);
 ...
 {% endhighlight %}
 					</div>
-				</section>
 			</div>
-		</div>
+		</section>
 
-		<div class="accordion">
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" href="#redirectView">
-						<i class="icon icon-chevron-down"></i> RedirectView
+		<section id="redirectView" class="panel panel-default">
+  			<div class="panel-heading">
+    			<h4 class="panel-title">
+    				<a data-toggle="collapse"  href="#redirectViewInner">
+						RedirectView
+						<i class="fa fa-minus-circle pull-right"></i>
 					</a>
-				</div>
+				</h4>
+			</div>
 
-				<section id="redirectView" class="accordion-body collapse">
-					<div class="accordion-inner">
-						<h4>RedirectView</h4>
-
-						<p><code>RedirectView</code> results in a temporary redirect (302) being sent back to the client with
-							the specified location. This will send a browser to the new url.</p>
+			<div id="redirectViewInner" class="panel-collapse collapse in">
+     		 	<div class="panel-body">
+					<p><code>RedirectView</code> results in a temporary redirect (302) being sent back to the client with
+						the specified location. This will send a browser to the new url.</p>
 
 {% highlight java %}
 ...
 return new RedirectView("http://www.google.com.au/search?q=thundr");
 ...
 {% endhighlight %}
-					</div>
-				</section>
-			</div>
-		</div>
-
-		<div class="accordion">
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" href="#jsonView">
-						<i class="icon icon-chevron-down"></i>
-						JsonView
-					</a>
 				</div>
-
-				<section id="jsonView" class="accordion-body collapse">
-					<div class="accordion-inner">
-						<h4>JsonView</h4>
-
-						<p><code>JsonView</code> uses the <a href="http://code.google.com/p/google-gson/">Gson library</a> to
-							serialize the given object to json, and return it to the request client.</p>
+			</div>
+		</section>
+		
+		<section id="jsonView" class="panel panel-default">
+  			<div class="panel-heading">
+    			<h4 class="panel-title">
+    				<a data-toggle="collapse"  href="#jsonViewInner">
+						JsonView
+						<i class="fa fa-minus-circle pull-right"></i>
+					</a>
+				</h4>
+			</div>
+			<div id="jsonViewInner" class="panel-collapse collapse in">
+     		 	<div class="panel-body">
+					<p><code>JsonView</code> uses the <a href="http://code.google.com/p/google-gson/">Gson library</a> to
+						serialize the given object to json, and return it to the request client.</p>
 
 {% highlight java %}
 ...
@@ -189,55 +185,52 @@ MyDto dto = ...
 return new JsonView(dto);
 ...
 {% endhighlight %}
-					</div>
-				</section>
-			</div>
-		</div>
-
-		<div class="accordion">
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" href="#stringView">
-						<i class="icon icon-chevron-down"></i>
-						StringView
-					</a>
 				</div>
+			</div>
+		</section>
 
-				<section id="stringView" class="accordion-body collapse">
-					<div class="accordion-inner">
-						<h4>StringView</h4>
 
-						<p><code>StringView</code> is a simple view which returns the given string as the response content, with
-							a response code of 200 OK. </p>
+		<section id="stringView" class="panel panel-default">
+  			<div class="panel-heading">
+    			<h4 class="panel-title">
+    				<a data-toggle="collapse"  href="#stringViewInner">
+						StringView
+						<i class="fa fa-minus-circle pull-right"></i>
+					</a>
+				</h4>
+			</div>
+
+			<div id="stringViewInner" class="panel-collapse collapse in">
+     		 	<div class="panel-body">
+					<p><code>StringView</code> is a simple view which returns the given string as the response content, with
+						a response code of 200 OK. </p>
 
 {% highlight java %}
 ...
 return new StringView("Hello!");
 ...
 {% endhighlight %}
-					</div>
-				</section>
-			</div>
-		</div>
-
-		<div class="accordion">
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" href="#httpStatusException">
-						<i class="icon icon-chevron-down"></i>
-						HttpStatusException
-					</a>
 				</div>
+			</div>
+		</section>
+		
+		<section id="httpStatusException" class="panel panel-default">
+  			<div class="panel-heading">
+    			<h4 class="panel-title">
+    				<a data-toggle="collapse"  href="#httpStatusExceptionInner">
+						HttpStatusException
+						<i class="fa fa-minus-circle pull-right"></i>
+					</a>
+				</h4>
+			</div>
 
-				<section id="httpStatusException" class="accordion-body collapse">
-					<div class="accordion-inner">
-						<h4>HttpStatusException</h4>
+			<div id="httpStatusExceptionInner" class="panel-collapse collapse in">
+     		 	<div class="panel-body">
+					<p><code>HttpStatusException</code> is a RuntimeException which takes a status code as a constructor
+						parameter.</p>
 
-						<p><code>HttpStatusException</code> is a RuntimeException which takes a status code as a constructor
-							parameter.</p>
-
-						<p>When thrown, the specified status code is returned to the client as an http error, along with the
-							specified message.</p>
+					<p>When thrown, the specified status code is returned to the client as an http error, along with the
+						specified message.</p>
 
 {% highlight java %}
 ...
@@ -245,8 +238,8 @@ throw new HttpStatusException(HttpServletResponse.SC_BAD_REQUEST, "Bad request a
 ...
 {% endhighlight %}
 
-						<p>The servlet engine will process the response code as normal, so if your web.xml maps a jsp, then this
-							is the content returned to the client. e.g.</p>
+					<p>The servlet engine will process the response code as normal, so if your web.xml maps a jsp, then this
+						is the content returned to the client. e.g.</p>
 
 {% highlight xml %}				
 ...
@@ -256,10 +249,9 @@ throw new HttpStatusException(HttpServletResponse.SC_BAD_REQUEST, "Bad request a
 </error-page>
 ...
 {% endhighlight %}
-					</div>
-				</section>
+				</div>
 			</div>
-		</div>
+		</section>
 
 		<section id="viewResolver">
 			<h4><code>ViewResolver</code> <span class="label label-info">Advanced</span></h4>
