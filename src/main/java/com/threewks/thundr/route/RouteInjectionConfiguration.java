@@ -20,7 +20,6 @@ package com.threewks.thundr.route;
 import java.util.Map;
 
 import com.threewks.thundr.action.Action;
-import com.threewks.thundr.action.ActionException;
 import com.threewks.thundr.action.ActionInjectionConfiguration;
 import com.threewks.thundr.exception.BaseException;
 import com.threewks.thundr.injection.BaseInjectionConfiguration;
@@ -56,15 +55,16 @@ public class RouteInjectionConfiguration extends BaseInjectionConfiguration {
 	}
 
 	protected void addRoutes(Routes routes, UpdatableInjectionContext injectionContext, String routesFile) {
+		String routesSource = null;
 		try {
-			String routesSource = Streams.getResourceAsString(routesFile);
+			routesSource = Streams.getResourceAsString(routesFile);
+		} catch (BaseException e) {
+			Logger.info("Routes file %s not found", routesFile);
+		}
+		if (routesSource != null) {
 			Logger.info("Loading routes from %s", routesFile);
 			Map<Route, Action> routeMap = routes.parseJsonRoutes(routesSource);
 			routes.addRoutes(routeMap);
-		} catch (ActionException e) {
-			throw e;
-		} catch (BaseException e) {
-			Logger.info("Routes file %s not found", routesFile);
 		}
 	}
 }

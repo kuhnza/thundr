@@ -17,15 +17,16 @@
  */
 package com.threewks.thundr.route;
 
+import com.threewks.thundr.exception.BaseException;
 
-public class ReverseRouteException extends RouteException {
+public class RouteException extends BaseException {
 	private static final long serialVersionUID = 1L;
 
-	public ReverseRouteException(String format, Object... formatArgs) {
+	public RouteException(String format, Object... formatArgs) {
 		super(format, formatArgs);
 	}
 
-	public ReverseRouteException(Throwable cause, String format, Object... formatArgs) {
+	public RouteException(Throwable cause, String format, Object... formatArgs) {
 		super(cause, format, formatArgs);
 	}
 }

@@ -24,6 +24,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.threewks.thundr.action.ActionException;
 import com.threewks.thundr.action.ActionInjectionConfiguration;
 import com.threewks.thundr.action.TestAction;
 import com.threewks.thundr.action.TestActionResolver;
@@ -69,6 +70,18 @@ public class RouteInjectionConfigurationTest {
 		TestSupport.setField(routeInjectionConfiguration, "filename", "non-existant.json");
 
 		injectionContext.inject(new Routes()).as(Routes.class);
+		routeInjectionConfiguration.start(injectionContext);
+	}
+
+	@Test
+	public void shouldThrowActionExceptionWhenLoadRoutesFileWithInvalidRoutes() {
+		thrown.expect(ActionException.class);
+
+		TestSupport.setField(routeInjectionConfiguration, "filename", "invalid-routes.json");
+
+		Routes routes = new Routes();
+		routes.addActionResolver(TestAction.class, new TestActionResolver());
+		injectionContext.inject(routes).as(Routes.class);
 		routeInjectionConfiguration.start(injectionContext);
 	}
 }
