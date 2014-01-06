@@ -3,6 +3,7 @@
 .settings/
 .idea/
 *.iml
+rebel.xml
 target/**
 features.txt
 stuff.txt
