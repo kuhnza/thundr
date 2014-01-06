@@ -17,16 +17,24 @@
     limitations under the License.
 
 --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <%@tag import="java.util.Enumeration"%>
 <%@tag import="java.util.Map"%>
 <%@tag import="com.threewks.thundr.route.Routes"%>
 <%@tag import="com.threewks.thundr.route.Route"%>
+<%@ tag import="org.apache.commons.lang3.StringUtils" %>
 <%@ tag dynamic-attributes="pathVars" trimDirectiveWhitespaces="true" %>
 <%@ attribute name="name" required="true"%>
+<%@ attribute name="var" required="false" type="java.lang.String" %>
 <%
-	Map<String, Object> pathVars =  (Map<String, Object>)getJspContext().getAttribute("pathVars", PageContext.PAGE_SCOPE);
-	Routes routes = (Routes)request.getAttribute("routes");
-	Route route = routes.getRoute(name);
-	String reverse = route.getReverseRoute(pathVars);
-	out.print(reverse);
+    Map<String, Object> pathVars =  (Map<String, Object>)getJspContext().getAttribute("pathVars", PageContext.PAGE_SCOPE);
+    Routes routes = (Routes)request.getAttribute("routes");
+    Route route = routes.getRoute(name);
+    String reverse = route.getReverseRoute(pathVars);
+    if(StringUtils.isBlank(var)) {
+        out.print(reverse);
+    } else {
+        request.setAttribute(var, reverse);
+    }
 %>
