@@ -17,17 +17,26 @@
     limitations under the License.
 
 --%>
-<%@ tag body-content="empty" trimDirectiveWhitespaces="true"%>
-<%@ attribute name="var" required="false" description="Name of the exported scoped variable to hold the value specified in the action. The type of the scoped variable is whatever type the value expression evaluates to." %>
-<%@ attribute name="value" required="false" description="Expression to be evaluated." %>
-<%@ attribute name="scope" required="false" description="Scope for var." %>
+<%@ tag body-content="empty" trimDirectiveWhitespaces="true" description=""%>
+<%@ attribute name="var" required="false" description="Name of the exported variable to hold the value specified in the action. The type of the variable is whatever type the value expression evaluates to." %>
+<%@ attribute name="value" type="java.lang.Object" description="Expression to be evaluated." %>
 <%@ attribute name="condition" required="false" description="If this condition is not met, the value will not be set. If not provided, defaults to true" %>
-<%@ attribute name="falseValue" required="false" description="If the condition is not met, this is what the value will be set to. If not supplied, no change is made" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ attribute name="falseValue" type="java.lang.Object"  required="false" description="If the condition is not met, this is what the value will be set to. If not supplied, no change is made" %>
 <%@ taglib prefix="t" uri="http://threewks.com/thundr/tags" %>
-<t:if condition="${empty condition or condition}">
-	<c:set var="${var}" value="${value}" scope="${scope}" />
-</t:if>
-<t:elseif condition="${not empty falseValue}">
-	<c:set var="${var}" value="${falseValue}" scope="${scope}"/>
-</t:elseif>
+<%
+	boolean isTrue = condition == null || condition.length() == 0 || Boolean.valueOf(condition);
+	boolean hasVar = var != null && var.length() > 0;
+	if(isTrue){
+		if(hasVar){
+			request.setAttribute(var, value);
+		}else{
+			out.print(value);	
+		}
+	} else if (falseValue != null){
+		if(hasVar){
+			request.setAttribute(var, falseValue);
+		}else{
+			out.print(falseValue);	
+		}
+	}
+%>

@@ -138,6 +138,44 @@ public class InjectionContextImplTest {
 	}
 
 	@Test
+	public void shouldThrowExceptionWhenMoreThanOneNamedTypePresentWhenGettingUnnamedType() {
+		thrown.expect(InjectionException.class);
+		thrown.expectMessage("Unable to get an instance of java.util.Date - the result is ambiguous. The following matches exist: ");
+		thrown.expectMessage("date1");
+		thrown.expectMessage("date2");
+		
+		context.inject(new Date()).named("date1").as(Date.class);
+		context.inject(new Date()).named("date2").as(Date.class);
+
+		context.get(Date.class);
+	}
+
+	@Test
+	public void shouldThrowExceptionWhenMoreThanOneNamedTypePresentWhenGettingNamedType() {
+		thrown.expect(InjectionException.class);
+		thrown.expectMessage("Unable to get an instance of java.util.Date - the result is ambiguous. The following matches exist: ");
+		thrown.expectMessage("date1");
+		thrown.expectMessage("date2");
+		
+		context.inject(new Date()).named("date1").as(Date.class);
+		context.inject(new Date()).named("date2").as(Date.class);
+
+		context.get(Date.class, "date");
+	}
+
+	@Test
+	public void shouldGetNamedTypeWhenOtherNamedTypePresent() {
+		context.inject(Date.class).named("date1").as(Date.class);
+		context.inject(Date.class).named("date2").as(Date.class);
+
+		assertThat(context.get(Date.class, "date1"), is(notNullValue()));
+	}
+	@Test
+	public void shouldReturnNullWhenNoNamedTypePresent() {
+		assertThat(context.get(Date.class), is(nullValue()));
+	}
+
+	@Test
 	public void shouldReturnUnnamedInstanceIfNamedInstanceNotPresent() {
 		Date date = new Date();
 		context.inject(date).as(Date.class);

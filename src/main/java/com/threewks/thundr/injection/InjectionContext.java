@@ -17,8 +17,6 @@
  */
 package com.threewks.thundr.injection;
 
-import java.util.Collection;
-
 public interface InjectionContext {
 	/**
 	 * Get an named instance of the specified type from this {@link InjectionContext}.

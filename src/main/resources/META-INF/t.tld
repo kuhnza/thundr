@@ -33,7 +33,6 @@
 		<name>else</name>
 		<path>/META-INF/tags/logic/else.tag</path>
 	</tag-file>
-	<!-- This bad boy isn't ready for prime time yet -->
 	<tag-file>
 		<name>set</name>
 		<path>/META-INF/tags/logic/set.tag</path>

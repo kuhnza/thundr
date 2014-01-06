@@ -61,15 +61,19 @@ public class PropertiesLoader {
 	private Map<String, String> readProperties(String resourceAsString) {
 		Map<String, String> properties = new LinkedHashMap<String, String>();
 		Scanner scanner = new Scanner(resourceAsString);
-		while (scanner.hasNextLine()) {
-			String line = scanner.nextLine();
-			line = StringUtils.substringBefore(line, "#");
-			line = StringUtils.trimToNull(line);
-			String key = StringUtils.substringBefore(line, "=");
-			String value = StringUtils.substringAfter(line, "=");
-			if (key != null) {
-				properties.put(key, value);
+		try {
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				line = StringUtils.substringBefore(line, "#");
+				line = StringUtils.trimToNull(line);
+				String key = StringUtils.substringBefore(line, "=");
+				String value = StringUtils.substringAfter(line, "=");
+				if (key != null) {
+					properties.put(key, value);
+				}
 			}
+		} finally {
+			scanner.close();
 		}
 		return properties;
 	}

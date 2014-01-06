@@ -26,11 +26,13 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import com.atomicleopard.expressive.Expressive;
@@ -73,7 +75,7 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 			instance = createAndAddInstance(type, null);
 		}
 		if (instance == null) {
-			instance = getFirstExistingNamedInstanceForNonBasicType(type);
+			instance = getOnlyExistingNamedInstanceForNonBasicType(type);
 		}
 		return instance;
 	}
@@ -216,13 +218,22 @@ public class InjectionContextImpl implements UpdatableInjectionContext {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T getFirstExistingNamedInstanceForNonBasicType(Class<T> type) {
+	private <T> T getOnlyExistingNamedInstanceForNonBasicType(Class<T> type) {
 		boolean isBasicType = TypesRequiringAName.contains(type);
 		if (!isBasicType) {
+			Map<String, T> existing = new HashMap<String, T>();
 			for (Entry<Pair<Class<?>, String>, Object> entry : instances.entrySet()) {
-				if (type.equals(entry.getKey().getA())) {
-					return (T) entry.getValue();
+				Pair<Class<?>, String> key = entry.getKey();
+				if (type.equals(key.getA())) {
+					T t = (T) entry.getValue();
+					existing.put(key.getB(), t);
 				}
+			}
+			if (existing.size() > 1) {
+				throw new InjectionException("Unable to get an instance of %s - the result is ambiguous. The following matches exist: %s", type.getName(), StringUtils.join(existing.keySet(), ", "));
+			}
+			if (existing.size() == 1) {
+				return existing.values().iterator().next();
 			}
 		}
 		return null;
