@@ -56,11 +56,20 @@ public class Routes {
 		String name = route.getName();
 		String path = route.getRouteMatchRegex();
 		RouteType routeType = route.getRouteType();
-		this.routes.get(routeType).put(path, route);
-		this.actionsForRoutes.put(route, action);
+		Map<String, Route> routesForRouteType = this.routes.get(routeType);
+		if (routesForRouteType.containsKey(path)) {
+			Route existingRoute = routesForRouteType.get(path);
+			throw new RouteException("Unable to add the route '%s %s' - the route '%s %s' already exists which matches the same pattern", route.getRouteType(), route.getRoute(), existingRoute.getRouteType(), existingRoute.getRoute());
+		}
 		if (StringUtils.isNotBlank(name)) {
+			if (namedRoutes.containsKey(name)) {
+				Route existingRoute = namedRoutes.get(name);
+				throw new RouteException("Unable to add the route '%s %s' with the name '%s' - the route '%s %s' has already been registered with this name", route.getRouteType(), route.getRoute(), name, existingRoute.getRouteType(), existingRoute.getRoute());
+			}
 			this.namedRoutes.put(name, route);
 		}
+		routesForRouteType.put(path, route);
+		this.actionsForRoutes.put(route, action);
 	}
 
 	public void addRoutes(Map<Route, Action> routes) {

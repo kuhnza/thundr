@@ -64,6 +64,10 @@ public class Route {
 		return name;
 	}
 
+	public String getRoute() {
+		return route;
+	}
+
 	public String getRouteMatchRegex() {
 		return routeMatchRegex.pattern();
 	}

@@ -17,9 +17,12 @@
  */
 package com.threewks.thundr.route;
 
+import static com.atomicleopard.expressive.Expressive.*;
 import static com.threewks.thundr.route.RouteType.GET;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -28,7 +31,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.action.Action;
@@ -36,6 +41,7 @@ import com.threewks.thundr.action.ActionException;
 import com.threewks.thundr.action.ActionResolver;
 
 public class RoutesTest {
+	@Rule public ExpectedException thrown = ExpectedException.none();
 	private Routes routesObj;
 
 	@Before
@@ -154,6 +160,22 @@ public class RoutesTest {
 		assertThat(route.getRouteType(), is(routeType));
 		Action action = routes.get(route);
 		assertThat(action.toString(), is(actionName));
+	}
+
+	@Test
+	public void shouldThrowRouteExceptionWhenAddingRouteWithNameThatIsAlreadyTaken() {
+		thrown.expect(RouteException.class);
+		thrown.expectMessage("Unable to add the route 'GET /route2/' with the name 'name' - the route 'GET /route/' has already been registered with this name");
+		routesObj.addRoute(RouteType.GET, "/route/", "name", new TestAction("action"));
+		routesObj.addRoute(RouteType.GET, "/route2/", "name", new TestAction("action"));
+	}
+
+	@Test
+	public void shouldThrowRouteExceptionWhenAddingRouteWithSamePattern() {
+		thrown.expect(RouteException.class);
+		thrown.expectMessage("Unable to add the route 'GET /route/{var2}' - the route 'GET /route/{var}' already exists which matches the same pattern");
+		routesObj.addRoute(RouteType.GET, "/route/{var}", null, new TestAction("action"));
+		routesObj.addRoute(RouteType.GET, "/route/{var2}", null, new TestAction("action"));
 	}
 
 	private static class TestAction implements Action {

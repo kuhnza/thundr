@@ -157,6 +157,12 @@ public class RouteTest {
 	}
 
 	@Test
+	public void shouldReturnRoute() {
+		Route route = new Route(null, "/path/{var}/split/{var2}", null);
+		assertThat(route.getRoute(), is("/path/{var}/split/{var2}"));
+	}
+
+	@Test
 	public void shouldReturnReverseRoute() {
 		Route route = new Route(null, "/path/{var}/split/{var2}", null);
 		assertThat(route.getReverseRoute(map("var", "value", "var2", 1)), is("/path/value/split/1"));
