@@ -31,6 +31,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.fileupload.FileItemHeaders;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
@@ -38,6 +41,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -167,8 +171,44 @@ public class MultipartHttpBinderTest {
 		assertThat(parameterDescriptions.size(), is(3));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
-	public void shouldFindItAsMultipart() {
+	public void shouldNotBindIfAllParametersAreAlreadyBound() {
+		ParameterDescription req = new ParameterDescription("req", HttpServletRequest.class);
+		ParameterDescription resp = new ParameterDescription("resp", HttpServletResponse.class);
+		ParameterDescription cookie = new ParameterDescription("cookie", String.class);
+		addFormField("field1", "value1");
+		addFormField("field2", "value2");
+		addFileField("data", new byte[] { 1, 2, 3 });
+		parameterDescriptions.put(req, new MockHttpServletRequest());
+		parameterDescriptions.put(resp, new MockHttpServletResponse());
+		parameterDescriptions.put(cookie, "cookie-value");
+
+		binder = spy(binder);
+		binder.bindAll(parameterDescriptions, request, response, pathVariables);
+
+		verify(binder, times(0)).extractParameters(Mockito.any(HttpServletRequest.class), Mockito.anyMap(), Mockito.anyMapOf(String.class, byte[].class));
+
+		assertThat(binder.shouldTryToBind(parameterDescriptions), is(false));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void shouldNotBindIfNoParametersArePresent() {
+		addFormField("field1", "value1");
+		addFormField("field2", "value2");
+		addFileField("data", new byte[] { 1, 2, 3 });
+
+		binder = spy(binder);
+		binder.bindAll(parameterDescriptions, request, response, pathVariables);
+
+		verify(binder, times(0)).extractParameters(Mockito.any(HttpServletRequest.class), Mockito.anyMap(), Mockito.anyMapOf(String.class, byte[].class));
+
+		assertThat(binder.shouldTryToBind(parameterDescriptions), is(false));
+	}
+
+	@Test
+	public void shouldFindRequestAsMultipart() {
 		assertThat(ContentType.anyMatch(list(ContentType.MultipartFormData), "multipart/form-data; boundary=127.0.0.1.1002.16893.1359095066.582.122048"), is(true));
 	}
 

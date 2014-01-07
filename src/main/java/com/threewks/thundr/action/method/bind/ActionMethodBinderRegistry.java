@@ -41,11 +41,12 @@ public class ActionMethodBinderRegistry {
 		registerActionMethodBinder(new RequestClassBinder());
 		registerActionMethodBinder(new GsonBinder());
 		registerActionMethodBinder(new HttpBinder());
-		registerActionMethodBinder(new MultipartHttpBinder());
 		registerActionMethodBinder(new RequestAttributeBinder());
 		registerActionMethodBinder(new SessionAttributeBinder());
 		registerActionMethodBinder(new RequestHeaderBinder());
 		registerActionMethodBinder(new CookieBinder());
+		// This is last so that we can avoid running it if all parameters are bound by an alternative method
+		registerActionMethodBinder(new MultipartHttpBinder());
 	}
 
 	public void registerActionMethodBinder(ActionMethodBinder binder) {

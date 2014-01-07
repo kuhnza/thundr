@@ -364,7 +364,8 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
 	@Override
 	public Enumeration getHeaders(String name) {
-		return Collections.enumeration(list(headers.get(name)));
+		String[] values = headers.get(name);
+		return values == null ? null : Collections.enumeration(list(values));
 	}
 
 	@Override

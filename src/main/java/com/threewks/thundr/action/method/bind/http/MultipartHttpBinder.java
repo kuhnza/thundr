@@ -46,7 +46,7 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 
 	@Override
 	public void bindAll(Map<ParameterDescription, Object> bindings, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {
-		if (ContentType.anyMatch(supportedContentTypes, req.getContentType())) {
+		if (ContentType.anyMatch(supportedContentTypes, req.getContentType()) && shouldTryToBind(bindings)) {
 			Map<String, List<String>> formFields = new HashMap<String, List<String>>();
 			Map<String, byte[]> fileFields = new HashMap<String, byte[]>();
 			extractParameters(req, formFields, fileFields);
@@ -56,7 +56,17 @@ public class MultipartHttpBinder implements ActionMethodBinder {
 		}
 	}
 
-	private void extractParameters(HttpServletRequest req, Map<String, List<String>> formFields, Map<String, byte[]> fileFields) {
+	/**
+	 * If all parameters have been bound, we don't need to try to bind. This means we won't consume the stream leaving it in tact to be read in controllers.
+	 * 
+	 * @param bindings
+	 * @return
+	 */
+	boolean shouldTryToBind(Map<ParameterDescription, Object> bindings) {
+		return bindings.values().contains(null);
+	}
+
+	void extractParameters(HttpServletRequest req, Map<String, List<String>> formFields, Map<String, byte[]> fileFields) {
 		try {
 			FileItemIterator itemIterator = upload.getItemIterator(req);
 			while (itemIterator.hasNext()) {

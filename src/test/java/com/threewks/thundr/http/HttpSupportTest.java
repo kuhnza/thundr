@@ -32,4 +32,48 @@ public class HttpSupportTest {
 		assertThat(HttpSupport.getReasonForHttpStatus(500), is("Internal Server Error"));
 		assertThat(HttpSupport.getReasonForHttpStatus(418), is("I'm a teapot"));
 	}
+
+	@Test
+	public void shouldReturnTrueForMatchingHttpMethod() {
+		assertThat(HttpSupport.Methods.isGet("get"), is(true));
+		assertThat(HttpSupport.Methods.isGet("GeT"), is(true));
+		assertThat(HttpSupport.Methods.isGet("GET"), is(true));
+		assertThat(HttpSupport.Methods.isGet(null), is(false));
+		assertThat(HttpSupport.Methods.isGet(""), is(false));
+		assertThat(HttpSupport.Methods.isGet(" "), is(false));
+		assertThat(HttpSupport.Methods.isGet(" get "), is(false));
+		assertThat(HttpSupport.Methods.isGet("POST"), is(false));
+
+		assertThat(HttpSupport.Methods.isPost("post"), is(true));
+		assertThat(HttpSupport.Methods.isPost("PoSt"), is(true));
+		assertThat(HttpSupport.Methods.isPost("POST"), is(true));
+		assertThat(HttpSupport.Methods.isPost(null), is(false));
+		assertThat(HttpSupport.Methods.isPost(""), is(false));
+		assertThat(HttpSupport.Methods.isPost(" "), is(false));
+		assertThat(HttpSupport.Methods.isPost(" post "), is(false));
+
+		assertThat(HttpSupport.Methods.isPut("put"), is(true));
+		assertThat(HttpSupport.Methods.isPut("pUt"), is(true));
+		assertThat(HttpSupport.Methods.isPut("PUT"), is(true));
+		assertThat(HttpSupport.Methods.isPut(null), is(false));
+		assertThat(HttpSupport.Methods.isPut(""), is(false));
+		assertThat(HttpSupport.Methods.isPut(" "), is(false));
+		assertThat(HttpSupport.Methods.isPut(" put "), is(false));
+
+		assertThat(HttpSupport.Methods.isPatch("patch"), is(true));
+		assertThat(HttpSupport.Methods.isPatch("pAtCh"), is(true));
+		assertThat(HttpSupport.Methods.isPatch("PATCH"), is(true));
+		assertThat(HttpSupport.Methods.isPatch(null), is(false));
+		assertThat(HttpSupport.Methods.isPatch(""), is(false));
+		assertThat(HttpSupport.Methods.isPatch(" "), is(false));
+		assertThat(HttpSupport.Methods.isPatch(" patch "), is(false));
+
+		assertThat(HttpSupport.Methods.isDelete("delete"), is(true));
+		assertThat(HttpSupport.Methods.isDelete("DeLEtE"), is(true));
+		assertThat(HttpSupport.Methods.isDelete("DELETE"), is(true));
+		assertThat(HttpSupport.Methods.isDelete(null), is(false));
+		assertThat(HttpSupport.Methods.isDelete(""), is(false));
+		assertThat(HttpSupport.Methods.isDelete(" "), is(false));
+		assertThat(HttpSupport.Methods.isDelete(" delete "), is(false));
+	}
 }
