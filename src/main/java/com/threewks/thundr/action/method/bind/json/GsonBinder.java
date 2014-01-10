@@ -18,21 +18,27 @@
 package com.threewks.thundr.action.method.bind.json;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.atomicleopard.expressive.Expressive;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.threewks.thundr.action.method.bind.ActionMethodBinder;
 import com.threewks.thundr.action.method.bind.BindException;
 import com.threewks.thundr.action.method.bind.path.PathVariableBinder;
+import com.threewks.thundr.action.method.bind.request.CookieBinder;
+import com.threewks.thundr.action.method.bind.request.RequestClassBinder;
 import com.threewks.thundr.http.ContentType;
 import com.threewks.thundr.introspection.ParameterDescription;
 import com.threewks.thundr.json.GsonSupport;
 
 public class GsonBinder implements ActionMethodBinder {
+	public static final List<Class<?>> NonBindableTypes = Expressive.list(PathVariableBinder.PathVariableTypes).addItems(RequestClassBinder.BoundTypes).addItems(CookieBinder.BoundTypes);
+
 	private GsonBuilder gsonBuilder;
 
 	public GsonBinder() {
@@ -78,7 +84,7 @@ public class GsonBinder implements ActionMethodBinder {
 	private ParameterDescription findParameterDescriptionForJsonParameter(Map<ParameterDescription, Object> bindings) {
 		for (Map.Entry<ParameterDescription, Object> bindingEntry : bindings.entrySet()) {
 			ParameterDescription parameterDescription = bindingEntry.getKey();
-			if (bindingEntry.getValue() == null && !PathVariableBinder.PathVariableTypes.contains(parameterDescription.type())) {
+			if (bindingEntry.getValue() == null && !NonBindableTypes.contains(parameterDescription.type())) {
 				return parameterDescription;
 			}
 		}

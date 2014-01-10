@@ -17,16 +17,20 @@
  */
 package com.threewks.thundr.action.method.bind.request;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.atomicleopard.expressive.Expressive;
 import com.threewks.thundr.action.method.bind.ActionMethodBinder;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class RequestClassBinder implements ActionMethodBinder {
+	public static final List<Class<?>> BoundTypes = Expressive.list(HttpServletRequest.class, HttpServletResponse.class, HttpSession.class);
+
 	@Override
 	public void bindAll(Map<ParameterDescription, Object> bindings, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {
 		for (Map.Entry<ParameterDescription, Object> binding : bindings.entrySet()) {

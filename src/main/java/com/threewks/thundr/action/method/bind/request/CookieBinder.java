@@ -37,6 +37,7 @@ import com.threewks.thundr.introspection.ParameterDescription;
 
 public class CookieBinder implements ActionMethodBinder {
 	private static final ETransformer<Collection<Cookie>, Map<String, List<Cookie>>> toLookup = Expressive.Transformers.<Cookie, String> toBeanLookup("name", Cookie.class);
+	public static final List<Class<?>> BoundTypes = Expressive.<Class<?>>list(Cookie.class);
 
 	public CookieBinder() {
 	}
