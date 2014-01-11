@@ -29,7 +29,7 @@ import com.threewks.thundr.action.method.bind.ActionMethodBinder;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class RequestClassBinder implements ActionMethodBinder {
-	public static final List<Class<?>> BoundTypes = Expressive.list(HttpServletRequest.class, HttpServletResponse.class, HttpSession.class);
+	public static final List<Class<?>> BoundTypes = Expressive.<Class<?>> list(HttpServletRequest.class, HttpServletResponse.class, HttpSession.class);
 
 	@Override
 	public void bindAll(Map<ParameterDescription, Object> bindings, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {

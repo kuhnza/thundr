@@ -21,6 +21,7 @@ import static com.atomicleopard.expressive.Expressive.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
+import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -116,14 +117,14 @@ public class RequestHeaderBinderTest {
 	@Test
 	public void shouldLeaveUnbindableValuesNull() {
 		ParameterDescription param1 = new ParameterDescription("param1", String.class);
-		ParameterDescription param2 = new ParameterDescription("param2", UUID.class);
+		ParameterDescription param2 = new ParameterDescription("param2", Color.class);
 		ParameterDescription param3 = new ParameterDescription("param3", Object.class);
 
 		parameterDescriptions.put(param1, null);
 		parameterDescriptions.put(param2, null);
 
 		request.header("param1", "string-value");
-		request.header("param2", UUID.randomUUID().toString());
+		request.header("param2", Color.BLACK.toString());
 		request.header("param3", "3");
 
 		binder.bindAll(parameterDescriptions, request, response, pathVariables);

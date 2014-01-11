@@ -17,15 +17,15 @@
     limitations under the License.
 
 --%>
-<%@tag import="com.threewks.thundr.route.RouteNotFoundException"%>
+<%@ tag import="com.threewks.thundr.route.RouteNotFoundException"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%@tag import="java.util.Enumeration"%>
-<%@tag import="java.util.Map"%>
-<%@tag import="com.threewks.thundr.route.Routes"%>
-<%@tag import="com.threewks.thundr.route.Route"%>
+<%@ tag import="java.util.Enumeration"%>
+<%@ tag import="java.util.Map"%>
+<%@ tag import="com.threewks.thundr.route.Routes"%>
+<%@ tag import="com.threewks.thundr.route.Route"%>
 <%@ tag import="org.apache.commons.lang3.StringUtils"%>
-<%@ tag dynamic-attributes="pathVars" trimDirectiveWhitespaces="true"%>
+<%@ tag dynamic-attributes="pathVars" trimDirectiveWhitespaces="true" body-content="empty"%>
 <%@ attribute name="name" required="true"%>
 <%@ attribute name="var" required="false" type="java.lang.String"%>
 <%

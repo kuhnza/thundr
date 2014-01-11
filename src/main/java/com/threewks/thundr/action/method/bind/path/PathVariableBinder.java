@@ -20,22 +20,46 @@ package com.threewks.thundr.action.method.bind.path;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jodd.typeconverter.TypeConverterManager;
 
+import org.joda.time.DateTime;
+
 import com.threewks.thundr.action.method.bind.ActionMethodBinder;
+import com.threewks.thundr.action.method.bind.http.BasicTypesParameterBinder;
 import com.threewks.thundr.introspection.ParameterDescription;
 
 public class PathVariableBinder implements ActionMethodBinder {
-
+	{
+		// we rely on the static init in this class to register some type convertors
+		// this is horrible, i'm not sure how better to handle the reliance on static registration.
+		new BasicTypesParameterBinder();
+	}
+	
 	public static final List<Class<?>> PathVariableTypes = Arrays.<Class<?>>
-			asList(String.class, int.class, Integer.class, double.class, Double.class, long.class, Long.class, short.class,
-					Short.class, float.class, Float.class, BigDecimal.class, BigInteger.class);
+			asList( String.class,
+					short.class,
+					Short.class,
+					int.class,
+					Integer.class,
+					long.class,
+					Long.class,
+					float.class,
+					Float.class,
+					double.class,
+					Double.class,
+					BigDecimal.class,
+					BigInteger.class,
+					UUID.class,
+					Date.class,
+					DateTime.class);
 
 	@Override
 	public void bindAll(Map<ParameterDescription, Object> bindings, HttpServletRequest req, HttpServletResponse resp, Map<String, String> pathVariables) {

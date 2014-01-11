@@ -35,6 +35,8 @@ import com.threewks.thundr.view.jsp.JspView;
 import com.threewks.thundr.view.jsp.JspViewResolver;
 import com.threewks.thundr.view.redirect.RedirectView;
 import com.threewks.thundr.view.redirect.RedirectViewResolver;
+import com.threewks.thundr.view.redirect.RouteRedirectView;
+import com.threewks.thundr.view.redirect.RouteRedirectViewResolver;
 import com.threewks.thundr.view.string.StringView;
 import com.threewks.thundr.view.string.StringViewResolver;
 
@@ -57,22 +59,22 @@ public class ViewResolverInjectionConfiguration extends BaseInjectionConfigurati
 	}
 
 	protected void addViewResolvers(ViewResolverRegistry viewResolverRegistry, UpdatableInjectionContext injectionContext, GlobalModel globalModel) {
+		Routes routes = injectionContext.get(Routes.class);
 		ExceptionViewResolver exceptionViewResolver = new ExceptionViewResolver();
 		HttpStatusExceptionViewResolver statusViewResolver = new HttpStatusExceptionViewResolver();
 
 		injectionContext.inject(exceptionViewResolver).as(ExceptionViewResolver.class);
 		injectionContext.inject(statusViewResolver).as(HttpStatusExceptionViewResolver.class);
 
-		JspViewResolver jspViewResolver = new JspViewResolver(globalModel);
-
 		viewResolverRegistry.addResolver(Throwable.class, exceptionViewResolver);
 		viewResolverRegistry.addResolver(HttpStatusException.class, statusViewResolver);
 		viewResolverRegistry.addResolver(RouteNotFoundException.class, new RouteNotFoundViewResolver());
+		viewResolverRegistry.addResolver(RouteRedirectView.class, new RouteRedirectViewResolver(routes));
 		viewResolverRegistry.addResolver(RedirectView.class, new RedirectViewResolver());
 		viewResolverRegistry.addResolver(JsonView.class, new JsonViewResolver());
 		viewResolverRegistry.addResolver(JsonpView.class, new JsonpViewResolver());
 		viewResolverRegistry.addResolver(FileView.class, new FileViewResolver());
-		viewResolverRegistry.addResolver(JspView.class, jspViewResolver);
+		viewResolverRegistry.addResolver(JspView.class, new JspViewResolver(globalModel));
 		viewResolverRegistry.addResolver(StringView.class, new StringViewResolver());
 	}
 }

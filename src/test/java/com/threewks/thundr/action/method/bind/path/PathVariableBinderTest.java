@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
+import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,6 +70,8 @@ public class PathVariableBinderTest {
 		ParameterDescription param11 = new ParameterDescription("param11", Long.class);
 		ParameterDescription param12 = new ParameterDescription("param12", BigDecimal.class);
 		ParameterDescription param13 = new ParameterDescription("param13", BigInteger.class);
+		ParameterDescription param14 = new ParameterDescription("param14", UUID.class);
+		ParameterDescription param15 = new ParameterDescription("param15", DateTime.class);
 
 		parameterDescriptions.put(param1, null);
 		parameterDescriptions.put(param2, null);
@@ -82,7 +86,11 @@ public class PathVariableBinderTest {
 		parameterDescriptions.put(param11, null);
 		parameterDescriptions.put(param12, null);
 		parameterDescriptions.put(param13, null);
+		parameterDescriptions.put(param14, null);
+		parameterDescriptions.put(param15, null);
 
+		String uuidString = UUID.randomUUID().toString();
+		DateTime dateTime = new DateTime();
 		pathVariables.put("param1", "string-value");
 		pathVariables.put("param2", "2");
 		pathVariables.put("param3", "3");
@@ -96,6 +104,8 @@ public class PathVariableBinderTest {
 		pathVariables.put("param11", "11");
 		pathVariables.put("param12", "12.00");
 		pathVariables.put("param13", "13");
+		pathVariables.put("param14", uuidString);
+		pathVariables.put("param15", dateTime.toString());
 
 		pathVariableBinder.bindAll(parameterDescriptions, request, response, pathVariables);
 
@@ -112,19 +122,21 @@ public class PathVariableBinderTest {
 		assertThat(parameterDescriptions.get(param11), is((Object) 11L));
 		assertThat(parameterDescriptions.get(param12), is((Object) new BigDecimal("12.00")));
 		assertThat(parameterDescriptions.get(param13), is((Object) BigInteger.valueOf(13)));
+		assertThat(parameterDescriptions.get(param14), is((Object) UUID.fromString(uuidString)));
+		assertThat(parameterDescriptions.get(param15), is((Object) dateTime));
 	}
 
 	@Test
 	public void shouldLeaveUnbindableValuesNull() {
 		ParameterDescription param1 = new ParameterDescription("param1", String.class);
-		ParameterDescription param2 = new ParameterDescription("param2", UUID.class);
+		ParameterDescription param2 = new ParameterDescription("param2", Color.class);
 		ParameterDescription param3 = new ParameterDescription("param3", Object.class);
 
 		parameterDescriptions.put(param1, null);
 		parameterDescriptions.put(param2, null);
 
 		pathVariables.put("param1", "string-value");
-		pathVariables.put("param2", UUID.randomUUID().toString());
+		pathVariables.put("param2", Color.BLACK.toString());
 		pathVariables.put("param3", "3");
 
 		pathVariableBinder.bindAll(parameterDescriptions, request, response, pathVariables);
